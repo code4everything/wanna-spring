@@ -32,6 +32,9 @@ public class Daily {
     @ApiModelProperty("记录的月份")
     private Integer month;
 
+    @ApiModelProperty("记录的号数")
+    private Integer day;
+
     @ApiModelProperty("记录时间")
     private Timestamp createTime;
 

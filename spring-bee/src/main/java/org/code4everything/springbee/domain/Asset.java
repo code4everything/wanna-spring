@@ -26,8 +26,8 @@ public class Asset {
     @ApiModelProperty("用户编号（敏感数据）")
     private String userId;
 
-    @ApiModelProperty("余额，含小数")
-    private Integer balance;
+    @ApiModelProperty("可用余额，含小数")
+    private Long balance;
 
     @ApiModelProperty("创建时间")
     private Timestamp createTime;
