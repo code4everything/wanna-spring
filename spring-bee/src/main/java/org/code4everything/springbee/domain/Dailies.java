@@ -18,7 +18,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "dailyDetail", description = "日常记录详情")
-public class DailyDetail {
+public class Dailies {
 
     @Id
     @ApiModelProperty("详情编号")
