@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -18,7 +19,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "todo", description = "待办事项")
-public class Todo {
+public class Todo implements Serializable {
 
     @Id
     @ApiModelProperty("事项编号")

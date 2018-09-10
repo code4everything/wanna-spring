@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -17,7 +18,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "income", description = "收益明细，包括支出")
-public class Income {
+public class Income implements Serializable {
 
     @Id
     @ApiModelProperty("收益编号")

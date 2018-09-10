@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -17,7 +18,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "asset", description = "资产（可流动资金）")
-public class Asset {
+public class Asset implements Serializable {
 
     @Id
     @ApiModelProperty("资产编号")

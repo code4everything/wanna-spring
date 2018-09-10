@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -17,7 +18,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "daily", description = "日常记录")
-public class Daily {
+public class Daily implements Serializable {
 
     @Id
     @ApiModelProperty("记录编号")
