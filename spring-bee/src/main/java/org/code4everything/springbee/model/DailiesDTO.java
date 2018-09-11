@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.sql.Time;
 
 /**
@@ -17,7 +18,7 @@ import java.sql.Time;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "dailies", description = "日程详情")
-public class DailiesDTO {
+public class DailiesDTO implements Serializable {
 
     @FieldChecking
     @ApiModelProperty("开始时间")
