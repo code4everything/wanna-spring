@@ -40,13 +40,13 @@ public class DailyController {
     }
 
     @GetMapping("/list")
-    @ApiModelProperty("列出日程记录")
+    @ApiOperation("列出日程记录")
     public ResultObject<List<Daily>> listByDate(@RequestBody @ApiParam QueryDailyDTO queryDaily) {
         return new ResultObject<>();
     }
 
     @GetMapping("/date/list")
-    @ApiModelProperty("列出记录的日期")
+    @ApiOperation("列出记录的日期")
     public ResultObject<List<DailyDateVO>> listDailyDate() {
         return new ResultObject<>();
     }
