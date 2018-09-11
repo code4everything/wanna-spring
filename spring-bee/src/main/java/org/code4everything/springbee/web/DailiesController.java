@@ -2,6 +2,7 @@ package org.code4everything.springbee.web;
 
 import com.zhazhapan.util.model.ResultObject;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.code4everything.springbee.domain.Dailies;
@@ -27,6 +28,7 @@ public class DailiesController {
 
     @DeleteMapping("/remove")
     @ApiOperation("删除一条详情")
+    @ApiImplicitParam(name = "dailiesId", value = "详情编号", required = true)
     public ResultObject<Object> remove(@RequestParam String dailiesId) {
         return new ResultObject<>();
     }
@@ -40,6 +42,7 @@ public class DailiesController {
 
     @GetMapping("/list")
     @ApiOperation("列出日程详情")
+    @ApiImplicitParam(name = "dailyId", value = "日程记录编号", required = true)
     public ResultObject<List<Dailies>> listByDailyId(@RequestParam String dailyId) {
         return new ResultObject<>();
     }
