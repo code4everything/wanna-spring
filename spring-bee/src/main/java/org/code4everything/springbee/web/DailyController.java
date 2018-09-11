@@ -1,7 +1,10 @@
 package org.code4everything.springbee.web;
 
 import com.zhazhapan.util.model.ResultObject;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.code4everything.springbee.domain.Daily;
 import org.code4everything.springbee.model.DailyDTO;
 import org.code4everything.springbee.model.DailyDateVO;
@@ -27,9 +30,8 @@ public class DailyController {
 
     @DeleteMapping("/remove")
     @ApiOperation("删除记录")
-    @ApiImplicitParams({@ApiImplicitParam(name = "dailyId", value = "记录编号"), @ApiImplicitParam(name = "date", value =
-            "记录的日期")})
-    public ResultObject<Object> removeDaily(String dailyId, String date) {
+    @ApiImplicitParam(name = "dailyId", value = "记录编号")
+    public ResultObject<Object> removeDaily(@RequestParam String dailyId) {
         return new ResultObject<>();
     }
 
