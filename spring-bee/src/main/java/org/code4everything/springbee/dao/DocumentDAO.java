@@ -12,4 +12,6 @@ import org.springframework.stereotype.Repository;
 public interface DocumentDAO extends MongoRepository<Document, String> {
 
     Document getByLocalPathOrAccessUrl(String localPath, String accessUrl);
+
+    Document getByAccessUrl(String accessUrl);
 }

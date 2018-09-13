@@ -1,6 +1,7 @@
 package org.code4everything.springbee.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
+import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.FileExecutor;
 import com.zhazhapan.util.model.SimpleMultipartFile;
 import org.code4everything.springbee.constant.BeeConfigConsts;
@@ -21,6 +22,12 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Autowired
     private DocumentDAO documentDAO;
+
+    @Override
+    public String getLocalPathByAccessUrl(String accessUrl) {
+        Document document = documentDAO.getByAccessUrl(accessUrl);
+        return Checker.isNull(document) ? "" : document.getAccessUrl();
+    }
 
     @Override
     public Document getBySimpleMultipartFile(SimpleMultipartFile file) {

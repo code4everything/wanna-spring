@@ -9,4 +9,5 @@ import org.code4everything.springbee.domain.Document;
  **/
 public interface DocumentService extends MultipartFileService<Document> {
 
+    String getLocalPathByAccessUrl(String accessUrl);
 }
