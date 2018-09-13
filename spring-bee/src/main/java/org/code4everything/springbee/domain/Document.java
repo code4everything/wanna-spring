@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * @author pantao
@@ -23,7 +24,7 @@ public class Document implements Serializable {
     @ApiModelProperty("文件编号")
     private String id;
 
-    @ApiModelProperty("文件本地路径")
+    @ApiModelProperty("文件本地路径（敏感数据）")
     private String localPath;
 
     @ApiModelProperty("访问链接")
@@ -33,7 +34,7 @@ public class Document implements Serializable {
     private String suffix;
 
     @ApiModelProperty("上传时间")
-    private String createTime;
+    private Timestamp createTime;
 
     @ApiModelProperty("文件大小")
     private Long size;
