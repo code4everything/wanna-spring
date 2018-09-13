@@ -30,6 +30,9 @@ public class User implements Serializable {
     @ApiModelProperty("昵称")
     private String nickname;
 
+    @ApiModelProperty("头像地址")
+    private String avatar;
+
     @ApiModelProperty("密码（敏感数据)")
     private String password;
 
