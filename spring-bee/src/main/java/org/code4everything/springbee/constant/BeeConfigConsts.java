@@ -13,4 +13,6 @@ public class BeeConfigConsts {
     public static final String STORAGE_PATH = ValueConsts.USER_HOME + File.separator + "wanna-spring" + File.separator;
 
     public static final String DOCUMENT_MAPPING = "/user/document/";
+
+    public static final String PRIVATE_RSA_KEY_PATH = "";
 }
