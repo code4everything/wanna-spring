@@ -4,7 +4,11 @@ import com.zhazhapan.util.model.ResultObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.code4everything.springbee.service.CommonService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.mail.MessagingException;
 
 /**
  * @author pantao
@@ -14,6 +18,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/common")
 @Api(value = "/common", description = "公共接口")
 public class CommonController {
+
+    private final CommonService commonService;
+
+    @Autowired
+    public CommonController(CommonService commonService) {this.commonService = commonService;}
 
     @GetMapping("/username/exists")
     @ApiOperation("用户名是否存在")
@@ -39,7 +48,8 @@ public class CommonController {
     @PostMapping("/vcode/send")
     @ApiOperation("发送验证码")
     @ApiImplicitParam(name = "email", value = "邮箱", required = true)
-    public ResultObject<Boolean> sendVcode(@RequestParam String email) {
+    public ResultObject sendVcode(@RequestParam String email) throws MessagingException {
+        commonService.sendVcode(email);
         return new ResultObject<>();
     }
 }

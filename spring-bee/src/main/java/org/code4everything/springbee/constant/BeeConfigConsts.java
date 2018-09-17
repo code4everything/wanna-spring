@@ -10,9 +10,18 @@ import java.io.File;
  **/
 public class BeeConfigConsts {
 
+    /**
+     * 自定义配置上传文件保存路径
+     */
     public static final String STORAGE_PATH = ValueConsts.USER_HOME + File.separator + "wanna-spring" + File.separator;
 
+    /**
+     * 如果需要修改文件的映射路径，还需要修改对应的Controller映射路径
+     */
     public static final String DOCUMENT_MAPPING = "/user/document/";
 
-    public static final String PRIVATE_RSA_KEY_PATH = "";
+    /**
+     * 自定义配置RSA私钥路径
+     */
+    public static final String PRIVATE_RSA_KEY_PATH = "/Users/pantao/Desktop/temp/rsa/private.key";
 }
