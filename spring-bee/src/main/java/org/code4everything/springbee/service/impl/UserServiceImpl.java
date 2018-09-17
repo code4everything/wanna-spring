@@ -3,7 +3,6 @@ package org.code4everything.springbee.service.impl;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
-import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.encryption.JavaEncrypt;
 import org.code4everything.springbee.dao.UserDAO;
 import org.code4everything.springbee.domain.User;
@@ -45,17 +44,6 @@ public class UserServiceImpl implements UserService {
         user.setId(RandomUtil.simpleUUID());
         user.setStatus("7");
         userDAO.save(user);
-    }
-
-    @Override
-    public boolean existsEmail(String email) {
-        return userDAO.countByMail(email) > 0;
-    }
-
-    @Override
-    public boolean isVcodeValidated(String email, String vcode) {
-        String key = "vcode:" + email;
-        return Checker.checkNull(vcode).equals(stringRedisTemplate.opsForValue().get(key));
     }
 
     private String decryptRsaAndEncryptToMd5(String password) {

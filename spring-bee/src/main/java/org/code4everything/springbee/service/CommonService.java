@@ -8,5 +8,11 @@ import javax.mail.MessagingException;
  */
 public interface CommonService {
 
+    boolean existsUsername(String username);
+
+    boolean existsEmail(String email);
+
+    boolean isVcodeValidated(String email, String vcode);
+
     void sendVcode(String to) throws MessagingException;
 }

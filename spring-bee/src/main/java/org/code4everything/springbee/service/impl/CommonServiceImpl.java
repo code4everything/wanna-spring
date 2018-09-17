@@ -1,7 +1,9 @@
 package org.code4everything.springbee.service.impl;
 
 import cn.hutool.core.util.StrUtil;
+import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.RandomUtils;
+import org.code4everything.springbee.dao.UserDAO;
 import org.code4everything.springbee.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,13 +27,33 @@ public class CommonServiceImpl implements CommonService {
 
     private final RedisTemplate<String, String> stringRedisTemplate;
 
+    private final UserDAO userDAO;
+
     @Value("${spring.mail.username}")
     private String from;
 
     @Autowired
-    public CommonServiceImpl(JavaMailSender mailSender, RedisTemplate<String, String> stringRedisTemplate) {
+    public CommonServiceImpl(JavaMailSender mailSender, RedisTemplate<String, String> stringRedisTemplate,
+                             UserDAO userDAO) {
         this.mailSender = mailSender;
         this.stringRedisTemplate = stringRedisTemplate;
+        this.userDAO = userDAO;
+    }
+
+    @Override
+    public boolean existsUsername(String username) {
+        return userDAO.countByUsername(username) > 0;
+    }
+
+    @Override
+    public boolean existsEmail(String email) {
+        return userDAO.countByMail(email) > 0;
+    }
+
+    @Override
+    public boolean isVcodeValidated(String email, String vcode) {
+        String key = "vcode:" + email;
+        return Checker.checkNull(vcode).equals(stringRedisTemplate.opsForValue().get(key));
     }
 
     @Override

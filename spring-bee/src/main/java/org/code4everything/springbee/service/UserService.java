@@ -9,8 +9,4 @@ import org.code4everything.springbee.model.RegisterDTO;
 public interface UserService {
 
     void register(RegisterDTO registerDTO);
-
-    boolean existsEmail(String email);
-
-    boolean isVcodeValidated(String email, String vcode);
 }

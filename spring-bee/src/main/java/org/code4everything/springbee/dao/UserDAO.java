@@ -12,4 +12,6 @@ import org.springframework.stereotype.Repository;
 public interface UserDAO extends MongoRepository<User, String> {
 
     Integer countByMail(String mail);
+
+    Integer countByUsername(String username);
 }

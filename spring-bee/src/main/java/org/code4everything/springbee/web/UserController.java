@@ -7,6 +7,7 @@ import io.swagger.annotations.*;
 import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.RegisterDTO;
 import org.code4everything.springbee.model.UserInfoDTO;
+import org.code4everything.springbee.service.CommonService;
 import org.code4everything.springbee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,18 +23,26 @@ public class UserController {
 
     private final UserService userService;
 
+    private final CommonService commonService;
+
     @Autowired
-    public UserController(UserService userService) {this.userService = userService;}
+    public UserController(UserService userService, CommonService commonService) {
+        this.userService = userService;
+        this.commonService = commonService;
+    }
 
     @PostMapping("/register")
     @ApiOperation("注册")
     public ResultObject register(@RequestBody @ApiParam RegisterDTO register) {
         CheckResult result = Checker.checkBean(register);
         if (result.passed) {
-            if (userService.existsEmail(register.getEmail())) {
+            if (commonService.existsUsername(register.getUsername())) {
+                return CheckResult.getErrorResult("该用户名已经被注册啦");
+            }
+            if (commonService.existsEmail(register.getEmail())) {
                 return CheckResult.getErrorResult("该邮箱已经注册啦");
             }
-            if (userService.isVcodeValidated(register.getEmail(), register.getVcode())) {
+            if (commonService.isVcodeValidated(register.getEmail(), register.getVcode())) {
                 userService.register(register);
                 return new ResultObject("注册成功");
             }
