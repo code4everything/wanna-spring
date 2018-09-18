@@ -5,13 +5,14 @@ import com.zhazhapan.util.model.CheckResult;
 import com.zhazhapan.util.model.ResultObject;
 import com.zhazhapan.util.web.BaseController;
 import io.swagger.annotations.*;
-import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.RegisterDTO;
 import org.code4everything.springbee.model.UserInfoDTO;
 import org.code4everything.springbee.service.CommonService;
 import org.code4everything.springbee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author pantao
@@ -26,10 +27,14 @@ public class UserController extends BaseController {
 
     private final CommonService commonService;
 
+    private final HttpServletRequest request;
+
     @Autowired
-    public UserController(UserService userService, CommonService commonService) {
+    public UserController(UserService userService, CommonService commonService, HttpServletRequest request) {
+        super(request);
         this.userService = userService;
         this.commonService = commonService;
+        this.request = request;
     }
 
     @PostMapping("/register")
@@ -56,13 +61,13 @@ public class UserController extends BaseController {
     @ApiOperation("登录")
     @ApiImplicitParams({@ApiImplicitParam(name = "loginName", value = "用户名或邮箱", required = true),
             @ApiImplicitParam(name = "password", value = "密码", required = true)})
-    public ResultObject<User> login(@RequestParam String loginName, @RequestParam String password) {
+    public ResultObject<String> login(@RequestParam String loginName, @RequestParam String password) {
         return parseResult("登录成功", "登录失败", userService.login(loginName, password));
     }
 
     @PutMapping("/info")
     @ApiOperation("更新信息")
-    public ResultObject<Object> updateInfo(@RequestBody @ApiParam UserInfoDTO userInfo) {
-        return new ResultObject<>();
+    public ResultObject updateInfo(@RequestBody @ApiParam UserInfoDTO userInfo) {
+        return parseResult("更新", userService.updateInfo(getToken(), userInfo));
     }
 }

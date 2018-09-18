@@ -1,7 +1,7 @@
 package org.code4everything.springbee.service;
 
-import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.RegisterDTO;
+import org.code4everything.springbee.model.UserInfoDTO;
 
 /**
  * @author pantao
@@ -9,7 +9,9 @@ import org.code4everything.springbee.model.RegisterDTO;
  */
 public interface UserService {
 
+    boolean updateInfo(String token, UserInfoDTO userInfoDTO);
+
     void register(RegisterDTO registerDTO);
 
-    User login(String loginName, String password);
+    String login(String loginName, String password);
 }
