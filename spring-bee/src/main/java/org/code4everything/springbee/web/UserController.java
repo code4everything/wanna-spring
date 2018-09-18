@@ -3,6 +3,7 @@ package org.code4everything.springbee.web;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.model.CheckResult;
 import com.zhazhapan.util.model.ResultObject;
+import com.zhazhapan.util.web.BaseController;
 import io.swagger.annotations.*;
 import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.RegisterDTO;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user")
 @Api(value = "/user", description = "用户接口")
-public class UserController {
+public class UserController extends BaseController {
 
     private final UserService userService;
 
@@ -56,7 +57,7 @@ public class UserController {
     @ApiImplicitParams({@ApiImplicitParam(name = "loginName", value = "用户名或邮箱", required = true),
             @ApiImplicitParam(name = "password", value = "密码", required = true)})
     public ResultObject<User> login(@RequestParam String loginName, @RequestParam String password) {
-        return new ResultObject<>();
+        return parseResult("登录成功", "登录失败", userService.login(loginName, password));
     }
 
     @PutMapping("/info")
