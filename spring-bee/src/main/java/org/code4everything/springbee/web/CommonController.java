@@ -29,17 +29,17 @@ public class CommonController {
     @GetMapping("/username/exists")
     @ApiOperation("用户名是否存在")
     @ApiImplicitParam(name = "username", required = true, value = "用户名")
-    public ResultObject existsUsername(@RequestParam String username) {
+    public ResultObject<Boolean> existsUsername(@RequestParam String username) {
         boolean exists = commonService.existsUsername(username);
-        return exists ? CheckResult.getErrorResult("该用户名已经被注册啦") : new ResultObject("该用户名可用");
+        return new ResultObject<>(exists ? "用户名存在" : "用户名不存在", exists);
     }
 
     @GetMapping("/email/exists")
     @ApiOperation("邮箱是否存在")
     @ApiImplicitParam(name = "email", value = "邮箱", required = true)
-    public ResultObject existsEmail(@RequestParam String email) {
+    public ResultObject<Boolean> existsEmail(@RequestParam String email) {
         boolean exists = commonService.existsEmail(email);
-        return exists ? CheckResult.getErrorResult("邮箱已经被注册啦") : new ResultObject("该邮箱可用");
+        return new ResultObject<>(exists ? "邮箱存在" : "邮箱不存在", exists);
     }
 
     @GetMapping("/vcode/verify")
@@ -56,6 +56,6 @@ public class CommonController {
     @ApiImplicitParam(name = "email", value = "邮箱", required = true)
     public ResultObject sendVcode(@RequestParam String email) throws MessagingException {
         commonService.sendVcode(email);
-        return new ResultObject<>();
+        return new ResultObject("发送成功");
     }
 }
