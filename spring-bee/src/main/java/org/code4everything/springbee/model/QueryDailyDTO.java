@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * @author pantao
  * @since 2018/9/10
@@ -15,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "queryDaily", description = "按时间查询")
-public class QueryDailyDTO {
+public class QueryDailyDTO implements Serializable {
 
     @FieldChecking
     @ApiModelProperty(value = "年份", required = true)

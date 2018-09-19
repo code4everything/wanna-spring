@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "dailyMonth", description = "记录月份列表")
-class DailyMonthVO {
+class DailyMonthVO implements Serializable {
 
     @ApiModelProperty("记录月份")
     private Integer month;

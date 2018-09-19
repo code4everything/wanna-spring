@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
@@ -17,7 +18,7 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "daily", description = "日程记录")
-public class DailyDTO {
+public class DailyDTO implements Serializable {
 
     @ApiModelProperty("记录日期（默认为当前日期）")
     private Date date;
