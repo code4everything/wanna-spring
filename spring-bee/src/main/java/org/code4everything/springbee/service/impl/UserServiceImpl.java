@@ -12,7 +12,6 @@ import org.code4everything.springbee.model.RegisterDTO;
 import org.code4everything.springbee.model.UserInfoDTO;
 import org.code4everything.springbee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +33,6 @@ public class UserServiceImpl implements UserService {
 
     private final RedisTemplate<String, User> userRedisTemplate;
 
-    private MongoTemplate mongoTemplate;
-
     @Autowired
     public UserServiceImpl(UserDAO userDAO, RedisTemplate<String, String> stringRedisTemplate, String privateKey,
                            RedisTemplate<String, User> userRedisTemplate) {
@@ -46,23 +43,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateInfo(String token, UserInfoDTO userInfoDTO) {
-        User user = userRedisTemplate.opsForValue().get(token);
-        if (Checker.isNotNull(user)) {
-            user.setNickname(userInfoDTO.getNickname());
-            user.setBio(userInfoDTO.getBio());
-            user.setGender(userInfoDTO.getGender());
-            mongoTemplate.save(user);
-            return true;
-        }
-        return false;
+    public boolean updateInfo(User user, UserInfoDTO userInfoDTO) {
+        user.setNickname(userInfoDTO.getNickname());
+        user.setBio(userInfoDTO.getBio());
+        user.setGender(userInfoDTO.getGender());
+        userDAO.save(user);
+        return true;
     }
 
     @Override
     public void register(RegisterDTO registerDTO) {
         User user = new User();
         user.setUsername(registerDTO.getUsername());
-        user.setMail(registerDTO.getEmail());
+        user.setEmail(registerDTO.getEmail());
         user.setPassword(decryptRsaAndEncryptToMd5(registerDTO.getPassword()));
         user.setCreateTime(new Timestamp(System.currentTimeMillis()));
         user.setId(RandomUtil.simpleUUID());
@@ -71,8 +64,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void resetPassword(String email, String newPassword) {
+        User user = userDAO.getByEmail(email);
+        if (Checker.isNotNull(user)) {
+            user.setPassword(decryptRsaAndEncryptToMd5(newPassword));
+            userDAO.save(user);
+        }
+    }
+
+    @Override
+    public boolean updatePassword(User user, String oldPassword, String newPassword) {
+        if (user.getPassword().equals(decryptRsaAndEncryptToMd5(oldPassword))) {
+            user.setPassword(decryptRsaAndEncryptToMd5(newPassword));
+            userDAO.save(user);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public String login(String loginName, String password) {
-        User user = userDAO.getByUsernameOrMail(loginName, loginName);
+        User user = userDAO.getByUsernameOrEmail(loginName, loginName);
         if (Checker.isNotNull(user)) {
             if (user.getPassword().equals(decryptRsaAndEncryptToMd5(password))) {
                 String token = NetUtils.generateToken();

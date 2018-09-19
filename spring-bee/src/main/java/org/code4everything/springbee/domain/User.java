@@ -43,7 +43,7 @@ public class User implements Serializable {
     private String gender;
 
     @ApiModelProperty("邮箱")
-    private String mail;
+    private String email;
 
     @ApiModelProperty(value = "用户状态（0冻结，1待激活，2限制登录，7正常）", allowableValues = "0, 1, 2, 7")
     private String status;

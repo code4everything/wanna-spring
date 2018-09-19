@@ -47,7 +47,7 @@ public class CommonServiceImpl implements CommonService {
 
     @Override
     public boolean existsEmail(String email) {
-        return userDAO.countByMail(email) > 0;
+        return userDAO.countByEmail(email) > 0;
     }
 
     @Override

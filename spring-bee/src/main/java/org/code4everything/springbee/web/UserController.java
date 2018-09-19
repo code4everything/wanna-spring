@@ -3,13 +3,15 @@ package org.code4everything.springbee.web;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.model.CheckResult;
 import com.zhazhapan.util.model.ResultObject;
-import com.zhazhapan.util.web.BaseController;
 import io.swagger.annotations.*;
+import org.code4everything.springbee.domain.User;
+import org.code4everything.springbee.model.PasswordDTO;
 import org.code4everything.springbee.model.RegisterDTO;
 import org.code4everything.springbee.model.UserInfoDTO;
 import org.code4everything.springbee.service.CommonService;
 import org.code4everything.springbee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,20 +23,40 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/user")
 @Api(value = "/user", description = "用户接口")
-public class UserController extends BaseController {
+public class UserController extends BeeBaseController {
 
     private final UserService userService;
 
     private final CommonService commonService;
 
-    private final HttpServletRequest request;
-
     @Autowired
-    public UserController(UserService userService, CommonService commonService, HttpServletRequest request) {
-        super(request);
+    public UserController(UserService userService, CommonService commonService, HttpServletRequest request,
+                          RedisTemplate<String, User> userRedisTemplate) {
+        super(request, userRedisTemplate);
         this.userService = userService;
         this.commonService = commonService;
-        this.request = request;
+    }
+
+    @PutMapping("/password/update")
+    @ApiOperation("更新密码")
+    @ApiImplicitParams({@ApiImplicitParam(name = "oldPassword", required = true, value = "原密码"),
+            @ApiImplicitParam(name = "newPassword", required = true, value = "新密码")})
+    public ResultObject updatePassword(@RequestParam String oldPassword, @RequestParam String newPassword) {
+        return parseResult("更新成功", "原密码不正确", userService.updatePassword(getUser(), oldPassword, newPassword));
+    }
+
+    @PutMapping("/password/reset")
+    @ApiOperation("重置密码")
+    public ResultObject resetPassword(@RequestBody @ApiParam PasswordDTO password) {
+        CheckResult result = Checker.checkBean(password);
+        if (result.passed) {
+            if (commonService.isVcodeValidated(password.getEmail(), password.getVcode())) {
+                userService.resetPassword(password.getEmail(), password.getNewPassword());
+                return new ResultObject("重置密码成功");
+            }
+            return CheckResult.getErrorResult("验证码不正确");
+        }
+        return result.resultObject;
     }
 
     @PostMapping("/register")
@@ -68,6 +90,6 @@ public class UserController extends BaseController {
     @PutMapping("/info")
     @ApiOperation("更新信息")
     public ResultObject updateInfo(@RequestBody @ApiParam UserInfoDTO userInfo) {
-        return parseResult("更新", userService.updateInfo(getToken(), userInfo));
+        return parseResult("更新", userService.updateInfo(getUser(), userInfo));
     }
 }
