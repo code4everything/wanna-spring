@@ -11,6 +11,17 @@ import java.io.File;
 public class BeeConfigConsts {
 
     /**
+     * 白名单路径（放行）
+     */
+    public static final String[] white_list_prefix = {"/common", "/user/password/reset", "/user/register", "/user" +
+            "/login"};
+
+    /**
+     * 黑名单路径（拦截）
+     */
+    public static final String[] BLACK_LIST_PREFIX = {"/user"};
+
+    /**
      * 自定义配置上传文件保存路径
      */
     public static final String STORAGE_PATH = ValueConsts.USER_HOME + File.separator + "wanna-spring" + File.separator;
