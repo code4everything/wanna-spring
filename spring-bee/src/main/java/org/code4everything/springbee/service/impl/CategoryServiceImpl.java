@@ -1,7 +1,9 @@
 package org.code4everything.springbee.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
+import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.annotation.AopLog;
+import org.code4everything.springbee.constant.BeeValueConsts;
 import org.code4everything.springbee.dao.CategoryDAO;
 import org.code4everything.springbee.domain.Category;
 import org.code4everything.springbee.service.CategoryService;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @author pantao
@@ -29,6 +32,15 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public List<Category> listCategory(String userId) {
+        List<Category> categories = categoryDAO.getByUserId(userId);
+        if (Checker.isNotEmpty(categories)) {
+            categories.forEach(category -> category.setUserId(BeeValueConsts.HIDDEN_DATA));
+        }
+        return categories;
+    }
+
+    @Override
     @AopLog("添加收益分类")
     public Category appendCategory(String userId, String name) {
         Category category = new Category();
@@ -36,6 +48,8 @@ public class CategoryServiceImpl implements CategoryService {
         category.setId(RandomUtil.simpleUUID());
         category.setName(name);
         category.setUserId(userId);
-        return categoryDAO.save(category);
+        categoryDAO.save(category);
+        category.setUserId(BeeValueConsts.HIDDEN_DATA);
+        return category;
     }
 }

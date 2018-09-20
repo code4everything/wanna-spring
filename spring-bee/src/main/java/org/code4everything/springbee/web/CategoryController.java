@@ -48,6 +48,6 @@ public class CategoryController extends BeeBaseController {
     @GetMapping("/list")
     @ApiOperation("列出我的分类")
     public ResultObject<List<Category>> list() {
-        return new ResultObject<>();
+        return parseResult("您还没有任何添加分类信息", categoryService.listCategory(getUserId()));
     }
 }
