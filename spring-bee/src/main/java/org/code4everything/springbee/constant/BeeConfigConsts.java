@@ -11,6 +11,11 @@ import java.io.File;
 public class BeeConfigConsts {
 
     /**
+     * 会话时长
+     */
+    public static final int TOKEN_EXPIRED = BeeValueConsts.THIRTY_MINUTES;
+
+    /**
      * 白名单路径（放行）
      */
     public static final String[] white_list_prefix = {"/common", "/user/password/reset", "/user/register", "/user" +

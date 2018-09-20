@@ -1,8 +1,9 @@
 package org.code4everything.springbee.web;
 
+import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.web.BaseController;
 import lombok.Setter;
-import org.code4everything.springbee.constant.BeeValueConsts;
+import org.code4everything.springbee.constant.BeeConfigConsts;
 import org.code4everything.springbee.domain.User;
 import org.springframework.data.redis.core.RedisTemplate;
 
@@ -17,6 +18,8 @@ import java.util.concurrent.TimeUnit;
 public class BeeBaseController extends BaseController {
 
     private RedisTemplate<String, User> userRedisTemplate;
+
+    private User user;
 
     public BeeBaseController() {}
 
@@ -34,9 +37,11 @@ public class BeeBaseController extends BaseController {
     }
 
     protected User getUser() {
-        String token = getToken();
-        // 更新过期时长
-        userRedisTemplate.expire(token, BeeValueConsts.THIRTY_MINUTES, TimeUnit.SECONDS);
-        return userRedisTemplate.opsForValue().get(token);
+        if (Checker.isNull(user)) {
+            // 更新过期时长
+            userRedisTemplate.expire(getToken(), BeeConfigConsts.TOKEN_EXPIRED, TimeUnit.SECONDS);
+            user = userRedisTemplate.opsForValue().get(getToken());
+        }
+        return user;
     }
 }

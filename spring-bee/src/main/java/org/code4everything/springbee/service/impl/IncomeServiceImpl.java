@@ -26,6 +26,16 @@ public class IncomeServiceImpl implements IncomeService {
     @Override
     @AopLog("查询资产可用余额")
     public Long getAssetBalance(String userId) {
+        return getAssetByUserId(userId).getBalance();
+    }
+
+    private String updateAssetBalance(String userId, Long value) {
+        Asset asset = getAssetByUserId(userId);
+        asset.setBalance(asset.getBalance() + value);
+        return asset.getId();
+    }
+
+    private Asset getAssetByUserId(String userId) {
         Asset asset = assetDAO.getByUserId(userId);
         if (Checker.isNull(asset)) {
             asset = new Asset();
@@ -35,6 +45,6 @@ public class IncomeServiceImpl implements IncomeService {
             asset.setUserId(userId);
             assetDAO.save(asset);
         }
-        return asset.getBalance();
+        return asset;
     }
 }
