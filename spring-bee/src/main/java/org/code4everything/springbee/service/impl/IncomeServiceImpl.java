@@ -2,6 +2,7 @@ package org.code4everything.springbee.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
 import com.zhazhapan.util.Checker;
+import com.zhazhapan.util.annotation.AopLog;
 import org.code4everything.springbee.dao.AssetDAO;
 import org.code4everything.springbee.domain.Asset;
 import org.code4everything.springbee.service.IncomeService;
@@ -23,6 +24,7 @@ public class IncomeServiceImpl implements IncomeService {
     public IncomeServiceImpl(AssetDAO assetDAO) {this.assetDAO = assetDAO;}
 
     @Override
+    @AopLog("查询资产可用余额")
     public Long getAssetBalance(String userId) {
         Asset asset = assetDAO.getByUserId(userId);
         if (Checker.isNull(asset)) {

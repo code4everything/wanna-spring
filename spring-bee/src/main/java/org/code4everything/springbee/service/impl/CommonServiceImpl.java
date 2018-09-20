@@ -3,6 +3,7 @@ package org.code4everything.springbee.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.RandomUtils;
+import com.zhazhapan.util.annotation.AopLog;
 import org.code4everything.springbee.dao.UserDAO;
 import org.code4everything.springbee.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,22 +42,26 @@ public class CommonServiceImpl implements CommonService {
     }
 
     @Override
+    @AopLog("查看用户名是否存在")
     public boolean existsUsername(String username) {
         return userDAO.countByUsername(username) > 0;
     }
 
     @Override
+    @AopLog("查看邮箱是否存在")
     public boolean existsEmail(String email) {
         return userDAO.countByEmail(email) > 0;
     }
 
     @Override
+    @AopLog("校验验证码是否正确")
     public boolean isVcodeValidated(String email, String vcode) {
         String key = "vcode:" + email;
         return Checker.checkNull(vcode).equals(stringRedisTemplate.opsForValue().get(key));
     }
 
     @Override
+    @AopLog("发送验证码")
     public void sendVcode(String to) throws MessagingException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);

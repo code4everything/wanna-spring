@@ -5,6 +5,7 @@ import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.NetUtils;
+import com.zhazhapan.util.annotation.AopLog;
 import com.zhazhapan.util.encryption.JavaEncrypt;
 import org.code4everything.springbee.dao.UserDAO;
 import org.code4everything.springbee.domain.User;
@@ -43,6 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @AopLog("更新用户信息")
     public boolean updateInfo(User user, UserInfoDTO userInfoDTO) {
         user.setNickname(userInfoDTO.getNickname());
         user.setBio(userInfoDTO.getBio());
@@ -52,6 +54,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @AopLog("注册用户")
     public void register(RegisterDTO registerDTO) {
         User user = new User();
         user.setUsername(registerDTO.getUsername());
@@ -64,6 +67,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @AopLog("重置密码")
     public void resetPassword(String email, String newPassword) {
         User user = userDAO.getByEmail(email);
         if (Checker.isNotNull(user)) {
@@ -73,6 +77,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @AopLog("修改密码")
     public boolean updatePassword(User user, String oldPassword, String newPassword) {
         if (user.getPassword().equals(decryptRsaAndEncryptToMd5(oldPassword))) {
             user.setPassword(decryptRsaAndEncryptToMd5(newPassword));
@@ -83,6 +88,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @AopLog("用户登录")
     public String login(String loginName, String password) {
         User user = userDAO.getByUsernameOrEmail(loginName, loginName);
         if (Checker.isNotNull(user)) {
