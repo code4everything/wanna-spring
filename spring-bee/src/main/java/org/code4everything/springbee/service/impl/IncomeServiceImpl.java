@@ -1,0 +1,38 @@
+package org.code4everything.springbee.service.impl;
+
+import cn.hutool.core.util.RandomUtil;
+import com.zhazhapan.util.Checker;
+import org.code4everything.springbee.dao.AssetDAO;
+import org.code4everything.springbee.domain.Asset;
+import org.code4everything.springbee.service.IncomeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
+
+/**
+ * @author pantao
+ * @since 2018/9/20
+ */
+@Service
+public class IncomeServiceImpl implements IncomeService {
+
+    private final AssetDAO assetDAO;
+
+    @Autowired
+    public IncomeServiceImpl(AssetDAO assetDAO) {this.assetDAO = assetDAO;}
+
+    @Override
+    public Long getAssetBalance(String userId) {
+        Asset asset = assetDAO.getByUserId(userId);
+        if (Checker.isNull(asset)) {
+            asset = new Asset();
+            asset.setBalance(0L);
+            asset.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            asset.setId(RandomUtil.simpleUUID());
+            asset.setUserId(userId);
+            assetDAO.save(asset);
+        }
+        return asset.getBalance();
+    }
+}

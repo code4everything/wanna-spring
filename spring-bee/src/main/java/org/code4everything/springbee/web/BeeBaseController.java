@@ -29,6 +29,10 @@ public class BeeBaseController extends BaseController {
         this.userRedisTemplate = userRedisTemplate;
     }
 
+    protected String getUserId() {
+        return getUser().getId();
+    }
+
     protected User getUser() {
         String token = getToken();
         // 更新过期时长
