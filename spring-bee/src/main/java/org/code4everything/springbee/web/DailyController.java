@@ -1,5 +1,7 @@
 package org.code4everything.springbee.web;
 
+import com.zhazhapan.util.Checker;
+import com.zhazhapan.util.model.CheckResult;
 import com.zhazhapan.util.model.ResultObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -9,8 +11,11 @@ import org.code4everything.springbee.domain.Daily;
 import org.code4everything.springbee.model.DailyDTO;
 import org.code4everything.springbee.model.DailyDateVO;
 import org.code4everything.springbee.model.QueryDailyDTO;
+import org.code4everything.springbee.service.DailyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -20,12 +25,22 @@ import java.util.List;
 @RestController
 @RequestMapping("/user/daily")
 @Api(value = "/user/daily", description = "日程记录接口")
-public class DailyController {
+public class DailyController extends BeeBaseController {
+
+    private final DailyService dailyService;
+
+    @Autowired
+    public DailyController(DailyService dailyService) {this.dailyService = dailyService;}
 
     @PostMapping("/create")
     @ApiOperation("添加记录")
-    public ResultObject<Daily> saveDaily(@RequestBody @ApiParam DailyDTO daily) {
-        return new ResultObject<>();
+    public ResultObject<Daily> saveDaily(@RequestBody @ApiParam DailyDTO daily) throws NoSuchMethodException,
+            InstantiationException, IllegalAccessException, InvocationTargetException {
+        CheckResult<Daily> result = Checker.checkBean(daily);
+        if (result.passed) {
+            return parseResult("添加失败", dailyService.saveDaily(getUserId(), daily));
+        }
+        return result.resultObject;
     }
 
     @DeleteMapping("/remove")
