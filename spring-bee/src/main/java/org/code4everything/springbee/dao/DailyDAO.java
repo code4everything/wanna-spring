@@ -11,4 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DailyDAO extends MongoRepository<Daily, String> {
 
+    Daily getById(String dailyId);
+
+    boolean existsByUserIdAndYearAndMonthAndDay(String userId, Integer year, Integer month, Integer day);
 }

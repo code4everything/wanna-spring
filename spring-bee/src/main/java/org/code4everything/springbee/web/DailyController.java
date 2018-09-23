@@ -52,8 +52,15 @@ public class DailyController extends BeeBaseController {
 
     @PutMapping("/{dailyId}/update")
     @ApiOperation("更新记录")
-    public ResultObject<Daily> updateDaily(@PathVariable String dailyId, @RequestBody @ApiParam DailyDTO daily) {
-        return new ResultObject<>();
+    public ResultObject<Daily> updateDaily(@PathVariable String dailyId, @RequestBody @ApiParam DailyDTO daily) throws InvocationTargetException, IllegalAccessException {
+        CheckResult<Daily> result = Checker.checkBean(daily);
+        if (result.passed) {
+            if (dailyService.exists(getUserId(), daily)) {
+                return CheckResult.getErrorResult("更新失败，该日期记录已经存在");
+            }
+            return parseResult("更新失败", dailyService.updateDaily(dailyId, daily));
+        }
+        return result.resultObject;
     }
 
     @GetMapping("/list")

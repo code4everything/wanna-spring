@@ -3,11 +3,13 @@ package org.code4everything.springbee.service.impl;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.zhazhapan.util.BeanUtils;
+import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.DateUtils;
 import com.zhazhapan.util.annotation.AopLog;
 import org.code4everything.springbee.dao.DailyDAO;
 import org.code4everything.springbee.domain.Daily;
 import org.code4everything.springbee.model.DailyDTO;
+import org.code4everything.springbee.model.DateBO;
 import org.code4everything.springbee.service.DailyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,8 +30,8 @@ public class DailyServiceImpl implements DailyService {
 
     @Override
     @AopLog("添加日程记录")
-    public Daily saveDaily(String userId, DailyDTO dailyDTO) throws InvocationTargetException, NoSuchMethodException,
-            InstantiationException, IllegalAccessException {
+    public Daily saveDaily(String userId, DailyDTO dailyDTO) throws InvocationTargetException, InstantiationException
+            , IllegalAccessException {
         Daily daily = parseDailyDTO(dailyDTO);
         daily.setCreateTime(DateUtils.getCurrentTimestamp());
         daily.setId(RandomUtil.simpleUUID());
@@ -37,12 +39,39 @@ public class DailyServiceImpl implements DailyService {
         return dailyDAO.save(daily);
     }
 
-    private Daily parseDailyDTO(DailyDTO dailyDTO) throws InvocationTargetException, NoSuchMethodException,
-            InstantiationException, IllegalAccessException {
-        Daily daily = BeanUtils.bean2Another(dailyDTO, Daily.class);
-        daily.setYear(DateUtil.year(dailyDTO.getDate()));
-        daily.setMonth(DateUtil.month(dailyDTO.getDate()));
-        daily.setDay(DateUtil.dayOfMonth(dailyDTO.getDate()));
-        return daily;
+    @Override
+    @AopLog("检测日程记录是否存在")
+    public boolean exists(String userId, DailyDTO dailyDTO) {
+        DateBO date = parseDailyDate(dailyDTO);
+        return dailyDAO.existsByUserIdAndYearAndMonthAndDay(userId, date.getYear(), date.getMonth(), date.getDay());
+    }
+
+    @Override
+    @AopLog("更新日程记录")
+    public Daily updateDaily(String dailyId, DailyDTO dailyDTO) throws InvocationTargetException,
+            IllegalAccessException {
+        Daily daily = dailyDAO.getById(dailyId);
+        if (Checker.isNull(daily)) {
+            return null;
+        }
+        return dailyDAO.save(parseDailyDTO(dailyDTO, BeanUtils.bean2Another(dailyDTO, daily)));
+    }
+
+    private Daily parseDailyDTO(DailyDTO dailyDTO) throws InvocationTargetException, InstantiationException,
+            IllegalAccessException {
+        return parseDailyDTO(dailyDTO, BeanUtils.bean2Another(dailyDTO, Daily.class));
+    }
+
+    private Daily parseDailyDTO(DailyDTO dailyDTO, Daily daily) throws InvocationTargetException,
+            IllegalAccessException {
+        return BeanUtils.bean2Another(parseDailyDate(dailyDTO), daily);
+    }
+
+    private DateBO parseDailyDate(DailyDTO dailyDTO) {
+        DateBO dateBO = new DateBO();
+        dateBO.setYear(DateUtil.year(dailyDTO.getDate()));
+        dateBO.setMonth(DateUtil.month(dailyDTO.getDate()));
+        dateBO.setDay(DateUtil.dayOfMonth(dailyDTO.getDate()));
+        return dateBO;
     }
 }
