@@ -11,6 +11,8 @@ import java.lang.reflect.InvocationTargetException;
  */
 public interface DailyService {
 
+    void remove(String dailyId);
+
     Daily saveDaily(String userId, DailyDTO dailyDTO) throws InvocationTargetException, NoSuchMethodException,
         InstantiationException, IllegalAccessException;
 

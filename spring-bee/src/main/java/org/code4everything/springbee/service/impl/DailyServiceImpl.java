@@ -29,6 +29,12 @@ public class DailyServiceImpl implements DailyService {
     public DailyServiceImpl(DailyDAO dailyDAO) {this.dailyDAO = dailyDAO;}
 
     @Override
+    @AopLog("删除日程记录")
+    public void remove(String dailyId) {
+        dailyDAO.deleteById(dailyId);
+    }
+
+    @Override
     @AopLog("添加日程记录")
     public Daily saveDaily(String userId, DailyDTO dailyDTO) throws InvocationTargetException, InstantiationException
             , IllegalAccessException {
