@@ -2,22 +2,26 @@ package org.code4everything.springbee.service.impl;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.DistinctIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.zhazhapan.util.BeanUtils;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.DateUtils;
 import com.zhazhapan.util.annotation.AopLog;
+import org.bson.Document;
 import org.code4everything.springbee.dao.DailyDAO;
 import org.code4everything.springbee.domain.Daily;
-import org.code4everything.springbee.model.DailyDTO;
-import org.code4everything.springbee.model.DateBO;
-import org.code4everything.springbee.model.QueryDailyDTO;
+import org.code4everything.springbee.model.*;
 import org.code4everything.springbee.service.DailyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author pantao
@@ -28,14 +32,57 @@ public class DailyServiceImpl implements DailyService {
 
     private final DailyDAO dailyDAO;
 
+    private final MongoTemplate mongoTemplate;
+
     @Autowired
-    public DailyServiceImpl(DailyDAO dailyDAO) {this.dailyDAO = dailyDAO;}
+    public DailyServiceImpl(DailyDAO dailyDAO, MongoTemplate mongoTemplate) {
+        this.dailyDAO = dailyDAO;
+        this.mongoTemplate = mongoTemplate;
+    }
+
+    @Override
+    @AopLog("列出记录的所有日期")
+    public List<DailyDateVO> listDailyDate(String userId) {
+        // TODO: 2018/9/23 由于此函数查询比较耗时，需将结果放入缓存中
+        // 查询年份
+        BasicDBObject dbObject = new BasicDBObject("userId", userId);
+        MongoCollection<Document> collection = mongoTemplate.getCollection("daily");
+        DistinctIterable<Integer> years = collection.distinct("year", dbObject, Integer.class);
+        MongoCursor<Integer> yearCursor = years.iterator();
+        List<DailyDateVO> dateVOList = new ArrayList<>(64);
+        // 遍历年份
+        while (yearCursor.hasNext()) {
+            DailyDateVO dateVO = new DailyDateVO();
+            Integer year = yearCursor.next();
+            dateVO.setYear(year);
+            // 查询月份
+            dbObject.put("year", year);
+            DistinctIterable<Integer> months = collection.distinct("month", dbObject, Integer.class);
+            MongoCursor<Integer> monthCursor = months.iterator();
+            List<DailyMonthVO> monthVOList = new ArrayList<>(16);
+            // 遍历月份
+            while (monthCursor.hasNext()) {
+                DailyMonthVO monthVO = new DailyMonthVO();
+                Integer month = monthCursor.next();
+                monthVO.setMonth(month);
+                // 查询日期
+                dbObject.put("month", month);
+                DistinctIterable<Integer> days = collection.distinct("day", dbObject, Integer.class);
+                List<Integer> dayList = new ArrayList<>(32);
+                for (Integer day : days) {
+                    dayList.add(day);
+                }
+                monthVO.setDays(dayList);
+            }
+            dateVO.setMonths(monthVOList);
+        }
+        return dateVOList;
+    }
 
     @Override
     @AopLog("列出日程记录")
     public List<Daily> listDaily(String userId, QueryDailyDTO query) {
         boolean queryMonth = query.getMonth() > 0;
-        Map
         boolean queryDay = query.getDay() > 0;
         if (queryMonth && queryDay) {
             return dailyDAO.getByUserIdAndYearAndMonthAndDay(userId, query.getYear(), query.getMonth(), query.getDay());

@@ -73,6 +73,6 @@ public class DailyController extends BeeBaseController {
     @GetMapping("/date/list")
     @ApiOperation("列出记录的日期")
     public ResultObject<List<DailyDateVO>> listDailyDate() {
-        return new ResultObject<>();
+        return parseResult("没有找到相关数据", dailyService.listDailyDate(getUserId()), false);
     }
 }
