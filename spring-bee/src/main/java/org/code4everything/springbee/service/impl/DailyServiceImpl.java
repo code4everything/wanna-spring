@@ -10,11 +10,14 @@ import org.code4everything.springbee.dao.DailyDAO;
 import org.code4everything.springbee.domain.Daily;
 import org.code4everything.springbee.model.DailyDTO;
 import org.code4everything.springbee.model.DateBO;
+import org.code4everything.springbee.model.QueryDailyDTO;
 import org.code4everything.springbee.service.DailyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author pantao
@@ -27,6 +30,23 @@ public class DailyServiceImpl implements DailyService {
 
     @Autowired
     public DailyServiceImpl(DailyDAO dailyDAO) {this.dailyDAO = dailyDAO;}
+
+    @Override
+    @AopLog("列出日程记录")
+    public List<Daily> listDaily(String userId, QueryDailyDTO query) {
+        boolean queryMonth = query.getMonth() > 0;
+        Map
+        boolean queryDay = query.getDay() > 0;
+        if (queryMonth && queryDay) {
+            return dailyDAO.getByUserIdAndYearAndMonthAndDay(userId, query.getYear(), query.getMonth(), query.getDay());
+        } else if (queryMonth) {
+            return dailyDAO.getByUserIdAndYearAndMonth(userId, query.getYear(), query.getMonth());
+        } else if (queryDay) {
+            return dailyDAO.getByUserIdAndYearAndDay(userId, query.getYear(), query.getDay());
+        } else {
+            return dailyDAO.getByUserIdAndYear(userId, query.getYear());
+        }
+    }
 
     @Override
     @AopLog("删除日程记录")

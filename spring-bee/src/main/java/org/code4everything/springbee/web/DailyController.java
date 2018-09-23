@@ -67,7 +67,7 @@ public class DailyController extends BeeBaseController {
     @GetMapping("/list")
     @ApiOperation("列出日程记录")
     public ResultObject<List<Daily>> listByDate(@RequestBody @ApiParam QueryDailyDTO queryDaily) {
-        return new ResultObject<>();
+        return parseResult("查询失败", dailyService.listDaily(getUserId(), queryDaily));
     }
 
     @GetMapping("/date/list")
