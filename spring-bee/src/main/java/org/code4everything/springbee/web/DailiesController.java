@@ -1,5 +1,7 @@
 package org.code4everything.springbee.web;
 
+import com.zhazhapan.util.Checker;
+import com.zhazhapan.util.model.CheckResult;
 import com.zhazhapan.util.model.ResultObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -7,8 +9,12 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.code4everything.springbee.domain.Dailies;
 import org.code4everything.springbee.model.DailiesDTO;
+import org.code4everything.springbee.service.DailiesService;
+import org.code4everything.springbee.service.DailyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -18,12 +24,29 @@ import java.util.List;
 @RestController
 @RequestMapping("/user/daily/detail")
 @Api(value = "/user/daily/detail", description = "日程详情接口")
-public class DailiesController {
+public class DailiesController extends BeeBaseController {
+
+    private final DailyService dailyService;
+
+    private final DailiesService dailiesService;
+
+    @Autowired
+    public DailiesController(DailyService dailyService, DailiesService dailiesService) {
+        this.dailyService = dailyService;
+        this.dailiesService = dailiesService;
+    }
 
     @PostMapping("/append/{dailyId}")
     @ApiOperation("添加一条详情记录")
-    public ResultObject<Dailies> append(@PathVariable String dailyId, @RequestBody @ApiParam DailiesDTO dailies) {
-        return new ResultObject<>();
+    public ResultObject<Dailies> append(@PathVariable String dailyId, @RequestBody @ApiParam DailiesDTO dailies) throws IllegalAccessException, InstantiationException, InvocationTargetException {
+        CheckResult<Dailies> result = Checker.checkBean(dailies);
+        if (result.passed) {
+            if (dailyService.exists(dailyId)) {
+                return parseResult("添加失败", dailiesService.saveDailies(dailyId, dailies));
+            }
+            return CheckResult.getErrorResult("添加失败，该日程记录不存在");
+        }
+        return result.resultObject;
     }
 
     @DeleteMapping("/remove")

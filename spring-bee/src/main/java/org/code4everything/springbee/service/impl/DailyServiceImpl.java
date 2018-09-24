@@ -41,6 +41,12 @@ public class DailyServiceImpl implements DailyService {
     }
 
     @Override
+    @AopLog("检测日程记录是否存在")
+    public boolean exists(String dailyId) {
+        return dailyDAO.existsById(dailyId);
+    }
+
+    @Override
     @AopLog("列出记录的所有日期")
     public List<DailyDateVO> listDailyDate(String userId) {
         // TODO: 2018/9/23 由于此函数查询比较耗时，需将结果放入缓存中

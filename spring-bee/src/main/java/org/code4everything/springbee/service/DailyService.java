@@ -14,6 +14,8 @@ import java.util.List;
  */
 public interface DailyService {
 
+    boolean exists(String dailyId);
+
     List<DailyDateVO> listDailyDate(String userId);
 
     List<Daily> listDaily(String userId, QueryDailyDTO query);
@@ -21,10 +23,9 @@ public interface DailyService {
     void remove(String dailyId);
 
     Daily saveDaily(String userId, DailyDTO dailyDTO) throws InvocationTargetException, NoSuchMethodException,
-        InstantiationException, IllegalAccessException;
+            InstantiationException, IllegalAccessException;
 
     boolean exists(String userId, DailyDTO dailyDTO);
 
-    Daily updateDaily(String dailyId, DailyDTO dailyDTO) throws InvocationTargetException,
-            IllegalAccessException;
+    Daily updateDaily(String dailyId, DailyDTO dailyDTO) throws InvocationTargetException, IllegalAccessException;
 }
