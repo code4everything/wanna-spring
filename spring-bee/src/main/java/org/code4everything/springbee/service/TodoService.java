@@ -10,6 +10,8 @@ import java.sql.Date;
  */
 public interface TodoService {
 
+    Todo updateTodoStatus(String todoId, String status);
+
     Todo updateTodo(String todoId, String content);
 
     void remove(String todoId);

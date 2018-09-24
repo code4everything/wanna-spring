@@ -1,6 +1,7 @@
 package org.code4everything.springbee.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
+import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.DateUtils;
 import com.zhazhapan.util.annotation.AopLog;
@@ -23,6 +24,22 @@ public class TodoServiceImpl implements TodoService {
 
     @Autowired
     public TodoServiceImpl(TodoDAO todoDAO) {this.todoDAO = todoDAO;}
+
+    @Override
+    @AopLog("更新待办事项状态")
+    public Todo updateTodoStatus(String todoId, String status) {
+        Todo todo = todoDAO.getById(todoId);
+        if (Checker.isNull(todo)) {
+            return null;
+        }
+        if (ValueConsts.ONE_STR.equals(status)) {
+            todo.setStatus("1");
+            todo.setDoneTime(DateUtils.getCurrentTimestamp());
+        } else {
+            todo.setStatus("0");
+        }
+        return todoDAO.save(todo);
+    }
 
     @Override
     @AopLog("更新待办事项内容")

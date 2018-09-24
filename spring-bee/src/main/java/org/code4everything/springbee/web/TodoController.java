@@ -61,9 +61,10 @@ public class TodoController extends BeeBaseController {
 
     @PutMapping("/status/toggle")
     @ApiOperation("更新事项状态")
-    @ApiImplicitParams({@ApiImplicitParam(name = "todoId", value = "事项编号", required = true)})
+    @ApiImplicitParams({@ApiImplicitParam(name = "todoId", value = "事项编号", required = true), @ApiImplicitParam(name =
+            "status", value = "状态", required = true, allowableValues = "0, 1")})
     public ResultObject<Object> updateStatus(@RequestParam String todoId, @RequestParam String status) {
-        return new ResultObject<>();
+        return parseResult("更新失败", todoService.updateTodoStatus(todoId, status));
     }
 
     @GetMapping("/date/list")
