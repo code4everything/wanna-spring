@@ -55,8 +55,8 @@ public class TodoController extends BeeBaseController {
     @ApiOperation("更新代办事项内容")
     @ApiImplicitParams({@ApiImplicitParam(name = "todoId", value = "事项编号", required = true), @ApiImplicitParam(name =
             "content", value = "事项内容", required = true)})
-    public ResultObject<Object> updateContent(@RequestParam String todoId, @RequestParam String content) {
-        return new ResultObject<>();
+    public ResultObject<Todo> updateContent(@RequestParam String todoId, @RequestParam String content) {
+        return parseResult("更新失败", todoService.updateTodo(todoId, content));
     }
 
     @PutMapping("/status/toggle")

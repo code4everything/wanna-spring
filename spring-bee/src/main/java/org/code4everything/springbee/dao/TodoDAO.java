@@ -9,4 +9,7 @@ import org.springframework.stereotype.Repository;
  * @since 2018/9/24
  */
 @Repository
-public interface TodoDAO extends MongoRepository<Todo, String> {}
+public interface TodoDAO extends MongoRepository<Todo, String> {
+
+    Todo getById(String todoId);
+}
