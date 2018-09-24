@@ -30,7 +30,7 @@ public class TodoController extends BeeBaseController {
     @Autowired
     public TodoController(TodoService todoService, HttpServletRequest request,
                           RedisTemplate<String, User> userRedisTemplate) {
-        super(request, userRedisTemplate);
+        super(request, userRedisTemplate, true);
         this.todoService = todoService;
     }
 
@@ -70,7 +70,7 @@ public class TodoController extends BeeBaseController {
     @GetMapping("/date/list")
     @ApiOperation("列出所有日期")
     public ResultObject<List<Date>> listDate() {
-        return parseResult("没有找到数据", todoService.listDate(getUserId()));
+        return parseResult("没有找到数据", todoService.listDate(getUserId()), false);
     }
 
     @GetMapping("/list")

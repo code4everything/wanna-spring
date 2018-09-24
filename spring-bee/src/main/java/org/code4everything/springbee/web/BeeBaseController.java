@@ -23,12 +23,26 @@ public class BeeBaseController extends BaseController {
 
     public BeeBaseController() {}
 
+    public BeeBaseController(boolean checkSensitiveData) {
+        super(checkSensitiveData);
+    }
+
     public BeeBaseController(HttpServletRequest request) {
         super(request);
     }
 
+    public BeeBaseController(HttpServletRequest request, boolean checkSensitiveData) {
+        super(request, checkSensitiveData);
+    }
+
     public BeeBaseController(HttpServletRequest request, RedisTemplate<String, User> userRedisTemplate) {
         super(request);
+        this.userRedisTemplate = userRedisTemplate;
+    }
+
+    public BeeBaseController(HttpServletRequest request, RedisTemplate<String, User> userRedisTemplate,
+                             boolean checkSensitiveData) {
+        super(request, checkSensitiveData);
         this.userRedisTemplate = userRedisTemplate;
     }
 

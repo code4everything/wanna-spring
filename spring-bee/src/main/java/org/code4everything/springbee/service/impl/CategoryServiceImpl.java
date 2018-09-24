@@ -1,9 +1,7 @@
 package org.code4everything.springbee.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
-import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.annotation.AopLog;
-import org.code4everything.springbee.constant.BeeValueConsts;
 import org.code4everything.springbee.dao.CategoryDAO;
 import org.code4everything.springbee.domain.Category;
 import org.code4everything.springbee.service.CategoryService;
@@ -33,11 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> listCategory(String userId) {
-        List<Category> categories = categoryDAO.getByUserId(userId);
-        if (Checker.isNotEmpty(categories)) {
-            categories.forEach(category -> category.setUserId(BeeValueConsts.HIDDEN_DATA));
-        }
-        return categories;
+        return categoryDAO.getByUserId(userId);
     }
 
     @Override
@@ -48,8 +42,6 @@ public class CategoryServiceImpl implements CategoryService {
         category.setId(RandomUtil.simpleUUID());
         category.setName(name);
         category.setUserId(userId);
-        categoryDAO.save(category);
-        category.setUserId(BeeValueConsts.HIDDEN_DATA);
-        return category;
+        return categoryDAO.save(category);
     }
 }

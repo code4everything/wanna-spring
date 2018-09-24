@@ -1,5 +1,6 @@
 package org.code4everything.springbee.domain;
 
+import com.zhazhapan.util.annotation.SensitiveData;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ public class Document implements Serializable {
     @ApiModelProperty("文件编号")
     private String id;
 
+    @SensitiveData
     @ApiModelProperty("文件本地路径（敏感数据）")
     private String localPath;
 

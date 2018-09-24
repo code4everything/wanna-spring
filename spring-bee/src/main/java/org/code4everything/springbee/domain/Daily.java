@@ -1,5 +1,6 @@
 package org.code4everything.springbee.domain;
 
+import com.zhazhapan.util.annotation.SensitiveData;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ public class Daily implements Serializable {
     @ApiModelProperty("记录编号")
     private String id;
 
+    @SensitiveData
     @ApiModelProperty("用户编号（敏感数据）")
     private String userId;
 

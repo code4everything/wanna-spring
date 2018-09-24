@@ -8,13 +8,16 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.code4everything.springbee.domain.Daily;
+import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.DailyDTO;
 import org.code4everything.springbee.model.DailyDateVO;
 import org.code4everything.springbee.model.QueryDailyDTO;
 import org.code4everything.springbee.service.DailyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
@@ -30,7 +33,11 @@ public class DailyController extends BeeBaseController {
     private final DailyService dailyService;
 
     @Autowired
-    public DailyController(DailyService dailyService) {this.dailyService = dailyService;}
+    public DailyController(DailyService dailyService, HttpServletRequest request,
+                           RedisTemplate<String, User> userRedisTemplate) {
+        super(request, userRedisTemplate, true);
+        this.dailyService = dailyService;
+    }
 
     @PostMapping("/create")
     @ApiOperation("添加记录")

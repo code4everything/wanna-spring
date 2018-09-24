@@ -30,10 +30,14 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/user/document")
 @Api(value = "/user/document", description = "文档接口")
-public class DocumentController {
+public class DocumentController extends BeeBaseController {
+
+    private final DocumentService documentService;
 
     @Autowired
-    private DocumentService documentService;
+    public DocumentController(DocumentService documentService) {
+        this.documentService = documentService;
+    }
 
     @PostMapping("/upload")
     @ApiOperation("上传文件")
@@ -44,7 +48,9 @@ public class DocumentController {
             return new ResultObject<>(400, "文件不能大于1MB");
         }
         multipartFile.setSize(file.getSize()).setStoragePath(BeeConfigConsts.STORAGE_PATH).setOriginalFilename(file.getOriginalFilename());
-        return NetUtils.upload(file.getBytes(), multipartFile, documentService);
+        ResultObject<Document> resultObject = NetUtils.upload(file.getBytes(), multipartFile, documentService);
+        setSensitiveData(resultObject.data);
+        return resultObject;
     }
 
     @GetMapping("/**")

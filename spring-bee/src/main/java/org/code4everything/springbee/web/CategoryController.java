@@ -30,7 +30,7 @@ public class CategoryController extends BeeBaseController {
     @Autowired
     public CategoryController(HttpServletRequest request, RedisTemplate<String, User> userRedisTemplate,
                               CategoryService categoryService) {
-        super(request, userRedisTemplate);
+        super(request, userRedisTemplate, true);
         this.categoryService = categoryService;
     }
 
