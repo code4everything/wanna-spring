@@ -13,5 +13,7 @@ public interface IncomeService {
 
     Long getAssetBalance(String userId);
 
+    void remove(String incomeId);
+
     Income saveIncome(String userId, IncomeDTO incomeDTO) throws IllegalAccessException, InvocationTargetException, InstantiationException;
 }

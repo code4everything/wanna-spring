@@ -42,6 +42,12 @@ public class IncomeServiceImpl implements IncomeService {
     }
 
     @Override
+    @AopLog("删除收益记录")
+    public void remove(String incomeId) {
+        incomeDAO.deleteById(incomeId);
+    }
+
+    @Override
     @AopLog("添加收益记录")
     public Income saveIncome(String userId, IncomeDTO incomeDTO) throws IllegalAccessException,
             InvocationTargetException, InstantiationException {

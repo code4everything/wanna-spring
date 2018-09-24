@@ -53,7 +53,8 @@ public class IncomeController extends BeeBaseController {
     @ApiOperation("删除一条收益记录")
     @ApiImplicitParam(name = "incomeId", value = "收益记录编号", required = true)
     public ResultObject<Object> remove(@RequestParam String incomeId) {
-        return new ResultObject<>();
+        incomeService.remove(incomeId);
+        return new ResultObject<>("删除成功");
     }
 
     @PutMapping("/{incomeId}/update")
