@@ -14,6 +14,7 @@ import org.code4everything.springbee.model.IncomeDTO;
 import org.code4everything.springbee.model.QueryIncomeDTO;
 import org.code4everything.springbee.service.IncomeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -69,6 +70,7 @@ public class IncomeServiceImpl implements IncomeService {
             criteria.andOperator(Criteria.where(y).lte(date.getYear()).and(m).lte(date.getMonth()).and(d).lte(date.getDay()));
         }
         query.addCriteria(criteria);
+        query.with(new Sort(Sort.Direction.DESC, "year", "month", "day"));
         return mongoTemplate.find(query, Income.class);
     }
 
