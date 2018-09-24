@@ -70,7 +70,7 @@ public class TodoController extends BeeBaseController {
     @GetMapping("/date/list")
     @ApiOperation("列出所有日期")
     public ResultObject<List<Date>> listDate() {
-        return new ResultObject<>();
+        return parseResult("没有找到数据", todoService.listDate(getUserId()));
     }
 
     @GetMapping("/list")
