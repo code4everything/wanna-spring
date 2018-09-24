@@ -38,6 +38,12 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
+    @AopLog("列出指定日期的待办事项")
+    public List<Todo> listTodo(Date doingDate) {
+        return todoDAO.getByDoingDate(doingDate);
+    }
+
+    @Override
     @AopLog("列出所有待办事项日期")
     public List<Date> listDate(String userId) {
         BasicDBObject dbObject = new BasicDBObject("userId", userId);

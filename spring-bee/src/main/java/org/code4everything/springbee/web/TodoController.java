@@ -77,6 +77,6 @@ public class TodoController extends BeeBaseController {
     @ApiOperation("列出事项")
     @ApiImplicitParam(name = "date", value = "日期", required = true, dataTypeClass = Date.class)
     public ResultObject<List<Todo>> listTodo(@RequestParam Date date) {
-        return new ResultObject<>();
+        return parseResult("该日期没有数据", todoService.listTodo(date));
     }
 }

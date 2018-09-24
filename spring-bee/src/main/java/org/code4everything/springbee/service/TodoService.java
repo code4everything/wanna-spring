@@ -11,6 +11,8 @@ import java.util.List;
  */
 public interface TodoService {
 
+    List<Todo> listTodo(Date doingDate);
+
     List<Date> listDate(String userId);
 
     Todo updateTodoStatus(String todoId, String status);
