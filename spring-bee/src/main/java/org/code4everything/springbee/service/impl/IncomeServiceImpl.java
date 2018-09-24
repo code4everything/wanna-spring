@@ -42,6 +42,21 @@ public class IncomeServiceImpl implements IncomeService {
     }
 
     @Override
+    @AopLog("更新收益记录")
+    public Income updateIncome(String userId, String incomeId, IncomeDTO incomeDTO) throws InvocationTargetException,
+            IllegalAccessException {
+        Income income = incomeDAO.getById(incomeId);
+        if (Checker.isNull(income)) {
+            return null;
+        }
+        Long changeValue = incomeDTO.getMoney() * incomeDTO.getType() - income.getMoney() * income.getType();
+        BeanUtils.bean2Another(incomeDTO, income);
+        BeanUtils.bean2Another(new SimpleDateTime(incomeDTO.getDate()), income);
+        updateAssetBalance(userId, changeValue);
+        return incomeDAO.save(income);
+    }
+
+    @Override
     @AopLog("删除收益记录")
     public void remove(String incomeId) {
         incomeDAO.deleteById(incomeId);
@@ -66,6 +81,7 @@ public class IncomeServiceImpl implements IncomeService {
     }
 
     private Asset getAssetByUserId(String userId) {
+        // TODO: 2018/9/24 此方法调用频繁，需将结果放入缓存中
         Asset asset = assetDAO.getByUserId(userId);
         if (Checker.isNull(asset)) {
             asset = new Asset();

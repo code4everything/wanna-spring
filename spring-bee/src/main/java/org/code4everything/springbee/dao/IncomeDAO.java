@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IncomeDAO extends MongoRepository<Income, String> {
 
+    Income getById(String incomeId);
 }

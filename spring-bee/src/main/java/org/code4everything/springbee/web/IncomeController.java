@@ -59,7 +59,11 @@ public class IncomeController extends BeeBaseController {
 
     @PutMapping("/{incomeId}/update")
     @ApiOperation("更新记录")
-    public ResultObject<Object> updateIncome(@PathVariable String incomeId, @RequestBody @ApiParam IncomeDTO income) {
+    public ResultObject<Income> updateIncome(@PathVariable String incomeId, @RequestBody @ApiParam IncomeDTO income) throws InvocationTargetException, IllegalAccessException {
+        CheckResult<Income> result = Checker.checkBean(income);
+        if (result.passed) {
+            return parseResult("更新失败", incomeService.updateIncome(getUserId(), incomeId, income));
+        }
         return new ResultObject<>();
     }
 
