@@ -32,7 +32,7 @@ public class UserController extends BeeBaseController {
     @Autowired
     public UserController(UserService userService, CommonService commonService, HttpServletRequest request,
                           RedisTemplate<String, User> userRedisTemplate) {
-        super(request, userRedisTemplate);
+        super(request, userRedisTemplate, true);
         this.userService = userService;
         this.commonService = commonService;
     }
@@ -84,12 +84,18 @@ public class UserController extends BeeBaseController {
     @ApiImplicitParams({@ApiImplicitParam(name = "loginName", value = "用户名或邮箱", required = true),
             @ApiImplicitParam(name = "password", value = "密码", required = true)})
     public ResultObject<String> login(@RequestParam String loginName, @RequestParam String password) {
-        return parseResult("登录成功", "登录失败", userService.login(loginName, password));
+        return parseResult("登录成功", "登录失败", userService.login(loginName, password), false);
     }
 
     @PutMapping("/info")
     @ApiOperation("更新信息")
     public ResultObject updateInfo(@RequestBody @ApiParam UserInfoDTO userInfo) {
         return parseResult("更新", userService.updateInfo(getUser(), userInfo));
+    }
+
+    @GetMapping("/info")
+    @ApiOperation("获取用户信息")
+    public ResultObject<User> getUserInfo() {
+        return parseResult("未获取到用户信息，请登录", getUser());
     }
 }
