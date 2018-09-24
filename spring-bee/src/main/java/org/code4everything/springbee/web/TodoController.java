@@ -47,7 +47,8 @@ public class TodoController extends BeeBaseController {
     @ApiOperation("删除一条代办事项")
     @ApiImplicitParam(name = "todoId", value = "事项编号", required = true)
     public ResultObject<Object> remove(@RequestParam String todoId) {
-        return new ResultObject<>();
+        todoService.remove(todoId);
+        return new ResultObject<>("删除成功");
     }
 
     @PutMapping("/update")

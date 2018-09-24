@@ -10,5 +10,7 @@ import java.sql.Date;
  */
 public interface TodoService {
 
+    void remove(String todoId);
+
     Todo saveTodo(String userId, Date doingDate, String content);
 }

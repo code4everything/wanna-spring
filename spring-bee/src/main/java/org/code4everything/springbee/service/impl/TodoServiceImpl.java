@@ -24,6 +24,12 @@ public class TodoServiceImpl implements TodoService {
     public TodoServiceImpl(TodoDAO todoDAO) {this.todoDAO = todoDAO;}
 
     @Override
+    @AopLog("删除待办事项")
+    public void remove(String todoId) {
+        todoDAO.deleteById(todoId);
+    }
+
+    @Override
     @AopLog("添加待办事项")
     public Todo saveTodo(String userId, Date doingDate, String content) {
         Todo todo = new Todo();
