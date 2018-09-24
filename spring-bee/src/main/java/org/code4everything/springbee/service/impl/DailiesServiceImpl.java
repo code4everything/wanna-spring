@@ -2,6 +2,7 @@ package org.code4everything.springbee.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
 import com.zhazhapan.util.BeanUtils;
+import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.DateUtils;
 import com.zhazhapan.util.annotation.AopLog;
 import org.code4everything.springbee.dao.DailiesDAO;
@@ -24,6 +25,17 @@ public class DailiesServiceImpl implements DailiesService {
 
     @Autowired
     public DailiesServiceImpl(DailiesDAO dailiesDAO) {this.dailiesDAO = dailiesDAO;}
+
+    @Override
+    @AopLog("更新日程记录详情")
+    public Dailies updateDailies(String dailiesId, DailiesDTO dailiesDTO) throws InvocationTargetException,
+            IllegalAccessException {
+        Dailies dailies = dailiesDAO.getById(dailiesId);
+        if (Checker.isNotNull(dailies)) {
+            return dailiesDAO.save(BeanUtils.bean2Another(dailiesDTO, dailies));
+        }
+        return null;
+    }
 
     @Override
     @AopLog("删除日程记录详情")

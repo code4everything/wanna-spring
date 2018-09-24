@@ -11,6 +11,9 @@ import java.lang.reflect.InvocationTargetException;
  */
 public interface DailiesService {
 
+    Dailies updateDailies(String dailiesId, DailiesDTO dailiesDTO) throws InvocationTargetException,
+            IllegalAccessException;
+
     void remove(String dailiesId);
 
     Dailies saveDailies(String dailyId, DailiesDTO dailiesDTO) throws IllegalAccessException,

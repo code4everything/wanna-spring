@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DailiesDAO extends MongoRepository<Dailies, String> {
 
-
+    Dailies getById(String dailiesId);
 }

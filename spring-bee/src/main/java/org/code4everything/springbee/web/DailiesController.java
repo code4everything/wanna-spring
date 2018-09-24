@@ -60,8 +60,12 @@ public class DailiesController extends BeeBaseController {
     @PutMapping("/{dailiesId}/update")
     @ApiOperation("更新详情")
     public ResultObject<Dailies> updateDailies(@PathVariable String dailiesId,
-                                               @RequestBody @ApiParam DailiesDTO dailies) {
-        return new ResultObject<>();
+                                               @RequestBody @ApiParam DailiesDTO dailies) throws InvocationTargetException, IllegalAccessException {
+        CheckResult<Dailies> result = Checker.checkBean(dailies);
+        if (result.passed) {
+            return parseResult("更新失败", dailiesService.updateDailies(dailiesId, dailies));
+        }
+        return result.resultObject;
     }
 
     @GetMapping("/list")
