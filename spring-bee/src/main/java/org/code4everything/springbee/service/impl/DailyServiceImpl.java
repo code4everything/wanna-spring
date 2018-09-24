@@ -1,6 +1,5 @@
 package org.code4everything.springbee.service.impl;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.DistinctIterable;
@@ -10,10 +9,14 @@ import com.zhazhapan.util.BeanUtils;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.DateUtils;
 import com.zhazhapan.util.annotation.AopLog;
+import com.zhazhapan.util.model.SimpleDateTime;
 import org.bson.Document;
 import org.code4everything.springbee.dao.DailyDAO;
 import org.code4everything.springbee.domain.Daily;
-import org.code4everything.springbee.model.*;
+import org.code4everything.springbee.model.DailyDTO;
+import org.code4everything.springbee.model.DailyDateVO;
+import org.code4everything.springbee.model.DailyMonthVO;
+import org.code4everything.springbee.model.QueryDailyDTO;
 import org.code4everything.springbee.service.DailyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -121,7 +124,7 @@ public class DailyServiceImpl implements DailyService {
     @Override
     @AopLog("检测日程记录是否存在")
     public boolean exists(String userId, DailyDTO dailyDTO) {
-        DateBO date = parseDailyDate(dailyDTO);
+        SimpleDateTime date = new SimpleDateTime(dailyDTO.getDate());
         return dailyDAO.existsByUserIdAndYearAndMonthAndDay(userId, date.getYear(), date.getMonth(), date.getDay());
     }
 
@@ -143,14 +146,6 @@ public class DailyServiceImpl implements DailyService {
 
     private Daily parseDailyDTO(DailyDTO dailyDTO, Daily daily) throws InvocationTargetException,
             IllegalAccessException {
-        return BeanUtils.bean2Another(parseDailyDate(dailyDTO), daily);
-    }
-
-    private DateBO parseDailyDate(DailyDTO dailyDTO) {
-        DateBO dateBO = new DateBO();
-        dateBO.setYear(DateUtil.year(dailyDTO.getDate()));
-        dateBO.setMonth(DateUtil.month(dailyDTO.getDate()));
-        dateBO.setDay(DateUtil.dayOfMonth(dailyDTO.getDate()));
-        return dateBO;
+        return BeanUtils.bean2Another(new SimpleDateTime(dailyDTO.getDate()), daily);
     }
 }
