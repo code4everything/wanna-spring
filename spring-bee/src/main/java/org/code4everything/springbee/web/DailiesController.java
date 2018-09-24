@@ -72,6 +72,6 @@ public class DailiesController extends BeeBaseController {
     @ApiOperation("列出日程详情")
     @ApiImplicitParam(name = "dailyId", value = "日程记录编号", required = true)
     public ResultObject<List<Dailies>> listByDailyId(@RequestParam String dailyId) {
-        return new ResultObject<>();
+        return parseResult("没有找到相关记录", dailiesService.listDailies(dailyId));
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 /**
  * @author pantao
@@ -25,6 +26,12 @@ public class DailiesServiceImpl implements DailiesService {
 
     @Autowired
     public DailiesServiceImpl(DailiesDAO dailiesDAO) {this.dailiesDAO = dailiesDAO;}
+
+    @Override
+    @AopLog("获取所有日程记录详情")
+    public List<Dailies> listDailies(String dailyId) {
+        return dailiesDAO.getByDailyId(dailyId);
+    }
 
     @Override
     @AopLog("更新日程记录详情")
