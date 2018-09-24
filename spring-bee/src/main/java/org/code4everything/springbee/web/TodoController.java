@@ -6,8 +6,13 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.code4everything.springbee.domain.Todo;
+import org.code4everything.springbee.domain.User;
+import org.code4everything.springbee.service.TodoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 import java.util.List;
 
@@ -18,14 +23,24 @@ import java.util.List;
 @RestController
 @RequestMapping("/user/todo")
 @Api(value = "/user/todo", description = "代办事项接口")
-public class TodoController {
+public class TodoController extends BeeBaseController {
+
+    private final TodoService todoService;
+
+    @Autowired
+    public TodoController(TodoService todoService, HttpServletRequest request,
+                          RedisTemplate<String, User> userRedisTemplate) {
+        super(request, userRedisTemplate);
+        this.todoService = todoService;
+    }
+
 
     @PostMapping("/create")
     @ApiOperation("添加代办事项")
     @ApiImplicitParams({@ApiImplicitParam(name = "doingDate", value = "计划完成日期", required = true, dataTypeClass =
             Date.class), @ApiImplicitParam(name = "content", value = "事项内容", required = true)})
     public ResultObject<Todo> saveTodo(@RequestParam Date doingDate, @RequestParam String content) {
-        return new ResultObject<>();
+        return parseResult("添加失败", todoService.saveTodo(getUserId(), doingDate, content));
     }
 
     @DeleteMapping("/remove")
