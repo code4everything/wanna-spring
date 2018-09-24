@@ -11,12 +11,17 @@ import org.code4everything.springbee.dao.IncomeDAO;
 import org.code4everything.springbee.domain.Asset;
 import org.code4everything.springbee.domain.Income;
 import org.code4everything.springbee.model.IncomeDTO;
+import org.code4everything.springbee.model.QueryIncomeDTO;
 import org.code4everything.springbee.service.IncomeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @author pantao
@@ -29,16 +34,42 @@ public class IncomeServiceImpl implements IncomeService {
 
     private final IncomeDAO incomeDAO;
 
+    private final MongoTemplate mongoTemplate;
+
     @Autowired
-    public IncomeServiceImpl(AssetDAO assetDAO, IncomeDAO incomeDAO) {
+    public IncomeServiceImpl(AssetDAO assetDAO, IncomeDAO incomeDAO, MongoTemplate mongoTemplate) {
         this.assetDAO = assetDAO;
         this.incomeDAO = incomeDAO;
+        this.mongoTemplate = mongoTemplate;
     }
 
     @Override
     @AopLog("查询资产可用余额")
     public Long getAssetBalance(String userId) {
         return getAssetByUserId(userId).getBalance();
+    }
+
+    @Override
+    @AopLog("查询收益记录")
+    public List<Income> listIncome(String userId, QueryIncomeDTO queryIncomeDTO) {
+        Query query = new Query();
+        Criteria criteria = Criteria.where("assetId").is(getAssetByUserId(userId).getId());
+        if (Checker.isNotEmpty(queryIncomeDTO.getCategory())) {
+            criteria.andOperator(Criteria.where("category").is(queryIncomeDTO.getCategory()));
+        }
+        final String y = "year";
+        final String m = "month";
+        final String d = "day";
+        if (Checker.isNotNull(queryIncomeDTO.getStart())) {
+            SimpleDateTime date = new SimpleDateTime(queryIncomeDTO.getStart());
+            criteria.andOperator(Criteria.where(y).gte(date.getYear()).and(m).gte(date.getMonth()).and(d).gte(date.getDay()));
+        }
+        if (Checker.isNotNull(queryIncomeDTO.getEnd())) {
+            SimpleDateTime date = new SimpleDateTime(queryIncomeDTO.getEnd());
+            criteria.andOperator(Criteria.where(y).lte(date.getYear()).and(m).lte(date.getMonth()).and(d).lte(date.getDay()));
+        }
+        query.addCriteria(criteria);
+        return mongoTemplate.find(query, Income.class);
     }
 
     @Override

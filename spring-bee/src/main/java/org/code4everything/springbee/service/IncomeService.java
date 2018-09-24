@@ -2,8 +2,10 @@ package org.code4everything.springbee.service;
 
 import org.code4everything.springbee.domain.Income;
 import org.code4everything.springbee.model.IncomeDTO;
+import org.code4everything.springbee.model.QueryIncomeDTO;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 /**
  * @author pantao
@@ -12,6 +14,8 @@ import java.lang.reflect.InvocationTargetException;
 public interface IncomeService {
 
     Long getAssetBalance(String userId);
+
+    List<Income> listIncome(String userId, QueryIncomeDTO queryIncomeDTO);
 
     Income updateIncome(String userId, String incomeId, IncomeDTO incomeDTO) throws InvocationTargetException,
             IllegalAccessException;

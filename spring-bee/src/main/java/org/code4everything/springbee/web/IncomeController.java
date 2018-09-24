@@ -70,6 +70,6 @@ public class IncomeController extends BeeBaseController {
     @GetMapping("/list")
     @ApiOperation("列出收益详情")
     public ResultObject<List<Income>> list(@RequestBody @ApiParam QueryIncomeDTO queryIncome) {
-        return new ResultObject<>();
+        return parseResult("没有找到数据", incomeService.listIncome(getUserId(), queryIncome));
     }
 }
