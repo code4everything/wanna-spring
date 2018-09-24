@@ -1,15 +1,23 @@
 package org.code4everything.springbee.web;
 
+import com.zhazhapan.util.Checker;
+import com.zhazhapan.util.model.CheckResult;
 import com.zhazhapan.util.model.ResultObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.code4everything.springbee.domain.Income;
+import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.IncomeDTO;
 import org.code4everything.springbee.model.QueryIncomeDTO;
+import org.code4everything.springbee.service.IncomeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -19,12 +27,26 @@ import java.util.List;
 @RestController
 @RequestMapping("/user/asset/income")
 @Api(value = "/user/asset/income", description = "收益详情")
-public class IncomeController {
+public class IncomeController extends BeeBaseController {
+
+    private final IncomeService incomeService;
+
+    @Autowired
+    public IncomeController(IncomeService incomeService, HttpServletRequest request,
+                            RedisTemplate<String, User> userRedisTemplate) {
+        super(request, userRedisTemplate);
+        this.incomeService = incomeService;
+    }
 
     @PostMapping("/append")
     @ApiOperation("添加一条收益记录")
-    public ResultObject<Income> saveIncome(@RequestBody @ApiParam IncomeDTO income) {
-        return new ResultObject<>();
+    public ResultObject<Income> saveIncome(@RequestBody @ApiParam IncomeDTO income) throws IllegalAccessException,
+            InstantiationException, InvocationTargetException {
+        CheckResult<Income> result = Checker.checkBean(income);
+        if (result.passed) {
+            return parseResult("添加失败", incomeService.saveIncome(getUserId(), income));
+        }
+        return result.resultObject;
     }
 
     @DeleteMapping("/remove")
