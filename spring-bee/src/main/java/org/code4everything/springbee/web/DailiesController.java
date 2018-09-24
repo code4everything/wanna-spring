@@ -53,7 +53,8 @@ public class DailiesController extends BeeBaseController {
     @ApiOperation("删除一条详情")
     @ApiImplicitParam(name = "dailiesId", value = "详情编号", required = true)
     public ResultObject<Object> remove(@RequestParam String dailiesId) {
-        return new ResultObject<>();
+        dailiesService.remove(dailiesId);
+        return new ResultObject<>("删除成功");
     }
 
     @PutMapping("/{dailiesId}/update")

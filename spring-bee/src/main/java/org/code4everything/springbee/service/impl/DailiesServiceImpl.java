@@ -26,6 +26,12 @@ public class DailiesServiceImpl implements DailiesService {
     public DailiesServiceImpl(DailiesDAO dailiesDAO) {this.dailiesDAO = dailiesDAO;}
 
     @Override
+    @AopLog("删除日程记录详情")
+    public void remove(String dailiesId) {
+        dailiesDAO.deleteById(dailiesId);
+    }
+
+    @Override
     @AopLog("添加日程记录详情信息")
     public Dailies saveDailies(String dailyId, DailiesDTO dailiesDTO) throws IllegalAccessException,
             InvocationTargetException, InstantiationException {
