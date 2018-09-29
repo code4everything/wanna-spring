@@ -18,7 +18,7 @@ public class BeeConfigConsts {
     /**
      * 白名单路径（放行）
      */
-    public static final String[] white_list_prefix = {"/common", "/user/password/reset", "/user/register", "/user" +
+    public static final String[] WHITE_LIST_PREFIX = {"/common", "/user/password/reset", "/user/register", "/user" +
             "/login"};
 
     /**
