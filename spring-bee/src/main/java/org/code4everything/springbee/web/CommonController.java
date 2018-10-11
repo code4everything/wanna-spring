@@ -55,4 +55,10 @@ public class CommonController extends BaseController {
         commonService.sendVcode(email);
         return new ResultObject("发送成功");
     }
+
+    @GetMapping("/current-time")
+    @ApiOperation("获取服务器当前时间")
+    public ResultObject getCurrentTimestamp(){
+        return new ResultObject();
+    }
 }
