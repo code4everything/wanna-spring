@@ -13,7 +13,7 @@
       <div class="col-sm-7 col-6">
         <input type="number" id="verify-code" maxlength="6"
                class="w-100 form-control verify-code"
-               :placeholder="verifyCodeTip"/>
+               :placeholder="verifyCodeTip" @keyup="validateVerifyCode"/>
       </div>
       <div class="col-sm-5 col-6 text-right">
         <button class="btn btn-outline-info sendVerifyCode btn-block" @click="sendVerifyCode">{{verifyCodeSendTip}}
@@ -45,7 +45,8 @@
 import app from '../App'
 import validator from '../../static/js/validator.min'
 import $ from '../../static/js/jquery-3.3.1'
-import utils from '../assets/js/utils'
+import {requestValidateVerifyCode, requestVerifyCode} from '../api/api'
+import layer from '../../static/js/layer'
 
 export default {
   name: 'Register',
@@ -79,7 +80,21 @@ export default {
     sendVerifyCode: function () {
       var email = $('#register-name').val()
       if (validator.isEmail(email)) {
-        utils.sendVerifyCodeByEmail(email)
+        console.info('send verify code to ' + email)
+        requestVerifyCode(email).then(data => {
+          console.info(data)
+          layer.alert(data.message)
+        })
+      }
+    },
+    validateVerifyCode: function () {
+      let vcode = $('#verify-code').val()
+      let email = $('#register-name').val()
+      if (vcode.length === 6 && validator.isEmail(email)) {
+        requestValidateVerifyCode({email: email, vcode: vcode}).then(data => {
+          console.info(data)
+          this.verifyCodeErrorTip = data.code === 200 ? '' : '验证码错误'
+        })
       }
     }
   }
