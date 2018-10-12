@@ -71,6 +71,6 @@ public class CommonServiceImpl implements CommonService {
         String vcode = String.valueOf(RandomUtils.getRandomInteger(6));
         helper.setText(StrUtil.format("您的验证码：{}", vcode));
         mailSender.send(mimeMessage);
-        stringRedisTemplate.opsForValue().set("vcode:" + to, vcode, 60, TimeUnit.SECONDS);
+        stringRedisTemplate.opsForValue().set("vcode:" + to, vcode, 30, TimeUnit.MINUTES);
     }
 }
