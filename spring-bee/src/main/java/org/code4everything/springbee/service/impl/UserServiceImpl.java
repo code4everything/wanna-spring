@@ -1,8 +1,6 @@
 package org.code4everything.springbee.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
-import cn.hutool.crypto.asymmetric.KeyType;
-import cn.hutool.crypto.asymmetric.RSA;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.NetUtils;
 import com.zhazhapan.util.annotation.AopLog;
@@ -60,7 +58,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setUsername(registerDTO.getUsername());
         user.setEmail(registerDTO.getEmail());
-        user.setPassword(decryptRsaAndEncryptToMd5(registerDTO.getPassword()));
+        user.setPassword(encryptToMd5(registerDTO.getPassword()));
         user.setCreateTime(new Timestamp(System.currentTimeMillis()));
         user.setId(RandomUtil.simpleUUID());
         user.setStatus("7");
@@ -72,7 +70,7 @@ public class UserServiceImpl implements UserService {
     public void resetPassword(String email, String newPassword) {
         User user = userDAO.getByEmail(email);
         if (Checker.isNotNull(user)) {
-            user.setPassword(decryptRsaAndEncryptToMd5(newPassword));
+            user.setPassword(encryptToMd5(newPassword));
             userDAO.save(user);
         }
     }
@@ -80,8 +78,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @AopLog("修改密码")
     public boolean updatePassword(User user, String oldPassword, String newPassword) {
-        if (user.getPassword().equals(decryptRsaAndEncryptToMd5(oldPassword))) {
-            user.setPassword(decryptRsaAndEncryptToMd5(newPassword));
+        if (user.getPassword().equals(encryptToMd5(oldPassword))) {
+            user.setPassword(encryptToMd5(newPassword));
             userDAO.save(user);
             return true;
         }
@@ -93,7 +91,7 @@ public class UserServiceImpl implements UserService {
     public String login(String loginName, String password) {
         User user = userDAO.getByUsernameOrEmail(loginName, loginName);
         if (Checker.isNotNull(user)) {
-            if (user.getPassword().equals(decryptRsaAndEncryptToMd5(password))) {
+            if (user.getPassword().equals(encryptToMd5(password))) {
                 String token = NetUtils.generateToken();
                 userRedisTemplate.opsForValue().set(token, user, BeeConfigConsts.TOKEN_EXPIRED, TimeUnit.MINUTES);
                 return token;
@@ -102,8 +100,7 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    private String decryptRsaAndEncryptToMd5(String password) {
-        RSA rsa = new RSA(privateKey, null);
-        return JavaEncrypt.MD5.digestHex(rsa.decryptStr(password, KeyType.PrivateKey));
+    private String encryptToMd5(String password) {
+        return JavaEncrypt.MD5.digestHex(password);
     }
 }
