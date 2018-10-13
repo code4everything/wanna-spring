@@ -42,7 +42,7 @@ export default {
   name: 'PasswordReset',
   data () {
     return {
-      loginPath: app.data().loginPath,
+      loginPath: app.data().path.login,
       passwordResetWelcomeMessage: '重置密码',
       passwordResetNameTip: '手机号',
       passwordResetNameErrorTip: '',

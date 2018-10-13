@@ -35,7 +35,7 @@
         <a class="btn btn-outline-warning btn-block" :href="loginPath">{{loginPathTip}}</a>
       </div>
       <div class="col-6 col-sm-6">
-        <button class="btn btn-primary btn-block" onclick="register();">{{registerTip}}</button>
+        <button class="btn btn-primary btn-block" @click="register">{{registerTip}}</button>
       </div>
     </div>
   </div>
@@ -45,7 +45,7 @@
 import app from '../App'
 import validator from '../../static/js/validator.min'
 import $ from '../../static/js/jquery-3.3.1'
-import {requestValidateVerifyCode, requestVerifyCode} from '../api/api'
+import {requestRegister, requestValidateVerifyCode, requestVerifyCode} from '../api/api'
 import layer from '../../static/js/layer'
 
 export default {
@@ -53,7 +53,7 @@ export default {
   // eslint-disable-next-line space-before-function-paren
   data () {
     return {
-      loginPath: app.data().loginPath,
+      loginPath: app.data().path.login,
       registerTip: '注册',
       loginPathTip: '已有账号？',
       registerWelcomeMessage: '欢迎注册',
@@ -80,8 +80,9 @@ export default {
     sendVerifyCode: function () {
       var email = $('#register-name').val()
       if (validator.isEmail(email)) {
-        console.info('send verify code to ' + email)
+        layer.load(1)
         requestVerifyCode(email).then(data => {
+          layer.closeAll()
           console.info(data)
           layer.alert(data.message)
         })
@@ -95,6 +96,28 @@ export default {
           console.info(data)
           this.verifyCodeErrorTip = data.code === 200 ? '' : '验证码错误'
         })
+      }
+    },
+    register: function () {
+      let username = $('#username').val()
+      let vcode = $('#verify-code').val()
+      let email = $('#register-name').val()
+      let password = $('#confirm-password').val()
+      if (validator.isEmpty(username) || validator.isEmpty(email) || validator.isEmpty(vcode) || validator.isEmpty(password)) {
+        layer.alert('数据不能为空')
+      } else if (validator.isEmpty(this.registerNameErrorTip) && validator.isEmpty(this.passwordConfirmErrorTip) && validator.isEmpty(this.verifyCodeErrorTip)) {
+        layer.load(1)
+        requestRegister({username: username, email: email, password: password, vcode: vcode}).then(data => {
+          layer.closeAll()
+          console.info(data)
+          if (data.code === 200) {
+            window.location = this.loginPath
+          } else {
+            layer.alert(data.message)
+          }
+        })
+      } else {
+        layer.alert('格式不正确')
       }
     }
   }

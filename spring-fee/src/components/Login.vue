@@ -26,8 +26,8 @@ export default {
   name: 'Login',
   data () {
     return {
-      registerPath: app.data().registerPath,
-      passwordResetPath: app.data().passwordResetPath,
+      registerPath: app.data().path.register,
+      passwordResetPath: app.data().path.passwordReset,
       loginWelcomeMessage: '欢迎回来',
       loginNameTip: '手机号码',
       loginPasswordTip: '登录密码',
