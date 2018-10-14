@@ -2,11 +2,11 @@
 <template>
   <div>
     <h3>{{loginWelcomeMessage}}</h3><br/>
-    <input type="text" id="loginName" class="form-control" :placeholder="loginNameTip" maxlength="50"/>
+    <input type="text" id="login-name" class="form-control" :placeholder="loginNameTip" maxlength="50"/>
     <br/>
     <input type="password" id="password" maxlength="50" class="form-control" :placeholder="loginPasswordTip"/>
     <br/>
-    <button class="btn btn-primary btn-block">{{loginTip}}</button>
+    <button class="btn btn-primary btn-block" @click="login">{{loginTip}}</button>
     <br/>
     <div class="form-inline row">
       <div class="col-sm-6 col-6 text-left">
@@ -21,6 +21,8 @@
 
 <script>/* eslint-disable */
 import app from '../App'
+import validator from '../../static/js/validator.min'
+import {requestLogin} from "../api/api";
 
 export default {
   name: 'Login',
@@ -29,11 +31,31 @@ export default {
       registerPath: app.data().path.register,
       passwordResetPath: app.data().path.passwordReset,
       loginWelcomeMessage: '欢迎回来',
-      loginNameTip: '手机号码',
+      loginNameTip: '用户名或邮箱',
       loginPasswordTip: '登录密码',
       loginTip: '登录',
       registerPathTip: '还没有账号？',
       passwordResetPathTip: '忘记密码？'
+    }
+  },
+  methods: {
+    login: function () {
+      let loginName = $('#login-name').val()
+      let password = $('#password').val()
+      if (validator.isEmpty(password)) {
+        layer.alert('密码不能为空')
+      } else {
+        layer.load(1)
+        requestLogin({loginName: loginName, password: password}).then(data => {
+          layer.closeAll()
+          console.info(data)
+          if (data.code === 200) {
+            window.location = app.data().path.index
+          } else {
+            layer.alert(data.message)
+          }
+        })
+      }
     }
   }
 }
