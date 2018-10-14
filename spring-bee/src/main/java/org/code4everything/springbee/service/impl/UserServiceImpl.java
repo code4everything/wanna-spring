@@ -93,6 +93,8 @@ public class UserServiceImpl implements UserService {
             if (user.getPassword().equals(encryptToMd5(password))) {
                 String token = NetUtils.generateToken();
                 userRedisTemplate.opsForValue().set(token, user, BeeConfigConsts.TOKEN_EXPIRED, TimeUnit.MINUTES);
+                user.setLoginTime(System.currentTimeMillis());
+                userDAO.save(user);
                 return token;
             }
         }
