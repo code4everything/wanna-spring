@@ -6,15 +6,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 /**
  * @author pantao
  * @since 2018/9/10
  */
 @Data
+@Document
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "log", description = "日志")
@@ -40,7 +41,7 @@ public class Log implements Serializable {
     private String methodName;
 
     @ApiModelProperty("生成时间")
-    private Timestamp createTime;
+    private Long createTime;
 
     @ApiModelProperty("参数集合")
     private String args;

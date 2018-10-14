@@ -7,7 +7,6 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.zhazhapan.util.BeanUtils;
 import com.zhazhapan.util.Checker;
-import com.zhazhapan.util.DateUtils;
 import com.zhazhapan.util.annotation.AopLog;
 import com.zhazhapan.util.model.SimpleDateTime;
 import org.bson.Document;
@@ -115,7 +114,7 @@ public class DailyServiceImpl implements DailyService {
     public Daily saveDaily(String userId, DailyDTO dailyDTO) throws InvocationTargetException, InstantiationException
             , IllegalAccessException {
         Daily daily = parseDailyDTO(dailyDTO);
-        daily.setCreateTime(DateUtils.getCurrentTimestamp());
+        daily.setCreateTime(System.currentTimeMillis());
         daily.setId(RandomUtil.simpleUUID());
         daily.setUserId(userId);
         return dailyDAO.save(daily);

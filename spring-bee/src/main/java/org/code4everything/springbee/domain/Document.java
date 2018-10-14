@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 /**
  * @author pantao
@@ -19,6 +18,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "document", description = "文件")
+@org.springframework.data.mongodb.core.mapping.Document
 public class Document implements Serializable {
 
     @Id
@@ -36,7 +36,7 @@ public class Document implements Serializable {
     private String suffix;
 
     @ApiModelProperty("上传时间")
-    private Timestamp createTime;
+    private Long createTime;
 
     @ApiModelProperty("文件大小")
     private Long size;

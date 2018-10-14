@@ -37,9 +37,9 @@ public class TodoController extends BeeBaseController {
 
     @PostMapping("/create")
     @ApiOperation("添加代办事项")
-    @ApiImplicitParams({@ApiImplicitParam(name = "doingDate", value = "计划完成日期", required = true, dataTypeClass =
-            Date.class), @ApiImplicitParam(name = "content", value = "事项内容", required = true)})
-    public ResultObject<Todo> saveTodo(@RequestParam Date doingDate, @RequestParam String content) {
+    @ApiImplicitParams({@ApiImplicitParam(name = "doingDate", value = "计划完成日期", required = true),
+            @ApiImplicitParam(name = "content", value = "事项内容", required = true)})
+    public ResultObject<Todo> saveTodo(@RequestParam String doingDate, @RequestParam String content) {
         return parseResult("添加失败", todoService.saveTodo(getUserId(), doingDate, content));
     }
 

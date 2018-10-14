@@ -7,15 +7,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 /**
  * @author pantao
  * @since 2018/9/9
  */
 @Data
+@Document
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "user", description = "用户")
@@ -52,8 +53,8 @@ public class User implements Serializable {
     private String status;
 
     @ApiModelProperty("最近一次登录时间")
-    private Timestamp loginTime;
+    private Long loginTime;
 
     @ApiModelProperty("注册时间")
-    private Timestamp createTime;
+    private Long createTime;
 }

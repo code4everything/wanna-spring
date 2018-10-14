@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -59,7 +58,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername(registerDTO.getUsername());
         user.setEmail(registerDTO.getEmail());
         user.setPassword(encryptToMd5(registerDTO.getPassword()));
-        user.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        user.setCreateTime(System.currentTimeMillis());
         user.setId(RandomUtil.simpleUUID());
         user.setStatus("7");
         userDAO.save(user);

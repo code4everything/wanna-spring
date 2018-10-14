@@ -6,7 +6,6 @@ import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
 import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.Checker;
-import com.zhazhapan.util.DateUtils;
 import com.zhazhapan.util.annotation.AopLog;
 import org.bson.Document;
 import org.code4everything.springbee.dao.TodoDAO;
@@ -65,7 +64,7 @@ public class TodoServiceImpl implements TodoService {
         }
         if (ValueConsts.ONE_STR.equals(status)) {
             todo.setStatus("1");
-            todo.setDoneTime(DateUtils.getCurrentTimestamp());
+            todo.setDoneTime(System.currentTimeMillis());
         } else {
             todo.setStatus("0");
         }
@@ -91,10 +90,10 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     @AopLog("添加待办事项")
-    public Todo saveTodo(String userId, Date doingDate, String content) {
+    public Todo saveTodo(String userId, String doingDate, String content) {
         Todo todo = new Todo();
         todo.setContent(content);
-        todo.setCreateTime(DateUtils.getCurrentTimestamp());
+        todo.setCreateTime(System.currentTimeMillis());
         todo.setDoingDate(doingDate);
         todo.setId(RandomUtil.simpleUUID());
         todo.setStatus("0");

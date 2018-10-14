@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.sql.Time;
 
 /**
  * @author pantao
@@ -22,11 +21,11 @@ public class DailiesDTO implements Serializable {
 
     @FieldChecking
     @ApiModelProperty("开始时间")
-    private Time startTime;
+    private String startTime;
 
     @FieldChecking
     @ApiModelProperty("结束时间")
-    private Time endTime;
+    private String endTime;
 
     @FieldChecking
     @ApiModelProperty("详情内容")

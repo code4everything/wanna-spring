@@ -7,15 +7,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 /**
  * @author pantao
  * @since 2018/9/9
  */
 @Data
+@Document
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "daily", description = "日常记录")
@@ -39,7 +40,7 @@ public class Daily implements Serializable {
     private Integer day;
 
     @ApiModelProperty("记录时间")
-    private Timestamp createTime;
+    private Long createTime;
 
     @ApiModelProperty("评价：0~9，6分以下表现欠佳（反思），6分合格，7分还行，8分优秀，9以上非常优秀")
     private Integer score;

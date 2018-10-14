@@ -1,5 +1,6 @@
 package org.code4everything.springbee.service.impl;
 
+import org.code4everything.springbee.model.RegisterDTO;
 import org.code4everything.springbee.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,11 @@ public class UserServiceImplTest {
 
     @Test
     public void register() {
+        RegisterDTO registerDTO = new RegisterDTO();
+        registerDTO.setEmail("tao@zhahzapan.com");
+        registerDTO.setPassword("123456");
+        registerDTO.setUsername("pantao");
+        userService.register(registerDTO);
     }
 
     @Test

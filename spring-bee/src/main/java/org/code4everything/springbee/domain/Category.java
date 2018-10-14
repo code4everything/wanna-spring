@@ -7,15 +7,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 /**
  * @author pantao
  * @since 2018/9/12
  */
 @Data
+@Document
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "category", description = "分类")
@@ -33,5 +34,5 @@ public class Category implements Serializable {
     private String name;
 
     @ApiModelProperty("创建时间")
-    private Timestamp createTime;
+    private Long createTime;
 }

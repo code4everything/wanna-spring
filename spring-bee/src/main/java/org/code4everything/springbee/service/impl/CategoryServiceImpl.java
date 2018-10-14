@@ -8,7 +8,6 @@ import org.code4everything.springbee.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -38,7 +37,7 @@ public class CategoryServiceImpl implements CategoryService {
     @AopLog("添加收益分类")
     public Category appendCategory(String userId, String name) {
         Category category = new Category();
-        category.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        category.setCreateTime(System.currentTimeMillis());
         category.setId(RandomUtil.simpleUUID());
         category.setName(name);
         category.setUserId(userId);

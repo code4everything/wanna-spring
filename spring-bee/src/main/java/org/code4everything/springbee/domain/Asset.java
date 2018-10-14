@@ -7,15 +7,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 /**
  * @author pantao
  * @since 2018/9/9
  */
 @Data
+@Document
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "asset", description = "资产（可流动资金）")
@@ -33,5 +34,5 @@ public class Asset implements Serializable {
     private Long balance;
 
     @ApiModelProperty("创建时间")
-    private Timestamp createTime;
+    private Long createTime;
 }

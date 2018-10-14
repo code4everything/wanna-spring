@@ -6,15 +6,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 /**
  * @author pantao
  * @since 2018/9/9
  */
 @Data
+@Document
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "income", description = "收益明细，包括支出")
@@ -52,5 +53,5 @@ public class Income implements Serializable {
     private String remark;
 
     @ApiModelProperty("创建时间")
-    private Timestamp createTime;
+    private Long createTime;
 }

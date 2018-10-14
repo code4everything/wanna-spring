@@ -12,8 +12,6 @@ import org.code4everything.springbee.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-
 /**
  * @author pantao
  * @since 2018/9/13
@@ -46,7 +44,7 @@ public class DocumentServiceImpl implements DocumentService {
     public Document saveEntity(SimpleMultipartFile file) {
         Document document = new Document();
         document.setAccessUrl(BeeConfigConsts.DOCUMENT_MAPPING + file.getFilename());
-        document.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        document.setCreateTime(System.currentTimeMillis());
         document.setId(RandomUtil.simpleUUID());
         document.setLocalPath(file.getStoragePath() + file.getFilename());
         document.setSize(file.getSize());

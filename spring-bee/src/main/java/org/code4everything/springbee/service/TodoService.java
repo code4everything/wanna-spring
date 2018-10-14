@@ -21,5 +21,5 @@ public interface TodoService {
 
     void remove(String todoId);
 
-    Todo saveTodo(String userId, Date doingDate, String content);
+    Todo saveTodo(String userId, String doingDate, String content);
 }

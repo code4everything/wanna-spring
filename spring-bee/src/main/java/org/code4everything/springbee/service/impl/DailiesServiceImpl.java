@@ -3,7 +3,6 @@ package org.code4everything.springbee.service.impl;
 import cn.hutool.core.util.RandomUtil;
 import com.zhazhapan.util.BeanUtils;
 import com.zhazhapan.util.Checker;
-import com.zhazhapan.util.DateUtils;
 import com.zhazhapan.util.annotation.AopLog;
 import org.code4everything.springbee.dao.DailiesDAO;
 import org.code4everything.springbee.domain.Dailies;
@@ -56,7 +55,7 @@ public class DailiesServiceImpl implements DailiesService {
             InvocationTargetException, InstantiationException {
         Dailies dailies = BeanUtils.bean2Another(dailiesDTO, Dailies.class);
         dailies.setDailyId(dailyId);
-        dailies.setCreateTime(DateUtils.getCurrentTimestamp());
+        dailies.setCreateTime(System.currentTimeMillis());
         dailies.setId(RandomUtil.simpleUUID());
         return dailiesDAO.save(dailies);
     }

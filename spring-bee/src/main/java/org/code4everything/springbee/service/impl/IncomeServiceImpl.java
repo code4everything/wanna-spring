@@ -3,7 +3,6 @@ package org.code4everything.springbee.service.impl;
 import cn.hutool.core.util.RandomUtil;
 import com.zhazhapan.util.BeanUtils;
 import com.zhazhapan.util.Checker;
-import com.zhazhapan.util.DateUtils;
 import com.zhazhapan.util.annotation.AopLog;
 import com.zhazhapan.util.model.SimpleDateTime;
 import org.code4everything.springbee.dao.AssetDAO;
@@ -21,7 +20,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -101,7 +99,7 @@ public class IncomeServiceImpl implements IncomeService {
             InvocationTargetException, InstantiationException {
         Income income = BeanUtils.bean2Another(incomeDTO, Income.class);
         BeanUtils.bean2Another(new SimpleDateTime(incomeDTO.getDate()), income);
-        income.setCreateTime(DateUtils.getCurrentTimestamp());
+        income.setCreateTime(System.currentTimeMillis());
         income.setId(RandomUtil.simpleUUID());
         income.setAssetId(updateAssetBalance(userId, income.getMoney() * income.getType()));
         return incomeDAO.save(income);
@@ -119,7 +117,7 @@ public class IncomeServiceImpl implements IncomeService {
         if (Checker.isNull(asset)) {
             asset = new Asset();
             asset.setBalance(0L);
-            asset.setCreateTime(new Timestamp(System.currentTimeMillis()));
+            asset.setCreateTime(System.currentTimeMillis());
             asset.setId(RandomUtil.simpleUUID());
             asset.setUserId(userId);
             assetDAO.save(asset);

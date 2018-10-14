@@ -3,7 +3,6 @@ package org.code4everything.springbee.log;
 import cn.hutool.core.util.RandomUtil;
 import com.zhazhapan.util.AopLogUtils;
 import com.zhazhapan.util.Checker;
-import com.zhazhapan.util.DateUtils;
 import com.zhazhapan.util.LoggerUtils;
 import com.zhazhapan.util.interfaces.SimpleLogService;
 import org.aspectj.lang.JoinPoint;
@@ -92,7 +91,7 @@ public class LogAspect {
         log.setArgs(Arrays.toString(args));
         log.setClassName(className);
         log.setMethodName(methodName);
-        log.setCreateTime(DateUtils.getCurrentTimestamp());
+        log.setCreateTime(System.currentTimeMillis());
         log.setIp(ip);
         log.setDescription(description);
         log.setUserId(userId);
