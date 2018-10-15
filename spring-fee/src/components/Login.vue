@@ -50,6 +50,7 @@ export default {
           layer.closeAll()
           console.info(data)
           if (data.code === 200) {
+            window.localStorage.setItem('token', data.data)
             window.location = app.data().path.index
           } else {
             layer.alert(data.message)

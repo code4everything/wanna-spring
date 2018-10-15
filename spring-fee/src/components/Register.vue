@@ -58,7 +58,7 @@ export default {
       loginPathTip: '已有账号？',
       registerWelcomeMessage: '欢迎注册',
       usernameErrorTip: '',
-      usernameTip: '昵称',
+      usernameTip: '用户名',
       registerNameTip: '邮箱',
       registerNameErrorTip: '',
       verifyCodeTip: '收到的验证码',
