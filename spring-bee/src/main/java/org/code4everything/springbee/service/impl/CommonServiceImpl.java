@@ -55,9 +55,13 @@ public class CommonServiceImpl implements CommonService {
 
     @Override
     @AopLog("校验验证码是否正确")
-    public boolean isVcodeValidated(String email, String vcode) {
+    public boolean isVcodeValidated(String email, String vcode, boolean shouldDelete) {
         String key = "vcode:" + email;
-        return Checker.checkNull(vcode).equals(stringRedisTemplate.opsForValue().get(key));
+        boolean result = Checker.checkNull(vcode).equals(stringRedisTemplate.opsForValue().get(key));
+        if (shouldDelete && result) {
+            stringRedisTemplate.delete(key);
+        }
+        return result;
     }
 
     @Override
