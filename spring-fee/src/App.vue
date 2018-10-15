@@ -14,7 +14,11 @@ export default {
         register: '/#/register',
         passwordReset: '/#/password/reset',
         login: '/#/login',
-        index: '/#/'
+        index: '/#/',
+        profile: '/#/profile',
+        income: '/#/income',
+        daily: '/#/daily',
+        todo: '/#/todo'
       }
     }
   }

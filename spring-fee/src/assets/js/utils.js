@@ -9,5 +9,23 @@ export default {
     let isCe = userAgent.indexOf('windows ce') > -1
     let isWm = userAgent.indexOf('windows mobile') > -1
     return isPad || isIpone || isMidp || isUc || isAndroid || isCe || isWm || userAgent.indexOf('mobile') > -1
+  },
+  getCookie: function (name) {
+    if (document.cookie.length > 0) {
+      let start = document.cookie.indexOf(name + '=')
+      if (start !== -1) {
+        start += name.length + 1
+        let end = document.cookie.indexOf(';', start)
+        if (end === -1) {
+          end = document.cookie.length
+        }
+        return document.cookie.substring(start, end)
+      }
+    }
+    return ''
+  },
+  setCookie: function (key, value) {
+    let date = new Date()
+    document.cookie = key + '=' + value + ';expires=' + date.setTime(date.getTime() + 30 * 24 * 60 * 60 * 1000)
   }
 }

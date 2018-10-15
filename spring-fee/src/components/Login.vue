@@ -23,6 +23,7 @@
 import app from '../App'
 import validator from '../../static/js/validator.min'
 import {requestLogin} from "../api/api";
+import utils from '../assets/js/utils'
 
 export default {
   name: 'Login',
@@ -50,7 +51,7 @@ export default {
           layer.closeAll()
           console.info(data)
           if (data.code === 200) {
-            window.localStorage.setItem('token', data.data)
+            utils.setCookie('token', data.data)
             window.location = app.data().path.index
           } else {
             layer.alert(data.message)
