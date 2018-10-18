@@ -1,0 +1,2777 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "keep personal schedule and income",
+    "version": "1.0",
+    "title": "wanna spring",
+    "termsOfService": "https://github.com/code4verything/wanna-spring",
+    "contact": {
+      "name": "pantao",
+      "url": "https://github.zhazhapan.com",
+      "email": "tao@zhazhapan.com"
+    },
+    "license": {
+      "name": "GPL 3.0",
+      "url": "https://opensource.org/licenses/GPL-3.0"
+    }
+  },
+  "host": "localhost:8099",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "asset-controller",
+      "description": "流动资产"
+    },
+    {
+      "name": "category-controller",
+      "description": "分类接口"
+    },
+    {
+      "name": "common-controller",
+      "description": "公共接口"
+    },
+    {
+      "name": "dailies-controller",
+      "description": "日程详情接口"
+    },
+    {
+      "name": "daily-controller",
+      "description": "日程记录接口"
+    },
+    {
+      "name": "document-controller",
+      "description": "文档接口"
+    },
+    {
+      "name": "income-controller",
+      "description": "收益详情"
+    },
+    {
+      "name": "todo-controller",
+      "description": "代办事项接口"
+    },
+    {
+      "name": "user-controller",
+      "description": "用户接口"
+    }
+  ],
+  "paths": {
+    "/common/current-time": {
+      "get": {
+        "tags": [
+          "common-controller"
+        ],
+        "summary": "获取服务器当前时间",
+        "operationId": "getCurrentTimestampUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/common/email/exists": {
+      "get": {
+        "tags": [
+          "common-controller"
+        ],
+        "summary": "邮箱是否存在",
+        "operationId": "existsEmailUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "邮箱",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«boolean»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/common/username/exists": {
+      "get": {
+        "tags": [
+          "common-controller"
+        ],
+        "summary": "用户名是否存在",
+        "operationId": "existsUsernameUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "用户名",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«boolean»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/common/vcode/send": {
+      "post": {
+        "tags": [
+          "common-controller"
+        ],
+        "summary": "发送验证码",
+        "operationId": "sendVcodeUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "邮箱",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/common/vcode/verify": {
+      "get": {
+        "tags": [
+          "common-controller"
+        ],
+        "summary": "验证码是否正确",
+        "operationId": "verifyVcodeUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "邮箱",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vcode",
+            "in": "query",
+            "description": "验证码",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/asset/balance": {
+      "get": {
+        "tags": [
+          "asset-controller"
+        ],
+        "summary": "获取流动资产",
+        "operationId": "getBalanceUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«long»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/asset/income/append": {
+      "post": {
+        "tags": [
+          "income-controller"
+        ],
+        "summary": "添加一条收益记录",
+        "operationId": "saveIncomeUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "income",
+            "description": "income",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/income"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«income»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/asset/income/list": {
+      "get": {
+        "tags": [
+          "income-controller"
+        ],
+        "summary": "列出收益详情",
+        "operationId": "listUsingGET_1",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "queryIncome",
+            "description": "queryIncome",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/queryIncome"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«List«income»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/asset/income/remove": {
+      "delete": {
+        "tags": [
+          "income-controller"
+        ],
+        "summary": "删除一条收益记录",
+        "operationId": "removeUsingDELETE_1",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "incomeId",
+            "in": "query",
+            "description": "收益记录编号",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«object»"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/asset/income/{incomeId}/update": {
+      "put": {
+        "tags": [
+          "income-controller"
+        ],
+        "summary": "更新记录",
+        "operationId": "updateIncomeUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "income",
+            "description": "income",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/income"
+            }
+          },
+          {
+            "name": "incomeId",
+            "in": "path",
+            "description": "incomeId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«income»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/category/append": {
+      "post": {
+        "tags": [
+          "category-controller"
+        ],
+        "summary": "添加分类",
+        "operationId": "saveCategoryUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "分类名",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«category»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/category/list": {
+      "get": {
+        "tags": [
+          "category-controller"
+        ],
+        "summary": "列出我的分类",
+        "operationId": "listUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«List«category»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/daily/create": {
+      "post": {
+        "tags": [
+          "daily-controller"
+        ],
+        "summary": "添加记录",
+        "operationId": "saveDailyUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "daily",
+            "description": "daily",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/daily"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«daily»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/daily/date/list": {
+      "get": {
+        "tags": [
+          "daily-controller"
+        ],
+        "summary": "列出记录的日期",
+        "operationId": "listDailyDateUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«List«dailyDate»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/daily/detail/append/{dailyId}": {
+      "post": {
+        "tags": [
+          "dailies-controller"
+        ],
+        "summary": "添加一条详情记录",
+        "operationId": "appendUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "dailies",
+            "description": "dailies",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/dailies"
+            }
+          },
+          {
+            "name": "dailyId",
+            "in": "path",
+            "description": "dailyId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«dailyDetail»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/daily/detail/list": {
+      "get": {
+        "tags": [
+          "dailies-controller"
+        ],
+        "summary": "列出日程详情",
+        "operationId": "listByDailyIdUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "dailyId",
+            "in": "query",
+            "description": "日程记录编号",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«List«dailyDetail»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/daily/detail/remove": {
+      "delete": {
+        "tags": [
+          "dailies-controller"
+        ],
+        "summary": "删除一条详情",
+        "operationId": "removeUsingDELETE",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "dailiesId",
+            "in": "query",
+            "description": "详情编号",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«object»"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/daily/detail/{dailiesId}/update": {
+      "put": {
+        "tags": [
+          "dailies-controller"
+        ],
+        "summary": "更新详情",
+        "operationId": "updateDailiesUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "dailies",
+            "description": "dailies",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/dailies"
+            }
+          },
+          {
+            "name": "dailiesId",
+            "in": "path",
+            "description": "dailiesId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«dailyDetail»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/daily/list": {
+      "get": {
+        "tags": [
+          "daily-controller"
+        ],
+        "summary": "列出日程记录",
+        "operationId": "listByDateUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "queryDaily",
+            "description": "queryDaily",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/queryDaily"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«List«daily»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/daily/remove": {
+      "delete": {
+        "tags": [
+          "daily-controller"
+        ],
+        "summary": "删除记录",
+        "operationId": "removeDailyUsingDELETE",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "dailyId",
+            "in": "query",
+            "description": "记录编号",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«object»"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/daily/{dailyId}/update": {
+      "put": {
+        "tags": [
+          "daily-controller"
+        ],
+        "summary": "更新记录",
+        "operationId": "updateDailyUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "daily",
+            "description": "daily",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/daily"
+            }
+          },
+          {
+            "name": "dailyId",
+            "in": "path",
+            "description": "dailyId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«daily»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/document/**": {
+      "get": {
+        "tags": [
+          "document-controller"
+        ],
+        "summary": "获取文件资源",
+        "operationId": "getUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/InputStreamSource"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/document/upload": {
+      "post": {
+        "tags": [
+          "document-controller"
+        ],
+        "summary": "上传文件",
+        "operationId": "uploadUsingPOST",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "file",
+            "in": "formData",
+            "description": "文件",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«document»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/info": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "获取用户信息",
+        "operationId": "getUserInfoUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«user»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "更新信息",
+        "operationId": "updateInfoUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "userInfo",
+            "description": "userInfo",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/userInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/login": {
+      "put": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "登录",
+        "operationId": "loginUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "loginName",
+            "in": "query",
+            "description": "用户名或邮箱",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "密码",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«string»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/password/reset": {
+      "put": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "重置密码",
+        "operationId": "resetPasswordUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "password",
+            "description": "password",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/password"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/password/update": {
+      "put": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "更新密码",
+        "operationId": "updatePasswordUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "newPassword",
+            "in": "query",
+            "description": "新密码",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "oldPassword",
+            "in": "query",
+            "description": "原密码",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/register": {
+      "post": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "注册",
+        "operationId": "registerUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "register",
+            "description": "register",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/register"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/todo/create": {
+      "post": {
+        "tags": [
+          "todo-controller"
+        ],
+        "summary": "添加代办事项",
+        "operationId": "saveTodoUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "content",
+            "in": "query",
+            "description": "事项内容",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "doingDate",
+            "in": "query",
+            "description": "计划完成日期",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«todo»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/todo/date/list": {
+      "get": {
+        "tags": [
+          "todo-controller"
+        ],
+        "summary": "列出所有日期",
+        "operationId": "listDateUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«List«date»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/todo/list": {
+      "get": {
+        "tags": [
+          "todo-controller"
+        ],
+        "summary": "列出事项",
+        "operationId": "listTodoUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "description": "日期",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«List«todo»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/todo/remove": {
+      "delete": {
+        "tags": [
+          "todo-controller"
+        ],
+        "summary": "删除一条代办事项",
+        "operationId": "removeUsingDELETE_2",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "todoId",
+            "in": "query",
+            "description": "事项编号",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«object»"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/todo/status/toggle": {
+      "put": {
+        "tags": [
+          "todo-controller"
+        ],
+        "summary": "更新事项状态",
+        "operationId": "updateStatusUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "状态",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "0",
+              "1"
+            ]
+          },
+          {
+            "name": "todoId",
+            "in": "query",
+            "description": "事项编号",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«object»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/todo/update": {
+      "put": {
+        "tags": [
+          "todo-controller"
+        ],
+        "summary": "更新代办事项内容",
+        "operationId": "updateContentUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "content",
+            "in": "query",
+            "description": "事项内容",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "todoId",
+            "in": "query",
+            "description": "事项编号",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObject«todo»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "Authorization": {
+      "type": "apiKey",
+      "name": "TOKEN",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "InputStream": {
+      "type": "object",
+      "title": "InputStream"
+    },
+    "InputStreamSource": {
+      "type": "object",
+      "properties": {
+        "inputStream": {
+          "$ref": "#/definitions/InputStream"
+        }
+      },
+      "title": "InputStreamSource"
+    },
+    "ResultObject": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "object"
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "timestamp": {
+          "$ref": "#/definitions/Timestamp"
+        }
+      },
+      "title": "ResultObject"
+    },
+    "ResultObject«List«category»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/category"
+          }
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "timestamp": {
+          "$ref": "#/definitions/Timestamp"
+        }
+      },
+      "title": "ResultObject«List«category»»"
+    },
+    "ResultObject«List«dailyDate»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/dailyDate"
+          }
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "timestamp": {
+          "$ref": "#/definitions/Timestamp"
+        }
+      },
+      "title": "ResultObject«List«dailyDate»»"
+    },
+    "ResultObject«List«dailyDetail»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/dailyDetail"
+          }
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "timestamp": {
+          "$ref": "#/definitions/Timestamp"
+        }
+      },
+      "title": "ResultObject«List«dailyDetail»»"
+    },
+    "ResultObject«List«daily»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/daily"
+          }
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "timestamp": {
+          "$ref": "#/definitions/Timestamp"
+        }
+      },
+      "title": "ResultObject«List«daily»»"
+    },
+    "ResultObject«List«date»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "timestamp": {
+          "$ref": "#/definitions/Timestamp"
+        }
+      },
+      "title": "ResultObject«List«date»»"
+    },
+    "ResultObject«List«income»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/income"
+          }
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "timestamp": {
+          "$ref": "#/definitions/Timestamp"
+        }
+      },
+      "title": "ResultObject«List«income»»"
+    },
+    "ResultObject«List«todo»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/todo"
+          }
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "timestamp": {
+          "$ref": "#/definitions/Timestamp"
+        }
+      },
+      "title": "ResultObject«List«todo»»"
+    },
+    "ResultObject«boolean»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "timestamp": {
+          "$ref": "#/definitions/Timestamp"
+        }
+      },
+      "title": "ResultObject«boolean»"
+    },
+    "ResultObject«category»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "$ref": "#/definitions/category"
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "timestamp": {
+          "$ref": "#/definitions/Timestamp"
+        }
+      },
+      "title": "ResultObject«category»"
+    },
+    "ResultObject«dailyDetail»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "$ref": "#/definitions/dailyDetail"
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "timestamp": {
+          "$ref": "#/definitions/Timestamp"
+        }
+      },
+      "title": "ResultObject«dailyDetail»"
+    },
+    "ResultObject«daily»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "$ref": "#/definitions/daily"
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "timestamp": {
+          "$ref": "#/definitions/Timestamp"
+        }
+      },
+      "title": "ResultObject«daily»"
+    },
+    "ResultObject«document»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "$ref": "#/definitions/document"
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "timestamp": {
+          "$ref": "#/definitions/Timestamp"
+        }
+      },
+      "title": "ResultObject«document»"
+    },
+    "ResultObject«income»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "$ref": "#/definitions/income"
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "timestamp": {
+          "$ref": "#/definitions/Timestamp"
+        }
+      },
+      "title": "ResultObject«income»"
+    },
+    "ResultObject«long»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "timestamp": {
+          "$ref": "#/definitions/Timestamp"
+        }
+      },
+      "title": "ResultObject«long»"
+    },
+    "ResultObject«object»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "object"
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "timestamp": {
+          "$ref": "#/definitions/Timestamp"
+        }
+      },
+      "title": "ResultObject«object»"
+    },
+    "ResultObject«string»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "timestamp": {
+          "$ref": "#/definitions/Timestamp"
+        }
+      },
+      "title": "ResultObject«string»"
+    },
+    "ResultObject«todo»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "$ref": "#/definitions/todo"
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "timestamp": {
+          "$ref": "#/definitions/Timestamp"
+        }
+      },
+      "title": "ResultObject«todo»"
+    },
+    "ResultObject«user»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "$ref": "#/definitions/user"
+        },
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "timestamp": {
+          "$ref": "#/definitions/Timestamp"
+        }
+      },
+      "title": "ResultObject«user»"
+    },
+    "Timestamp": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "day": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "hours": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "minutes": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "month": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "nanos": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "seconds": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "time": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "timezoneOffset": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "year": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "Timestamp"
+    },
+    "category": {
+      "type": "object",
+      "properties": {
+        "createTime": {
+          "type": "integer",
+          "format": "int64",
+          "description": "创建时间"
+        },
+        "id": {
+          "type": "string",
+          "description": "编号"
+        },
+        "name": {
+          "type": "string",
+          "description": "分类名称"
+        },
+        "userId": {
+          "type": "string",
+          "description": "用户编号（敏感数据）"
+        }
+      },
+      "title": "category",
+      "description": "分类"
+    },
+    "dailies": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "详情内容"
+        },
+        "endTime": {
+          "type": "string",
+          "description": "结束时间"
+        },
+        "startTime": {
+          "type": "string",
+          "description": "开始时间"
+        }
+      },
+      "title": "dailies",
+      "description": "日程详情"
+    },
+    "daily": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "记录内容（可作为日记）"
+        },
+        "createTime": {
+          "type": "integer",
+          "format": "int64",
+          "description": "记录时间"
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "记录日期（默认为当前日期）"
+        },
+        "day": {
+          "type": "integer",
+          "format": "int32",
+          "description": "记录的号数"
+        },
+        "id": {
+          "type": "string",
+          "description": "记录编号"
+        },
+        "month": {
+          "type": "integer",
+          "format": "int32",
+          "description": "记录的月份"
+        },
+        "score": {
+          "type": "integer",
+          "format": "int32",
+          "description": "评价：0~9，6分以下表现欠佳（反思），6分合格，7分还行，8分优秀，9以上非常优秀"
+        },
+        "userId": {
+          "type": "string",
+          "description": "用户编号（敏感数据）"
+        },
+        "weather": {
+          "type": "string",
+          "description": "天气"
+        },
+        "year": {
+          "type": "integer",
+          "format": "int32",
+          "description": "记录的年份"
+        }
+      },
+      "title": "daily",
+      "description": "日常记录"
+    },
+    "dailyDate": {
+      "type": "object",
+      "properties": {
+        "months": {
+          "type": "array",
+          "description": "月份列表",
+          "items": {
+            "$ref": "#/definitions/dailyMonth"
+          }
+        },
+        "year": {
+          "type": "integer",
+          "format": "int32",
+          "description": "记录年份"
+        }
+      },
+      "title": "dailyDate",
+      "description": "记录日期列表"
+    },
+    "dailyDetail": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "详情内容"
+        },
+        "createTime": {
+          "type": "integer",
+          "format": "int64",
+          "description": "创建时间"
+        },
+        "dailyId": {
+          "type": "string",
+          "description": "日常记录编号"
+        },
+        "endTime": {
+          "type": "string",
+          "description": "结束时间"
+        },
+        "id": {
+          "type": "string",
+          "description": "详情编号"
+        },
+        "startTime": {
+          "type": "string",
+          "description": "开始时间"
+        }
+      },
+      "title": "dailyDetail",
+      "description": "日常记录详情"
+    },
+    "dailyMonth": {
+      "type": "object",
+      "properties": {
+        "days": {
+          "type": "array",
+          "description": "日期列表",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "month": {
+          "type": "integer",
+          "format": "int32",
+          "description": "记录月份"
+        }
+      },
+      "title": "dailyMonth",
+      "description": "记录月份列表"
+    },
+    "document": {
+      "type": "object",
+      "properties": {
+        "accessUrl": {
+          "type": "string",
+          "description": "访问链接"
+        },
+        "createTime": {
+          "type": "integer",
+          "format": "int64",
+          "description": "上传时间"
+        },
+        "id": {
+          "type": "string",
+          "description": "文件编号"
+        },
+        "localPath": {
+          "type": "string",
+          "description": "文件本地路径（敏感数据）"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64",
+          "description": "文件大小"
+        },
+        "suffix": {
+          "type": "string",
+          "description": "文件后缀"
+        }
+      },
+      "title": "document",
+      "description": "文件"
+    },
+    "income": {
+      "type": "object",
+      "properties": {
+        "assetId": {
+          "type": "string",
+          "description": "资产编号"
+        },
+        "category": {
+          "type": "string",
+          "description": "分类"
+        },
+        "createTime": {
+          "type": "integer",
+          "format": "int64",
+          "description": "创建时间"
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "日期"
+        },
+        "day": {
+          "type": "integer",
+          "format": "int32",
+          "description": "号数"
+        },
+        "id": {
+          "type": "string",
+          "description": "收益编号"
+        },
+        "money": {
+          "type": "integer",
+          "format": "int64",
+          "description": "金额"
+        },
+        "month": {
+          "type": "integer",
+          "format": "int32",
+          "description": "月份"
+        },
+        "remark": {
+          "type": "string",
+          "description": "备注"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32",
+          "description": "类型：-1支出，1收入",
+          "enum": [
+            -1,
+            1
+          ]
+        },
+        "way": {
+          "type": "string",
+          "description": "付款方式（1其他，2支付宝，3微信，4银联，5信用卡，6现金）",
+          "enum": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+          ]
+        },
+        "year": {
+          "type": "integer",
+          "format": "int32",
+          "description": "年份"
+        }
+      },
+      "title": "income",
+      "description": "收益明细，包括支出"
+    },
+    "password": {
+      "type": "object",
+      "required": [
+        "email",
+        "newPassword",
+        "vcode"
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "邮箱"
+        },
+        "newPassword": {
+          "type": "string",
+          "description": "新密码"
+        },
+        "vcode": {
+          "type": "string",
+          "description": "验证码"
+        }
+      },
+      "title": "password",
+      "description": "重置密码"
+    },
+    "queryDaily": {
+      "type": "object",
+      "required": [
+        "day",
+        "month",
+        "year"
+      ],
+      "properties": {
+        "day": {
+          "type": "integer",
+          "format": "int32",
+          "description": "日期（0表示列出所有日期）"
+        },
+        "month": {
+          "type": "integer",
+          "format": "int32",
+          "description": "月份（0表示列出所有月份）"
+        },
+        "year": {
+          "type": "integer",
+          "format": "int32",
+          "description": "年份"
+        }
+      },
+      "title": "queryDaily",
+      "description": "按时间查询"
+    },
+    "queryIncome": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "type": "string",
+          "description": "分类（为空时查询所有分类）"
+        },
+        "end": {
+          "type": "string",
+          "format": "date",
+          "description": "截止日期（为空时没有截止日期）"
+        },
+        "start": {
+          "type": "string",
+          "format": "date",
+          "description": "开始日期（为空时没有开始日期）"
+        }
+      },
+      "title": "queryIncome",
+      "description": "查询收益详情"
+    },
+    "register": {
+      "type": "object",
+      "required": [
+        "email",
+        "password",
+        "username",
+        "vcode"
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "邮箱"
+        },
+        "password": {
+          "type": "string",
+          "description": "密码"
+        },
+        "username": {
+          "type": "string",
+          "description": "用户名"
+        },
+        "vcode": {
+          "type": "string",
+          "description": "验证码"
+        }
+      },
+      "title": "register",
+      "description": "注册信息"
+    },
+    "todo": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "事项内容"
+        },
+        "createTime": {
+          "type": "integer",
+          "format": "int64",
+          "description": "创建时间"
+        },
+        "doingDate": {
+          "type": "string",
+          "description": "计划事项完成的日期"
+        },
+        "doneTime": {
+          "type": "integer",
+          "format": "int64",
+          "description": "实际完成时间"
+        },
+        "id": {
+          "type": "string",
+          "description": "事项编号"
+        },
+        "status": {
+          "type": "string",
+          "description": "状态：0待完成，1已完成",
+          "enum": [
+            "0",
+            "1"
+          ]
+        },
+        "userId": {
+          "type": "string",
+          "description": "用户编号（敏感数据）"
+        }
+      },
+      "title": "todo",
+      "description": "待办事项"
+    },
+    "user": {
+      "type": "object",
+      "properties": {
+        "avatar": {
+          "type": "string",
+          "description": "头像地址"
+        },
+        "bio": {
+          "type": "string",
+          "description": "个人简介"
+        },
+        "createTime": {
+          "type": "integer",
+          "format": "int64",
+          "description": "注册时间"
+        },
+        "email": {
+          "type": "string",
+          "description": "邮箱"
+        },
+        "gender": {
+          "type": "string",
+          "description": "性别：0未知，1男，2女",
+          "enum": [
+            "0",
+            "1",
+            "2"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "description": "用户编号（敏感数据）"
+        },
+        "loginTime": {
+          "type": "integer",
+          "format": "int64",
+          "description": "最近一次登录时间"
+        },
+        "nickname": {
+          "type": "string",
+          "description": "昵称"
+        },
+        "password": {
+          "type": "string",
+          "description": "密码（敏感数据)"
+        },
+        "status": {
+          "type": "string",
+          "description": "用户状态（0冻结，1待激活，2限制登录，7正常）",
+          "enum": [
+            "0",
+            "1",
+            "2",
+            "7"
+          ]
+        },
+        "username": {
+          "type": "string",
+          "description": "用户名"
+        }
+      },
+      "title": "user",
+      "description": "用户"
+    },
+    "userInfo": {
+      "type": "object",
+      "properties": {
+        "bio": {
+          "type": "string",
+          "description": "个人简介"
+        },
+        "gender": {
+          "type": "string",
+          "description": "性别"
+        },
+        "nickname": {
+          "type": "string",
+          "description": "昵称"
+        }
+      },
+      "title": "userInfo",
+      "description": "用户信息"
+    }
+  }
+}
