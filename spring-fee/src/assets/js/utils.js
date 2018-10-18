@@ -1,4 +1,11 @@
 export default {
+  formatInteger: function (value, length) {
+    let str = value === null || value === undefined ? '' : value.toString()
+    while (str.length < length) {
+      str = '0' + str
+    }
+    return str
+  },
   isMobile: function () {
     let userAgent = navigator.userAgent.toLowerCase()
     let isPad = userAgent.indexOf('ipad') > -1
