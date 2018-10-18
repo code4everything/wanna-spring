@@ -45,7 +45,7 @@ public class CommonController extends BaseController {
     @ApiImplicitParams({@ApiImplicitParam(name = "email", value = "邮箱", required = true), @ApiImplicitParam(name =
             "vcode", required = true, value = "验证码")})
     public ResultObject verifyVcode(@RequestParam String email, @RequestParam String vcode) {
-        return parseResult("验证通过", "验证码错误", commonService.isVcodeValidated(email, vcode));
+        return parseResult("验证通过", "验证码错误", commonService.isVcodeValidated(email, vcode, false));
     }
 
     @PostMapping("/vcode/send")
@@ -58,7 +58,7 @@ public class CommonController extends BaseController {
 
     @GetMapping("/current-time")
     @ApiOperation("获取服务器当前时间")
-    public ResultObject getCurrentTimestamp(){
+    public ResultObject getCurrentTimestamp() {
         return new ResultObject();
     }
 }

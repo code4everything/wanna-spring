@@ -50,7 +50,7 @@ public class UserController extends BeeBaseController {
     public ResultObject resetPassword(@RequestBody @ApiParam PasswordDTO password) {
         CheckResult result = Checker.checkBean(password);
         if (result.passed) {
-            if (commonService.isVcodeValidated(password.getEmail(), password.getVcode())) {
+            if (commonService.isVcodeValidated(password.getEmail(), password.getVcode(), true)) {
                 userService.resetPassword(password.getEmail(), password.getNewPassword());
                 return new ResultObject("重置密码成功");
             }
@@ -70,7 +70,7 @@ public class UserController extends BeeBaseController {
             if (commonService.existsEmail(register.getEmail())) {
                 return CheckResult.getErrorResult("该邮箱已经注册啦");
             }
-            if (commonService.isVcodeValidated(register.getEmail(), register.getVcode())) {
+            if (commonService.isVcodeValidated(register.getEmail(), register.getVcode(), true)) {
                 userService.register(register);
                 return new ResultObject("注册成功");
             }

@@ -12,7 +12,7 @@ public interface CommonService {
 
     boolean existsEmail(String email);
 
-    boolean isVcodeValidated(String email, String vcode);
+    boolean isVcodeValidated(String email, String vcode, boolean shouldDelete);
 
     void sendVcode(String to) throws MessagingException;
 }
