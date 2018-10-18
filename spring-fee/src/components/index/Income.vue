@@ -5,26 +5,25 @@
       <div class="bg-light rounded col-10 offset-1 offset-sm-0 col-sm-12">
         <br/>
         <div class="row">
-          <div class="col-sm-3 col-12 text-left">
-            <h5 class="h5-v-middle">{{assetTip+asset+' '+moneyUnit}}</h5>
+          <div class="col-sm-3 col-8 text-left">
+            <h6 v-if="isMobile" style="padding-top: 10px;" v-html="formatAssetString()"></h6>
+            <h5 v-else class="h5-v-middle" v-html="formatAssetString()"></h5>
           </div>
-          <div class="col-sm-3 col-12">
+          <div v-if="!isMobile" class="col-sm-3">
             <input type="date" class="form-control" :placeholder="dateStartTip" :title="dateStartTip"
                    data-toggle="tooltip"/>
           </div>
-          <div class="col-12 br-space" v-if="isMobile"></div>
-          <div class="col-sm-3 col-12">
+          <div v-if="!isMobile" class="col-sm-3">
             <input type="date" class="form-control" :placeholder="dateEndTip" :title="dateEndTip"
                    data-toggle="tooltip"/>
           </div>
-          <div class="col-12 br-space" v-if="isMobile"></div>
-          <div class="col-sm-3 col-12">
+          <div class="col-sm-3 col-4">
             <div class="row">
-              <div class="col-sm-6 col-6">
+              <div class="col-sm-6 col-12">
                 <button class="btn btn-primary btn-block"><i class="glyphicon glyphicon-plus-sign"></i> {{addIncomeTip}}
                 </button>
               </div>
-              <div class="col-sm-6 col-6">
+              <div v-if="!isMobile" class="col-sm-6 col-6">
                 <button class="btn btn-info btn-block"><i class="glyphicon glyphicon-equalizer"></i> {{reporterTip}}
                 </button>
               </div>
@@ -38,16 +37,13 @@
     <br/>
     <div v-for="(income,index) in incomes" :key="index">
       <div class="row" :data-index="index">
-        <div class="bg-light rounded col-10 offset-1 offset-sm-0 col-sm-12 text-left" :data-index="index">
+        <div class="bg-light rounded col-10 offset-1 text-left" :data-index="index">
           <div class="row vertical-middle">
-            <div class="col-sm-10 col-12">
-              <div v-if="isMobile">
-                <h6 v-html="formatDateString(income)"></h6>
-                <h6 v-html="formatIncomeString(income)"></h6>
-              </div>
-              <h5 v-else v-html="formatFullString(income)"></h5>
+            <div class="col-12">
+              <h6 v-html="formatDateString(income)"></h6>
+              <h6 v-html="formatIncomeString(income)"></h6>
             </div>
-            <div :class="['col-sm-2 col-12',isMobile?'text-left':'text-right']">
+            <div class="col-12 text-left">
               <a href="javascript:">{{editTip}}</a>&emsp;<a href="javascript:" style="color: red;">{{removeTip}}</a>
             </div>
           </div>
@@ -68,7 +64,6 @@ export default {
     return {
       assetTip: '总资产：',
       asset: '0',
-      moneyUnit: '元',
       dateStartTip: '开始日期',
       dateEndTip: '截止日期',
       addIncomeTip: '添加',
@@ -134,6 +129,9 @@ export default {
     }
   },
   methods: {
+    formatAssetString: function () {
+      return this.assetTip + this.asset + this.space + this.unit
+    },
     formatFullString: function (income) {
       return this.formatDateString(income) + this.space + this.formatIncomeString(income) + this.space + '备注：' + income.remark
     },
