@@ -16,7 +16,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "register", description = "注册信息")
+@ApiModel(value = "registerDTO", description = "注册信息")
 public class RegisterDTO implements Serializable {
 
     @FieldChecking

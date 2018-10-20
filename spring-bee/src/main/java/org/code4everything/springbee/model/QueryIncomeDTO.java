@@ -16,7 +16,7 @@ import java.sql.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "queryIncome", description = "查询收益详情")
+@ApiModel(value = "queryIncomeDTO", description = "查询收益详情")
 public class QueryIncomeDTO implements Serializable {
 
     @ApiModelProperty("开始日期（为空时没有开始日期）")

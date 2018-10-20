@@ -17,7 +17,7 @@ import java.sql.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "income", description = "收益信息")
+@ApiModel(value = "incomeDTO", description = "收益信息")
 public class IncomeDTO implements Serializable {
 
     @FieldChecking

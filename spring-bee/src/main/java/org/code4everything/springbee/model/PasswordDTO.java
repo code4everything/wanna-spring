@@ -16,7 +16,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "password", description = "重置密码")
+@ApiModel(value = "passwordDTO", description = "重置密码")
 public class PasswordDTO implements Serializable {
 
     @FieldChecking

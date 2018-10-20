@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "userInfo", description = "用户信息")
+@ApiModel(value = "userInfoDTO", description = "用户信息")
 public class UserInfoDTO implements Serializable {
 
     @ApiModelProperty("昵称")

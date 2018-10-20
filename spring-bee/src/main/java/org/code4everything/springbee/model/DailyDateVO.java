@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "dailyDate", description = "记录日期列表")
+@ApiModel(value = "dailyDateVO", description = "记录日期列表")
 public class DailyDateVO implements Serializable {
 
     @ApiModelProperty("记录年份")

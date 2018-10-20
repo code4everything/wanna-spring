@@ -17,7 +17,7 @@ import java.sql.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "daily", description = "日程记录")
+@ApiModel(value = "dailyDTO", description = "日程记录")
 public class DailyDTO implements Serializable {
 
     @ApiModelProperty("记录日期（默认为当前日期）")
