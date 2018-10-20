@@ -39,6 +39,14 @@ axios.interceptors.response.use(response => {
   return Promise.resolve(error.response)
 })
 
+export const requestUpdateIncome = (id, params) => {
+  return axios.put('/user/asset/income/' + id + '/update', params)
+}
+
+export const requestSaveIncome = params => {
+  return axios.post('/user/asset/income/append', params)
+}
+
 export const requestListCategory = () => {
   return axios.get('/user/category/list')
 }

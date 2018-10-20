@@ -116,7 +116,7 @@ export default {
       currentIncome: {},
       currentIndex: 0,
       ths: ['编号', '日期', '类型', '分类', '金额', '支付方式', '创建时间', '动作'],
-      defaultIncome: {category: '未分类', date: new Date(), money: 0, remark: '', type: -1, way: 1, id: ''},
+      defaultIncome: {category: '未分类', date: new Date(), money: '', remark: '', type: -1, way: 1, id: ''},
       payWays: ['其他', '支付宝', '微信', '银联', '信用卡', '现金'],
       incomes: []
     }
@@ -139,7 +139,7 @@ export default {
       return this.formatTypeString(income) + this.space + income.category + this.space + (income.money / 100) + this.space + this.unit
     },
     formatDateString: function (income) {
-      return income.year + '/' + utils.formatInteger(income.month, 2) + '/' + utils.formatInteger(income.day, 2)
+      return income.year + '-' + utils.formatInteger(income.month, 2) + '-' + utils.formatInteger(income.day, 2)
     },
     formatTypeString: function (income) {
       return income.type < 0 ? '支出' : '收入'

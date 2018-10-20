@@ -76,7 +76,7 @@
 import utils from '../../assets/js/utils'
 import validator from '../../../static/js/validator.min'
 import layer from '../../../static/js/layer'
-import {requestListCategory, requestSaveCategory} from '../../api/api'
+import {requestListCategory, requestSaveCategory, requestSaveIncome, requestUpdateIncome} from '../../api/api'
 
 export default {
   name: 'AssetModal',
@@ -120,16 +120,41 @@ export default {
     },
     saveIncome: function () {
       let self = this
-      self.$parent.updateIncome(this.income)
-      $('#asset-modal').modal('hide')
-    }
+      if (validator.isDate(this.income.date) || validator.isNumber(this.income.money)) {
+        layer.load(1)
+        if (validator.isEmpty(this.income.id)) {
+          requestSaveIncome(this.income).then(data => {
+            this.handleIncomeReturnData(data, self)
+          })
+        } else {
+          requestUpdateIncome(this.income.id, this.income).then(data => {
+            this.handleIncomeReturnData(data, self)
+          })
+        }
+        $('#asset-modal').modal('hide')
+      } else {
+        layer.alert('数据格式不合法')
+      }
+    },
+    handleIncomeReturnData: function (data, that) {
+      layer.closeAll()
+      if (data.code === 200) {
+        that.$parent.updateIncome(data.data)
+      } else {
+        layer.alert(data.message)
+      }
+    },
   },
   mounted: function () {
     this.isMobile = utils.isMobile()
     let self = this
     requestListCategory().then(data => {
       if (data.code === 200 && data.data.length > 0) {
-        data.data.forEach(category => self.categories.push(category.name))
+        data.data.forEach(category => {
+          if (category.name !== self.categories[0]) {
+            self.categories.push(category.name)
+          }
+        })
       }
     })
   },
