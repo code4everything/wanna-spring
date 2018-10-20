@@ -25,19 +25,23 @@
             </div>
             <br/>
             <div class="row">
-              <div class="col-sm-4">
+              <div class="col-sm-4 col-6">
                 <select class="form-control" :title="payWayTip" v-model="income.way" data-toggle="tooltip">
                   <option v-for="(payWay,index) in payWays" :value="index+1" :key="index">{{payWay}}</option>
                 </select>
               </div>
-              <div class="col-sm-4">
-                <input type="text" class="form-control" :placeholder="moneyTip" data-toggle="tooltip" :title="moneyTip"
-                       v-model="income.money"/>
-              </div>
-              <div class="col-sm-4">
+              <div class="col-sm-4 col-6">
                 <select class="form-control" :title="categoryTip" v-model="income.category" data-toggle="tooltip">
                   <option v-for="(category,index) in categories" :value="category" :key="index">{{category}}</option>
                 </select>
+              </div>
+              <div v-if="isMobile" class="col-12">
+                <div class="row"></div>
+                <br/>
+              </div>
+              <div class="col-sm-4 col-12">
+                <input type="text" class="form-control" :placeholder="moneyTip" data-toggle="tooltip" :title="moneyTip"
+                       v-model="income.money"/>
               </div>
             </div>
             <br/>
