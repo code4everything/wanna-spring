@@ -6,6 +6,12 @@ const host = 'http://localhost:8099'
 
 let token = cookie.get('token')
 
+export default {
+  resetToken: function (newToken) {
+    token = newToken
+  }
+}
+
 axios.defaults.timeout = 10000
 
 axios.interceptors.request.use(config => {
@@ -33,22 +39,30 @@ axios.interceptors.response.use(response => {
   return Promise.resolve(error.response)
 })
 
+export const requestListCategory = () => {
+  return axios.get('/user/category/list')
+}
+
+export const requestSaveCategory = name => {
+  return axios.put('/user/category/append?name=' + name)
+}
+
 export const requestLogin = params => {
-  return axios.put('/user/login?loginName=' + params.loginName + '&password=' + params.password).then(res => res.data)
+  return axios.put('/user/login?loginName=' + params.loginName + '&password=' + params.password)
 }
 
 export const requestRegister = params => {
-  return axios.post('/user/register', params).then(res => res.data)
+  return axios.post('/user/register', params)
 }
 
 export const requestVerifyCode = email => {
-  return axios.post('/common/vcode/send?email=' + email).then(res => res.data)
+  return axios.post('/common/vcode/send?email=' + email)
 }
 
 export const requestValidateVerifyCode = params => {
-  return axios.get('/common/vcode/verify?email=' + params.email + '&vcode=' + params.vcode).then(res => res.data)
+  return axios.get('/common/vcode/verify?email=' + params.email + '&vcode=' + params.vcode)
 }
 
 export const requestResetPassword = params => {
-  return axios.put('/user/password/reset', params).then(res => res.data)
+  return axios.put('/user/password/reset', params)
 }
