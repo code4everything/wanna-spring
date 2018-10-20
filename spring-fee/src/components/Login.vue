@@ -22,8 +22,8 @@
 <script>/* eslint-disable */
 import app from '../App'
 import validator from '../../static/js/validator.min'
-import {requestLogin} from "../api/api";
-import utils from '../assets/js/utils'
+import api, {requestLogin} from '../api/api'
+import cookie from 'js-cookie'
 
 export default {
   name: 'Login',
@@ -51,7 +51,8 @@ export default {
           layer.closeAll()
           console.info(data)
           if (data.code === 200) {
-            utils.setCookie('token', data.data)
+            cookie.set('token', data.data)
+            api.resetToken(data.dada)
             window.location = app.data().path.index
           } else {
             layer.alert(data.message)

@@ -60,6 +60,14 @@ export default {
         id: 'nav-04',
         href: app.data().path.profile,
         title: '我的资料'
+      }, {
+        id: 'nav-05',
+        href: app.data().path.passwordReset,
+        title: '重置密码'
+      }, {
+        id: 'nav-06',
+        href: app.data().path.login,
+        title: '登出账号'
       }]
     }
   },
@@ -85,7 +93,15 @@ export default {
   },
   methods: {
     navigateTo: function () {
-      window.location.href = $(window.event.srcElement).attr('href')
+      let href = $(window.event.srcElement).attr('href')
+      if (href === app.data().path.login) {
+        cookie.remove('token')
+      }
+      if (href === app.data().path.passwordReset) {
+        window.open(href)
+      } else {
+        window.location.href = href
+      }
     },
     toggleSearchStatus: function () {
       this.shouldShowSearch = $('.navbar-toggler').attr('aria-expanded') === 'true'
