@@ -1,3 +1,4 @@
+<!--suppress HtmlFormInputWithoutLabel -->
 <template>
   <div>
     <!--操作菜单-->
@@ -150,12 +151,12 @@ export default {
       if (utils.isNull(this.currentIndex)) {
         this.incomes.unshift(income)
       } else {
-        this.incomes[this.currentIndex] = income
+        this.incomes.splice(this.currentIndex, 1, income)
       }
     },
     showModal: function () {
       this.currentIndex = $(window.event.srcElement).parents('.data').attr('data-index')
-      this.currentIncome = utils.isNull(this.currentIndex) ? JSON.parse(JSON.stringify(this.defaultIncome)) : this.incomes[this.currentIndex]
+      this.currentIncome = JSON.parse(JSON.stringify(utils.isNull(this.currentIndex) ? this.defaultIncome : this.incomes[this.currentIndex]))
       $('#asset-modal').modal('show')
     }
   },

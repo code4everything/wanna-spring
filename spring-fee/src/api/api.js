@@ -44,7 +44,7 @@ export const requestListCategory = () => {
 }
 
 export const requestSaveCategory = name => {
-  return axios.put('/user/category/append?name=' + name)
+  return axios.post('/user/category/append?name=' + name)
 }
 
 export const requestLogin = params => {

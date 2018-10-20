@@ -31,7 +31,11 @@
                 </select>
               </div>
               <div class="col-sm-4 col-6">
-                <select class="form-control" :title="categoryTip" v-model="income.category" data-toggle="tooltip">
+                <input type="text" class="form-control" :placeholder="categoryTip" :title="categoryTip"
+                       data-toggle="tooltip" v-show="editable" v-model="income.category" @keyup.enter="saveCategory"
+                       @blur="editable=false" id="category-edit"/>
+                <select v-show="!editable" class="form-control" :title="categoryTip" v-model="income.category"
+                        data-toggle="tooltip" @dblclick="toEdit">
                   <option v-for="(category,index) in categories" :value="category" :key="index">{{category}}</option>
                 </select>
               </div>
@@ -58,7 +62,8 @@
             class="glyphicon glyphicon-remove"></i>
             {{closeTip}}
           </button>
-          <button type="button" class="btn btn-success" @click="save"><i class="glyphicon glyphicon-floppy-open"></i>
+          <button type="button" class="btn btn-success" @click="saveIncome"><i
+            class="glyphicon glyphicon-floppy-open"></i>
             {{saveTip}}
           </button>
         </div>
@@ -69,6 +74,9 @@
 
 <script>/* eslint-disable */
 import utils from '../../assets/js/utils'
+import validator from '../../../static/js/validator.min'
+import layer from '../../../static/js/layer'
+import {requestListCategory, requestSaveCategory} from '../../api/api'
 
 export default {
   name: 'AssetModal',
@@ -84,13 +92,33 @@ export default {
       categoryTip: '分类',
       closeTip: '关闭',
       saveTip: '保存',
+      editable: false,
       types: [{value: -1, tip: '支出'}, {value: 1, tip: '收入'}],
       categories: ['未分类']
     }
   },
   props: ['income', 'payWays'],
   methods: {
-    save: function () {
+    toEdit: function () {
+      this.editable = true
+      setTimeout(function () {
+        $('#category-edit').focus()
+      }, 200)
+    },
+    saveCategory: function () {
+      let self = this
+      if (!validator.isEmpty(this.income.category)) {
+        layer.load(1)
+        requestSaveCategory(this.income.category).then(data => {
+          layer.closeAll()
+          if (data.code === 200) {
+            self.categories.push(data.data.name)
+            self.editable = false
+          }
+        })
+      }
+    },
+    saveIncome: function () {
       let self = this
       self.$parent.updateIncome(this.income)
       $('#asset-modal').modal('hide')
@@ -98,7 +126,12 @@ export default {
   },
   mounted: function () {
     this.isMobile = utils.isMobile()
-
+    let self = this
+    requestListCategory().then(data => {
+      if (data.code === 200 && data.data.length > 0) {
+        data.data.forEach(category => self.categories.push(category.name))
+      }
+    })
   },
   updated: function () {
     // 处理时间和金额
