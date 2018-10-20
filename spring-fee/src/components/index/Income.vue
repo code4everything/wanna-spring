@@ -96,6 +96,7 @@
 import utils from '../../assets/js/utils'
 import layer from '../../../static/js/layer'
 import AssetModal from '../modal/AssetModal'
+import dayjs from 'dayjs'
 
 export default {
   name: 'Income',
@@ -116,7 +117,7 @@ export default {
       currentIncome: {},
       currentIndex: 0,
       ths: ['编号', '日期', '类型', '分类', '金额', '支付方式', '创建时间', '动作'],
-      defaultIncome: {category: '未分类', date: new Date(), money: '', remark: '', type: -1, way: 1, id: ''},
+      defaultIncome: {category: '未分类', date: '', money: '', remark: '', type: -1, way: 1, id: ''},
       payWays: ['其他', '支付宝', '微信', '银联', '信用卡', '现金'],
       incomes: []
     }
@@ -156,7 +157,15 @@ export default {
     },
     showModal: function () {
       this.currentIndex = $(window.event.srcElement).parents('.data').attr('data-index')
-      this.currentIncome = JSON.parse(JSON.stringify(utils.isNull(this.currentIndex) ? this.defaultIncome : this.incomes[this.currentIndex]))
+      let income = null
+      if (utils.isNull(this.currentIndex)) {
+        income = this.defaultIncome
+        income.date = dayjs(new Date()).format('YYYY-MM-DD')
+      } else {
+        income = this.incomes[this.currentIndex]
+        income.date = this.formatDateString(income)
+      }
+      this.currentIncome = JSON.parse(JSON.stringify(income))
       $('#asset-modal').modal('show')
     }
   },

@@ -76,7 +76,9 @@
 import utils from '../../assets/js/utils'
 import validator from '../../../static/js/validator.min'
 import layer from '../../../static/js/layer'
-import {requestListCategory, requestSaveCategory, requestSaveIncome, requestUpdateIncome} from '../../api/api'
+import dayjs from 'dayjs'
+import $ from 'jquery'
+import {requestSaveCategory, requestSaveIncome, requestUpdateIncome} from '../../api/api'
 
 export default {
   name: 'AssetModal',
@@ -120,7 +122,7 @@ export default {
     },
     saveIncome: function () {
       let self = this
-      if (validator.isDate(this.income.date) || validator.isNumber(this.income.money)) {
+      if (dayjs(this.income.date).isValid() && $.isNumeric(this.income.money)) {
         layer.load(1)
         if (validator.isEmpty(this.income.id)) {
           requestSaveIncome(this.income).then(data => {
@@ -147,16 +149,16 @@ export default {
   },
   mounted: function () {
     this.isMobile = utils.isMobile()
-    let self = this
-    requestListCategory().then(data => {
-      if (data.code === 200 && data.data.length > 0) {
-        data.data.forEach(category => {
-          if (category.name !== self.categories[0]) {
-            self.categories.push(category.name)
-          }
-        })
-      }
-    })
+    // let self = this
+    // requestListCategory().then(data => {
+    //   if (data.code === 200 && data.data.length > 0) {
+    //     data.data.forEach(category => {
+    //       if (category.name !== self.categories[0]) {
+    //         self.categories.push(category.name)
+    //       }
+    //     })
+    //   }
+    // })
   },
   updated: function () {
     // 处理时间和金额
