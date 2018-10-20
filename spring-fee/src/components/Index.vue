@@ -33,7 +33,7 @@
 import app from '../App'
 import $ from 'jquery'
 import validator from '../../static/js/validator.min'
-import utils from '../assets/js/utils'
+import cookie from 'js-cookie'
 
 const activeStr = 'active'
 
@@ -65,7 +65,7 @@ export default {
   },
   mounted: function () {
     // 检测当前用户是否登录
-    let token = utils.getCookie('token')
+    let token = cookie.get('token')
     if (token === null || validator.isEmpty(token)) {
       window.location.href = app.data().path.login
     }

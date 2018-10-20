@@ -7,6 +7,7 @@ import Register from '../components/Register'
 import PasswordReset from '../components/PasswordReset'
 import Income from '../components/index/Income'
 
+// noinspection JSUnresolvedFunction
 Vue.use(Router)
 
 export default new Router({
