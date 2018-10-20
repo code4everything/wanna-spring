@@ -64,14 +64,7 @@
         <table class="table table-hover">
           <thead>
           <tr>
-            <th>编号</th>
-            <th>日期</th>
-            <th>类型</th>
-            <th>分类</th>
-            <th>金额</th>
-            <th>支付方式</th>
-            <th>创建时间</th>
-            <th>动作</th>
+            <th v-for="(th,index) in ths" :key="index">{{th}}</th>
           </tr>
           </thead>
           <tbody>
@@ -82,6 +75,7 @@
             <td>{{income.category}}</td>
             <td>{{income.money/100}}</td>
             <td>{{income.way}}</td>
+            <!--suppress JSUnresolvedVariable -->
             <td>{{income.createTime}}</td>
             <td>
               <a class="text-info" href="javascript:" @click="showModal">{{editTip}}</a>
@@ -93,15 +87,28 @@
       </div>
     </div>
     <br/>
+    <asset-modal :income="currentIncome"></asset-modal>
   </div>
 </template>
 
 <script>/* eslint-disable */
 import utils from '../../assets/js/utils'
 import layer from '../../../static/js/layer'
+import AssetModal from '../modal/AssetModal'
+
+const defaultIncome = {
+  category: '未分类',
+  date: new Date(),
+  money: 0,
+  remark: '',
+  type: -1,
+  way: 1,
+  id: ''
+}
 
 export default {
   name: 'Income',
+  components: {AssetModal},
   data () {
     return {
       assetTip: '总资产：',
@@ -115,6 +122,8 @@ export default {
       space: '&emsp;',
       editTip: '编辑',
       removeTip: '删除',
+      currentIncome: {},
+      ths: ['编号', '日期', '类型', '分类', '金额', '支付方式', '创建时间', '动作'],
       incomes: []
     }
   },
@@ -145,7 +154,9 @@ export default {
       layer.alert('敬请期待')
     },
     showModal: function () {
-
+      let key = $(window.event.srcElement).parents('.data').attr('data-index')
+      this.currentIncome = utils.isNull(key) ? defaultIncome : this.incomes[key]
+      $('#asset-modal').modal('show')
     }
   },
   mounted: function () {
