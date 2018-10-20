@@ -35,7 +35,7 @@
                        data-toggle="tooltip" v-show="editable" v-model="income.category" @keyup.enter="saveCategory"
                        @blur="editable=false" id="category-edit"/>
                 <select v-show="!editable" class="form-control" :title="categoryTip" v-model="income.category"
-                        data-toggle="tooltip" @dblclick="toEdit">
+                        data-toggle="tooltip" @dblclick="toEdit" @keyup.enter="toEdit">
                   <option v-for="(category,index) in categories" :value="category" :key="index">{{category}}</option>
                 </select>
               </div>
@@ -72,13 +72,14 @@
   </div>
 </template>
 
+<!--suppress JSPrimitiveTypeWrapperUsage -->
 <script>/* eslint-disable */
 import utils from '../../assets/js/utils'
 import validator from '../../../static/js/validator.min'
 import layer from '../../../static/js/layer'
 import dayjs from 'dayjs'
 import $ from 'jquery'
-import {requestSaveCategory, requestSaveIncome, requestUpdateIncome} from '../../api/api'
+import {requestListCategory, requestSaveCategory, requestSaveIncome, requestUpdateIncome} from '../../api/api'
 
 export default {
   name: 'AssetModal',
@@ -91,7 +92,7 @@ export default {
       payWayTip: '支付方式',
       isMobile: false,
       remarkTip: '备注',
-      categoryTip: '分类',
+      categoryTip: '分类，双击或回车编辑',
       closeTip: '关闭',
       saveTip: '保存',
       editable: false,
@@ -109,7 +110,11 @@ export default {
     },
     saveCategory: function () {
       let self = this
-      if (!validator.isEmpty(this.income.category)) {
+      if (validator.isEmpty(this.income.category)) {
+        this.income.category = this.categories[0]
+        this.editable = false
+      }
+      if (this.editable) {
         layer.load(1)
         requestSaveCategory(this.income.category).then(data => {
           layer.closeAll()
@@ -123,6 +128,9 @@ export default {
     saveIncome: function () {
       let self = this
       if (dayjs(this.income.date).isValid() && $.isNumeric(this.income.money)) {
+        if (validator.isEmpty(this.income.category)) {
+          this.income.category = this.categories[0]
+        }
         layer.load(1)
         if (validator.isEmpty(this.income.id)) {
           requestSaveIncome(this.income).then(data => {
@@ -149,16 +157,16 @@ export default {
   },
   mounted: function () {
     this.isMobile = utils.isMobile()
-    // let self = this
-    // requestListCategory().then(data => {
-    //   if (data.code === 200 && data.data.length > 0) {
-    //     data.data.forEach(category => {
-    //       if (category.name !== self.categories[0]) {
-    //         self.categories.push(category.name)
-    //       }
-    //     })
-    //   }
-    // })
+    let self = this
+    requestListCategory().then(data => {
+      if (data.code === 200 && data.data.length > 0) {
+        data.data.forEach(category => {
+          if (category.name !== self.categories[0]) {
+            self.categories.push(category.name)
+          }
+        })
+      }
+    })
   },
   updated: function () {
     // 处理时间和金额
