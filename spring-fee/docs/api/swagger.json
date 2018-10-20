@@ -341,7 +341,7 @@
             "description": "income",
             "required": false,
             "schema": {
-              "$ref": "#/definitions/income"
+              "$ref": "#/definitions/incomeDTO"
             }
           }
         ],
@@ -391,7 +391,7 @@
             "description": "queryIncome",
             "required": false,
             "schema": {
-              "$ref": "#/definitions/queryIncome"
+              "$ref": "#/definitions/queryIncomeDTO"
             }
           }
         ],
@@ -486,7 +486,7 @@
             "description": "income",
             "required": false,
             "schema": {
-              "$ref": "#/definitions/income"
+              "$ref": "#/definitions/incomeDTO"
             }
           },
           {
@@ -633,7 +633,7 @@
             "description": "daily",
             "required": false,
             "schema": {
-              "$ref": "#/definitions/daily"
+              "$ref": "#/definitions/dailyDTO"
             }
           }
         ],
@@ -680,7 +680,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«List«dailyDate»»"
+              "$ref": "#/definitions/ResultObject«List«dailyDateVO»»"
             }
           },
           "401": {
@@ -722,7 +722,7 @@
             "description": "dailies",
             "required": false,
             "schema": {
-              "$ref": "#/definitions/dailies"
+              "$ref": "#/definitions/dailiesDTO"
             }
           },
           {
@@ -872,7 +872,7 @@
             "description": "dailies",
             "required": false,
             "schema": {
-              "$ref": "#/definitions/dailies"
+              "$ref": "#/definitions/dailiesDTO"
             }
           },
           {
@@ -929,7 +929,7 @@
             "description": "queryDaily",
             "required": false,
             "schema": {
-              "$ref": "#/definitions/queryDaily"
+              "$ref": "#/definitions/queryDailyDTO"
             }
           }
         ],
@@ -1024,7 +1024,7 @@
             "description": "daily",
             "required": false,
             "schema": {
-              "$ref": "#/definitions/daily"
+              "$ref": "#/definitions/dailyDTO"
             }
           },
           {
@@ -1205,7 +1205,7 @@
             "description": "userInfo",
             "required": false,
             "schema": {
-              "$ref": "#/definitions/userInfo"
+              "$ref": "#/definitions/userInfoDTO"
             }
           }
         ],
@@ -1316,7 +1316,7 @@
             "description": "password",
             "required": false,
             "schema": {
-              "$ref": "#/definitions/password"
+              "$ref": "#/definitions/passwordDTO"
             }
           }
         ],
@@ -1427,7 +1427,7 @@
             "description": "register",
             "required": false,
             "schema": {
-              "$ref": "#/definitions/register"
+              "$ref": "#/definitions/registerDTO"
             }
           }
         ],
@@ -1833,7 +1833,7 @@
       },
       "title": "ResultObject«List«category»»"
     },
-    "ResultObject«List«dailyDate»»": {
+    "ResultObject«List«dailyDateVO»»": {
       "type": "object",
       "properties": {
         "code": {
@@ -1843,7 +1843,7 @@
         "data": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/dailyDate"
+            "$ref": "#/definitions/dailyDateVO"
           }
         },
         "message": {
@@ -1856,7 +1856,7 @@
           "$ref": "#/definitions/Timestamp"
         }
       },
-      "title": "ResultObject«List«dailyDate»»"
+      "title": "ResultObject«List«dailyDateVO»»"
     },
     "ResultObject«List«dailyDetail»»": {
       "type": "object",
@@ -2297,7 +2297,7 @@
       "title": "category",
       "description": "分类"
     },
-    "dailies": {
+    "dailiesDTO": {
       "type": "object",
       "properties": {
         "content": {
@@ -2313,7 +2313,7 @@
           "description": "开始时间"
         }
       },
-      "title": "dailies",
+      "title": "dailiesDTO",
       "description": "日程详情"
     },
     "daily": {
@@ -2327,11 +2327,6 @@
           "type": "integer",
           "format": "int64",
           "description": "记录时间"
-        },
-        "date": {
-          "type": "string",
-          "format": "date",
-          "description": "记录日期（默认为当前日期）"
         },
         "day": {
           "type": "integer",
@@ -2369,14 +2364,42 @@
       "title": "daily",
       "description": "日常记录"
     },
-    "dailyDate": {
+    "dailyDTO": {
+      "type": "object",
+      "required": [
+        "score"
+      ],
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "记录内容"
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "记录日期（默认为当前日期）"
+        },
+        "score": {
+          "type": "integer",
+          "format": "int32",
+          "description": "评分"
+        },
+        "weather": {
+          "type": "string",
+          "description": "天气"
+        }
+      },
+      "title": "dailyDTO",
+      "description": "日程记录"
+    },
+    "dailyDateVO": {
       "type": "object",
       "properties": {
         "months": {
           "type": "array",
           "description": "月份列表",
           "items": {
-            "$ref": "#/definitions/dailyMonth"
+            "$ref": "#/definitions/dailyMonthVO"
           }
         },
         "year": {
@@ -2385,7 +2408,7 @@
           "description": "记录年份"
         }
       },
-      "title": "dailyDate",
+      "title": "dailyDateVO",
       "description": "记录日期列表"
     },
     "dailyDetail": {
@@ -2420,7 +2443,7 @@
       "title": "dailyDetail",
       "description": "日常记录详情"
     },
-    "dailyMonth": {
+    "dailyMonthVO": {
       "type": "object",
       "properties": {
         "days": {
@@ -2437,7 +2460,7 @@
           "description": "记录月份"
         }
       },
-      "title": "dailyMonth",
+      "title": "dailyMonthVO",
       "description": "记录月份列表"
     },
     "document": {
@@ -2488,11 +2511,6 @@
           "type": "integer",
           "format": "int64",
           "description": "创建时间"
-        },
-        "date": {
-          "type": "string",
-          "format": "date",
-          "description": "日期"
         },
         "day": {
           "type": "integer",
@@ -2548,7 +2566,54 @@
       "title": "income",
       "description": "收益明细，包括支出"
     },
-    "password": {
+    "incomeDTO": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "type": "string",
+          "description": "分类"
+        },
+        "date": {
+          "type": "string",
+          "format": "date",
+          "description": "日期"
+        },
+        "money": {
+          "type": "integer",
+          "format": "int64",
+          "description": "金额"
+        },
+        "remark": {
+          "type": "string",
+          "description": "备注"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32",
+          "description": "类型：-1支出，1收入",
+          "enum": [
+            -1,
+            1
+          ]
+        },
+        "way": {
+          "type": "string",
+          "description": "付款方式（1其他，2支付宝，3微信，4银联，5信用卡，6现金）",
+          "enum": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+          ]
+        }
+      },
+      "title": "incomeDTO",
+      "description": "收益信息"
+    },
+    "passwordDTO": {
       "type": "object",
       "required": [
         "email",
@@ -2569,10 +2634,10 @@
           "description": "验证码"
         }
       },
-      "title": "password",
+      "title": "passwordDTO",
       "description": "重置密码"
     },
-    "queryDaily": {
+    "queryDailyDTO": {
       "type": "object",
       "required": [
         "day",
@@ -2596,10 +2661,10 @@
           "description": "年份"
         }
       },
-      "title": "queryDaily",
+      "title": "queryDailyDTO",
       "description": "按时间查询"
     },
-    "queryIncome": {
+    "queryIncomeDTO": {
       "type": "object",
       "properties": {
         "category": {
@@ -2617,10 +2682,10 @@
           "description": "开始日期（为空时没有开始日期）"
         }
       },
-      "title": "queryIncome",
+      "title": "queryIncomeDTO",
       "description": "查询收益详情"
     },
-    "register": {
+    "registerDTO": {
       "type": "object",
       "required": [
         "email",
@@ -2646,7 +2711,7 @@
           "description": "验证码"
         }
       },
-      "title": "register",
+      "title": "registerDTO",
       "description": "注册信息"
     },
     "todo": {
@@ -2754,7 +2819,7 @@
       "title": "user",
       "description": "用户"
     },
-    "userInfo": {
+    "userInfoDTO": {
       "type": "object",
       "properties": {
         "bio": {
@@ -2770,7 +2835,7 @@
           "description": "昵称"
         }
       },
-      "title": "userInfo",
+      "title": "userInfoDTO",
       "description": "用户信息"
     }
   }
