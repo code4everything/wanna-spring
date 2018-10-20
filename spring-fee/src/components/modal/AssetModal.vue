@@ -85,14 +85,15 @@ export default {
       closeTip: '关闭',
       saveTip: '保存',
       types: [{value: -1, tip: '支出'}, {value: 1, tip: '收入'}],
-      payWays: ['其他', '支付宝', '微信', '银联', '信用卡', '现金'],
       categories: ['未分类']
     }
   },
-  props: ['income'],
+  props: ['income', 'payWays'],
   methods: {
     save: function () {
-
+      let self = this
+      self.$parent.updateIncome(this.income)
+      $('#asset-modal').modal('hide')
     }
   },
   mounted: function () {
