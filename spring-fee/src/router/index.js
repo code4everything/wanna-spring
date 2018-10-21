@@ -6,6 +6,7 @@ import Login from '../components/Login'
 import Register from '../components/Register'
 import PasswordReset from '../components/PasswordReset'
 import Income from '../components/index/Income'
+import ScheduleContainer from '../components/container/ScheduleContainer'
 import Daily from '../components/index/Daily'
 import Todo from '../components/index/Todo'
 
@@ -16,20 +17,24 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Index',
       component: Index,
       children: [{
         path: '/income',
         name: 'Income',
         component: Income
       }, {
-        path: '/daily',
-        name: 'Daily',
-        component: Daily
-      }, {
-        path: '/todo',
-        name: 'Todo',
-        component: Todo
+        path: '',
+        name: 'ScheduleContainer',
+        component: ScheduleContainer,
+        children: [{
+          path: '/daily',
+          name: 'Daily',
+          component: Daily
+        }, {
+          path: '/todo',
+          name: 'Todo',
+          component: Todo
+        }]
       }]
     }, {
       path: '',
