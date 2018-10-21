@@ -6,6 +6,8 @@ import Login from '../components/Login'
 import Register from '../components/Register'
 import PasswordReset from '../components/PasswordReset'
 import Income from '../components/index/Income'
+import Daily from '../components/index/Daily'
+import Todo from '../components/index/Todo'
 
 // noinspection JSUnresolvedFunction
 Vue.use(Router)
@@ -20,6 +22,14 @@ export default new Router({
         path: '/income',
         name: 'Income',
         component: Income
+      }, {
+        path: '/daily',
+        name: 'Daily',
+        component: Daily
+      }, {
+        path: '/todo',
+        name: 'Todo',
+        component: Todo
       }]
     }, {
       path: '',

@@ -57,10 +57,6 @@ export default {
         href: app.data().path.todo,
         title: '待办事项'
       }, {
-        id: 'nav-04',
-        href: app.data().path.profile,
-        title: '我的资料'
-      }, {
         id: 'nav-05',
         href: app.data().path.passwordReset,
         title: '重置密码'
