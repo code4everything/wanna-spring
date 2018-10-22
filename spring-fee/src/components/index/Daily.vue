@@ -47,8 +47,10 @@ export default {
       contentTip: '日志',
       scoreTip: '分数',
       weatherTip: '天气',
-      defaultDaily: {content: '', createTime: '', id: '', score: '', weather: ''},
-      daily: {}
+      defaultDaily: {content: '', id: '', score: '', weather: ''},
+      defaultDailyDetail: {content: '', dailyId: '', endTime: '', id: '', startTime: ''},
+      daily: {},
+      dailyDetail: []
     }
   },
   props: ['date'],
@@ -56,6 +58,7 @@ export default {
   watch: {
     date: function () {
       this.daily = JSON.parse(JSON.stringify(this.defaultDaily))
+      this.dailyDetail = [JSON.parse(JSON.stringify(this.defaultDailyDetail))]
     }
   },
   mounted: function () {
