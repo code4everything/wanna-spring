@@ -33,17 +33,19 @@
         <div class="bg-light rounded row">
           <div class="col-sm-10 offset-sm-1 justify-content-center">
             <br/>
-            <ul class="list-group text-center">
-              <li class="list-group-item" v-for="(date,index) in dates" :key="index">{{date}}</li>
-            </ul>
+            <div class="list-group text-center">
+              <a @click="dateChange" class="list-group-item list-group-item-action" v-for="(date,index) in dates"
+                 :key="index">{{date}}</a>
+            </div>
             <br/>
           </div>
         </div>
+        <br/>
       </div>
     </div>
     <div v-if="isMobile" class="col-12"><br/></div>
     <div class="col-sm-8 col-12">
-      <router-view></router-view>
+      <router-view :date="date"></router-view>
     </div>
   </div>
 </template>
@@ -79,6 +81,9 @@ export default {
           this.dates.push(now)
         }
       }
+    },
+    dateChange: function () {
+      this.date = $(window.event.srcElement).text()
     }
   },
   mounted: function () {
