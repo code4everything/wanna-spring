@@ -108,8 +108,8 @@ export default {
   },
   watch: {
     date: function () {
-      this.daily = JSON.parse(JSON.stringify(this.defaultDaily))
-      this.dailyDetail = [JSON.parse(JSON.stringify(this.defaultDailyDetail))]
+      this.daily = utils.clone(this.defaultDaily)
+      this.dailyDetail = [utils.clone(this.defaultDailyDetail)]
     }
   },
   mounted: function () {

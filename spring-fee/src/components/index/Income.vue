@@ -165,7 +165,7 @@ export default {
         income = this.incomes[this.currentIndex]
         income.date = this.formatDateString(income)
       }
-      this.currentIncome = JSON.parse(JSON.stringify(income))
+      this.currentIncome = utils.clone(income)
       $('#asset-modal').modal('show')
     }
   },
