@@ -1,3 +1,4 @@
+<!--suppress HtmlFormInputWithoutLabel -->
 <template>
   <div class="row">
     <!--日程记录-->
@@ -31,7 +32,29 @@
     </div>
     <div class="col-12 col-sm-12"><br/></div>
     <!--日程详细记录-->
-    <div class="rounded bg-light col-10 offset-1 col-sm-11 offset-sm-1"></div>
+    <div class="rounded bg-light col-10 offset-1 col-sm-11 offset-sm-1">
+      <br/>
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th v-for="(th,index) in ths" :key="index">{{th}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(dailies,index) in dailyDetail" :key="index" :data-index="index" class="data">
+          <td v-if="!isMobile">{{index+1}}</td>
+          <td>{{dailies.startTime}}</td>
+          <td>{{dailies.endTime}}</td>
+          <td>{{dailies.content}}</td>
+          <td v-if="!isMobile">
+            <a class="text-primary" href="javascript:" @click="showModal">{{editTip}}</a>
+            &emsp;<a href="javascript:" class="text-danger" @click="remove">{{removeTip}}</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-12 col-sm-12"><br/></div>
   </div>
 </template>
 
@@ -47,14 +70,24 @@ export default {
       contentTip: '日志',
       scoreTip: '分数',
       weatherTip: '天气',
+      editTip: '编辑',
+      removeTip: '删除',
       defaultDaily: {content: '', id: '', score: '', weather: ''},
       defaultDailyDetail: {content: '', dailyId: '', endTime: '', id: '', startTime: ''},
       daily: {},
+      ths: ['编号', '开始', '结束', '记录', '动作'],
       dailyDetail: []
     }
   },
   props: ['date'],
-  methods: {},
+  methods: {
+    showModal: function () {
+
+    },
+    remove: function () {
+
+    }
+  },
   watch: {
     date: function () {
       this.daily = JSON.parse(JSON.stringify(this.defaultDaily))
@@ -63,6 +96,10 @@ export default {
   },
   mounted: function () {
     this.isMobile = utils.isMobile()
+    if (this.isMobile) {
+      this.ths.shift()
+      this.ths.pop()
+    }
   }
 }
 </script>
