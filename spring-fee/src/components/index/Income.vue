@@ -27,7 +27,7 @@
               </div>
               <div v-if="!isMobile" class="col-sm-6 col-6">
                 <button class="btn btn-info btn-block" @click="showReporter"><i
-                  class="glyphicon glyphicon-equalizer"></i> {{reporterTip}}
+                  class="glyphicon glyphicon-stats"></i> {{reporterTip}}
                 </button>
               </div>
             </div>
