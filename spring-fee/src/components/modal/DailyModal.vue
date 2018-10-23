@@ -1,0 +1,81 @@
+<!--suppress HtmlFormInputWithoutLabel -->
+<template>
+  <div class="modal fade" id="daily-modal" tabindex="-1" role="dialog"
+       aria-labelledby="daily-modal-label" aria-hidden="true">
+    <div class="modal-dialog" :style="{width:isMobile?'90%':'100%'}">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="daily-modal-label">{{title}}</h4>
+          <button type="button" class="close" data-dismiss="modal"
+                  aria-hidden="true">&times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container data" :data-id="dailies.id">
+            <div class="row">
+              <div class="col-sm-6 col-6">
+                <input type="text" class="form-control" :placeholder="startTimeTip" :title="startTimeTip"
+                       data-toggle="tooltip" v-model="dailies.startTime"/>
+              </div>
+              <div class="col-sm-6 col-6">
+                <input type="text" class="form-control" :placeholder="endTimeTip" :title="endTimeTip"
+                       data-toggle="tooltip" v-model="dailies.endTime"/>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-sm-12 col-12">
+                <textarea class="form-control" :placeholder="contentTip" data-toggle="tooltip" :title="contentTip"
+                          v-model="dailies.content"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
+            class="glyphicon glyphicon-remove"></i>{{closeTip}}
+          </button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" @click="this.$parent.remove"><i
+            class="glyphicon glyphicon-trash"></i>{{removeTip}}
+          </button>
+          <button type="button" class="btn btn-success" @click="saveDailies"><i
+            class="glyphicon glyphicon-floppy-open"></i>{{saveTip}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>/* eslint-disable */
+import utils from '../../assets/js/utils'
+
+export default {
+  name: 'DailyModal',
+  data () {
+    return {
+      startTimeTip: '开始时间',
+      endTimeTip: '结束时间',
+      title: '编辑日程记录',
+      isMobile: false,
+      contentTip: '日程内容',
+      closeTip: '关闭',
+      saveTip: '保存',
+      removeTip: '删除'
+    }
+  },
+  props: ['dailies'],
+  methods: {
+    saveDailies: function () {
+      console.info('call save method')
+    }
+  },
+  mounted: function () {
+    this.isMobile = utils.isMobile()
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

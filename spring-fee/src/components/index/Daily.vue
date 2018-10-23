@@ -24,8 +24,11 @@
       </div>
       <br/>
       <div class="row">
-        <div class="col-sm-8 offset-sm-2 offset-1 col-10">
-          <button class="btn btn-success btn-block">{{saveTip}}</button>
+        <div class="col-sm-8 offset-sm-2 offset-1 col-10 text-right">
+          <button class="btn btn-info" @click="showModal"><i class="glyphicon glyphicon-plus-sign"></i>
+            {{saveDetailTip}}
+          </button>
+          <button class="btn btn-primary"><i class="glyphicon glyphicon-floppy-disk"></i> {{saveTip}}</button>
         </div>
       </div>
       <br/>
@@ -41,7 +44,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(dailies,index) in dailyDetail" :key="index" :data-index="index" class="data">
+        <tr v-for="(dailies,index) in dailyDetail" :key="index" :data-index="index" class="data"
+            @click="showModalOnMobile">
           <td v-if="!isMobile">{{index+1}}</td>
           <td>{{dailies.startTime}}</td>
           <td>{{dailies.endTime}}</td>
@@ -55,17 +59,21 @@
       </table>
     </div>
     <div class="col-12 col-sm-12"><br/></div>
+    <daily-modal :dailies="currentDaily"></daily-modal>
   </div>
 </template>
 
 <script>/* eslint-disable */
 import utils from '../../assets/js/utils'
+import DailyModal from '../modal/DailyModal'
 
 export default {
   name: 'Daily',
+  components: {DailyModal},
   data () {
     return {
       isMobile: false,
+      saveDetailTip: '添加片段记录',
       saveTip: '保存',
       contentTip: '日志',
       scoreTip: '分数',
@@ -76,16 +84,26 @@ export default {
       defaultDailyDetail: {content: '', dailyId: '', endTime: '', id: '', startTime: ''},
       daily: {},
       ths: ['编号', '开始', '结束', '记录', '动作'],
-      dailyDetail: []
+      dailyDetail: [],
+      currentIndex: 0,
+      currentDaily: {}
     }
   },
   props: ['date'],
   methods: {
+    showModalOnMobile: function () {
+      if (this.isMobile) {
+        this.showModal()
+      }
+    },
     showModal: function () {
-
+      this.currentIndex = $(window.event.srcElement).parents('.data').attr('data-index')
+      let daily = utils.isNull(this.currentIndex) ? this.defaultDailyDetail : this.dailyDetail[this.currentIndex]
+      this.currentDaily = utils.clone(daily)
+      $('#daily-modal').modal('show')
     },
     remove: function () {
-
+      console.info('call remove method')
     }
   },
   watch: {
@@ -95,11 +113,15 @@ export default {
     }
   },
   mounted: function () {
+    this.currentDaily = JSON.parse(JSON.stringify(this.defaultDailyDetail))
     this.isMobile = utils.isMobile()
     if (this.isMobile) {
       this.ths.shift()
       this.ths.pop()
     }
+  },
+  updated: function () {
+    $('[data-toggle="tooltip"]').tooltip()
   }
 }
 </script>
