@@ -1,4 +1,7 @@
 export default {
+  clone: function (object) {
+    return JSON.parse(JSON.stringify(object))
+  },
   isNotNull: function (e) {
     return !this.isNull(e)
   },
