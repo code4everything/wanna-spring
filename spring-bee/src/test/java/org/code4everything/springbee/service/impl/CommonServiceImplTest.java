@@ -1,6 +1,9 @@
 package org.code4everything.springbee.service.impl;
 
+import cn.hutool.core.util.RandomUtil;
+import org.code4everything.springbee.constant.TestConsts;
 import org.code4everything.springbee.service.CommonService;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,21 @@ public class CommonServiceImplTest {
 
     @Test
     public void sendVcode() throws MessagingException {
-        commonService.sendVcode("735817834@qq.com");
+        commonService.sendVcode(TestConsts.EMAIL);
+    }
+
+    @Test
+    public void existsUsername() {
+        Assert.assertFalse(commonService.existsUsername(RandomUtil.randomString(16)));
+    }
+
+    @Test
+    public void existsEmail() {
+        Assert.assertFalse(commonService.existsEmail(RandomUtil.randomString(16)));
+    }
+
+    @Test
+    public void isVcodeValidated() {
+        Assert.assertFalse(commonService.isVcodeValidated(TestConsts.EMAIL, RandomUtil.randomString(6), true));
     }
 }
