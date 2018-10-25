@@ -116,6 +116,8 @@ export default {
           if (data.code === 200) {
             self.categories.push(data.data.name)
             self.editable = false
+          } else {
+            layer.alert(data.message)
           }
         })
       }
@@ -160,11 +162,13 @@ export default {
             self.categories.push(category.name)
           }
         })
+      } else if (data.code === 401) {
+        layer.alert(data.message)
       }
     })
   },
   updated: function () {
-    // 处理时间和金额
+    // 金额
   }
 }
 </script>

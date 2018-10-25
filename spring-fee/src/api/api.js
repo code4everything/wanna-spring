@@ -16,6 +16,7 @@ axios.defaults.timeout = 10000
 
 axios.interceptors.request.use(config => {
   config.url = host + config.url
+  console.info(`request url -> ${config.url}`)
   config.headers = {
     'Content-Type': 'application/json',
     token: token
