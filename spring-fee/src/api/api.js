@@ -40,6 +40,10 @@ axios.interceptors.response.use(response => {
   return Promise.resolve(error.response)
 })
 
+export const requestListIncome = (category, start, end) => {
+  return axios.get(`/user/asset/income/list?category=${category}&start=${start}&end=${end}`)
+}
+
 export const requestUpdateIncome = (id, params) => {
   return axios.put('/user/asset/income/' + id + '/update', params)
 }

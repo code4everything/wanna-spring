@@ -12,11 +12,11 @@
           </div>
           <div v-if="!isMobile" class="col-sm-3">
             <input type="date" class="form-control" :placeholder="dateStartTip" :title="dateStartTip"
-                   data-toggle="tooltip"/>
+                   data-toggle="tooltip" v-model="startDate" @change="listIncome"/>
           </div>
           <div v-if="!isMobile" class="col-sm-3">
             <input type="date" class="form-control" :placeholder="dateEndTip" :title="dateEndTip"
-                   data-toggle="tooltip"/>
+                   data-toggle="tooltip" v-model="endDate" @change="listIncome"/>
           </div>
           <div class="col-sm-3 col-4">
             <div class="row">
@@ -77,7 +77,7 @@
             <td>{{income.money/100}}</td>
             <td>{{payWays[income.way-1]}}</td>
             <!--suppress JSUnresolvedVariable -->
-            <td>{{income.createTime}}</td>
+            <td>{{formatDate(income.createTime)}}</td>
             <td>
               <a class="text-info" href="javascript:" @click="showModal">{{editTip}}</a>
               &emsp;<a href="javascript:" class="text-danger" @click="remove">{{removeTip}}</a>
@@ -97,6 +97,7 @@ import utils from '../../assets/js/utils'
 import layer from '../../../static/js/layer'
 import AssetModal from '../modal/AssetModal'
 import dayjs from 'dayjs'
+import {requestListIncome} from '../../api/api'
 
 export default {
   name: 'Income',
@@ -119,7 +120,9 @@ export default {
       ths: ['编号', '日期', '类型', '分类', '金额', '支付方式', '创建时间', '动作'],
       defaultIncome: {category: '未分类', date: '', money: '', remark: '', type: -1, way: 1, id: ''},
       payWays: ['其他', '支付宝', '微信', '银联', '信用卡', '现金'],
-      incomes: []
+      incomes: [],
+      startDate: '',
+      endDate: ''
     }
   },
   methods: {
@@ -133,6 +136,9 @@ export default {
         layer.closeAll()
       })
     },
+    formatDate: function (date) {
+      return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
+    },
     formatAssetString: function () {
       return this.assetTip + this.asset + this.space + this.unit
     },
@@ -140,7 +146,7 @@ export default {
       return this.formatTypeString(income) + this.space + income.category + this.space + (income.money / 100) + this.space + this.unit
     },
     formatDateString: function (income) {
-      return income.year + '-' + utils.formatInteger(income.month, 2) + '-' + utils.formatInteger(income.day, 2)
+      return income.year + '-' + String(income.month).padStart(2, '0') + '-' + String(income.day).padStart(2, '0')
     },
     formatTypeString: function (income) {
       return income.type < 0 ? '支出' : '收入'
@@ -152,25 +158,38 @@ export default {
       if (utils.isNull(this.currentIndex)) {
         this.incomes.unshift(income)
       } else {
-        this.incomes.splice(this.currentIndex, 1, income)
+        this.incomes[this.currentIndex] = income
       }
     },
     showModal: function () {
       this.currentIndex = $(window.event.srcElement).parents('.data').attr('data-index')
-      let income = null
       if (utils.isNull(this.currentIndex)) {
-        income = this.defaultIncome
-        income.date = dayjs(new Date()).format('YYYY-MM-DD')
+        this.currentIncome = utils.clone(this.defaultIncome)
+        this.currentIncome.date = dayjs(new Date()).format('YYYY-MM-DD')
       } else {
-        income = this.incomes[this.currentIndex]
-        income.date = this.formatDateString(income)
+        this.currentIncome = utils.clone(this.incomes[this.currentIndex])
+        this.currentIncome.date = this.formatDateString(this.currentIncome)
+        this.currentIncome.money = this.currentIncome / 100
       }
-      this.currentIncome = utils.clone(income)
       $('#asset-modal').modal('show')
+    },
+    listIncome: function () {
+      layer.load(1)
+      requestListIncome('', this.startDate, this.endDate).then(data => {
+        layer.closeAll()
+        if (data.code === 200) {
+          this.incomes = data.data
+        } else {
+          layer.alert(data.message)
+        }
+      })
     }
   },
   mounted: function () {
     this.isMobile = utils.isMobile()
+    this.startDate = dayjs().add(-30, 'day').format('YYYY-MM-DD')
+    this.endDate = dayjs().format('YYYY-MM-DD')
+    this.listIncome()
   },
   updated: function () {
     $('[data-toggle="tooltip"]').tooltip()

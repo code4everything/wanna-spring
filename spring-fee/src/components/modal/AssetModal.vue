@@ -128,6 +128,8 @@ export default {
         if (validator.isEmpty(this.income.category)) {
           this.income.category = this.categories[0]
         }
+        //处理金额
+        this.income.money = Number(this.income.money).toFixed(2) * 100
         layer.load(1)
         if (validator.isEmpty(this.income.id)) {
           requestSaveIncome(this.income).then(data => {
@@ -166,9 +168,6 @@ export default {
         layer.alert(data.message)
       }
     })
-  },
-  updated: function () {
-    // 金额
   }
 }
 </script>
