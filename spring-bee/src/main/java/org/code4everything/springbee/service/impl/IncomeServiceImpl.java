@@ -20,6 +20,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,22 +54,28 @@ public class IncomeServiceImpl implements IncomeService {
     public List<Income> listIncome(String userId, QueryIncomeDTO queryIncomeDTO) {
         Query query = new Query();
         Criteria criteria = Criteria.where("assetId").is(getAssetByUserId(userId).getId());
-        if (Checker.isNotEmpty(queryIncomeDTO.getCategory())) {
-            criteria.andOperator(Criteria.where("category").is(queryIncomeDTO.getCategory()));
-        }
         final String y = "year";
         final String m = "month";
         final String d = "day";
-        if (Checker.isNotNull(queryIncomeDTO.getStart())) {
-            SimpleDateTime date = new SimpleDateTime(queryIncomeDTO.getStart());
-            criteria.andOperator(Criteria.where(y).gte(date.getYear()).and(m).gte(date.getMonth()).and(d).gte(date.getDay()));
-        }
-        if (Checker.isNotNull(queryIncomeDTO.getEnd())) {
-            SimpleDateTime date = new SimpleDateTime(queryIncomeDTO.getEnd());
-            criteria.andOperator(Criteria.where(y).lte(date.getYear()).and(m).lte(date.getMonth()).and(d).lte(date.getDay()));
+        if (Checker.isNotNull(queryIncomeDTO)) {
+            List<Criteria> criteriaList = new ArrayList<>(4);
+            if (Checker.isNotEmpty(queryIncomeDTO.getCategory())) {
+                criteriaList.add(Criteria.where("category").is(queryIncomeDTO.getCategory()));
+            }
+            if (Checker.isNotNull(queryIncomeDTO.getStart())) {
+                SimpleDateTime date = new SimpleDateTime(queryIncomeDTO.getStart());
+                criteriaList.add(Criteria.where(y).gte(date.getYear()).and(m).gte(date.getMonth()).and(d).gte(date.getDay()));
+            }
+            if (Checker.isNotNull(queryIncomeDTO.getEnd())) {
+                SimpleDateTime date = new SimpleDateTime(queryIncomeDTO.getEnd());
+                criteriaList.add(Criteria.where(y).lte(date.getYear()).and(m).lte(date.getMonth()).and(d).lte(date.getDay()));
+            }
+            if (Checker.isNotEmpty(criteriaList)) {
+                criteria.andOperator(criteriaList.toArray(new Criteria[0]));
+            }
         }
         query.addCriteria(criteria);
-        query.with(new Sort(Sort.Direction.DESC, "year", "month", "day"));
+        query.with(new Sort(Sort.Direction.DESC, y, m, d));
         return mongoTemplate.find(query, Income.class);
     }
 
@@ -108,6 +115,7 @@ public class IncomeServiceImpl implements IncomeService {
     private String updateAssetBalance(String userId, Long value) {
         Asset asset = getAssetByUserId(userId);
         asset.setBalance(asset.getBalance() + value);
+        assetDAO.save(asset);
         return asset.getId();
     }
 

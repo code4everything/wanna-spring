@@ -25,7 +25,7 @@ public class IncomeDTO implements Serializable {
     private Integer type;
 
     @FieldChecking
-    @ApiModelProperty(value = "付款方式（1其他，2支付宝，3微信，4银联，5信用卡，6现金）", allowableValues = "0, 1, 2, 3, 4, 5, 6")
+    @ApiModelProperty(value = "付款方式（1其他，2支付宝，3微信，4银联，5信用卡，6现金）", allowableValues = "1, 2, 3, 4, 5, 6")
     private String way;
 
     @FieldChecking

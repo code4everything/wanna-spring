@@ -23,4 +23,8 @@ public class TestConsts {
     public static final String END_TIME = "12:00";
 
     public static final String START_TIME = "11:00";
+
+    public static final Integer TYPE=1;
+
+    public static final String WAY = "1";
 }
