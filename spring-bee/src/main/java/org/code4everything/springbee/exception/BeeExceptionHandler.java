@@ -3,6 +3,7 @@ package org.code4everything.springbee.exception;
 import com.alibaba.fastjson.support.spring.FastJsonJsonView;
 import com.zhazhapan.util.NetUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author pantao
  * @since 2018/9/20
  **/
+@Component
 public class BeeExceptionHandler implements HandlerExceptionResolver {
 
     @Override
