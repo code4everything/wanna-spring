@@ -1,6 +1,7 @@
 package org.code4everything.springbee.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
+import com.zhazhapan.util.Formatter;
 import org.code4everything.springbee.BaseTest;
 import org.code4everything.springbee.constant.TestConsts;
 import org.code4everything.springbee.dao.IncomeDAO;
@@ -37,8 +38,8 @@ public class IncomeServiceImplTest extends BaseTest {
     @Test
     public void listIncome() {
         QueryIncomeDTO queryIncomeDTO = new QueryIncomeDTO();
-        queryIncomeDTO.setStart(new Date(System.currentTimeMillis()));
-        queryIncomeDTO.setEnd(new Date(System.currentTimeMillis()));
+        queryIncomeDTO.setStart(Formatter.dateToString(new Date(System.currentTimeMillis())));
+        queryIncomeDTO.setEnd(Formatter.dateToString(new Date(System.currentTimeMillis())));
         List<Income> incomes = incomeService.listIncome(getUser().getId(), queryIncomeDTO);
         Assert.assertNotNull(incomes);
         System.out.println(incomes);

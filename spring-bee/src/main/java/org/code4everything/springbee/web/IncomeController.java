@@ -3,10 +3,7 @@ package org.code4everything.springbee.web;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.model.CheckResult;
 import com.zhazhapan.util.model.ResultObject;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.code4everything.springbee.domain.Income;
 import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.IncomeDTO;
@@ -69,7 +66,10 @@ public class IncomeController extends BeeBaseController {
 
     @GetMapping("/list")
     @ApiOperation("列出收益详情")
-    public ResultObject<List<Income>> list(@RequestBody @ApiParam QueryIncomeDTO queryIncome) {
+    @ApiImplicitParams({@ApiImplicitParam(name = "category", value = "分类"), @ApiImplicitParam(name = "start", value =
+            "开始日期"), @ApiImplicitParam(name = "end", value = "截止日期")})
+    public ResultObject<List<Income>> list(String category, String start, String end) {
+        QueryIncomeDTO queryIncome = new QueryIncomeDTO(start, end, category);
         return parseResult("没有找到数据", incomeService.listIncome(getUserId(), queryIncome));
     }
 }

@@ -62,11 +62,11 @@ public class IncomeServiceImpl implements IncomeService {
             if (Checker.isNotEmpty(queryIncomeDTO.getCategory())) {
                 criteriaList.add(Criteria.where("category").is(queryIncomeDTO.getCategory()));
             }
-            if (Checker.isNotNull(queryIncomeDTO.getStart())) {
+            if (Checker.isNotEmpty(queryIncomeDTO.getStart())) {
                 SimpleDateTime date = new SimpleDateTime(queryIncomeDTO.getStart());
                 criteriaList.add(Criteria.where(y).gte(date.getYear()).and(m).gte(date.getMonth()).and(d).gte(date.getDay()));
             }
-            if (Checker.isNotNull(queryIncomeDTO.getEnd())) {
+            if (Checker.isNotEmpty(queryIncomeDTO.getEnd())) {
                 SimpleDateTime date = new SimpleDateTime(queryIncomeDTO.getEnd());
                 criteriaList.add(Criteria.where(y).lte(date.getYear()).and(m).lte(date.getMonth()).and(d).lte(date.getDay()));
             }

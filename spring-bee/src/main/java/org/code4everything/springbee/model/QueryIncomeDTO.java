@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.sql.Date;
 
 /**
  * @author pantao
@@ -20,10 +19,10 @@ import java.sql.Date;
 public class QueryIncomeDTO implements Serializable {
 
     @ApiModelProperty("开始日期（为空时没有开始日期）")
-    private Date start;
+    private String start;
 
     @ApiModelProperty("截止日期（为空时没有截止日期）")
-    private Date end;
+    private String end;
 
     @ApiModelProperty("分类（为空时查询所有分类）")
     private String category;
