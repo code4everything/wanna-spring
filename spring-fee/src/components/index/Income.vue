@@ -74,7 +74,7 @@
             <td>{{formatDateString(income)}}</td>
             <td>{{formatTypeString(income)}}</td>
             <td>{{income.category}}</td>
-            <td>{{income.money/100}}</td>
+            <td>{{Number(income.money/100).toFixed(2)}}</td>
             <td>{{payWays[income.way-1]}}</td>
             <!--suppress JSUnresolvedVariable -->
             <td>{{formatDate(income.createTime)}}</td>
@@ -97,7 +97,7 @@ import utils from '../../assets/js/utils'
 import layer from '../../../static/js/layer'
 import AssetModal from '../modal/AssetModal'
 import dayjs from 'dayjs'
-import {requestListIncome} from '../../api/api'
+import {requestAssetBalance, requestListIncome, requestRemoveIncome} from '../../api/api'
 
 export default {
   name: 'Income',
@@ -132,7 +132,16 @@ export default {
       layer.confirm('是否确定删除索引位置位于 “' + (parseInt(key) + 1) + '” 的收益记录', {
         btn: ['确定', '取消']
       }, function () {
-        self.incomes.splice(key, 1)
+        layer.load(1)
+        requestRemoveIncome(self.incomes[key].id).then(data => {
+          layer.closeAll()
+          if (data.code === 200) {
+            self.getAssetBalance()
+            self.incomes.splice(key, 1)
+          } else {
+            layer.alert(data.message)
+          }
+        })
         layer.closeAll()
       })
     },
@@ -140,7 +149,7 @@ export default {
       return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
     },
     formatAssetString: function () {
-      return this.assetTip + this.asset + this.space + this.unit
+      return this.assetTip + Number(this.asset).toFixed(2) + this.space + this.unit
     },
     formatIncomeString: function (income) {
       return this.formatTypeString(income) + this.space + income.category + this.space + (income.money / 100) + this.space + this.unit
@@ -155,10 +164,12 @@ export default {
       layer.alert('敬请期待')
     },
     updateIncome: function (income) {
+      this.getAssetBalance()
+      $('#asset-modal').modal('hide')
       if (utils.isNull(this.currentIndex)) {
         this.incomes.unshift(income)
       } else {
-        this.incomes[this.currentIndex] = income
+        this.incomes.splice(this.currentIndex, 1, income)
       }
     },
     showModal: function () {
@@ -169,16 +180,26 @@ export default {
       } else {
         this.currentIncome = utils.clone(this.incomes[this.currentIndex])
         this.currentIncome.date = this.formatDateString(this.currentIncome)
-        this.currentIncome.money = this.currentIncome / 100
+        this.currentIncome.money = this.currentIncome.money / 100
       }
       $('#asset-modal').modal('show')
     },
     listIncome: function () {
       layer.load(1)
+      this.getAssetBalance()
       requestListIncome('', this.startDate, this.endDate).then(data => {
         layer.closeAll()
         if (data.code === 200) {
           this.incomes = data.data
+        } else {
+          layer.alert(data.message)
+        }
+      })
+    },
+    getAssetBalance: function () {
+      requestAssetBalance().then(data => {
+        if (data.code === 200) {
+          this.asset = data.data / 100
         } else {
           layer.alert(data.message)
         }

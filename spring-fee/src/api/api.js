@@ -40,6 +40,14 @@ axios.interceptors.response.use(response => {
   return Promise.resolve(error.response)
 })
 
+export const requestRemoveIncome = id => {
+  return axios.delete(`/user/asset/income/remove?incomeId=${id}`)
+}
+
+export const requestAssetBalance = () => {
+  return axios.get('/user/asset/balance')
+}
+
 export const requestListIncome = (category, start, end) => {
   return axios.get(`/user/asset/income/list?category=${category}&start=${start}&end=${end}`)
 }

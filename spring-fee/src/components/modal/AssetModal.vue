@@ -133,22 +133,21 @@ export default {
         layer.load(1)
         if (validator.isEmpty(this.income.id)) {
           requestSaveIncome(this.income).then(data => {
-            this.handleIncomeReturnData(data, self)
+            this.handleIncomeReturnData(data)
           })
         } else {
           requestUpdateIncome(this.income.id, this.income).then(data => {
-            this.handleIncomeReturnData(data, self)
+            this.handleIncomeReturnData(data)
           })
         }
-        $('#asset-modal').modal('hide')
       } else {
         layer.alert('数据格式不合法')
       }
     },
-    handleIncomeReturnData: function (data, that) {
+    handleIncomeReturnData: function (data) {
       layer.closeAll()
       if (data.code === 200) {
-        that.$parent.updateIncome(data.data)
+        this.$parent.updateIncome(data.data)
       } else {
         layer.alert(data.message)
       }
