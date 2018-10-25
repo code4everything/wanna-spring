@@ -75,7 +75,7 @@ public class IncomeServiceImpl implements IncomeService {
             }
         }
         query.addCriteria(criteria);
-        query.with(new Sort(Sort.Direction.DESC, y, m, d));
+        query.with(new Sort(Sort.Direction.DESC, y, m, d, "createTime"));
         return mongoTemplate.find(query, Income.class);
     }
 
@@ -96,8 +96,12 @@ public class IncomeServiceImpl implements IncomeService {
 
     @Override
     @AopLog("删除收益记录")
-    public void remove(String incomeId) {
-        incomeDAO.deleteById(incomeId);
+    public void remove(String userId, String incomeId) {
+        Income income = incomeDAO.getById(incomeId);
+        if (Checker.isNotNull(income)) {
+            updateAssetBalance(userId, income.getMoney() * income.getType() * -1);
+            incomeDAO.deleteById(incomeId);
+        }
     }
 
     @Override

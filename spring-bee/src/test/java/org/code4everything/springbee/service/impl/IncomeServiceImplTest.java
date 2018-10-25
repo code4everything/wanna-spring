@@ -60,7 +60,7 @@ public class IncomeServiceImplTest extends BaseTest {
 
     @Test
     public void remove() {
-        incomeService.remove(incomeDAO.findAll().get(0).getId());
+        incomeService.remove(getUser().getId(), incomeDAO.findAll().get(0).getId());
     }
 
     @Test

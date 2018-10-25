@@ -20,7 +20,7 @@ public interface IncomeService {
     Income updateIncome(String userId, String incomeId, IncomeDTO incomeDTO) throws InvocationTargetException,
             IllegalAccessException;
 
-    void remove(String incomeId);
+    void remove(String userId, String incomeId);
 
     Income saveIncome(String userId, IncomeDTO incomeDTO) throws IllegalAccessException, InvocationTargetException, InstantiationException;
 }
