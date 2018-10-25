@@ -29,6 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @AopLog("列出分类")
     public List<Category> listCategory(String userId) {
         return categoryDAO.getByUserId(userId);
     }
