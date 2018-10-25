@@ -22,9 +22,14 @@ public class BeeConfigConsts {
             "/login"};
 
     /**
-     * 黑名单路径（拦截）
+     * 拦截路径
      */
-    public static final String[] BLACK_LIST_PREFIX = {"/user"};
+    public static final String[] INTERCEPTOR_LIST_PREFIX = {"/user"};
+
+    /**
+     * 黑名单路径
+     */
+    public static final String[] BLACK_LIST_PREFIX = {"/swagger-ui.html", "/v2/api-docs"};
 
     /**
      * 自定义配置上传文件保存路径

@@ -32,12 +32,17 @@ public class BeeWebInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String url = request.getServletPath();
+        // 黑名单拦截
+        if (Checker.startsWith(url, BeeConfigConsts.BLACK_LIST_PREFIX)) {
+            request.getRequestDispatcher("/error/banned").forward(request, response);
+            return false;
+        }
         // 白名单，不进行拦截
         if (Checker.startsWith(url, BeeConfigConsts.WHITE_LIST_PREFIX)) {
             return true;
         }
         // 当URL匹配映射路径并且不是登录页面时进行拦截
-        if (Checker.startsWith(url, BeeConfigConsts.BLACK_LIST_PREFIX)) {
+        if (Checker.startsWith(url, BeeConfigConsts.INTERCEPTOR_LIST_PREFIX)) {
             String token = request.getHeader("token");
             User user = userRedisTemplate.opsForValue().get(Checker.checkNull(token));
             if (Checker.isNull(user)) {
