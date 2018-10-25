@@ -81,8 +81,10 @@ public class DailyServiceImpl implements DailyService {
                     dayList.add(day);
                 }
                 monthVO.setDays(dayList);
+                monthVOList.add(monthVO);
             }
             dateVO.setMonths(monthVOList);
+            dateVOList.add(dateVO);
         }
         return dateVOList;
     }

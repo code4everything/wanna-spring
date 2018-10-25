@@ -17,4 +17,6 @@ public class TestConsts {
     public static final String BIO = "这是一条测试信息";
 
     public static final String NICKNAME = "ease";
+
+    public static final Integer YEAR = 2018;
 }
