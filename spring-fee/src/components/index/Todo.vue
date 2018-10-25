@@ -3,6 +3,20 @@
   <div class="row">
     <div class="text-left rounded bg-light col-10 offset-1 col-sm-11 offset-sm-1">
       <br/>
+      <!--添加任务-->
+      <div class="row">
+        <div class="col-sm-12 col-12 border border-top-0 border-left-0 border-right-0 border-bottom"
+             style="padding-bottom: 10px;margin-bottom: 10px;">
+          <div class="pretty p-default p-round p-locked">
+            <input type="checkbox"/>
+            <div class="state p-success-o">
+              <label></label>
+            </div>
+          </div>
+          <input type="text" class="border-0 bg-light todo-item w-75" v-model="content" :placeholder="todoTip"/>
+        </div>
+      </div>
+      <!--任务列表-->
       <div v-for="(todo,index) in todos" :key="index" class="row todo" :data-index="index">
         <div class="col-sm-12 col-12" :id="idPrefix+index">
           <div class="pretty p-default p-round p-jelly">
@@ -11,8 +25,8 @@
               <label></label>
             </div>
           </div>
-          <input type="text" :class="['border-0 bg-light',todo.status==='1'?'deleted':'']"
-                 style="outline: none;font-size: 18px;" v-model="todo.content"/>
+          <input type="text" :class="['border-0 bg-light todo-item w-75',todo.status==='1'?'deleted':'']"
+                 v-model="todo.content"/>
         </div>
       </div>
       <br/>
@@ -26,6 +40,8 @@ export default {
   name: 'Todo',
   data () {
     return {
+      todoTip: '添加任务',
+      content: '',
       idPrefix: 'todo-item-',
       defaultTodo: {content: '测试', createTime: '', doingDate: '', doneTime: '', id: '', status: '0'},
       todos: []
@@ -78,5 +94,10 @@ export default {
 
   .deleted {
     text-decoration: line-through;
+  }
+
+  .todo-item {
+    outline: none;
+    font-size: 18px;
   }
 </style>
