@@ -1,6 +1,6 @@
 package org.code4everything.springbee.service.impl;
 
-import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.IdUtil;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.NetUtils;
 import com.zhazhapan.util.annotation.AopLog;
@@ -26,18 +26,11 @@ public class UserServiceImpl implements UserService {
 
     private final UserDAO userDAO;
 
-    private final String privateKey;
-
-    private final RedisTemplate<String, String> stringRedisTemplate;
-
     private final RedisTemplate<String, User> userRedisTemplate;
 
     @Autowired
-    public UserServiceImpl(UserDAO userDAO, RedisTemplate<String, String> stringRedisTemplate, String privateKey,
-                           RedisTemplate<String, User> userRedisTemplate) {
+    public UserServiceImpl(UserDAO userDAO, RedisTemplate<String, User> userRedisTemplate) {
         this.userDAO = userDAO;
-        this.stringRedisTemplate = stringRedisTemplate;
-        this.privateKey = privateKey;
         this.userRedisTemplate = userRedisTemplate;
     }
 
@@ -59,7 +52,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(registerDTO.getEmail());
         user.setPassword(encryptToMd5(registerDTO.getPassword()));
         user.setCreateTime(System.currentTimeMillis());
-        user.setId(RandomUtil.simpleUUID());
+        user.setId(IdUtil.simpleUUID());
         user.setStatus("7");
         userDAO.save(user);
     }
@@ -89,14 +82,12 @@ public class UserServiceImpl implements UserService {
     @AopLog("用户登录")
     public String login(String loginName, String password) {
         User user = userDAO.getByUsernameOrEmail(loginName, loginName);
-        if (Checker.isNotNull(user)) {
-            if (user.getPassword().equals(encryptToMd5(password))) {
-                String token = NetUtils.generateToken();
-                userRedisTemplate.opsForValue().set(token, user, BeeConfigConsts.TOKEN_EXPIRED, TimeUnit.MINUTES);
-                user.setLoginTime(System.currentTimeMillis());
-                userDAO.save(user);
-                return token;
-            }
+        if (Checker.isNotNull(user) && user.getPassword().equals(encryptToMd5(password))) {
+            String token = NetUtils.generateToken();
+            userRedisTemplate.opsForValue().set(token, user, BeeConfigConsts.TOKEN_EXPIRED, TimeUnit.MINUTES);
+            user.setLoginTime(System.currentTimeMillis());
+            userDAO.save(user);
+            return token;
         }
         return null;
     }
