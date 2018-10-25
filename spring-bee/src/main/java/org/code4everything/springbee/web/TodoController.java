@@ -13,7 +13,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Date;
 import java.util.List;
 
 /**
@@ -69,14 +68,14 @@ public class TodoController extends BeeBaseController {
 
     @GetMapping("/date/list")
     @ApiOperation("列出所有日期")
-    public ResultObject<List<Date>> listDate() {
+    public ResultObject<List<String>> listDate() {
         return parseResult("没有找到数据", todoService.listDate(getUserId()), false);
     }
 
     @GetMapping("/list")
     @ApiOperation("列出事项")
-    @ApiImplicitParam(name = "date", value = "日期", required = true, dataTypeClass = Date.class)
-    public ResultObject<List<Todo>> listTodo(@RequestParam Date date) {
+    @ApiImplicitParam(name = "date", value = "日期", required = true)
+    public ResultObject<List<Todo>> listTodo(@RequestParam String date) {
         return parseResult("该日期没有数据", todoService.listTodo(date));
     }
 }

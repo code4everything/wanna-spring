@@ -2,7 +2,6 @@ package org.code4everything.springbee.service;
 
 import org.code4everything.springbee.domain.Todo;
 
-import java.sql.Date;
 import java.util.List;
 
 /**
@@ -11,9 +10,9 @@ import java.util.List;
  */
 public interface TodoService {
 
-    List<Todo> listTodo(Date doingDate);
+    List<Todo> listTodo(String doingDate);
 
-    List<Date> listDate(String userId);
+    List<String> listDate(String userId);
 
     Todo updateTodoStatus(String todoId, String status);
 

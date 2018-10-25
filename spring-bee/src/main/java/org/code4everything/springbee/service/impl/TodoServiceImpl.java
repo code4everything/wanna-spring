@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,18 +37,18 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     @AopLog("列出指定日期的待办事项")
-    public List<Todo> listTodo(Date doingDate) {
+    public List<Todo> listTodo(String doingDate) {
         return todoDAO.getByDoingDate(doingDate);
     }
 
     @Override
     @AopLog("列出所有待办事项日期")
-    public List<Date> listDate(String userId) {
+    public List<String> listDate(String userId) {
         BasicDBObject dbObject = new BasicDBObject("userId", userId);
         MongoCollection<Document> collection = mongoTemplate.getCollection("todo");
-        DistinctIterable<Date> iterable = collection.distinct("doingDate", dbObject, Date.class);
-        List<Date> dateList = new ArrayList<>(128);
-        for (Date date : iterable) {
+        DistinctIterable<String> iterable = collection.distinct("doingDate", dbObject, String.class);
+        List<String> dateList = new ArrayList<>(128);
+        for (String date : iterable) {
             dateList.add(date);
         }
         return dateList;
