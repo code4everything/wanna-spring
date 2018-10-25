@@ -19,4 +19,8 @@ public class TestConsts {
     public static final String NICKNAME = "ease";
 
     public static final Integer YEAR = 2018;
+
+    public static final String END_TIME = "12:00";
+
+    public static final String START_TIME = "11:00";
 }
