@@ -101,9 +101,7 @@ export default {
   methods: {
     toEdit: function () {
       this.editable = true
-      setTimeout(function () {
-        $('#category-edit').focus()
-      }, 200)
+      setTimeout(() => $('#category-edit').focus(), 200)
     },
     saveCategory: function () {
       let self = this
