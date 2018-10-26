@@ -110,6 +110,7 @@ export default {
     },
     saveDaily: function () {
       if ($.isNumeric(this.daily.score)) {
+        this.daily.date = this.date
         layer.load(1)
         if (validator.isEmpty(this.daily.id)) {
           requestSaveDaily(this.daily).then(data => this.handleDailyReturnData(data))
@@ -138,7 +139,6 @@ export default {
         if (data.code === 200) {
           this.daily = data.data
         } else {
-          this.daily.date = this.date
           layer.alert(data.message)
         }
       })

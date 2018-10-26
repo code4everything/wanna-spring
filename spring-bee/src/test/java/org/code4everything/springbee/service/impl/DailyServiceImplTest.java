@@ -70,7 +70,7 @@ public class DailyServiceImplTest extends BaseTest {
     public void exists1() {
         DailyDTO dailyDTO = new DailyDTO();
         dailyDTO.setDate(new Date(System.currentTimeMillis()));
-        dailyService.exists(getUser().getId(), dailyDTO);
+        dailyService.exists(getUser().getId(), "", dailyDTO);
     }
 
     @Test
