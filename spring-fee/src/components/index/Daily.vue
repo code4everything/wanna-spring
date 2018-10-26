@@ -100,10 +100,14 @@ export default {
       }
     },
     showModal: function () {
-      this.currentIndex = $(window.event.srcElement).parents('.data').attr('data-index')
-      let daily = utils.isNull(this.currentIndex) ? this.defaultDailyDetail : this.dailyDetail[this.currentIndex]
-      this.currentDaily = utils.clone(daily)
-      $('#daily-modal').modal('show')
+      if (validator.isEmpty(this.daily.id)) {
+        layer.alert('请先保存日程记录')
+      } else {
+        this.currentIndex = $(window.event.srcElement).parents('.data').attr('data-index')
+        let daily = utils.isNull(this.currentIndex) ? this.defaultDailyDetail : this.dailyDetail[this.currentIndex]
+        this.currentDaily = utils.clone(daily)
+        $('#daily-modal').modal('show')
+      }
     },
     remove: function () {
       console.info('call remove method')
@@ -129,6 +133,14 @@ export default {
       } else {
         layer.alert(data.message)
       }
+    },
+    updateDailies: function (dailies) {
+      $('#daily-modal').modal('hide')
+      if (utils.isNull(this.currentIndex)) {
+        this.dailyDetail.unshift(dailies)
+      } else {
+        this.dailyDetail.splice(this.currentIndex, 1, dailies)
+      }
     }
   },
   watch: {
@@ -142,7 +154,6 @@ export default {
           layer.alert(data.message)
         }
       })
-      this.dailyDetail = [utils.clone(this.defaultDailyDetail)]
     }
   },
   mounted: function () {
