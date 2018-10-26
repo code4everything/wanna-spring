@@ -28,7 +28,7 @@ public interface DailyService {
     Daily saveDaily(String userId, DailyDTO dailyDTO) throws InvocationTargetException, NoSuchMethodException,
             InstantiationException, IllegalAccessException;
 
-    boolean exists(String userId, DailyDTO dailyDTO);
+    boolean exists(String userId, String dailyId, DailyDTO dailyDTO);
 
     Daily updateDaily(String dailyId, DailyDTO dailyDTO) throws InvocationTargetException, IllegalAccessException;
 }

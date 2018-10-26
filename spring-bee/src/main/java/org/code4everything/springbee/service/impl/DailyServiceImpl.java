@@ -134,9 +134,10 @@ public class DailyServiceImpl implements DailyService {
 
     @Override
     @AopLog("检测日程记录是否存在")
-    public boolean exists(String userId, DailyDTO dailyDTO) {
+    public boolean exists(String userId, String dailyId, DailyDTO dailyDTO) {
         SimpleDateTime date = new SimpleDateTime(dailyDTO.getDate());
-        return dailyDAO.existsByUserIdAndYearAndMonthAndDay(userId, date.getYear(), date.getMonth(), date.getDay());
+        Daily daily = dailyDAO.getByUserIdAndYearAndMonthAndDay(userId, date.getYear(), date.getMonth(), date.getDay());
+        return Checker.isNotNull(daily) && !dailyId.equals(daily.getId());
     }
 
     @Override

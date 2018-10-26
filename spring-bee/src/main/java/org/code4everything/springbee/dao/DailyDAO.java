@@ -15,8 +15,6 @@ public interface DailyDAO extends MongoRepository<Daily, String> {
 
     Daily getById(String dailyId);
 
-    boolean existsByUserIdAndYearAndMonthAndDay(String userId, Integer year, Integer month, Integer day);
-
     List<Daily> getByUserIdAndYearAndMonth(String userId, Integer year, Integer month);
 
     Daily getByUserIdAndYearAndMonthAndDay(String userId, Integer year, Integer month, Integer day);
