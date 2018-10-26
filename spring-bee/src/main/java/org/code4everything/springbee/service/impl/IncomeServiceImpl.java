@@ -64,11 +64,17 @@ public class IncomeServiceImpl implements IncomeService {
             }
             if (Checker.isNotEmpty(queryIncomeDTO.getStart())) {
                 SimpleDateTime date = new SimpleDateTime(queryIncomeDTO.getStart());
-                criteriaList.add(Criteria.where(y).gte(date.getYear()).and(m).gte(date.getMonth()).and(d).gte(date.getDay()));
+                Criteria dayCriteria = Criteria.where(m).is(date.getMonth()).and(d).gte(date.getDay());
+                Criteria join = new Criteria().orOperator(Criteria.where(m).gt(date.getMonth()), dayCriteria);
+                Criteria monthCriteria = new Criteria().andOperator(Criteria.where(y).is(date.getYear()), join);
+                criteriaList.add(new Criteria().orOperator(Criteria.where(y).gt(date.getYear()), monthCriteria));
             }
             if (Checker.isNotEmpty(queryIncomeDTO.getEnd())) {
                 SimpleDateTime date = new SimpleDateTime(queryIncomeDTO.getEnd());
-                criteriaList.add(Criteria.where(y).lte(date.getYear()).and(m).lte(date.getMonth()).and(d).lte(date.getDay()));
+                Criteria dayCriteria = Criteria.where(m).is(date.getMonth()).and(d).lte(date.getDay());
+                Criteria join = new Criteria().orOperator(Criteria.where(m).lt(date.getMonth()), dayCriteria);
+                Criteria monthCriteria = new Criteria().andOperator(Criteria.where(y).is(date.getYear()), join);
+                criteriaList.add(new Criteria().orOperator(Criteria.where(y).lt(date.getYear()), monthCriteria));
             }
             if (Checker.isNotEmpty(criteriaList)) {
                 criteria.andOperator(criteriaList.toArray(new Criteria[0]));

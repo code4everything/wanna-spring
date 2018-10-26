@@ -123,7 +123,6 @@ export default {
       }
     },
     saveIncome: function () {
-      let self = this
       if (dayjs(this.income.date).isValid() && $.isNumeric(this.income.money)) {
         if (validator.isEmpty(this.income.category)) {
           this.income.category = this.categories[0]
