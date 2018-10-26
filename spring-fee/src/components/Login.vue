@@ -49,7 +49,6 @@ export default {
         layer.load(1)
         requestLogin({loginName: loginName, password: password}).then(data => {
           layer.closeAll()
-          console.info(data)
           if (data.code === 200) {
             cookie.set('token', data.data)
             window.location = app.data().path.index

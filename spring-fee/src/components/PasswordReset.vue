@@ -75,7 +75,6 @@ export default {
         layer.load(1)
         requestVerifyCode(email).then(data => {
           layer.closeAll()
-          console.info(data)
           layer.alert(data.message)
         })
       }
@@ -85,7 +84,6 @@ export default {
       let email = $('#register-name').val()
       if (vcode.length === 6 && validator.isEmail(email)) {
         requestValidateVerifyCode({email: email, vcode: vcode}).then(data => {
-          console.info(data)
           this.verifyCodeErrorTip = data.code === 200 ? '' : '验证码错误'
         })
       }
@@ -100,7 +98,6 @@ export default {
         layer.load(1)
         requestResetPassword({email: email, newPassword: newPassword, vcode: vcode}).then(data => {
           layer.closeAll()
-          console.info(data)
           if (data.code === 200) {
             window.location = this.loginPath
           } else {

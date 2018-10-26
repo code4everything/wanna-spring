@@ -130,7 +130,7 @@ public class IncomeServiceImpl implements IncomeService {
         return asset.getId();
     }
 
-    private Asset getAssetByUserId(String userId) {
+    private synchronized Asset getAssetByUserId(String userId) {
         // TODO: 2018/9/24 此方法调用频繁，需将结果放入缓存中
         Asset asset = assetDAO.getByUserId(userId);
         if (Checker.isNull(asset)) {
