@@ -7,6 +7,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.zhazhapan.util.BeanUtils;
 import com.zhazhapan.util.Checker;
+import com.zhazhapan.util.ListUtils;
 import com.zhazhapan.util.annotation.AopLog;
 import com.zhazhapan.util.model.SimpleDateTime;
 import org.bson.Document;
@@ -22,6 +23,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,12 +92,20 @@ public class DailyServiceImpl implements DailyService {
     }
 
     @Override
+    @AopLog("查找日程记录")
+    public Daily getDaily(String userId, Date date) {
+        SimpleDateTime query = new SimpleDateTime(date);
+        return dailyDAO.getByUserIdAndYearAndMonthAndDay(userId, query.getYear(), query.getMonth(), query.getDay());
+    }
+
+    @Override
     @AopLog("列出日程记录")
     public List<Daily> listDaily(String userId, QueryDailyDTO query) {
         boolean queryMonth = query.getMonth() > 0;
         boolean queryDay = query.getDay() > 0;
         if (queryMonth && queryDay) {
-            return dailyDAO.getByUserIdAndYearAndMonthAndDay(userId, query.getYear(), query.getMonth(), query.getDay());
+            return ListUtils.getArrayList(dailyDAO.getByUserIdAndYearAndMonthAndDay(userId, query.getYear(),
+                    query.getMonth(), query.getDay()));
         } else if (queryMonth) {
             return dailyDAO.getByUserIdAndYearAndMonth(userId, query.getYear(), query.getMonth());
         } else if (queryDay) {

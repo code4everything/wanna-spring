@@ -19,7 +19,7 @@ public interface DailyDAO extends MongoRepository<Daily, String> {
 
     List<Daily> getByUserIdAndYearAndMonth(String userId, Integer year, Integer month);
 
-    List<Daily> getByUserIdAndYearAndMonthAndDay(String userId, Integer year, Integer month, Integer day);
+    Daily getByUserIdAndYearAndMonthAndDay(String userId, Integer year, Integer month, Integer day);
 
     List<Daily> getByUserIdAndYearAndDay(String userId, Integer year, Integer day);
 

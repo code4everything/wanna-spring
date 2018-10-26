@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -48,6 +49,12 @@ public class DailyController extends BeeBaseController {
             return parseResult("添加失败", dailyService.saveDaily(getUserId(), daily));
         }
         return result.resultObject;
+    }
+
+    @GetMapping("/get")
+    @ApiImplicitParam(name = "date", value = "日期", required = true, dataTypeClass = Date.class)
+    public ResultObject<Daily> getDaily(@RequestParam Date date) {
+        return parseResult("该日期还没有记录哦", dailyService.getDaily(getUserId(), date));
     }
 
     @DeleteMapping("/remove")
