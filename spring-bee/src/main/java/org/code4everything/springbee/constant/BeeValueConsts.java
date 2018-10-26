@@ -6,7 +6,11 @@ package org.code4everything.springbee.constant;
  */
 public class BeeValueConsts {
 
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
+
     public static final int THIRTY_MINUTES = 30 * 60;
 
     public static final String HIDDEN_DATA = "******";
+
+    private BeeValueConsts() {}
 }

@@ -5,6 +5,7 @@ import com.zhazhapan.util.BeanUtils;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.annotation.AopLog;
 import com.zhazhapan.util.model.SimpleDateTime;
+import org.code4everything.springbee.constant.BeeValueConsts;
 import org.code4everything.springbee.dao.AssetDAO;
 import org.code4everything.springbee.dao.IncomeDAO;
 import org.code4everything.springbee.domain.Asset;
@@ -63,14 +64,14 @@ public class IncomeServiceImpl implements IncomeService {
                 criteriaList.add(Criteria.where("category").is(queryIncomeDTO.getCategory()));
             }
             if (Checker.isNotEmpty(queryIncomeDTO.getStart())) {
-                SimpleDateTime date = new SimpleDateTime(queryIncomeDTO.getStart());
+                SimpleDateTime date = new SimpleDateTime(queryIncomeDTO.getStart(), BeeValueConsts.DATE_FORMAT);
                 Criteria dayCriteria = Criteria.where(m).is(date.getMonth()).and(d).gte(date.getDay());
                 Criteria join = new Criteria().orOperator(Criteria.where(m).gt(date.getMonth()), dayCriteria);
                 Criteria monthCriteria = new Criteria().andOperator(Criteria.where(y).is(date.getYear()), join);
                 criteriaList.add(new Criteria().orOperator(Criteria.where(y).gt(date.getYear()), monthCriteria));
             }
             if (Checker.isNotEmpty(queryIncomeDTO.getEnd())) {
-                SimpleDateTime date = new SimpleDateTime(queryIncomeDTO.getEnd());
+                SimpleDateTime date = new SimpleDateTime(queryIncomeDTO.getEnd(), BeeValueConsts.DATE_FORMAT);
                 Criteria dayCriteria = Criteria.where(m).is(date.getMonth()).and(d).lte(date.getDay());
                 Criteria join = new Criteria().orOperator(Criteria.where(m).lt(date.getMonth()), dayCriteria);
                 Criteria monthCriteria = new Criteria().andOperator(Criteria.where(y).is(date.getYear()), join);
