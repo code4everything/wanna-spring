@@ -3,6 +3,7 @@ target/*
 **/target/**/*.class
 !.mvn/wrapper/maven-wrapper.jar
 .mvn/
+*/logs/*
 
 # ---> macOS
 *.DS_Store
