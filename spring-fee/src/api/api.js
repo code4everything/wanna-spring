@@ -40,6 +40,22 @@ axios.interceptors.response.use(response => {
   return Promise.resolve(error.response)
 })
 
+export const requestRemoveDailies = dailiesId => {
+  return axios.delete(`/user/daily/detail/remove?dailiesId=${dailiesId}`)
+}
+
+export const requestListDailies = dailyId => {
+  return axios.get(`/user/daily/detail/list?dailyId=${dailyId}`)
+}
+
+export const requestUpdateDailies = (dailiesId, params) => {
+  return axios.put(`/user/daily/detail/${dailiesId}/update`, params)
+}
+
+export const requestSaveDailies = (dailyId, params) => {
+  return axios.post(`/user/daily/detail/append/${dailyId}`, params)
+}
+
 export const requestGetDaily = date => {
   return axios.get(`/user/daily/get?date=${date}`)
 }

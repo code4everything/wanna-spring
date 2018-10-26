@@ -49,6 +49,9 @@
 
 <script>/* eslint-disable */
 import utils from '../../assets/js/utils'
+import {requestSaveDailies, requestUpdateDailies} from '../../api/api'
+import validator from '../../../static/js/validator.min'
+import layer from '../../../static/js/layer'
 
 export default {
   name: 'DailyModal',
@@ -67,7 +70,23 @@ export default {
   props: ['dailies'],
   methods: {
     saveDailies: function () {
-      console.info('call save method')
+      if (validator.isEmpty(this.dailies.startTime) || validator.isEmpty(this.dailies.endTime) || validator.isEmpty(this.dailies.content)) {
+        layer.alert('数据不能为空')
+      } else {
+        if (validator.isEmpty(this.dailies.id)) {
+          requestSaveDailies(this.$parent.daily.id, this.dailies).then(data => this.handleDailiesReturnData(data))
+        } else {
+          requestUpdateDailies(this.dailies.id, this.dailies).then(data => this.handleDailiesReturnData(data))
+        }
+      }
+    },
+    handleDailiesReturnData: function (data) {
+      layer.closeAll()
+      if (data.code === 200) {
+        this.$parent.updateDailies(data.data)
+      } else {
+        layer.alert(data.message)
+      }
     }
   },
   mounted: function () {

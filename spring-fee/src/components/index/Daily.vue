@@ -68,7 +68,13 @@
 import utils from '../../assets/js/utils'
 import DailyModal from '../modal/DailyModal'
 import validator from '../../../static/js/validator.min'
-import {requestGetDaily, requestSaveDaily, requestUpdateDaily} from '../../api/api'
+import {
+  requestGetDaily,
+  requestListDailies,
+  requestRemoveDailies,
+  requestSaveDaily,
+  requestUpdateDaily
+} from '../../api/api'
 import layer from '../../../static/js/layer'
 
 export default {
@@ -110,7 +116,27 @@ export default {
       }
     },
     remove: function () {
-      console.info('call remove method')
+      let index = $(window.event.srcElement).parents('.data').attr('data-index')
+      if (utils.isNull(index)) {
+        index = this.currentIndex
+      }
+      if (utils.isNotNull(index)) {
+        let self = this
+        layer.confirm('是否确定删除索引位置位于 “' + (parseInt(index) + 1) + '” 的日程记录', {
+          btn: ['确定', '取消']
+        }, function () {
+          layer.load(1)
+          requestRemoveDailies(self.dailyDetail[index].id).then(data => {
+            layer.closeAll()
+            if (data.code === 200) {
+              self.dailyDetail.splice(index, 1)
+            } else {
+              layer.closeAll()
+            }
+          })
+          layer.closeAll()
+        })
+      }
     },
     saveDaily: function () {
       if ($.isNumeric(this.daily.score)) {
@@ -150,6 +176,13 @@ export default {
         layer.closeAll()
         if (data.code === 200) {
           this.daily = data.data
+          requestListDailies(data.data.id).then(data => {
+            if (data.code === 200) {
+              this.dailyDetail = data.data
+            } else {
+              layer.alert(data.message)
+            }
+          })
         } else {
           layer.alert(data.message)
         }
