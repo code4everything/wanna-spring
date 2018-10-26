@@ -4,14 +4,6 @@ import cookie from 'js-cookie'
 
 const host = 'http://localhost:8099'
 
-let token = cookie.get('token')
-
-export default {
-  resetToken: function (newToken) {
-    token = newToken
-  }
-}
-
 axios.defaults.timeout = 10000
 
 axios.interceptors.request.use(config => {
@@ -19,7 +11,7 @@ axios.interceptors.request.use(config => {
   console.info(`request url -> ${config.url}`)
   config.headers = {
     'Content-Type': 'application/json',
-    token: token
+    token: cookie.get('token')
   }
   return config
 }, error => {
@@ -39,6 +31,26 @@ axios.interceptors.response.use(response => {
   }
   return Promise.resolve(error.response)
 })
+
+export const requestRemoveTodo = id => {
+  return axios.delete(`/user/todo/remove?todoId=${id}`)
+}
+
+export const requestUpdateTodo = (id, content) => {
+  return axios.put(`/user/todo/update?todoId=${id}&content=${content}`)
+}
+
+export const requestToggleTodoStatus = (id, status) => {
+  return axios.put(`/user/todo/status/toggle?todoId=${id}&status=${status}`)
+}
+
+export const requestListTodo = date => {
+  return axios.get(`/user/todo/list?date=${date}`)
+}
+
+export const requestSaveTodo = (doingDate, content) => {
+  return axios.post(`/user/todo/create?doingDate=${doingDate}&content=${content}`)
+}
 
 export const requestRemoveDailies = dailiesId => {
   return axios.delete(`/user/daily/detail/remove?dailiesId=${dailiesId}`)
