@@ -65,15 +65,15 @@ public class IncomeServiceImpl implements IncomeService {
             }
             if (Checker.isNotEmpty(queryIncomeDTO.getStart())) {
                 SimpleDateTime date = new SimpleDateTime(queryIncomeDTO.getStart(), BeeValueConsts.DATE_FORMAT);
-                Criteria dayCriteria = Criteria.where(m).is(date.getMonth()).and(d).gte(date.getDay());
-                Criteria join = new Criteria().orOperator(Criteria.where(m).gt(date.getMonth()), dayCriteria);
+                Criteria dayCriteria = Criteria.where(m).is(date.getMonth() + 1).and(d).gte(date.getDay());
+                Criteria join = new Criteria().orOperator(Criteria.where(m).gt(date.getMonth() + 1), dayCriteria);
                 Criteria monthCriteria = new Criteria().andOperator(Criteria.where(y).is(date.getYear()), join);
                 criteriaList.add(new Criteria().orOperator(Criteria.where(y).gt(date.getYear()), monthCriteria));
             }
             if (Checker.isNotEmpty(queryIncomeDTO.getEnd())) {
                 SimpleDateTime date = new SimpleDateTime(queryIncomeDTO.getEnd(), BeeValueConsts.DATE_FORMAT);
-                Criteria dayCriteria = Criteria.where(m).is(date.getMonth()).and(d).lte(date.getDay());
-                Criteria join = new Criteria().orOperator(Criteria.where(m).lt(date.getMonth()), dayCriteria);
+                Criteria dayCriteria = Criteria.where(m).is(date.getMonth() + 1).and(d).lte(date.getDay());
+                Criteria join = new Criteria().orOperator(Criteria.where(m).lt(date.getMonth() + 1), dayCriteria);
                 Criteria monthCriteria = new Criteria().andOperator(Criteria.where(y).is(date.getYear()), join);
                 criteriaList.add(new Criteria().orOperator(Criteria.where(y).lt(date.getYear()), monthCriteria));
             }
@@ -97,6 +97,7 @@ public class IncomeServiceImpl implements IncomeService {
         Long changeValue = incomeDTO.getMoney() * incomeDTO.getType() - income.getMoney() * income.getType();
         BeanUtils.bean2Another(incomeDTO, income);
         BeanUtils.bean2Another(new SimpleDateTime(incomeDTO.getDate()), income);
+        income.setMonth(income.getMonth() + 1);
         updateAssetBalance(userId, changeValue);
         return incomeDAO.save(income);
     }
@@ -117,6 +118,7 @@ public class IncomeServiceImpl implements IncomeService {
             InvocationTargetException, InstantiationException {
         Income income = BeanUtils.bean2Another(incomeDTO, Income.class);
         BeanUtils.bean2Another(new SimpleDateTime(incomeDTO.getDate()), income);
+        income.setMonth(income.getMonth() + 1);
         income.setCreateTime(System.currentTimeMillis());
         income.setId(RandomUtil.simpleUUID());
         income.setAssetId(updateAssetBalance(userId, income.getMoney() * income.getType()));
