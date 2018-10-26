@@ -28,7 +28,8 @@
           <button class="btn btn-info" @click="showModal"><i class="glyphicon glyphicon-plus-sign"></i>
             {{saveDetailTip}}
           </button>
-          <button class="btn btn-primary"><i class="glyphicon glyphicon-floppy-disk"></i> {{saveTip}}</button>
+          <button class="btn btn-primary" @click="saveDaily"><i class="glyphicon glyphicon-floppy-disk"></i> {{saveTip}}
+          </button>
         </div>
       </div>
       <br/>
@@ -66,6 +67,9 @@
 <script>/* eslint-disable */
 import utils from '../../assets/js/utils'
 import DailyModal from '../modal/DailyModal'
+import validator from '../../../static/js/validator.min'
+import {requestGetDaily, requestSaveDaily, requestUpdateDaily} from '../../api/api'
+import layer from '../../../static/js/layer'
 
 export default {
   name: 'Daily',
@@ -80,9 +84,8 @@ export default {
       weatherTip: '天气',
       editTip: '编辑',
       removeTip: '删除',
-      defaultDaily: {content: '', id: '', score: '', weather: ''},
       defaultDailyDetail: {content: '', dailyId: '', endTime: '', id: '', startTime: ''},
-      daily: {},
+      daily: {id: '', score: '', weather: '', content: '', date: ''},
       ths: ['编号', '开始', '结束', '记录', '动作'],
       dailyDetail: [],
       currentIndex: 0,
@@ -104,11 +107,41 @@ export default {
     },
     remove: function () {
       console.info('call remove method')
+    },
+    saveDaily: function () {
+      if ($.isNumeric(this.daily.score)) {
+        layer.load(1)
+        if (validator.isEmpty(this.daily.id)) {
+          requestSaveDaily(this.daily).then(data => this.handleDailyReturnData(data))
+        } else {
+          requestUpdateDaily(this.daily).then(data => this.handleDailyReturnData(data))
+        }
+      } else {
+        layer.alert('数据不能为空')
+      }
+    },
+    handleDailyReturnData: function (data) {
+      layer.closeAll()
+      if (data.code === 200) {
+        this.daily = data.data
+        layer.alert('保存成功')
+      } else {
+        layer.alert(data.message)
+      }
     }
   },
   watch: {
     date: function () {
-      this.daily = utils.clone(this.defaultDaily)
+      layer.load(1)
+      requestGetDaily(this.date).then(data => {
+        layer.closeAll()
+        if (data.code === 200) {
+          this.daily = data.data
+        } else {
+          this.daily.date = this.date
+          layer.alert(data.message)
+        }
+      })
       this.dailyDetail = [utils.clone(this.defaultDailyDetail)]
     }
   },

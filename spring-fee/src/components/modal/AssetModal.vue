@@ -131,13 +131,9 @@ export default {
         this.income.money = Number(this.income.money).toFixed(2) * 100
         layer.load(1)
         if (validator.isEmpty(this.income.id)) {
-          requestSaveIncome(this.income).then(data => {
-            this.handleIncomeReturnData(data)
-          })
+          requestSaveIncome(this.income).then(data => this.handleIncomeReturnData(data))
         } else {
-          requestUpdateIncome(this.income.id, this.income).then(data => {
-            this.handleIncomeReturnData(data)
-          })
+          requestUpdateIncome(this.income.id, this.income).then(data => this.handleIncomeReturnData(data))
         }
       } else {
         layer.alert('数据格式不合法')

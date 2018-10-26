@@ -40,6 +40,18 @@ axios.interceptors.response.use(response => {
   return Promise.resolve(error.response)
 })
 
+export const requestGetDaily = date => {
+  return axios.get(`/user/daily/get?date=${date}`)
+}
+
+export const requestUpdateDaily = (params) => {
+  return axios.put(`/user/daily/${params.id}/update`, params)
+}
+
+export const requestSaveDaily = params => {
+  return axios.post('/user/daily/create', params)
+}
+
 export const requestRemoveIncome = id => {
   return axios.delete(`/user/asset/income/remove?incomeId=${id}`)
 }
