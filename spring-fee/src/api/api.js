@@ -7,7 +7,7 @@ const host = 'http://localhost:8099'
 axios.defaults.timeout = 10000
 
 axios.interceptors.request.use(config => {
-  config.url = host + config.url
+  config.url = host + config.url + (config.url.includes('?') ? '&' : '?') + 'timestamp=' + new Date().getTime()
   console.info(`request url -> ${config.url}`)
   config.headers = {
     'Content-Type': 'application/json',
