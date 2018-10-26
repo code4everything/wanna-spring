@@ -95,7 +95,7 @@ public class DailyServiceImpl implements DailyService {
     @AopLog("查找日程记录")
     public Daily getDaily(String userId, Date date) {
         SimpleDateTime query = new SimpleDateTime(date);
-        return dailyDAO.getByUserIdAndYearAndMonthAndDay(userId, query.getYear(), query.getMonth(), query.getDay());
+        return dailyDAO.getByUserIdAndYearAndMonthAndDay(userId, query.getYear(), query.getMonth() + 1, query.getDay());
     }
 
     @Override
@@ -136,7 +136,8 @@ public class DailyServiceImpl implements DailyService {
     @AopLog("检测日程记录是否存在")
     public boolean exists(String userId, String dailyId, DailyDTO dailyDTO) {
         SimpleDateTime date = new SimpleDateTime(dailyDTO.getDate());
-        Daily daily = dailyDAO.getByUserIdAndYearAndMonthAndDay(userId, date.getYear(), date.getMonth(), date.getDay());
+        Daily daily = dailyDAO.getByUserIdAndYearAndMonthAndDay(userId, date.getYear(), date.getMonth() + 1,
+                date.getDay());
         return Checker.isNotNull(daily) && !dailyId.equals(daily.getId());
     }
 
@@ -158,6 +159,8 @@ public class DailyServiceImpl implements DailyService {
 
     private Daily parseDailyDTO(DailyDTO dailyDTO, Daily daily) throws InvocationTargetException,
             IllegalAccessException {
-        return BeanUtils.bean2Another(new SimpleDateTime(dailyDTO.getDate()), daily);
+        BeanUtils.bean2Another(new SimpleDateTime(dailyDTO.getDate()), daily);
+        daily.setMonth(daily.getMonth() + 1);
+        return daily;
     }
 }
