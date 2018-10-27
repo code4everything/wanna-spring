@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
         User user = userDAO.getByUsernameOrEmail(loginName, loginName);
         if (Checker.isNotNull(user) && user.getPassword().equals(encryptToMd5(password))) {
             String token = NetUtils.generateToken();
-            userRedisTemplate.opsForValue().set(token, user, BeeConfigConsts.TOKEN_EXPIRED, TimeUnit.MINUTES);
+            userRedisTemplate.opsForValue().set(token, user, BeeConfigConsts.TOKEN_EXPIRED, TimeUnit.SECONDS);
             user.setLoginTime(System.currentTimeMillis());
             userDAO.save(user);
             return token;
