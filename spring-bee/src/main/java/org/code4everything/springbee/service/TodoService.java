@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface TodoService {
 
+    List<Todo> listNotDoneBeforeDate(String userId, String date);
+
     List<Todo> listTodo(String doingDate);
 
     List<String> listDate(String userId);

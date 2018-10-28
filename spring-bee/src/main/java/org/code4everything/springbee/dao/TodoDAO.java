@@ -13,6 +13,8 @@ import java.util.List;
 @Repository
 public interface TodoDAO extends MongoRepository<Todo, String> {
 
+    List<Todo> getByUserIdAndStatusAndDoingDateLessThan(String userId, String status, String doingDate);
+
     Todo getById(String todoId);
 
     List<Todo> getByDoingDate(String doingDate);
