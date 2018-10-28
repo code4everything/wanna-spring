@@ -1,3 +1,4 @@
+<!--suppress HtmlFormInputWithoutLabel -->
 <template>
   <div class="row">
     <div class="col-sm-4 col-12">
@@ -52,7 +53,6 @@
 
 <!--suppress JSCheckFunctionSignatures -->
 <script>/* eslint-disable */
-
 import utils from '../../assets/js/utils'
 import dayjs from 'dayjs'
 
@@ -84,6 +84,27 @@ export default {
     },
     dateChange: function () {
       this.date = $(window.event.srcElement).text()
+      this.changeActiveDate()
+    },
+    changeDate: function (leftOffset, rightOffset) {
+      if (!this.isMobile) {
+        this.dateStart = dayjs().add(leftOffset, 'day').format('YYYY-MM-DD')
+        this.dateEnd = dayjs().add(rightOffset, 'day').format('YYYY-MM-DD')
+        setTimeout(() => this.changeActiveDate(), 500)
+      }
+    },
+    changeActiveDate: function () {
+      if (!this.isMobile) {
+        let className = 'list-group-item-primary'
+        let self = this
+        $('.list-group-item').each(function () {
+          if ($(this).text() === self.date) {
+            $(this).addClass(className)
+          } else {
+            $(this).removeClass(className)
+          }
+        })
+      }
     }
   },
   mounted: function () {

@@ -91,11 +91,13 @@ export default {
       editTip: '编辑',
       removeTip: '删除',
       defaultDailyDetail: {content: '', dailyId: '', endTime: '', id: '', startTime: ''},
-      daily: {id: '', score: '', weather: '', content: '', date: ''},
+      defaultDaily: {id: '', score: '', weather: '', content: '', date: ''},
+      daily: {},
       ths: ['编号', '开始', '结束', '记录', '动作'],
       dailyDetail: [],
       currentIndex: 0,
-      currentDaily: {}
+      currentDaily: {},
+      isFirst: true
     }
   },
   props: ['date'],
@@ -167,10 +169,10 @@ export default {
       } else {
         this.dailyDetail.splice(this.currentIndex, 1, dailies)
       }
-    }
-  },
-  watch: {
-    date: function () {
+    },
+    listDaily: function () {
+      this.daily = utils.clone(this.defaultDaily)
+      this.dailyDetail = []
       layer.load(1)
       requestGetDaily(this.date).then(data => {
         layer.closeAll()
@@ -189,13 +191,26 @@ export default {
       })
     }
   },
+  watch: {
+    date: function () {
+      if (!this.isFirst) {
+        this.listDaily()
+      }
+    }
+  },
   mounted: function () {
-    this.currentDaily = JSON.parse(JSON.stringify(this.defaultDailyDetail))
+    this.currentDaily = utils.clone(this.defaultDailyDetail)
     this.isMobile = utils.isMobile()
     if (this.isMobile) {
       this.ths.shift()
       this.ths.pop()
     }
+    setTimeout(() => {
+      this.listDaily()
+      this.isFirst = false
+      // 修改父组件日期列表
+      this.$parent.changeDate(-7, 0)
+    }, 200)
   },
   updated: function () {
     $('[data-toggle="tooltip"]').tooltip()
