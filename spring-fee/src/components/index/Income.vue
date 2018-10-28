@@ -152,7 +152,7 @@ export default {
       return this.assetTip + Number(this.asset).toFixed(2) + this.space + this.unit
     },
     formatIncomeString: function (income) {
-      return this.formatTypeString(income) + this.space + income.category + this.space + (income.money / 100) + this.space + this.unit
+      return this.formatTypeString(income) + this.space + income.category + this.space + (income.money / 100).toFixed(2) + this.space + this.unit
     },
     formatDateString: function (income) {
       return income.year + '-' + String(income.month).padStart(2, '0') + '-' + String(income.day).padStart(2, '0')
