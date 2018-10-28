@@ -19,7 +19,7 @@
       <div class="row">
         <div class="col-sm-2 col-4 text-right"><h5 class="h5-v-middle">{{contentTip}}：</h5></div>
         <div class="col-sm-8 col-7">
-          <textarea class="form-control" v-model="daily.content" :placeholder="contentTip" rows="4"></textarea>
+          <textarea class="form-control" v-model="daily.content" :placeholder="contentTip" rows="5"></textarea>
         </div>
       </div>
       <br/>
@@ -83,7 +83,7 @@ export default {
   data () {
     return {
       isMobile: false,
-      saveDetailTip: '添加片段记录',
+      saveDetailTip: '添加片段',
       saveTip: '保存',
       contentTip: '日志',
       scoreTip: '分数',
