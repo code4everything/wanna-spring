@@ -72,6 +72,11 @@ public class TodoController extends BeeBaseController {
         return parseResult("没有找到数据", todoService.listDate(getUserId()), false);
     }
 
+    @GetMapping("/not-done/list")
+    public ResultObject<List<Todo>> listNotDone(@RequestParam String date) {
+        return parseResult("没有未完成的待办事项哦", todoService.listNotDoneBeforeDate(getUserId(), date));
+    }
+
     @GetMapping("/list")
     @ApiOperation("列出事项")
     @ApiImplicitParam(name = "date", value = "日期", required = true)
