@@ -5,7 +5,7 @@ import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.NetUtils;
 import com.zhazhapan.util.annotation.AopLog;
 import com.zhazhapan.util.encryption.JavaEncrypt;
-import org.code4everything.springbee.constant.BeeConfigConsts;
+import org.code4everything.springbee.SpringBeeApplication;
 import org.code4everything.springbee.dao.UserDAO;
 import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.RegisterDTO;
@@ -84,7 +84,8 @@ public class UserServiceImpl implements UserService {
         User user = userDAO.getByUsernameOrEmail(loginName, loginName);
         if (Checker.isNotNull(user) && user.getPassword().equals(encryptToMd5(password))) {
             String token = NetUtils.generateToken();
-            userRedisTemplate.opsForValue().set(token, user, BeeConfigConsts.TOKEN_EXPIRED, TimeUnit.SECONDS);
+            Integer tokenExpired = SpringBeeApplication.getConfigProperty().getTokenExpired();
+            userRedisTemplate.opsForValue().set(token, user, tokenExpired, TimeUnit.SECONDS);
             user.setLoginTime(System.currentTimeMillis());
             userDAO.save(user);
             return token;
