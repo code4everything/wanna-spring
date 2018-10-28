@@ -59,7 +59,8 @@ export default {
       idPrefix: 'todo-item-',
       isMobile: false,
       defaultTodo: {content: '测试', createTime: '', doingDate: '', doneTime: '', id: '', status: '0'},
-      todos: []
+      todos: [],
+      isFirst: true
     }
   },
   props: ['date'],
@@ -122,13 +123,8 @@ export default {
           }
         })
       }
-    }
-  },
-  mounted: function () {
-    this.isMobile = utils.isMobile()
-  },
-  watch: {
-    date: function () {
+    },
+    listTodo: function () {
       this.todos = []
       layer.load(1)
       requestListTodo(this.date).then(data => {
@@ -139,6 +135,22 @@ export default {
           layer.alert(data.message)
         }
       })
+    }
+  },
+  mounted: function () {
+    this.isMobile = utils.isMobile()
+    setTimeout(() => {
+      this.listTodo()
+      this.isFirst = false
+      // 修改父组件的日期列表
+      this.$parent.changeDate(-7, 7)
+    }, 200)
+  },
+  watch: {
+    date: function () {
+      if (!this.isFirst) {
+        this.listTodo()
+      }
     }
   },
   updated: function () {
