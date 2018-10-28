@@ -1,5 +1,6 @@
 package org.code4everything.springbee.web;
 
+import cn.hutool.core.date.DateUtil;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.model.CheckResult;
 import com.zhazhapan.util.model.ResultObject;
@@ -46,6 +47,12 @@ public class DailyController extends BeeBaseController {
             InstantiationException, IllegalAccessException, InvocationTargetException {
         CheckResult<Daily> result = Checker.checkBean(daily);
         if (result.passed) {
+            if (daily.getDate().getTime() > DateUtil.endOfDay(new java.util.Date()).getTime()) {
+                return CheckResult.getErrorResult("添加失败，无法添加未来的日程记录");
+            }
+            if (dailyService.exists(getUserId(), "", daily)) {
+                return CheckResult.getErrorResult("添加失败，该日期记录已经存在");
+            }
             return parseResult("添加失败", dailyService.saveDaily(getUserId(), daily));
         }
         return result.resultObject;
@@ -70,7 +77,7 @@ public class DailyController extends BeeBaseController {
     public ResultObject<Daily> updateDaily(@PathVariable String dailyId, @RequestBody @ApiParam DailyDTO daily) throws InvocationTargetException, IllegalAccessException {
         CheckResult<Daily> result = Checker.checkBean(daily);
         if (result.passed) {
-            if (dailyService.exists(dailyId, getUserId(), daily)) {
+            if (dailyService.exists(getUserId(), dailyId, daily)) {
                 return CheckResult.getErrorResult("更新失败，该日期记录已经存在");
             }
             return parseResult("更新失败", dailyService.updateDaily(dailyId, daily));
