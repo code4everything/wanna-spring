@@ -104,7 +104,7 @@ export default {
           layer.closeAll()
           if (data.code === 200) {
             this.content = ''
-            this.todos.unshift(data.data)
+            this.todos.push(data.data)
           } else {
             layer.alert(data.message)
           }
@@ -129,6 +129,7 @@ export default {
   },
   watch: {
     date: function () {
+      this.todos = []
       layer.load(1)
       requestListTodo(this.date).then(data => {
         layer.closeAll()
