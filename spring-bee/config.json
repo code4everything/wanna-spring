@@ -1,0 +1,17 @@
+{
+  "tokenExpired": 604800,
+  "whiteListPrefix": [
+    "/common",
+    "/user/password/reset",
+    "/user/register",
+    "/user/login"
+  ],
+  "interceptorListPrefix": [
+    "/user"
+  ],
+  "blackListPrefix": [
+    "/swagger-ui.html",
+    "/v2/api-docs"
+  ],
+  "storagePath": ""
+}

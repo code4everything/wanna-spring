@@ -8,7 +8,7 @@ import com.zhazhapan.util.model.SimpleMultipartFile;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import org.code4everything.springbee.constant.BeeConfigConsts;
+import org.code4everything.springbee.SpringBeeApplication;
 import org.code4everything.springbee.domain.Document;
 import org.code4everything.springbee.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +47,8 @@ public class DocumentController extends BeeBaseController {
         if (file.getSize() > ValueConsts.MB) {
             return new ResultObject<>(400, "文件不能大于1MB");
         }
-        multipartFile.setSize(file.getSize()).setStoragePath(BeeConfigConsts.STORAGE_PATH).setOriginalFilename(file.getOriginalFilename());
+        String storagePath = SpringBeeApplication.getConfigProperty().getStoragePath();
+        multipartFile.setSize(file.getSize()).setStoragePath(storagePath).setOriginalFilename(file.getOriginalFilename());
         ResultObject<Document> resultObject = NetUtils.upload(file.getBytes(), multipartFile, documentService);
         setSensitiveData(resultObject.data);
         return resultObject;

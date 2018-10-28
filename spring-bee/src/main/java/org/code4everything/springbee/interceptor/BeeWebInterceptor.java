@@ -3,7 +3,7 @@ package org.code4everything.springbee.interceptor;
 import cn.hutool.core.util.StrUtil;
 import com.zhazhapan.util.Checker;
 import org.apache.log4j.Logger;
-import org.code4everything.springbee.constant.BeeConfigConsts;
+import org.code4everything.springbee.SpringBeeApplication;
 import org.code4everything.springbee.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -33,16 +33,16 @@ public class BeeWebInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String url = request.getServletPath();
         // 黑名单拦截
-        if (Checker.startsWith(url, BeeConfigConsts.BLACK_LIST_PREFIX)) {
+        if (Checker.startsWith(url, SpringBeeApplication.getConfigProperty().getBlackListPrefix())) {
             request.getRequestDispatcher("/error/banned").forward(request, response);
             return false;
         }
         // 白名单，不进行拦截
-        if (Checker.startsWith(url, BeeConfigConsts.WHITE_LIST_PREFIX)) {
+        if (Checker.startsWith(url, SpringBeeApplication.getConfigProperty().getWhiteListPrefix())) {
             return true;
         }
         // 当URL匹配映射路径并且不是登录页面时进行拦截
-        if (Checker.startsWith(url, BeeConfigConsts.INTERCEPTOR_LIST_PREFIX)) {
+        if (Checker.startsWith(url, SpringBeeApplication.getConfigProperty().getInterceptorListPrefix())) {
             String token = request.getHeader("token");
             User user = userRedisTemplate.opsForValue().get(Checker.checkNull(token));
             if (Checker.isNull(user)) {

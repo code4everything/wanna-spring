@@ -3,7 +3,7 @@ package org.code4everything.springbee.web;
 import com.zhazhapan.util.Checker;
 import com.zhazhapan.util.web.BaseController;
 import lombok.Setter;
-import org.code4everything.springbee.constant.BeeConfigConsts;
+import org.code4everything.springbee.SpringBeeApplication;
 import org.code4everything.springbee.domain.User;
 import org.springframework.data.redis.core.RedisTemplate;
 
@@ -53,7 +53,8 @@ public class BeeBaseController extends BaseController {
     protected User getUser() {
         if (Checker.isNull(user)) {
             // 更新过期时长
-            userRedisTemplate.expire(getToken(), BeeConfigConsts.TOKEN_EXPIRED, TimeUnit.SECONDS);
+            Integer tokenExpired = SpringBeeApplication.getConfigProperty().getTokenExpired();
+            userRedisTemplate.expire(getToken(), tokenExpired, TimeUnit.SECONDS);
             user = userRedisTemplate.opsForValue().get(getToken());
         }
         return user;
