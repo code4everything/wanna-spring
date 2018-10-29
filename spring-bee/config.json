@@ -9,9 +9,6 @@
   "interceptorListPrefix": [
     "/user"
   ],
-  "blackListPrefix": [
-    "/swagger-ui.html",
-    "/v2/api-docs"
-  ],
+  "blackListPrefix": [],
   "storagePath": ""
 }
