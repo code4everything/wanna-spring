@@ -18,18 +18,18 @@ public class BeeConfigConsts {
     /**
      * 白名单路径（放行）
      */
-    public static final String[] WHITE_LIST_PREFIX = {"/common", "/user/password/reset", "/user/register", "/user" +
+    public static final String[] WHITE_PREFIXES = {"/common", "/user/password/reset", "/user/register", "/user" +
             "/login"};
 
     /**
      * 拦截路径
      */
-    public static final String[] INTERCEPTOR_LIST_PREFIX = {"/user"};
+    public static final String[] INTERCEPT_PREFIXES = {"/user"};
 
     /**
      * 黑名单路径
      */
-    public static final String[] BLACK_LIST_PREFIX = {"/swagger-ui.html", "/v2/api-docs"};
+    public static final String[] BLACK_PREFIXES = {"/swagger-ui.html", "/v2/api-docs"};
 
     /**
      * 自定义配置上传文件保存路径

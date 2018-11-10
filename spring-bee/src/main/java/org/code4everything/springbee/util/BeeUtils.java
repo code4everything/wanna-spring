@@ -15,6 +15,8 @@ public class BeeUtils {
 
     private static final Logger LOGGER = Logger.getLogger(BeeUtils.class);
 
+    private BeeUtils() {}
+
     public static BeeConfigProperty parseConfigurer(String configFile) {
         BeeConfigProperty configProperty = null;
         if (FileUtil.exist(configFile)) {
@@ -32,14 +34,14 @@ public class BeeUtils {
         if (Validator.isNull(configProperty.getTokenExpired())) {
             configProperty.setTokenExpired(BeeConfigConsts.TOKEN_EXPIRED);
         }
-        if (Validator.isEmpty(configProperty.getBlackListPrefix())) {
-            configProperty.setBlackListPrefix(BeeConfigConsts.BLACK_LIST_PREFIX);
+        if (Validator.isEmpty(configProperty.getBlackPrefixes())) {
+            configProperty.setBlackPrefixes(BeeConfigConsts.BLACK_PREFIXES);
         }
-        if (Validator.isEmpty(configProperty.getWhiteListPrefix())) {
-            configProperty.setWhiteListPrefix(BeeConfigConsts.WHITE_LIST_PREFIX);
+        if (Validator.isEmpty(configProperty.getWhitePrefixes())) {
+            configProperty.setWhitePrefixes(BeeConfigConsts.WHITE_PREFIXES);
         }
-        if (Validator.isEmpty(configProperty.getInterceptorListPrefix())) {
-            configProperty.setInterceptorListPrefix(BeeConfigConsts.INTERCEPTOR_LIST_PREFIX);
+        if (Validator.isEmpty(configProperty.getInterceptPrefixes())) {
+            configProperty.setInterceptPrefixes(BeeConfigConsts.INTERCEPT_PREFIXES);
         }
         if (Validator.isEmpty(configProperty.getStoragePath())) {
             configProperty.setStoragePath(BeeConfigConsts.STORAGE_PATH);
