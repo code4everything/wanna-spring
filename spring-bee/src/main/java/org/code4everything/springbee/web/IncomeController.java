@@ -9,7 +9,6 @@ import org.code4everything.springbee.service.IncomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 /**
@@ -30,8 +29,7 @@ public class IncomeController extends BeeBaseController {
 
     @PostMapping("/append")
     @ApiOperation("添加一条收益记录")
-    public ResponseResult<Income> saveIncome(@RequestBody @ApiParam IncomeDTO income) throws IllegalAccessException,
-            InstantiationException, InvocationTargetException {
+    public ResponseResult<Income> saveIncome(@RequestBody @ApiParam IncomeDTO income) {
         return parseResult("添加失败", incomeService.saveIncome(getUserId(), income));
     }
 
@@ -45,8 +43,7 @@ public class IncomeController extends BeeBaseController {
 
     @PutMapping("/{incomeId}/update")
     @ApiOperation("更新记录")
-    public ResponseResult<Income> updateIncome(@PathVariable String incomeId,
-                                               @RequestBody @ApiParam IncomeDTO income) throws InvocationTargetException, IllegalAccessException {
+    public ResponseResult<Income> updateIncome(@PathVariable String incomeId, @RequestBody @ApiParam IncomeDTO income) {
         return parseResult("更新失败", incomeService.updateIncome(getUserId(), incomeId, income));
     }
 

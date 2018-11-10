@@ -38,7 +38,7 @@ public class DailiesServiceImplTest {
     }
 
     @Test
-    public void updateDailies() throws InvocationTargetException, IllegalAccessException {
+    public void updateDailies() {
         DailiesDTO dailiesDTO = new DailiesDTO();
         dailiesDTO.setContent(RandomUtil.randomString(12));
         dailiesDTO.setEndTime(TestConsts.START_TIME);
@@ -52,7 +52,7 @@ public class DailiesServiceImplTest {
     }
 
     @Test
-    public void saveDailies() throws IllegalAccessException, InstantiationException, InvocationTargetException {
+    public void saveDailies() {
         DailiesDTO dailiesDTO = new DailiesDTO();
         dailiesDTO.setContent(RandomUtil.randomString(12));
         dailiesDTO.setEndTime(TestConsts.START_TIME);

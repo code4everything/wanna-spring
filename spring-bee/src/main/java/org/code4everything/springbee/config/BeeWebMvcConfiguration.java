@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import org.code4everything.boot.interfaces.InterceptHandler;
 import org.code4everything.boot.web.mvc.DefaultExceptionHandler;
 import org.code4everything.boot.web.mvc.DefaultWebInterceptor;
-import org.code4everything.springbee.SpringBeeApplication;
 import org.code4everything.springbee.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -43,12 +42,12 @@ public class BeeWebMvcConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new DefaultWebInterceptor(SpringBeeApplication.getBeeConfigBean(),
-                new InterceptHandler() {
+        registry.addInterceptor(new DefaultWebInterceptor(new InterceptHandler() {
             @Override
             public void handleBlackList(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
                 request.getRequestDispatcher("/error/banned").forward(request, response);
             }
+
             @Override
             public boolean handleInterceptList(HttpServletRequest request, HttpServletResponse response,
                                                Object handler) throws Exception {

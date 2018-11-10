@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.lang.reflect.InvocationTargetException;
 import java.sql.Date;
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class IncomeServiceImplTest extends BaseTest {
     }
 
     @Test
-    public void updateIncome() throws InvocationTargetException, IllegalAccessException {
+    public void updateIncome() {
         IncomeDTO incomeDTO = new IncomeDTO();
         incomeDTO.setCategory(RandomUtil.randomString(4));
         incomeDTO.setDate(new Date(System.currentTimeMillis()));
@@ -64,7 +63,7 @@ public class IncomeServiceImplTest extends BaseTest {
     }
 
     @Test
-    public void saveIncome() throws IllegalAccessException, InstantiationException, InvocationTargetException {
+    public void saveIncome() {
         IncomeDTO incomeDTO = new IncomeDTO();
         incomeDTO.setCategory(RandomUtil.randomString(4));
         incomeDTO.setDate(new Date(System.currentTimeMillis()));

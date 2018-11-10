@@ -17,7 +17,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -41,8 +40,7 @@ public class DailyController extends BeeBaseController {
 
     @PostMapping("/create")
     @ApiOperation("添加记录")
-    public ResponseResult<Daily> saveDaily(@RequestBody @ApiParam DailyDTO daily) throws NoSuchMethodException,
-            InstantiationException, IllegalAccessException, InvocationTargetException {
+    public ResponseResult<Daily> saveDaily(@RequestBody @ApiParam DailyDTO daily) {
         if (daily.getDate().getTime() > DateUtil.endOfDay(new java.util.Date()).getTime()) {
             return errorResult("添加失败，无法添加未来的日程记录");
         }
@@ -68,7 +66,7 @@ public class DailyController extends BeeBaseController {
 
     @PutMapping("/{dailyId}/update")
     @ApiOperation("更新记录")
-    public ResponseResult<Daily> updateDaily(@PathVariable String dailyId, @RequestBody @ApiParam DailyDTO daily) throws InvocationTargetException, IllegalAccessException {
+    public ResponseResult<Daily> updateDaily(@PathVariable String dailyId, @RequestBody @ApiParam DailyDTO daily) {
         if (dailyService.exists(getUserId(), dailyId, daily)) {
             return errorResult("更新失败，该日期记录已经存在");
         }

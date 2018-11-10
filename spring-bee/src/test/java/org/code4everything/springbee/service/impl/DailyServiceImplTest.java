@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.lang.reflect.InvocationTargetException;
 import java.sql.Date;
 import java.util.List;
 
@@ -56,8 +55,7 @@ public class DailyServiceImplTest extends BaseTest {
     }
 
     @Test
-    public void saveDaily() throws NoSuchMethodException, InstantiationException, IllegalAccessException,
-            InvocationTargetException {
+    public void saveDaily() {
         DailyDTO dailyDTO = new DailyDTO();
         dailyDTO.setContent(RandomUtil.randomString(9));
         dailyDTO.setDate(new Date(System.currentTimeMillis()));
@@ -74,7 +72,7 @@ public class DailyServiceImplTest extends BaseTest {
     }
 
     @Test
-    public void updateDaily() throws InvocationTargetException, IllegalAccessException {
+    public void updateDaily() {
         DailyDTO dailyDTO = new DailyDTO();
         dailyDTO.setContent(RandomUtil.randomString(9));
         dailyDTO.setDate(new Date(System.currentTimeMillis()));
