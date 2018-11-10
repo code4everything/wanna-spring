@@ -1,9 +1,8 @@
 package org.code4everything.springbee;
 
 import com.spring4all.swagger.EnableSwagger2Doc;
-import com.zhazhapan.util.FileExecutor;
-import com.zhazhapan.util.interfaces.SimpleHutoolWatcher;
 import org.code4everything.boot.base.FileUtils;
+import org.code4everything.boot.interfaces.FileWatcher;
 import org.code4everything.boot.web.CorsUtils;
 import org.code4everything.springbee.config.BeeConfigProperty;
 import org.code4everything.springbee.util.BeeUtils;
@@ -27,7 +26,7 @@ public class SpringBeeApplication {
     public static void main(String[] args) {
         SpringApplication.run(SpringBeeApplication.class, args);
         String configFile = FileUtils.currentWorkDir() + File.separator + "config.json";
-        FileExecutor.watchFile(configFile, new SimpleHutoolWatcher() {
+        FileUtils.watchFile(configFile, new FileWatcher() {
             @Override
             public void doSomething() {
                 SpringBeeApplication.beeConfigProperty = BeeUtils.parseConfigurer(configFile);
