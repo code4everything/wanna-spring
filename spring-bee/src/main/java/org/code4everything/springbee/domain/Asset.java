@@ -1,6 +1,5 @@
 package org.code4everything.springbee.domain;
 
-import com.zhazhapan.util.annotation.SensitiveData;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -26,7 +25,6 @@ public class Asset implements Serializable {
     @ApiModelProperty("资产编号")
     private String id;
 
-    @SensitiveData
     @ApiModelProperty("用户编号（敏感数据）")
     private String userId;
 

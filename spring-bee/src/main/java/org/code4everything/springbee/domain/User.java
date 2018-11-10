@@ -1,6 +1,5 @@
 package org.code4everything.springbee.domain;
 
-import com.zhazhapan.util.annotation.SensitiveData;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -23,7 +22,6 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     @Id
-    @SensitiveData
     @ApiModelProperty("用户编号（敏感数据）")
     private String id;
 
@@ -37,7 +35,6 @@ public class User implements Serializable {
     private String avatar;
 
     @ApiModelProperty("密码（敏感数据)")
-    @SensitiveData
     private String password;
 
     @ApiModelProperty("个人简介")
