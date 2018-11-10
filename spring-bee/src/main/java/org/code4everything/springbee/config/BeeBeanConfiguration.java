@@ -1,7 +1,5 @@
 package org.code4everything.springbee.config;
 
-import com.zhazhapan.util.FileExecutor;
-import org.code4everything.springbee.constant.BeeConfigConsts;
 import org.code4everything.springbee.domain.Log;
 import org.code4everything.springbee.domain.User;
 import org.springframework.context.annotation.Bean;
@@ -9,8 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-
-import java.io.IOException;
 
 /**
  * @author pantao
@@ -38,10 +34,5 @@ public class BeeBeanConfiguration {
         userRedisTemplate.setConnectionFactory(jedisConnectionFactory());
         userRedisTemplate.setKeySerializer(new StringRedisSerializer());
         return userRedisTemplate;
-    }
-
-    @Bean
-    public String privateKey() throws IOException {
-        return FileExecutor.readFile(BeeConfigConsts.PRIVATE_RSA_KEY_PATH);
     }
 }

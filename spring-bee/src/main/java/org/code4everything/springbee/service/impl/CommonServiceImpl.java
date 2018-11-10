@@ -1,9 +1,9 @@
 package org.code4everything.springbee.service.impl;
 
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
-import com.zhazhapan.util.Checker;
-import com.zhazhapan.util.RandomUtils;
-import com.zhazhapan.util.annotation.AopLog;
+import com.google.common.base.Strings;
+import org.code4everything.boot.annotations.AopLog;
 import org.code4everything.springbee.dao.UserDAO;
 import org.code4everything.springbee.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +57,7 @@ public class CommonServiceImpl implements CommonService {
     @AopLog("校验验证码是否正确")
     public boolean isVcodeValidated(String email, String vcode, boolean shouldDelete) {
         String key = "vcode:" + email;
-        boolean result = Checker.checkNull(vcode).equals(stringRedisTemplate.opsForValue().get(key));
+        boolean result = Strings.nullToEmpty(vcode).equals(stringRedisTemplate.opsForValue().get(key));
         if (shouldDelete && result) {
             stringRedisTemplate.delete(key);
         }
@@ -72,7 +72,7 @@ public class CommonServiceImpl implements CommonService {
         helper.setFrom(from);
         helper.setTo(to);
         helper.setSubject("验证码");
-        String vcode = String.valueOf(RandomUtils.getRandomInteger(6));
+        String vcode = RandomUtil.randomNumbers(6);
         helper.setText(StrUtil.format("您的验证码：{}", vcode));
         mailSender.send(mimeMessage);
         stringRedisTemplate.opsForValue().set("vcode:" + to, vcode, 30, TimeUnit.MINUTES);

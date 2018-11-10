@@ -1,13 +1,11 @@
 package org.code4everything.springbee.util;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.lang.Validator;
 import com.alibaba.fastjson.JSONObject;
-import com.zhazhapan.util.Checker;
-import com.zhazhapan.util.FileExecutor;
-import com.zhazhapan.util.LoggerUtils;
+import org.apache.log4j.Logger;
 import org.code4everything.springbee.config.BeeConfigProperty;
 import org.code4everything.springbee.constant.BeeConfigConsts;
-
-import java.io.IOException;
 
 /**
  * @author pantao
@@ -15,31 +13,35 @@ import java.io.IOException;
  */
 public class BeeUtils {
 
+    private static final Logger LOGGER = Logger.getLogger(BeeUtils.class);
+
     public static BeeConfigProperty parseConfigurer(String configFile) {
         BeeConfigProperty configProperty = null;
-        if (Checker.isExists(configFile)) {
+        if (FileUtil.exist(configFile)) {
             try {
-                configProperty = JSONObject.parseObject(FileExecutor.readFile(configFile), BeeConfigProperty.class);
-            } catch (IOException e) {
-                LoggerUtils.warn("load config file error: " + e.getMessage());
+                configProperty = JSONObject.parseObject(FileUtil.readUtf8String(configFile), BeeConfigProperty.class);
+            } catch (Exception e) {
+                LOGGER.warn("load config file error: " + e.getMessage());
             }
         }
-        if (Checker.isNull(configProperty)) {
+        if (Validator.isNull(configProperty)) {
             configProperty = new BeeConfigProperty();
         }
-        if (Checker.isNull(configProperty.getTokenExpired())) {
+        assert configProperty != null;
+        // 设置默认值
+        if (Validator.isNull(configProperty.getTokenExpired())) {
             configProperty.setTokenExpired(BeeConfigConsts.TOKEN_EXPIRED);
         }
-        if (Checker.isEmpty(configProperty.getBlackListPrefix())) {
+        if (Validator.isEmpty(configProperty.getBlackListPrefix())) {
             configProperty.setBlackListPrefix(BeeConfigConsts.BLACK_LIST_PREFIX);
         }
-        if (Checker.isEmpty(configProperty.getWhiteListPrefix())) {
+        if (Validator.isEmpty(configProperty.getWhiteListPrefix())) {
             configProperty.setWhiteListPrefix(BeeConfigConsts.WHITE_LIST_PREFIX);
         }
-        if (Checker.isEmpty(configProperty.getInterceptorListPrefix())) {
+        if (Validator.isEmpty(configProperty.getInterceptorListPrefix())) {
             configProperty.setInterceptorListPrefix(BeeConfigConsts.INTERCEPTOR_LIST_PREFIX);
         }
-        if (Checker.isEmpty(configProperty.getStoragePath())) {
+        if (Validator.isEmpty(configProperty.getStoragePath())) {
             configProperty.setStoragePath(BeeConfigConsts.STORAGE_PATH);
         }
         return configProperty;

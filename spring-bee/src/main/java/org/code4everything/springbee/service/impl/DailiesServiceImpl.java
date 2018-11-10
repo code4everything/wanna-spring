@@ -1,17 +1,16 @@
 package org.code4everything.springbee.service.impl;
 
-import cn.hutool.core.util.RandomUtil;
-import com.zhazhapan.util.BeanUtils;
-import com.zhazhapan.util.Checker;
-import com.zhazhapan.util.annotation.AopLog;
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.ObjectUtil;
+import org.code4everything.boot.annotations.AopLog;
 import org.code4everything.springbee.dao.DailiesDAO;
 import org.code4everything.springbee.domain.Dailies;
 import org.code4everything.springbee.model.DailiesDTO;
 import org.code4everything.springbee.service.DailiesService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -34,11 +33,11 @@ public class DailiesServiceImpl implements DailiesService {
 
     @Override
     @AopLog("更新日程记录详情")
-    public Dailies updateDailies(String dailiesId, DailiesDTO dailiesDTO) throws InvocationTargetException,
-            IllegalAccessException {
+    public Dailies updateDailies(String dailiesId, DailiesDTO dailiesDTO) {
         Dailies dailies = dailiesDAO.getById(dailiesId);
-        if (Checker.isNotNull(dailies)) {
-            return dailiesDAO.save(BeanUtils.bean2Another(dailiesDTO, dailies));
+        if (ObjectUtil.isNotNull(dailies)) {
+            BeanUtils.copyProperties(dailiesDTO, dailies);
+            return dailiesDAO.save(dailies);
         }
         return null;
     }
@@ -51,12 +50,12 @@ public class DailiesServiceImpl implements DailiesService {
 
     @Override
     @AopLog("添加日程记录详情信息")
-    public Dailies saveDailies(String dailyId, DailiesDTO dailiesDTO) throws IllegalAccessException,
-            InvocationTargetException, InstantiationException {
-        Dailies dailies = BeanUtils.bean2Another(dailiesDTO, Dailies.class);
+    public Dailies saveDailies(String dailyId, DailiesDTO dailiesDTO) {
+        Dailies dailies = new Dailies();
+        BeanUtils.copyProperties(dailiesDTO, dailies);
         dailies.setDailyId(dailyId);
         dailies.setCreateTime(System.currentTimeMillis());
-        dailies.setId(RandomUtil.simpleUUID());
+        dailies.setId(IdUtil.simpleUUID());
         return dailiesDAO.save(dailies);
     }
 }

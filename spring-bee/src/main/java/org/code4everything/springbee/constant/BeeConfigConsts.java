@@ -1,6 +1,6 @@
 package org.code4everything.springbee.constant;
 
-import com.zhazhapan.util.Utils;
+import org.code4everything.boot.base.FileUtils;
 
 import java.io.File;
 
@@ -34,7 +34,7 @@ public class BeeConfigConsts {
     /**
      * 自定义配置上传文件保存路径
      */
-    public static final String STORAGE_PATH = Utils.getCurrentWorkDir() + File.separator + "document" + File.separator;
+    public static final String STORAGE_PATH = FileUtils.currentWorkDir() + File.separator + "document" + File.separator;
 
     /**
      * 如果需要修改文件的映射路径，还需要修改对应的Controller映射路径
