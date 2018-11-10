@@ -14,17 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/error")
 @Api(value = "/error")
-public class ErrorController {
+public class ErrorController extends BeeBaseController {
 
     @RequestMapping("/auth")
     @ApiOperation("身份验证失败")
     public ResponseResult<String> authError() {
-        return new ResponseResult<String>().error(HttpStatus.HTTP_UNAUTHORIZED, "身份验证失败，请登录");
+        return errorResult(HttpStatus.HTTP_UNAUTHORIZED, "身份验证失败，请登录");
     }
 
     @RequestMapping("/banned")
     @ApiOperation("禁止访问")
     public ResponseResult<String> bannedError() {
-        return new ResponseResult<String>().error(HttpStatus.HTTP_FORBIDDEN, "处于安全因素，该路径禁止访问");
+        return errorResult(HttpStatus.HTTP_FORBIDDEN, "处于安全因素，该路径禁止访问");
     }
 }

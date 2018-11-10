@@ -44,10 +44,10 @@ public class DailyController extends BeeBaseController {
     public ResponseResult<Daily> saveDaily(@RequestBody @ApiParam DailyDTO daily) throws NoSuchMethodException,
             InstantiationException, IllegalAccessException, InvocationTargetException {
         if (daily.getDate().getTime() > DateUtil.endOfDay(new java.util.Date()).getTime()) {
-            return new ResponseResult<Daily>().error("添加失败，无法添加未来的日程记录");
+            return errorResult("添加失败，无法添加未来的日程记录");
         }
         if (dailyService.exists(getUserId(), "", daily)) {
-            return new ResponseResult<Daily>().error("添加失败，该日期记录已经存在");
+            return errorResult("添加失败，该日期记录已经存在");
         }
         return parseResult("添加失败", dailyService.saveDaily(getUserId(), daily));
     }
@@ -63,14 +63,14 @@ public class DailyController extends BeeBaseController {
     @ApiImplicitParam(name = "dailyId", value = "记录编号")
     public ResponseResult<String> removeDaily(@RequestParam String dailyId) {
         dailyService.remove(dailyId);
-        return new ResponseResult<String>().setMsg("删除成功");
+        return successResult("删除成功");
     }
 
     @PutMapping("/{dailyId}/update")
     @ApiOperation("更新记录")
     public ResponseResult<Daily> updateDaily(@PathVariable String dailyId, @RequestBody @ApiParam DailyDTO daily) throws InvocationTargetException, IllegalAccessException {
         if (dailyService.exists(getUserId(), dailyId, daily)) {
-            return new ResponseResult<Daily>().error("更新失败，该日期记录已经存在");
+            return errorResult("更新失败，该日期记录已经存在");
         }
         return parseResult("更新失败", dailyService.updateDaily(dailyId, daily));
     }

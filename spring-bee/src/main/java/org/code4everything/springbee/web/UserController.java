@@ -46,25 +46,25 @@ public class UserController extends BeeBaseController {
     public ResponseResult<String> resetPassword(@RequestBody @ApiParam PasswordDTO password) {
         if (commonService.isVcodeValidated(password.getEmail(), password.getVcode(), true)) {
             userService.resetPassword(password.getEmail(), password.getNewPassword());
-            return new ResponseResult<String>().setMsg("重置密码成功");
+            return successResult("重置密码成功");
         }
-        return new ResponseResult<String>().setMsg("验证码不正确");
+        return errorResult("验证码不正确");
     }
 
     @PostMapping("/register")
     @ApiOperation("注册")
     public ResponseResult<String> register(@RequestBody @ApiParam RegisterDTO register) {
         if (commonService.existsUsername(register.getUsername())) {
-            return new ResponseResult<String>().setMsg("该用户名已经被注册啦");
+            return errorResult("该用户名已经被注册啦");
         }
         if (commonService.existsEmail(register.getEmail())) {
-            return new ResponseResult<String>().setMsg("该邮箱已经注册啦");
+            return errorResult("该邮箱已经注册啦");
         }
         if (commonService.isVcodeValidated(register.getEmail(), register.getVcode(), true)) {
             userService.register(register);
-            return new ResponseResult<String>().setMsg("注册成功");
+            return successResult("注册成功");
         }
-        return new ResponseResult<String>().setMsg("验证码不正确");
+        return errorResult("验证码不正确");
     }
 
     @PutMapping("/login")

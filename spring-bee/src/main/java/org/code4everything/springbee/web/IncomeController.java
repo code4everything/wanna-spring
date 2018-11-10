@@ -40,7 +40,7 @@ public class IncomeController extends BeeBaseController {
     @ApiImplicitParam(name = "incomeId", value = "收益记录编号", required = true)
     public ResponseResult<String> remove(@RequestParam String incomeId) {
         incomeService.remove(getUserId(), incomeId);
-        return new ResponseResult<String>().setMsg("删除成功");
+        return successResult("删除成功");
     }
 
     @PutMapping("/{incomeId}/update")

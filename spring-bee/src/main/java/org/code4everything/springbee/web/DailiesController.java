@@ -39,7 +39,7 @@ public class DailiesController extends BeeBaseController {
         if (dailyService.exists(dailyId)) {
             return parseResult("添加失败", dailiesService.saveDailies(dailyId, dailies));
         }
-        return new ResponseResult<Dailies>().error("添加失败，该日程记录不存在");
+        return errorResult("添加失败，该日程记录不存在");
     }
 
     @DeleteMapping("/remove")
@@ -47,7 +47,7 @@ public class DailiesController extends BeeBaseController {
     @ApiImplicitParam(name = "dailiesId", value = "详情编号", required = true)
     public ResponseResult<String> remove(@RequestParam String dailiesId) {
         dailiesService.remove(dailiesId);
-        return new ResponseResult<String>().setMsg("删除成功");
+        return successResult("删除成功");
     }
 
     @PutMapping("/{dailiesId}/update")
