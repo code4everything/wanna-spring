@@ -7,6 +7,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
+import com.zhazhapan.util.model.SimpleDateTime;
 import org.bson.Document;
 import org.code4everything.boot.annotations.AopLog;
 import org.code4everything.springbee.dao.DailyDAO;
@@ -16,11 +17,11 @@ import org.code4everything.springbee.model.DailyDateVO;
 import org.code4everything.springbee.model.DailyMonthVO;
 import org.code4everything.springbee.model.QueryDailyDTO;
 import org.code4everything.springbee.service.DailyService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.InvocationTargetException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -121,9 +122,9 @@ public class DailyServiceImpl implements DailyService {
 
     @Override
     @AopLog("添加日程记录")
-    public Daily saveDaily(String userId, DailyDTO dailyDTO) throws InvocationTargetException, InstantiationException
-            , IllegalAccessException {
-        Daily daily = parseDailyDTO(dailyDTO);
+    public Daily saveDaily(String userId, DailyDTO dailyDTO) {
+        Daily daily = new Daily();
+        parseDailyDTO(dailyDTO, daily);
         daily.setCreateTime(System.currentTimeMillis());
         daily.setId(IdUtil.simpleUUID());
         daily.setUserId(userId);
@@ -141,22 +142,17 @@ public class DailyServiceImpl implements DailyService {
 
     @Override
     @AopLog("更新日程记录")
-    public Daily updateDaily(String dailyId, DailyDTO dailyDTO) throws InvocationTargetException,
-            IllegalAccessException {
+    public Daily updateDaily(String dailyId, DailyDTO dailyDTO) {
         Daily daily = dailyDAO.getById(dailyId);
         if (ObjectUtil.isNull(daily)) {
             return null;
         }
-        return dailyDAO.save(parseDailyDTO(dailyDTO, BeanUtils.bean2Another(dailyDTO, daily)));
-    }
-
-    private Daily parseDailyDTO(DailyDTO dailyDTO) throws InvocationTargetException, InstantiationException,
-            IllegalAccessException {
-        return parseDailyDTO(dailyDTO, BeanUtils.bean2Another(dailyDTO, Daily.class));
+        return dailyDAO.save(parseDailyDTO(dailyDTO, daily));
     }
 
     private Daily parseDailyDTO(DailyDTO dailyDTO, Daily daily) {
-        BeanUtils.bean2Another(new SimpleDateTime(dailyDTO.getDate()), daily);
+        BeanUtils.copyProperties(dailyDTO, daily);
+        BeanUtils.copyProperties(new SimpleDateTime(dailyDTO.getDate()), daily);
         daily.setMonth(daily.getMonth() + 1);
         return daily;
     }

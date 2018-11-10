@@ -3,8 +3,8 @@ package org.code4everything.springbee.service.impl;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
+import com.zhazhapan.util.model.SimpleDateTime;
 import org.code4everything.boot.annotations.AopLog;
 import org.code4everything.springbee.constant.BeeValueConsts;
 import org.code4everything.springbee.dao.AssetDAO;
@@ -22,7 +22,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 /**
@@ -53,7 +52,7 @@ public class IncomeServiceImpl implements IncomeService {
 
     @Override
     @AopLog("查询收益记录")
-    public ArrayList<Income> listIncome(String userId, QueryIncomeDTO queryIncomeDTO) {
+    public ArrayList listIncome(String userId, QueryIncomeDTO queryIncomeDTO) {
         Query query = new Query();
         Criteria criteria = Criteria.where("assetId").is(getAssetByUserId(userId).getId());
         final String y = "year";
@@ -84,20 +83,19 @@ public class IncomeServiceImpl implements IncomeService {
         }
         query.addCriteria(criteria);
         query.with(new Sort(Sort.Direction.DESC, y, m, d, "createTime"));
-        return (ArrayList) mongoTemplate.find(query, Income.class);
+        return (ArrayList<Income>) mongoTemplate.find(query, Income.class);
     }
 
     @Override
     @AopLog("更新收益记录")
-    public Income updateIncome(String userId, String incomeId, IncomeDTO incomeDTO) throws InvocationTargetException,
-            IllegalAccessException {
+    public Income updateIncome(String userId, String incomeId, IncomeDTO incomeDTO) {
         Income income = incomeDAO.getById(incomeId);
         if (ObjectUtil.isNull(income)) {
             return null;
         }
         Long changeValue = incomeDTO.getMoney() * incomeDTO.getType() - income.getMoney() * income.getType();
-        BeanUtils.bean2Another(incomeDTO, income);
-        BeanUtils.bean2Another(new SimpleDateTime(incomeDTO.getDate()), income);
+        BeanUtils.copyProperties(incomeDTO, income);
+        BeanUtils.copyProperties(new SimpleDateTime(incomeDTO.getDate()), income);
         income.setMonth(income.getMonth() + 1);
         updateAssetBalance(userId, changeValue);
         return incomeDAO.save(income);
@@ -116,11 +114,12 @@ public class IncomeServiceImpl implements IncomeService {
     @Override
     @AopLog("添加收益记录")
     public Income saveIncome(String userId, IncomeDTO incomeDTO) {
-        Income income = BeanUtils.bean2Another(incomeDTO, Income.class);
-        BeanUtils.bean2Another(new SimpleDateTime(incomeDTO.getDate()), income);
+        Income income = new Income();
+        BeanUtils.copyProperties(incomeDTO, income);
+        BeanUtils.copyProperties(new SimpleDateTime(incomeDTO.getDate()), income);
         income.setMonth(income.getMonth() + 1);
         income.setCreateTime(System.currentTimeMillis());
-        income.setId(RandomUtil.simpleUUID());
+        income.setId(IdUtil.simpleUUID());
         income.setAssetId(updateAssetBalance(userId, income.getMoney() * income.getType()));
         return incomeDAO.save(income);
     }

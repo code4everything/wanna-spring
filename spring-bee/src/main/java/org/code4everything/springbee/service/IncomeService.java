@@ -4,7 +4,6 @@ import org.code4everything.springbee.domain.Income;
 import org.code4everything.springbee.model.IncomeDTO;
 import org.code4everything.springbee.model.QueryIncomeDTO;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 /**
@@ -17,11 +16,9 @@ public interface IncomeService {
 
     ArrayList<Income> listIncome(String userId, QueryIncomeDTO queryIncomeDTO);
 
-    Income updateIncome(String userId, String incomeId, IncomeDTO incomeDTO) throws InvocationTargetException,
-            IllegalAccessException;
+    Income updateIncome(String userId, String incomeId, IncomeDTO incomeDTO);
 
     void remove(String userId, String incomeId);
 
-    Income saveIncome(String userId, IncomeDTO incomeDTO) throws IllegalAccessException, InvocationTargetException,
-            InstantiationException;
+    Income saveIncome(String userId, IncomeDTO incomeDTO);
 }

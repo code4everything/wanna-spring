@@ -5,7 +5,6 @@ import org.code4everything.springbee.model.DailyDTO;
 import org.code4everything.springbee.model.DailyDateVO;
 import org.code4everything.springbee.model.QueryDailyDTO;
 
-import java.lang.reflect.InvocationTargetException;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -25,10 +24,9 @@ public interface DailyService {
 
     void remove(String dailyId);
 
-    Daily saveDaily(String userId, DailyDTO dailyDTO) throws InvocationTargetException, NoSuchMethodException,
-            InstantiationException, IllegalAccessException;
+    Daily saveDaily(String userId, DailyDTO dailyDTO);
 
     boolean exists(String userId, String dailyId, DailyDTO dailyDTO);
 
-    Daily updateDaily(String dailyId, DailyDTO dailyDTO) throws InvocationTargetException, IllegalAccessException;
+    Daily updateDaily(String dailyId, DailyDTO dailyDTO);
 }

@@ -48,6 +48,25 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.zhazhapan</groupId>
+            <artifactId>util</artifactId>
+            <version>1.1.1</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>fastjson</artifactId>
+                    <groupId>com.alibaba</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>asm</artifactId>
+                    <groupId>org.ow2.asm</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
             <groupId>org.code4everything</groupId>
             <artifactId>boot-surface</artifactId>
             <version>${boot.surface.version}</version>
