@@ -43,7 +43,7 @@ public class BeeWebMvcConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new DefaultWebInterceptor(SpringBeeApplication.getConfigProperty(),
+        registry.addInterceptor(new DefaultWebInterceptor(SpringBeeApplication.getBeeConfigBean(),
                 new InterceptHandler() {
             @Override
             public void handleBlackList(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

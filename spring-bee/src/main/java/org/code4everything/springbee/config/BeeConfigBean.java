@@ -14,7 +14,7 @@ import org.code4everything.boot.bean.ConfigBean;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BeeConfigProperty extends ConfigBean {
+public class BeeConfigBean extends ConfigBean {
 
     private Integer tokenExpired;
 

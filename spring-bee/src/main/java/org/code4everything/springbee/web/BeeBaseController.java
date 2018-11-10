@@ -53,7 +53,7 @@ public class BeeBaseController extends BaseController {
     protected User getUser() {
         if (Checker.isNull(user)) {
             // 更新过期时长
-            Integer tokenExpired = SpringBeeApplication.getConfigProperty().getTokenExpired();
+            Integer tokenExpired = SpringBeeApplication.getBeeConfigBean().getTokenExpired();
             userRedisTemplate.expire(getToken(), tokenExpired, TimeUnit.SECONDS);
             user = userRedisTemplate.opsForValue().get(getToken());
         }

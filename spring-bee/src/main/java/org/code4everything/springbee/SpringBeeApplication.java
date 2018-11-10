@@ -4,7 +4,7 @@ import com.spring4all.swagger.EnableSwagger2Doc;
 import org.code4everything.boot.base.FileUtils;
 import org.code4everything.boot.interfaces.FileWatcher;
 import org.code4everything.boot.web.CorsUtils;
-import org.code4everything.springbee.config.BeeConfigProperty;
+import org.code4everything.springbee.config.BeeConfigBean;
 import org.code4everything.springbee.util.BeeUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,7 +21,7 @@ import java.io.File;
 @EnableSwagger2Doc
 public class SpringBeeApplication {
 
-    private static BeeConfigProperty beeConfigProperty;
+    private static BeeConfigBean beeConfigBean;
 
     public static void main(String[] args) {
         SpringApplication.run(SpringBeeApplication.class, args);
@@ -29,13 +29,13 @@ public class SpringBeeApplication {
         FileUtils.watchFile(configFile, new FileWatcher() {
             @Override
             public void doSomething() {
-                SpringBeeApplication.beeConfigProperty = BeeUtils.parseConfigurer(configFile);
+                SpringBeeApplication.beeConfigBean = BeeUtils.parseConfigurer(configFile);
             }
         }, true);
     }
 
-    public static BeeConfigProperty getConfigProperty() {
-        return beeConfigProperty;
+    public static BeeConfigBean getBeeConfigBean() {
+        return beeConfigBean;
     }
 
     /**

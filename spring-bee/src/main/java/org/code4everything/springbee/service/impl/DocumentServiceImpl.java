@@ -35,7 +35,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     @AopLog("通过访问链接或本地路径获取文件")
     public Document getBy(MultipartFileBean fileBean) {
-        String localPath = SpringBeeApplication.getConfigProperty().getStoragePath() + fileBean.getFilename();
+        String localPath = SpringBeeApplication.getBeeConfigBean().getStoragePath() + fileBean.getFilename();
         String accessUrl = BeeConfigConsts.DOCUMENT_MAPPING + fileBean.getFilename();
         return documentDAO.getByLocalPathOrAccessUrl(localPath, accessUrl);
     }
@@ -47,7 +47,7 @@ public class DocumentServiceImpl implements DocumentService {
         document.setAccessUrl(BeeConfigConsts.DOCUMENT_MAPPING + fileBean.getFilename());
         document.setCreateTime(System.currentTimeMillis());
         document.setId(IdUtil.randomUUID());
-        document.setLocalPath(SpringBeeApplication.getConfigProperty().getStoragePath() + fileBean.getFilename());
+        document.setLocalPath(SpringBeeApplication.getBeeConfigBean().getStoragePath() + fileBean.getFilename());
         document.setSize(fileBean.getSize());
         document.setSuffix(FileUtil.extName(fileBean.getOriginalFilename()));
         return documentDAO.save(document);

@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
         User user = userDAO.getByUsernameOrEmail(loginName, loginName);
         if (Checker.isNotNull(user) && user.getPassword().equals(encryptToMd5(password))) {
             String token = NetUtils.generateToken();
-            Integer tokenExpired = SpringBeeApplication.getConfigProperty().getTokenExpired();
+            Integer tokenExpired = SpringBeeApplication.getBeeConfigBean().getTokenExpired();
             userRedisTemplate.opsForValue().set(token, user, tokenExpired, TimeUnit.SECONDS);
             user.setLoginTime(System.currentTimeMillis());
             userDAO.save(user);

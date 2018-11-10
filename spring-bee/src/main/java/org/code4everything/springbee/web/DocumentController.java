@@ -47,7 +47,7 @@ public class DocumentController extends BeeBaseController {
         if (file.getSize() > ValueConsts.MB) {
             return new ResultObject<>(400, "文件不能大于1MB");
         }
-        String storagePath = SpringBeeApplication.getConfigProperty().getStoragePath();
+        String storagePath = SpringBeeApplication.getBeeConfigBean().getStoragePath();
         multipartFile.setSize(file.getSize()).setStoragePath(storagePath).setOriginalFilename(file.getOriginalFilename());
         ResultObject<Document> resultObject = NetUtils.upload(file.getBytes(), multipartFile, documentService);
         setSensitiveData(resultObject.data);

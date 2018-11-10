@@ -4,7 +4,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Validator;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.log4j.Logger;
-import org.code4everything.springbee.config.BeeConfigProperty;
+import org.code4everything.springbee.config.BeeConfigBean;
 import org.code4everything.springbee.constant.BeeConfigConsts;
 
 /**
@@ -17,36 +17,36 @@ public class BeeUtils {
 
     private BeeUtils() {}
 
-    public static BeeConfigProperty parseConfigurer(String configFile) {
-        BeeConfigProperty configProperty = null;
+    public static BeeConfigBean parseConfigurer(String configFile) {
+        BeeConfigBean configBean = null;
         if (FileUtil.exist(configFile)) {
             try {
-                configProperty = JSONObject.parseObject(FileUtil.readUtf8String(configFile), BeeConfigProperty.class);
+                configBean = JSONObject.parseObject(FileUtil.readUtf8String(configFile), BeeConfigBean.class);
             } catch (Exception e) {
                 LOGGER.warn("load config file error: " + e.getMessage());
             }
         }
-        if (Validator.isNull(configProperty)) {
-            configProperty = new BeeConfigProperty();
+        if (Validator.isNull(configBean)) {
+            configBean = new BeeConfigBean();
         }
-        assert configProperty != null;
+        assert configBean != null;
         // 设置默认值
-        if (Validator.isNull(configProperty.getTokenExpired())) {
-            configProperty.setTokenExpired(BeeConfigConsts.TOKEN_EXPIRED);
+        if (Validator.isNull(configBean.getTokenExpired())) {
+            configBean.setTokenExpired(BeeConfigConsts.TOKEN_EXPIRED);
         }
-        if (Validator.isEmpty(configProperty.getBlackPrefixes())) {
-            configProperty.setBlackPrefixes(BeeConfigConsts.BLACK_PREFIXES);
+        if (Validator.isEmpty(configBean.getBlackPrefixes())) {
+            configBean.setBlackPrefixes(BeeConfigConsts.BLACK_PREFIXES);
         }
-        if (Validator.isEmpty(configProperty.getWhitePrefixes())) {
-            configProperty.setWhitePrefixes(BeeConfigConsts.WHITE_PREFIXES);
+        if (Validator.isEmpty(configBean.getWhitePrefixes())) {
+            configBean.setWhitePrefixes(BeeConfigConsts.WHITE_PREFIXES);
         }
-        if (Validator.isEmpty(configProperty.getInterceptPrefixes())) {
-            configProperty.setInterceptPrefixes(BeeConfigConsts.INTERCEPT_PREFIXES);
+        if (Validator.isEmpty(configBean.getInterceptPrefixes())) {
+            configBean.setInterceptPrefixes(BeeConfigConsts.INTERCEPT_PREFIXES);
         }
-        if (Validator.isEmpty(configProperty.getStoragePath())) {
-            configProperty.setStoragePath(BeeConfigConsts.STORAGE_PATH);
+        if (Validator.isEmpty(configBean.getStoragePath())) {
+            configBean.setStoragePath(BeeConfigConsts.STORAGE_PATH);
         }
-        return configProperty;
+        return configBean;
     }
 
 }
