@@ -52,7 +52,7 @@ public class DailyServiceImpl implements DailyService {
 
     @Override
     @AopLog("列出记录的所有日期")
-    public List<DailyDateVO> listDailyDate(String userId) {
+    public ArrayList<DailyDateVO> listDailyDate(String userId) {
         // TODO: 2018/9/23 由于此函数查询比较耗时，需将结果放入缓存中
         // 查询年份
         BasicDBObject dbObject = new BasicDBObject("userId", userId);
@@ -100,7 +100,7 @@ public class DailyServiceImpl implements DailyService {
 
     @Override
     @AopLog("列出日程记录")
-    public List<Daily> listDaily(String userId, QueryDailyDTO query) {
+    public ArrayList<Daily> listDaily(String userId, QueryDailyDTO query) {
         boolean queryMonth = query.getMonth() > 0;
         boolean queryDay = query.getDay() > 0;
         if (queryMonth && queryDay) {

@@ -4,7 +4,7 @@ import org.code4everything.springbee.domain.Daily;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author pantao
@@ -15,11 +15,11 @@ public interface DailyDAO extends MongoRepository<Daily, String> {
 
     Daily getById(String dailyId);
 
-    List<Daily> getByUserIdAndYearAndMonth(String userId, Integer year, Integer month);
+    ArrayList<Daily> getByUserIdAndYearAndMonth(String userId, Integer year, Integer month);
 
     Daily getByUserIdAndYearAndMonthAndDay(String userId, Integer year, Integer month, Integer day);
 
-    List<Daily> getByUserIdAndYearAndDay(String userId, Integer year, Integer day);
+    ArrayList<Daily> getByUserIdAndYearAndDay(String userId, Integer year, Integer day);
 
-    List<Daily> getByUserIdAndYear(String userId, Integer year);
+    ArrayList<Daily> getByUserIdAndYear(String userId, Integer year);
 }

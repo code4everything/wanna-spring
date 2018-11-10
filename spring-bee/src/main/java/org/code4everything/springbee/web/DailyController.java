@@ -1,13 +1,11 @@
 package org.code4everything.springbee.web;
 
 import cn.hutool.core.date.DateUtil;
-import com.zhazhapan.util.Checker;
-import com.zhazhapan.util.model.CheckResult;
-import com.zhazhapan.util.model.ResultObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.code4everything.boot.bean.ResponseResult;
 import org.code4everything.springbee.domain.Daily;
 import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.DailyDTO;
@@ -21,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Date;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author pantao
@@ -29,7 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/user/daily")
-@Api(value = "/user/daily", description = "日程记录接口")
+@Api(value = "/user/daily")
 public class DailyController extends BeeBaseController {
 
     private final DailyService dailyService;
@@ -37,63 +35,55 @@ public class DailyController extends BeeBaseController {
     @Autowired
     public DailyController(DailyService dailyService, HttpServletRequest request,
                            RedisTemplate<String, User> userRedisTemplate) {
-        super(request, userRedisTemplate, true);
+        super(userRedisTemplate);
         this.dailyService = dailyService;
     }
 
     @PostMapping("/create")
     @ApiOperation("添加记录")
-    public ResultObject<Daily> saveDaily(@RequestBody @ApiParam DailyDTO daily) throws NoSuchMethodException,
+    public ResponseResult<Daily> saveDaily(@RequestBody @ApiParam DailyDTO daily) throws NoSuchMethodException,
             InstantiationException, IllegalAccessException, InvocationTargetException {
-        CheckResult<Daily> result = Checker.checkBean(daily);
-        if (result.passed) {
-            if (daily.getDate().getTime() > DateUtil.endOfDay(new java.util.Date()).getTime()) {
-                return CheckResult.getErrorResult("添加失败，无法添加未来的日程记录");
-            }
-            if (dailyService.exists(getUserId(), "", daily)) {
-                return CheckResult.getErrorResult("添加失败，该日期记录已经存在");
-            }
-            return parseResult("添加失败", dailyService.saveDaily(getUserId(), daily));
+        if (daily.getDate().getTime() > DateUtil.endOfDay(new java.util.Date()).getTime()) {
+            return new ResponseResult<Daily>().error("添加失败，无法添加未来的日程记录");
         }
-        return result.resultObject;
+        if (dailyService.exists(getUserId(), "", daily)) {
+            return new ResponseResult<Daily>().error("添加失败，该日期记录已经存在");
+        }
+        return parseResult("添加失败", dailyService.saveDaily(getUserId(), daily));
     }
 
     @GetMapping("/get")
     @ApiImplicitParam(name = "date", value = "日期", required = true, dataTypeClass = Date.class)
-    public ResultObject<Daily> getDaily(@RequestParam Date date) {
+    public ResponseResult<Daily> getDaily(@RequestParam Date date) {
         return parseResult("该日期还没有记录哦", dailyService.getDaily(getUserId(), date));
     }
 
     @DeleteMapping("/remove")
     @ApiOperation("删除记录")
     @ApiImplicitParam(name = "dailyId", value = "记录编号")
-    public ResultObject<Object> removeDaily(@RequestParam String dailyId) {
+    public ResponseResult<String> removeDaily(@RequestParam String dailyId) {
         dailyService.remove(dailyId);
-        return new ResultObject<>("删除成功");
+        return new ResponseResult<String>().setMsg("删除成功");
     }
 
     @PutMapping("/{dailyId}/update")
     @ApiOperation("更新记录")
-    public ResultObject<Daily> updateDaily(@PathVariable String dailyId, @RequestBody @ApiParam DailyDTO daily) throws InvocationTargetException, IllegalAccessException {
-        CheckResult<Daily> result = Checker.checkBean(daily);
-        if (result.passed) {
-            if (dailyService.exists(getUserId(), dailyId, daily)) {
-                return CheckResult.getErrorResult("更新失败，该日期记录已经存在");
-            }
-            return parseResult("更新失败", dailyService.updateDaily(dailyId, daily));
+    public ResponseResult<Daily> updateDaily(@PathVariable String dailyId, @RequestBody @ApiParam DailyDTO daily) throws InvocationTargetException, IllegalAccessException {
+        if (dailyService.exists(getUserId(), dailyId, daily)) {
+            return new ResponseResult<Daily>().error("更新失败，该日期记录已经存在");
         }
-        return result.resultObject;
+        return parseResult("更新失败", dailyService.updateDaily(dailyId, daily));
     }
 
     @GetMapping("/list")
     @ApiOperation("列出日程记录")
-    public ResultObject<List<Daily>> listByDate(@RequestBody @ApiParam QueryDailyDTO queryDaily) {
+    public ResponseResult<ArrayList<Daily>> listByDate(@RequestBody @ApiParam QueryDailyDTO queryDaily) {
         return parseResult("查询失败", dailyService.listDaily(getUserId(), queryDaily));
     }
 
     @GetMapping("/date/list")
     @ApiOperation("列出记录的日期")
-    public ResultObject<List<DailyDateVO>> listDailyDate() {
-        return parseResult("没有找到相关数据", dailyService.listDailyDate(getUserId()), false);
+    public ResponseResult<ArrayList<DailyDateVO>> listDailyDate() {
+        return parseResult("没有找到相关数据", dailyService.listDailyDate(getUserId()));
     }
 }

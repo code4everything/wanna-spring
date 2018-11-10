@@ -2,7 +2,7 @@ package org.code4everything.springbee.service;
 
 import org.code4everything.springbee.domain.Todo;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author pantao
@@ -10,11 +10,11 @@ import java.util.List;
  */
 public interface TodoService {
 
-    List<Todo> listNotDoneBeforeDate(String userId, String date);
+    ArrayList<Todo> listNotDoneBeforeDate(String userId, String date);
 
-    List<Todo> listTodo(String doingDate);
+    ArrayList<Todo> listTodo(String doingDate);
 
-    List<String> listDate(String userId);
+    ArrayList<String> listDate(String userId);
 
     Todo updateTodoStatus(String todoId, String status);
 

@@ -7,7 +7,7 @@ import org.code4everything.springbee.model.QueryDailyDTO;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Date;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author pantao
@@ -17,11 +17,11 @@ public interface DailyService {
 
     boolean exists(String dailyId);
 
-    List<DailyDateVO> listDailyDate(String userId);
+    ArrayList<DailyDateVO> listDailyDate(String userId);
 
     Daily getDaily(String userId, Date date);
 
-    List<Daily> listDaily(String userId, QueryDailyDTO query);
+    ArrayList<Daily> listDaily(String userId, QueryDailyDTO query);
 
     void remove(String dailyId);
 

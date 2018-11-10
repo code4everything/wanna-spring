@@ -52,7 +52,7 @@ public class IncomeServiceImpl implements IncomeService {
 
     @Override
     @AopLog("查询收益记录")
-    public List<Income> listIncome(String userId, QueryIncomeDTO queryIncomeDTO) {
+    public ArrayList<Income> listIncome(String userId, QueryIncomeDTO queryIncomeDTO) {
         Query query = new Query();
         Criteria criteria = Criteria.where("assetId").is(getAssetByUserId(userId).getId());
         final String y = "year";
@@ -83,7 +83,7 @@ public class IncomeServiceImpl implements IncomeService {
         }
         query.addCriteria(criteria);
         query.with(new Sort(Sort.Direction.DESC, y, m, d, "createTime"));
-        return mongoTemplate.find(query, Income.class);
+        return (ArrayList) mongoTemplate.find(query, Income.class);
     }
 
     @Override

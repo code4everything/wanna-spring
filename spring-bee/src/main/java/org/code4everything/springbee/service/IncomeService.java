@@ -5,7 +5,7 @@ import org.code4everything.springbee.model.IncomeDTO;
 import org.code4everything.springbee.model.QueryIncomeDTO;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author pantao
@@ -15,12 +15,13 @@ public interface IncomeService {
 
     Long getAssetBalance(String userId);
 
-    List<Income> listIncome(String userId, QueryIncomeDTO queryIncomeDTO);
+    ArrayList<Income> listIncome(String userId, QueryIncomeDTO queryIncomeDTO);
 
     Income updateIncome(String userId, String incomeId, IncomeDTO incomeDTO) throws InvocationTargetException,
             IllegalAccessException;
 
     void remove(String userId, String incomeId);
 
-    Income saveIncome(String userId, IncomeDTO incomeDTO) throws IllegalAccessException, InvocationTargetException, InstantiationException;
+    Income saveIncome(String userId, IncomeDTO incomeDTO) throws IllegalAccessException, InvocationTargetException,
+            InstantiationException;
 }

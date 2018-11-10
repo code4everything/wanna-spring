@@ -4,7 +4,7 @@ import org.code4everything.springbee.domain.Category;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author pantao
@@ -15,5 +15,5 @@ public interface CategoryDAO extends MongoRepository<Category, String> {
 
     boolean existsByUserIdAndName(String userId, String name);
 
-    List<Category> getByUserId(String userId);
+    ArrayList<Category> getByUserId(String userId);
 }

@@ -1,12 +1,13 @@
 package org.code4everything.springbee.model;
 
-import com.zhazhapan.util.annotation.FieldChecking;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.sql.Date;
 
@@ -23,7 +24,8 @@ public class DailyDTO implements Serializable {
     @ApiModelProperty("记录日期（默认为当前日期）")
     private Date date;
 
-    @FieldChecking
+    @Max(10)
+    @Min(0)
     @ApiModelProperty(value = "评分", required = true)
     private Integer score;
 

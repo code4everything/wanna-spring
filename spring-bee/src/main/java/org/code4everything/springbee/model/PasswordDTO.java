@@ -1,12 +1,13 @@
 package org.code4everything.springbee.model;
 
-import com.zhazhapan.util.annotation.FieldChecking;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Email;
 import java.io.Serializable;
 
 /**
@@ -19,15 +20,15 @@ import java.io.Serializable;
 @ApiModel(value = "passwordDTO", description = "重置密码")
 public class PasswordDTO implements Serializable {
 
-    @FieldChecking
+    @Email
     @ApiModelProperty(value = "邮箱", required = true)
     private String email;
 
-    @FieldChecking
+    @Length(min = 6, max = 20)
     @ApiModelProperty(value = "新密码", required = true)
     private String newPassword;
 
-    @FieldChecking
+    @Length(min = 6, max = 20)
     @ApiModelProperty(value = "验证码", required = true)
     private String vcode;
 }

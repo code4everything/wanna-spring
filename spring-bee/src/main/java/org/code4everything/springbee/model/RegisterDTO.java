@@ -1,12 +1,14 @@
 package org.code4everything.springbee.model;
 
-import com.zhazhapan.util.annotation.FieldChecking;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
@@ -19,19 +21,19 @@ import java.io.Serializable;
 @ApiModel(value = "registerDTO", description = "注册信息")
 public class RegisterDTO implements Serializable {
 
-    @FieldChecking
+    @NotBlank
     @ApiModelProperty(value = "用户名", required = true)
     private String username;
 
-    @FieldChecking
+    @Email
     @ApiModelProperty(value = "邮箱", required = true)
     private String email;
 
-    @FieldChecking
+    @Length(min = 6, max = 20)
     @ApiModelProperty(value = "密码", required = true)
     private String password;
 
-    @FieldChecking
+    @Length(min = 6, max = 6)
     @ApiModelProperty(value = "验证码", required = true)
     private String vcode;
 }

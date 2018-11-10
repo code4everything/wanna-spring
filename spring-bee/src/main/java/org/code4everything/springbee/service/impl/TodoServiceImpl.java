@@ -6,8 +6,8 @@ import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
 import com.zhazhapan.modules.constant.ValueConsts;
 import com.zhazhapan.util.Checker;
-import com.zhazhapan.util.annotation.AopLog;
 import org.bson.Document;
+import org.code4everything.boot.annotations.AopLog;
 import org.code4everything.springbee.dao.TodoDAO;
 import org.code4everything.springbee.domain.Todo;
 import org.code4everything.springbee.service.TodoService;
@@ -16,7 +16,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author pantao
@@ -37,23 +36,23 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     @AopLog("获取指定日期之前所有未完成的待办事项")
-    public List<Todo> listNotDoneBeforeDate(String userId, String date) {
+    public ArrayList<Todo> listNotDoneBeforeDate(String userId, String date) {
         return todoDAO.getByUserIdAndStatusAndDoingDateLessThan(userId, "0", date);
     }
 
     @Override
     @AopLog("列出指定日期的待办事项")
-    public List<Todo> listTodo(String doingDate) {
+    public ArrayList<Todo> listTodo(String doingDate) {
         return todoDAO.getByDoingDate(doingDate);
     }
 
     @Override
     @AopLog("列出所有待办事项日期")
-    public List<String> listDate(String userId) {
+    public ArrayList<String> listDate(String userId) {
         BasicDBObject dbObject = new BasicDBObject("userId", userId);
         MongoCollection<Document> collection = mongoTemplate.getCollection("todo");
         DistinctIterable<String> iterable = collection.distinct("doingDate", dbObject, String.class);
-        List<String> dateList = new ArrayList<>(128);
+        ArrayList<String> dateList = new ArrayList<>(128);
         for (String date : iterable) {
             dateList.add(date);
         }

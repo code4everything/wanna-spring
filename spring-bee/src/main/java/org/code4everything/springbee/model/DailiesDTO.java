@@ -1,12 +1,12 @@
 package org.code4everything.springbee.model;
 
-import com.zhazhapan.util.annotation.FieldChecking;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
@@ -19,15 +19,15 @@ import java.io.Serializable;
 @ApiModel(value = "dailiesDTO", description = "日程详情")
 public class DailiesDTO implements Serializable {
 
-    @FieldChecking
+    @NotBlank
     @ApiModelProperty("开始时间")
     private String startTime;
 
-    @FieldChecking
+    @NotBlank
     @ApiModelProperty("结束时间")
     private String endTime;
 
-    @FieldChecking
+    @NotBlank
     @ApiModelProperty("详情内容")
     private String content;
 }
