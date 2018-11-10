@@ -1,13 +1,13 @@
 package org.code4everything.springbee.service.impl;
 
-import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
-import com.zhazhapan.modules.constant.ValueConsts;
-import com.zhazhapan.util.Checker;
 import org.bson.Document;
 import org.code4everything.boot.annotations.AopLog;
+import org.code4everything.boot.constant.SymbolConsts;
 import org.code4everything.springbee.dao.TodoDAO;
 import org.code4everything.springbee.domain.Todo;
 import org.code4everything.springbee.service.TodoService;
@@ -63,10 +63,10 @@ public class TodoServiceImpl implements TodoService {
     @AopLog("更新待办事项状态")
     public Todo updateTodoStatus(String todoId, String status) {
         Todo todo = todoDAO.getById(todoId);
-        if (Checker.isNull(todo)) {
+        if (ObjectUtil.isNull(todo)) {
             return null;
         }
-        if (ValueConsts.ONE_STR.equals(status)) {
+        if (SymbolConsts.ONE.equals(status)) {
             todo.setStatus("1");
             todo.setDoneTime(System.currentTimeMillis());
         } else {
@@ -79,7 +79,7 @@ public class TodoServiceImpl implements TodoService {
     @AopLog("更新待办事项内容")
     public Todo updateTodo(String todoId, String content) {
         Todo todo = todoDAO.getById(todoId);
-        if (Checker.isNull(todo)) {
+        if (ObjectUtil.isNull(todo)) {
             return null;
         }
         todo.setContent(content);
@@ -99,7 +99,7 @@ public class TodoServiceImpl implements TodoService {
         todo.setContent(content);
         todo.setCreateTime(System.currentTimeMillis());
         todo.setDoingDate(doingDate);
-        todo.setId(RandomUtil.simpleUUID());
+        todo.setId(IdUtil.simpleUUID());
         todo.setStatus("0");
         todo.setUserId(userId);
         return todoDAO.save(todo);

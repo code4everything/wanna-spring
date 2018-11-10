@@ -52,12 +52,12 @@ public class CommonController extends BeeBaseController {
     @ApiImplicitParam(name = "email", value = "邮箱", required = true)
     public ResponseResult<String> sendVcode(@RequestParam String email) throws MessagingException {
         commonService.sendVcode(email);
-        return new ResponseResult<String>().setMsg("发送成功");
+        return successResult("发送成功");
     }
 
     @GetMapping("/current-time")
     @ApiOperation("获取服务器当前时间")
     public ResponseResult<String> getCurrentTimestamp() {
-        return new ResponseResult<>();
+        return successResult("");
     }
 }

@@ -1,9 +1,10 @@
 package org.code4everything.springbee.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
-import com.zhazhapan.util.BeanUtils;
-import com.zhazhapan.util.Checker;
-import com.zhazhapan.util.model.SimpleDateTime;
+import cn.hutool.core.util.StrUtil;
 import org.code4everything.boot.annotations.AopLog;
 import org.code4everything.springbee.constant.BeeValueConsts;
 import org.code4everything.springbee.dao.AssetDAO;
@@ -13,6 +14,7 @@ import org.code4everything.springbee.domain.Income;
 import org.code4everything.springbee.model.IncomeDTO;
 import org.code4everything.springbee.model.QueryIncomeDTO;
 import org.code4everything.springbee.service.IncomeService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -22,7 +24,6 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author pantao
@@ -58,26 +59,26 @@ public class IncomeServiceImpl implements IncomeService {
         final String y = "year";
         final String m = "month";
         final String d = "day";
-        if (Checker.isNotNull(queryIncomeDTO)) {
-            List<Criteria> criteriaList = new ArrayList<>(4);
-            if (Checker.isNotEmpty(queryIncomeDTO.getCategory())) {
+        if (ObjectUtil.isNotNull(queryIncomeDTO)) {
+            ArrayList<Criteria> criteriaList = new ArrayList<>(4);
+            if (StrUtil.isNotEmpty(queryIncomeDTO.getCategory())) {
                 criteriaList.add(Criteria.where("category").is(queryIncomeDTO.getCategory()));
             }
-            if (Checker.isNotEmpty(queryIncomeDTO.getStart())) {
+            if (StrUtil.isNotEmpty(queryIncomeDTO.getStart())) {
                 SimpleDateTime date = new SimpleDateTime(queryIncomeDTO.getStart(), BeeValueConsts.DATE_FORMAT);
                 Criteria dayCriteria = Criteria.where(m).is(date.getMonth() + 1).and(d).gte(date.getDay());
                 Criteria join = new Criteria().orOperator(Criteria.where(m).gt(date.getMonth() + 1), dayCriteria);
                 Criteria monthCriteria = new Criteria().andOperator(Criteria.where(y).is(date.getYear()), join);
                 criteriaList.add(new Criteria().orOperator(Criteria.where(y).gt(date.getYear()), monthCriteria));
             }
-            if (Checker.isNotEmpty(queryIncomeDTO.getEnd())) {
+            if (StrUtil.isNotEmpty(queryIncomeDTO.getEnd())) {
                 SimpleDateTime date = new SimpleDateTime(queryIncomeDTO.getEnd(), BeeValueConsts.DATE_FORMAT);
                 Criteria dayCriteria = Criteria.where(m).is(date.getMonth() + 1).and(d).lte(date.getDay());
                 Criteria join = new Criteria().orOperator(Criteria.where(m).lt(date.getMonth() + 1), dayCriteria);
                 Criteria monthCriteria = new Criteria().andOperator(Criteria.where(y).is(date.getYear()), join);
                 criteriaList.add(new Criteria().orOperator(Criteria.where(y).lt(date.getYear()), monthCriteria));
             }
-            if (Checker.isNotEmpty(criteriaList)) {
+            if (CollectionUtil.isNotEmpty(criteriaList)) {
                 criteria.andOperator(criteriaList.toArray(new Criteria[0]));
             }
         }
@@ -91,7 +92,7 @@ public class IncomeServiceImpl implements IncomeService {
     public Income updateIncome(String userId, String incomeId, IncomeDTO incomeDTO) throws InvocationTargetException,
             IllegalAccessException {
         Income income = incomeDAO.getById(incomeId);
-        if (Checker.isNull(income)) {
+        if (ObjectUtil.isNull(income)) {
             return null;
         }
         Long changeValue = incomeDTO.getMoney() * incomeDTO.getType() - income.getMoney() * income.getType();
@@ -106,7 +107,7 @@ public class IncomeServiceImpl implements IncomeService {
     @AopLog("删除收益记录")
     public void remove(String userId, String incomeId) {
         Income income = incomeDAO.getById(incomeId);
-        if (Checker.isNotNull(income)) {
+        if (ObjectUtil.isNotNull(income)) {
             updateAssetBalance(userId, income.getMoney() * income.getType() * -1);
             incomeDAO.deleteById(incomeId);
         }
@@ -114,8 +115,7 @@ public class IncomeServiceImpl implements IncomeService {
 
     @Override
     @AopLog("添加收益记录")
-    public Income saveIncome(String userId, IncomeDTO incomeDTO) throws IllegalAccessException,
-            InvocationTargetException, InstantiationException {
+    public Income saveIncome(String userId, IncomeDTO incomeDTO) {
         Income income = BeanUtils.bean2Another(incomeDTO, Income.class);
         BeanUtils.bean2Another(new SimpleDateTime(incomeDTO.getDate()), income);
         income.setMonth(income.getMonth() + 1);
@@ -135,11 +135,11 @@ public class IncomeServiceImpl implements IncomeService {
     private synchronized Asset getAssetByUserId(String userId) {
         // TODO: 2018/9/24 此方法调用频繁，需将结果放入缓存中
         Asset asset = assetDAO.getByUserId(userId);
-        if (Checker.isNull(asset)) {
+        if (ObjectUtil.isNull(asset)) {
             asset = new Asset();
             asset.setBalance(0L);
             asset.setCreateTime(System.currentTimeMillis());
-            asset.setId(RandomUtil.simpleUUID());
+            asset.setId(IdUtil.simpleUUID());
             asset.setUserId(userId);
             assetDAO.save(asset);
         }

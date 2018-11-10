@@ -35,9 +35,8 @@ public class CategoryController extends BeeBaseController {
     @ApiOperation("添加分类")
     @ApiImplicitParams({@ApiImplicitParam(name = "name", value = "分类名", required = true)})
     public ResponseResult<Category> saveCategory(@RequestParam String name) {
-        ResponseResult<Category> result = new ResponseResult<>();
         if (categoryService.exists(getUserId(), name)) {
-            return result.error("该分类已存在，无需添加");
+            return errorResult("该分类已存在，无需添加");
         }
         return parseResult("添加分类失败", categoryService.appendCategory(getUserId(), name));
     }

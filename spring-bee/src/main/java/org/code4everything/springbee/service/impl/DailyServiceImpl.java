@@ -1,14 +1,12 @@
 package org.code4everything.springbee.service.impl;
 
-import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.ObjectUtil;
+import com.google.common.collect.Lists;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
-import com.zhazhapan.util.BeanUtils;
-import com.zhazhapan.util.Checker;
-import com.zhazhapan.util.ListUtils;
-import com.zhazhapan.util.model.SimpleDateTime;
 import org.bson.Document;
 import org.code4everything.boot.annotations.AopLog;
 import org.code4everything.springbee.dao.DailyDAO;
@@ -59,7 +57,7 @@ public class DailyServiceImpl implements DailyService {
         MongoCollection<Document> collection = mongoTemplate.getCollection("daily");
         DistinctIterable<Integer> years = collection.distinct("year", dbObject, Integer.class);
         MongoCursor<Integer> yearCursor = years.iterator();
-        List<DailyDateVO> dateVOList = new ArrayList<>(64);
+        ArrayList<DailyDateVO> dateVOList = new ArrayList<>(64);
         // 遍历年份
         while (yearCursor.hasNext()) {
             DailyDateVO dateVO = new DailyDateVO();
@@ -69,7 +67,7 @@ public class DailyServiceImpl implements DailyService {
             dbObject.put("year", year);
             DistinctIterable<Integer> months = collection.distinct("month", dbObject, Integer.class);
             MongoCursor<Integer> monthCursor = months.iterator();
-            List<DailyMonthVO> monthVOList = new ArrayList<>(16);
+            ArrayList<DailyMonthVO> monthVOList = new ArrayList<>(16);
             // 遍历月份
             while (monthCursor.hasNext()) {
                 DailyMonthVO monthVO = new DailyMonthVO();
@@ -104,7 +102,7 @@ public class DailyServiceImpl implements DailyService {
         boolean queryMonth = query.getMonth() > 0;
         boolean queryDay = query.getDay() > 0;
         if (queryMonth && queryDay) {
-            return ListUtils.getArrayList(dailyDAO.getByUserIdAndYearAndMonthAndDay(userId, query.getYear(),
+            return Lists.newArrayList(dailyDAO.getByUserIdAndYearAndMonthAndDay(userId, query.getYear(),
                     query.getMonth(), query.getDay()));
         } else if (queryMonth) {
             return dailyDAO.getByUserIdAndYearAndMonth(userId, query.getYear(), query.getMonth());
@@ -127,7 +125,7 @@ public class DailyServiceImpl implements DailyService {
             , IllegalAccessException {
         Daily daily = parseDailyDTO(dailyDTO);
         daily.setCreateTime(System.currentTimeMillis());
-        daily.setId(RandomUtil.simpleUUID());
+        daily.setId(IdUtil.simpleUUID());
         daily.setUserId(userId);
         return dailyDAO.save(daily);
     }
@@ -138,7 +136,7 @@ public class DailyServiceImpl implements DailyService {
         SimpleDateTime date = new SimpleDateTime(dailyDTO.getDate());
         Daily daily = dailyDAO.getByUserIdAndYearAndMonthAndDay(userId, date.getYear(), date.getMonth() + 1,
                 date.getDay());
-        return Checker.isNotNull(daily) && !dailyId.equals(daily.getId());
+        return ObjectUtil.isNotNull(daily) && !dailyId.equals(daily.getId());
     }
 
     @Override
@@ -146,7 +144,7 @@ public class DailyServiceImpl implements DailyService {
     public Daily updateDaily(String dailyId, DailyDTO dailyDTO) throws InvocationTargetException,
             IllegalAccessException {
         Daily daily = dailyDAO.getById(dailyId);
-        if (Checker.isNull(daily)) {
+        if (ObjectUtil.isNull(daily)) {
             return null;
         }
         return dailyDAO.save(parseDailyDTO(dailyDTO, BeanUtils.bean2Another(dailyDTO, daily)));
@@ -157,8 +155,7 @@ public class DailyServiceImpl implements DailyService {
         return parseDailyDTO(dailyDTO, BeanUtils.bean2Another(dailyDTO, Daily.class));
     }
 
-    private Daily parseDailyDTO(DailyDTO dailyDTO, Daily daily) throws InvocationTargetException,
-            IllegalAccessException {
+    private Daily parseDailyDTO(DailyDTO dailyDTO, Daily daily) {
         BeanUtils.bean2Another(new SimpleDateTime(dailyDTO.getDate()), daily);
         daily.setMonth(daily.getMonth() + 1);
         return daily;

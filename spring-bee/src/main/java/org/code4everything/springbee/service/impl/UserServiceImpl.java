@@ -1,10 +1,9 @@
 package org.code4everything.springbee.service.impl;
 
 import cn.hutool.core.util.IdUtil;
-import com.zhazhapan.util.Checker;
-import com.zhazhapan.util.NetUtils;
-import com.zhazhapan.util.annotation.AopLog;
-import com.zhazhapan.util.encryption.JavaEncrypt;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.crypto.digest.DigestUtil;
+import org.code4everything.boot.annotations.AopLog;
 import org.code4everything.springbee.SpringBeeApplication;
 import org.code4everything.springbee.dao.UserDAO;
 import org.code4everything.springbee.domain.User;
@@ -50,7 +49,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setUsername(registerDTO.getUsername());
         user.setEmail(registerDTO.getEmail());
-        user.setPassword(encryptToMd5(registerDTO.getPassword()));
+        user.setPassword(DigestUtil.md5Hex(registerDTO.getPassword()));
         user.setCreateTime(System.currentTimeMillis());
         user.setId(IdUtil.simpleUUID());
         user.setStatus("7");
@@ -61,8 +60,8 @@ public class UserServiceImpl implements UserService {
     @AopLog("重置密码")
     public void resetPassword(String email, String newPassword) {
         User user = userDAO.getByEmail(email);
-        if (Checker.isNotNull(user)) {
-            user.setPassword(encryptToMd5(newPassword));
+        if (ObjectUtil.isNotNull(user)) {
+            user.setPassword(DigestUtil.md5Hex(newPassword));
             userDAO.save(user);
         }
     }
@@ -70,8 +69,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @AopLog("修改密码")
     public boolean updatePassword(User user, String oldPassword, String newPassword) {
-        if (user.getPassword().equals(encryptToMd5(oldPassword))) {
-            user.setPassword(encryptToMd5(newPassword));
+        if (user.getPassword().equals(DigestUtil.md5Hex(oldPassword))) {
+            user.setPassword(DigestUtil.md5Hex(newPassword));
             userDAO.save(user);
             return true;
         }
@@ -82,8 +81,8 @@ public class UserServiceImpl implements UserService {
     @AopLog("用户登录")
     public String login(String loginName, String password) {
         User user = userDAO.getByUsernameOrEmail(loginName, loginName);
-        if (Checker.isNotNull(user) && user.getPassword().equals(encryptToMd5(password))) {
-            String token = NetUtils.generateToken();
+        if (ObjectUtil.isNotNull(user) && user.getPassword().equals(DigestUtil.md5Hex(password))) {
+            String token = IdUtil.simpleUUID();
             Integer tokenExpired = SpringBeeApplication.getBeeConfigBean().getTokenExpired();
             userRedisTemplate.opsForValue().set(token, user, tokenExpired, TimeUnit.SECONDS);
             user.setLoginTime(System.currentTimeMillis());
@@ -91,9 +90,5 @@ public class UserServiceImpl implements UserService {
             return token;
         }
         return null;
-    }
-
-    private String encryptToMd5(String password) {
-        return JavaEncrypt.MD5.digestHex(password);
     }
 }
