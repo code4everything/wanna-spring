@@ -53,7 +53,7 @@ export default {
             cookie.set('token', data.data)
             window.location = app.data().path.index
           } else {
-            layer.alert(data.message)
+            layer.alert(data.msg)
           }
         })
       }

@@ -26,10 +26,10 @@ axios.interceptors.response.use(response => {
 }, error => {
   layer.closeAll()
   if (error.response !== undefined) {
-    alert(error.response.data.message)
+    // alert(error.response.data.msg)
     console.error(error.response.data)
   }
-  return Promise.resolve(error.response)
+  return Promise.resolve(error.response.data || error.response)
 })
 
 export const requestRemoveTodo = id => {

@@ -139,7 +139,7 @@ export default {
             self.getAssetBalance()
             self.incomes.splice(key, 1)
           } else {
-            layer.alert(data.message)
+            layer.alert(data.msg)
           }
         })
         layer.closeAll()
@@ -192,7 +192,7 @@ export default {
         if (data.code === 200) {
           this.incomes = data.data
         } else {
-          layer.alert(data.message)
+          layer.alert(data.msg)
         }
       })
     },
@@ -201,7 +201,7 @@ export default {
         if (data.code === 200) {
           this.asset = data.data / 100
         } else {
-          layer.alert(data.message)
+          layer.alert(data.msg)
         }
       })
     }

@@ -159,7 +159,7 @@ export default {
         this.daily = data.data
         layer.alert('保存成功')
       } else {
-        layer.alert(data.message)
+        layer.alert(data.msg)
       }
     },
     updateDailies: function (dailies) {
@@ -182,11 +182,11 @@ export default {
             if (data.code === 200) {
               this.dailyDetail = data.data
             } else {
-              layer.alert(data.message)
+              layer.alert(data.msg)
             }
           })
         } else {
-          layer.alert(data.message)
+          layer.alert(data.msg)
         }
       })
     }

@@ -85,7 +85,7 @@ export default {
       if (data.code === 200) {
         this.$parent.updateDailies(data.data)
       } else {
-        layer.alert(data.message)
+        layer.alert(data.msg)
       }
     }
   },

@@ -74,7 +74,7 @@ export default {
           this.todos[index].status = status
         } else {
           src.checked = false
-          layer.alert(data.message)
+          layer.alert(data.msg)
         }
       })
     },
@@ -90,7 +90,7 @@ export default {
           if (data.code === 200) {
             self.todos.splice(index, 1)
           } else {
-            layer.alert(data.message)
+            layer.alert(data.msg)
           }
         })
         layer.closeAll()
@@ -107,7 +107,7 @@ export default {
             this.content = ''
             this.todos.push(data.data)
           } else {
-            layer.alert(data.message)
+            layer.alert(data.msg)
           }
         })
       }
@@ -119,7 +119,7 @@ export default {
       } else {
         requestUpdateTodo(this.todos[index].id, this.todos[index].content).then(data => {
           if (data.code !== 200) {
-            layer.alert(data.message)
+            layer.alert(data.msg)
           }
         })
       }
@@ -132,7 +132,7 @@ export default {
         if (data.code === 200) {
           this.todos = data.data
         } else {
-          layer.alert(data.message)
+          layer.alert(data.msg)
         }
       })
     }

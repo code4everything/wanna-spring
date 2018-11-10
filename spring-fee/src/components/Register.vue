@@ -83,7 +83,7 @@ export default {
         layer.load(1)
         requestVerifyCode(email).then(data => {
           layer.closeAll()
-          layer.alert(data.message)
+          layer.alert(data.msg)
         })
       }
     },
@@ -110,7 +110,7 @@ export default {
           if (data.code === 200) {
             window.location = this.loginPath
           } else {
-            layer.alert(data.message)
+            layer.alert(data.msg)
           }
         })
       } else {

@@ -117,7 +117,7 @@ export default {
             self.categories.push(data.data.name)
             self.editable = false
           } else {
-            layer.alert(data.message)
+            layer.alert(data.msg)
           }
         })
       }
@@ -144,7 +144,7 @@ export default {
       if (data.code === 200) {
         this.$parent.updateIncome(data.data)
       } else {
-        layer.alert(data.message)
+        layer.alert(data.msg)
       }
     },
   },
@@ -159,7 +159,7 @@ export default {
           }
         })
       } else if (data.code === 401) {
-        layer.alert(data.message)
+        layer.alert(data.msg)
       }
     })
   }
