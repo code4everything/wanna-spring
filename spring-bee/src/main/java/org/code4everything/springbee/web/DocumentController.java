@@ -1,13 +1,12 @@
 package org.code4everything.springbee.web;
 
-import com.zhazhapan.modules.constant.ValueConsts;
-import com.zhazhapan.util.Checker;
-import com.zhazhapan.util.NetUtils;
-import com.zhazhapan.util.model.ResultObject;
-import com.zhazhapan.util.model.SimpleMultipartFile;
+import cn.hutool.core.lang.Validator;
+import cn.hutool.core.util.ObjectUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.code4everything.boot.bean.ResponseResult;
+import org.code4everything.boot.web.HttpUtils;
 import org.code4everything.springbee.SpringBeeApplication;
 import org.code4everything.springbee.domain.Document;
 import org.code4everything.springbee.service.DocumentService;
@@ -29,7 +28,7 @@ import java.io.IOException;
  **/
 @RestController
 @RequestMapping("/user/document")
-@Api(value = "/user/document", description = "文档接口")
+@Api(value = "/user/document")
 public class DocumentController extends BeeBaseController {
 
     private final DocumentService documentService;
@@ -42,16 +41,8 @@ public class DocumentController extends BeeBaseController {
     @PostMapping("/upload")
     @ApiOperation("上传文件")
     @ApiImplicitParam(name = "file", value = "文件", required = true, dataTypeClass = MultipartFile.class)
-    public ResultObject<Document> upload(@RequestBody MultipartFile file) throws IOException {
-        SimpleMultipartFile multipartFile = new SimpleMultipartFile();
-        if (file.getSize() > ValueConsts.MB) {
-            return new ResultObject<>(400, "文件不能大于1MB");
-        }
-        String storagePath = SpringBeeApplication.getBeeConfigBean().getStoragePath();
-        multipartFile.setSize(file.getSize()).setStoragePath(storagePath).setOriginalFilename(file.getOriginalFilename());
-        ResultObject<Document> resultObject = NetUtils.upload(file.getBytes(), multipartFile, documentService);
-        setSensitiveData(resultObject.data);
-        return resultObject;
+    public ResponseResult<Document> upload(@RequestBody MultipartFile file) {
+        return HttpUtils.upload(documentService, file, SpringBeeApplication.getBeeConfigBean().getStoragePath(), true);
     }
 
     @GetMapping("/**")
@@ -59,10 +50,10 @@ public class DocumentController extends BeeBaseController {
     public ResponseEntity<InputStreamSource> get(HttpServletRequest request) throws IOException {
         String localPath = documentService.getLocalPathByAccessUrl(request.getServletPath());
         FileSystemResource file = null;
-        if (Checker.isNotEmpty(localPath)) {
+        if (Validator.isNotEmpty(localPath)) {
             file = new FileSystemResource(localPath);
         }
-        if (Checker.isNull(file)) {
+        if (ObjectUtil.isNull(file)) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().contentLength(file.contentLength()).contentType(MediaType.APPLICATION_OCTET_STREAM).body(new InputStreamResource(file.getInputStream()));
