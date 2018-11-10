@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 /**
  * @author pantao
  * @since 2018/9/10
@@ -43,7 +45,7 @@ public class UserController extends BeeBaseController {
 
     @PutMapping("/password/reset")
     @ApiOperation("重置密码")
-    public ResponseResult<String> resetPassword(@RequestBody @ApiParam PasswordDTO password) {
+    public ResponseResult<String> resetPassword(@RequestBody @ApiParam @Valid PasswordDTO password) {
         if (commonService.isVcodeValidated(password.getEmail(), password.getVcode(), true)) {
             userService.resetPassword(password.getEmail(), password.getNewPassword());
             return successResult("重置密码成功");
@@ -53,7 +55,7 @@ public class UserController extends BeeBaseController {
 
     @PostMapping("/register")
     @ApiOperation("注册")
-    public ResponseResult<String> register(@RequestBody @ApiParam RegisterDTO register) {
+    public ResponseResult<String> register(@RequestBody @ApiParam @Valid RegisterDTO register) {
         if (commonService.existsUsername(register.getUsername())) {
             return errorResult("该用户名已经被注册啦");
         }
@@ -77,7 +79,7 @@ public class UserController extends BeeBaseController {
 
     @PutMapping("/info")
     @ApiOperation("更新信息")
-    public ResponseResult<Boolean> updateInfo(@RequestBody @ApiParam UserInfoDTO userInfo) {
+    public ResponseResult<Boolean> updateInfo(@RequestBody @ApiParam @Valid UserInfoDTO userInfo) {
         return parseResult("更新", userService.updateInfo(getUser(), userInfo));
     }
 

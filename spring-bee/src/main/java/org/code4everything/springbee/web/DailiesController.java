@@ -12,6 +12,7 @@ import org.code4everything.springbee.service.DailyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 
 /**
@@ -35,7 +36,8 @@ public class DailiesController extends BeeBaseController {
 
     @PostMapping("/append/{dailyId}")
     @ApiOperation("添加一条详情记录")
-    public ResponseResult<Dailies> append(@PathVariable String dailyId, @RequestBody @ApiParam DailiesDTO dailies) {
+    public ResponseResult<Dailies> append(@PathVariable String dailyId,
+                                          @RequestBody @ApiParam @Valid DailiesDTO dailies) {
         if (dailyService.exists(dailyId)) {
             return parseResult("添加失败", dailiesService.saveDailies(dailyId, dailies));
         }
@@ -53,7 +55,7 @@ public class DailiesController extends BeeBaseController {
     @PutMapping("/{dailiesId}/update")
     @ApiOperation("更新详情")
     public ResponseResult<Dailies> updateDailies(@PathVariable String dailiesId,
-                                                 @RequestBody @ApiParam DailiesDTO dailies) {
+                                                 @RequestBody @ApiParam @Valid DailiesDTO dailies) {
         return parseResult("更新失败", dailiesService.updateDailies(dailiesId, dailies));
     }
 

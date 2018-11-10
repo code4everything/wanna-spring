@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -32,15 +32,14 @@ public class DailyController extends BeeBaseController {
     private final DailyService dailyService;
 
     @Autowired
-    public DailyController(DailyService dailyService, HttpServletRequest request,
-                           RedisTemplate<String, User> userRedisTemplate) {
+    public DailyController(DailyService dailyService, RedisTemplate<String, User> userRedisTemplate) {
         super(userRedisTemplate);
         this.dailyService = dailyService;
     }
 
     @PostMapping("/create")
     @ApiOperation("添加记录")
-    public ResponseResult<Daily> saveDaily(@RequestBody @ApiParam DailyDTO daily) {
+    public ResponseResult<Daily> saveDaily(@RequestBody @ApiParam @Valid DailyDTO daily) {
         if (daily.getDate().getTime() > DateUtil.endOfDay(new java.util.Date()).getTime()) {
             return errorResult("添加失败，无法添加未来的日程记录");
         }
@@ -66,7 +65,8 @@ public class DailyController extends BeeBaseController {
 
     @PutMapping("/{dailyId}/update")
     @ApiOperation("更新记录")
-    public ResponseResult<Daily> updateDaily(@PathVariable String dailyId, @RequestBody @ApiParam DailyDTO daily) {
+    public ResponseResult<Daily> updateDaily(@PathVariable String dailyId,
+                                             @RequestBody @ApiParam @Valid DailyDTO daily) {
         if (dailyService.exists(getUserId(), dailyId, daily)) {
             return errorResult("更新失败，该日期记录已经存在");
         }
@@ -75,7 +75,7 @@ public class DailyController extends BeeBaseController {
 
     @GetMapping("/list")
     @ApiOperation("列出日程记录")
-    public ResponseResult<ArrayList<Daily>> listByDate(@RequestBody @ApiParam QueryDailyDTO queryDaily) {
+    public ResponseResult<ArrayList<Daily>> listByDate(@RequestBody @ApiParam @Valid QueryDailyDTO queryDaily) {
         return parseResult("查询失败", dailyService.listDaily(getUserId(), queryDaily));
     }
 
