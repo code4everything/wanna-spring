@@ -23,7 +23,7 @@
     </div>
     <div class="col-12 col-sm-12"><br/></div>
     <!--未完成的待办事项-->
-    <div class="text-left rounded bg-light col-10 offset-1 col-sm-11 offset-sm-1">
+    <div v-show="undos.length>0" class="text-left rounded bg-light col-10 offset-1 col-sm-11 offset-sm-1">
       <br/>
       <div class="row">
         <div class="col-sm-12 col-12 border border-top-0 border-left-0 border-right-0 border-bottom"
