@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public interface TodoService {
 
-    ArrayList<Todo> listNotDoneBeforeDate(String userId, String date);
+    ArrayList<Todo> listUndoBeforeDate(String userId, String date);
 
     ArrayList<Todo> listTodo(String doingDate);
 

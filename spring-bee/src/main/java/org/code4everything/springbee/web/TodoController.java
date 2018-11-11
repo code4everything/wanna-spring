@@ -70,9 +70,9 @@ public class TodoController extends BeeBaseController {
         return parseResult("没有找到数据", todoService.listDate(getUserId()));
     }
 
-    @GetMapping("/not-done/list")
-    public ResponseResult<ArrayList<Todo>> listNotDone(@RequestParam String date) {
-        return parseResult("没有未完成的待办事项哦", todoService.listNotDoneBeforeDate(getUserId(), date), true);
+    @GetMapping("/undo/list")
+    public ResponseResult<ArrayList<Todo>> listUndo(@RequestParam String date) {
+        return parseResult("没有未完成的待办事项哦", todoService.listUndoBeforeDate(getUserId(), date), true);
     }
 
     @GetMapping("/list")
