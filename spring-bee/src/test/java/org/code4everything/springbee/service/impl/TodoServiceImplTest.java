@@ -1,7 +1,7 @@
 package org.code4everything.springbee.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
-import com.zhazhapan.util.Formatter;
 import org.code4everything.springbee.BaseTest;
 import org.code4everything.springbee.constant.TestConsts;
 import org.code4everything.springbee.dao.TodoDAO;
@@ -29,7 +29,7 @@ public class TodoServiceImplTest extends BaseTest {
 
     @Test
     public void listTodo() {
-        List<Todo> todos = todoService.listTodo(Formatter.dateToString(new Date()));
+        List<Todo> todos = todoService.listTodo(DateUtil.formatDate(new Date()));
         Assert.assertNotNull(todos);
         System.out.println(todos);
     }
@@ -58,7 +58,7 @@ public class TodoServiceImplTest extends BaseTest {
 
     @Test
     public void saveTodo() {
-        Assert.assertNotNull(todoService.saveTodo(getUser().getId(), Formatter.dateToString(new Date()),
+        Assert.assertNotNull(todoService.saveTodo(getUser().getId(), DateUtil.formatDate(new Date()),
                 RandomUtil.randomString(6)));
     }
 }

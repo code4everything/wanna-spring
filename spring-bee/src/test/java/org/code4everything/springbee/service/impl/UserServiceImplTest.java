@@ -1,6 +1,6 @@
 package org.code4everything.springbee.service.impl;
 
-import com.zhazhapan.util.encryption.JavaEncrypt;
+import cn.hutool.crypto.digest.DigestUtil;
 import org.code4everything.springbee.BaseTest;
 import org.code4everything.springbee.constant.TestConsts;
 import org.code4everything.springbee.model.RegisterDTO;
@@ -47,7 +47,7 @@ public class UserServiceImplTest extends BaseTest {
     @Test
     public void resetPassword() {
         userService.resetPassword(TestConsts.EMAIL, TestConsts.PASSWORD);
-        Assert.assertEquals(JavaEncrypt.MD5.digestHex(TestConsts.PASSWORD), getUser().getPassword());
+        Assert.assertEquals(DigestUtil.md5Hex(TestConsts.PASSWORD), getUser().getPassword());
     }
 
     @Test
