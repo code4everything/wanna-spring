@@ -10,7 +10,10 @@ import org.code4everything.springbee.model.DailyDTO;
 import org.code4everything.springbee.service.DailyService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -49,10 +52,14 @@ public class DailyServiceImpl implements DailyService {
     @Override
     @AopLog("列出日程记录")
     public ArrayList<Daily> listDaily(String userId, Date startDate, Date endDate) {
-        // TODO: 2018/11/11 待测试
-        String start = DateUtil.formatDate(startDate);
-        String end = DateUtil.formatDate(endDate);
-        return dailyDAO.getByUserIdAndDateGreaterThanEqualAndDateLessThanEqual(userId, start, end);
+        Query query = new Query();
+        Criteria criteria = Criteria.where("userId").is(userId);
+        Criteria dateGreatThan = Criteria.where("date").gte(DateUtil.formatDate(startDate));
+        Criteria dateLessThan = Criteria.where("date").lte(DateUtil.formatDate(endDate));
+        criteria.andOperator(dateGreatThan, dateLessThan);
+        query.addCriteria(criteria);
+        query.with(new Sort(Sort.Direction.DESC, "date"));
+        return (ArrayList<Daily>) mongoTemplate.find(query, Daily.class);
     }
 
     @Override

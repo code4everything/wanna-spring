@@ -35,7 +35,7 @@ public class DailyServiceImplTest extends BaseTest {
     @Test
     public void listDaily() {
         Long millis = System.currentTimeMillis();
-        Date start = new Date(millis - 30 * 24 * 60 * 60 * 1000);
+        Date start = new Date(millis + 30 * 24 * 60 * 60 * 1000);
         Date end = new Date(millis);
         List<Daily> dailies = dailyService.listDaily(getUser().getId(), start, end);
         Assert.assertNotNull(dailies);
