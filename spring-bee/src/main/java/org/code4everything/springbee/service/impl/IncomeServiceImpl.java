@@ -17,11 +17,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author pantao
@@ -36,11 +38,15 @@ public class IncomeServiceImpl implements IncomeService {
 
     private final MongoTemplate mongoTemplate;
 
+    private final RedisTemplate<String, Asset> assetRedisTemplate;
+
     @Autowired
-    public IncomeServiceImpl(AssetDAO assetDAO, IncomeDAO incomeDAO, MongoTemplate mongoTemplate) {
+    public IncomeServiceImpl(AssetDAO assetDAO, IncomeDAO incomeDAO, MongoTemplate mongoTemplate,
+                             RedisTemplate<String, Asset> assetRedisTemplate) {
         this.assetDAO = assetDAO;
         this.incomeDAO = incomeDAO;
         this.mongoTemplate = mongoTemplate;
+        this.assetRedisTemplate = assetRedisTemplate;
     }
 
     @Override
@@ -100,22 +106,32 @@ public class IncomeServiceImpl implements IncomeService {
     private String updateAssetBalance(String userId, Long value) {
         Asset asset = getAssetByUserId(userId);
         asset.setBalance(asset.getBalance() + value);
-        assetDAO.save(asset);
+        putAssetForRedis(userId, assetDAO.save(asset));
         return asset.getId();
     }
 
-    private synchronized Asset getAssetByUserId(String userId) {
-        // TODO: 2018/9/24 此方法调用频繁，需将结果放入缓存中
-        Asset asset = assetDAO.getByUserId(userId);
-        if (ObjectUtil.isNull(asset)) {
-            asset = new Asset();
-            asset.setBalance(0L);
-            asset.setCreateTime(System.currentTimeMillis());
-            asset.setId(IdUtil.simpleUUID());
-            asset.setUserId(userId);
-            assetDAO.save(asset);
+    private Asset getAssetByUserId(String userId) {
+        Asset asset = assetRedisTemplate.opsForValue().get("asset." + userId);
+        if (Objects.isNull(asset)) {
+            asset = assetDAO.getByUserId(userId);
+            if (Objects.isNull(asset)) {
+                // 防止出现重复值
+                synchronized (IncomeServiceImpl.class) {
+                    asset = new Asset();
+                    asset.setBalance(0L);
+                    asset.setCreateTime(System.currentTimeMillis());
+                    asset.setId(IdUtil.simpleUUID());
+                    asset.setUserId(userId);
+                    assetDAO.save(asset);
+                }
+            }
+            putAssetForRedis(userId, asset);
         }
         return asset;
+    }
+
+    private void putAssetForRedis(String userId, Asset asset) {
+        assetRedisTemplate.opsForValue().set("asset." + userId, asset, 10, TimeUnit.MINUTES);
     }
 
     private Income parseIncomeDTO(IncomeDTO incomeDTO, Income income) {

@@ -1,5 +1,6 @@
 package org.code4everything.springbee.config;
 
+import org.code4everything.springbee.domain.Asset;
 import org.code4everything.springbee.domain.Log;
 import org.code4everything.springbee.domain.User;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,14 @@ public class BeeBeanConfiguration {
     @Bean
     public JedisConnectionFactory jedisConnectionFactory() {
         return new JedisConnectionFactory();
+    }
+
+    @Bean
+    public RedisTemplate<String, Asset> assetRedisTemplate() {
+        RedisTemplate<String, Asset> assetRedisTemplate = new RedisTemplate<>();
+        assetRedisTemplate.setConnectionFactory(jedisConnectionFactory());
+        assetRedisTemplate.setKeySerializer(new StringRedisSerializer());
+        return assetRedisTemplate;
     }
 
     @Bean
