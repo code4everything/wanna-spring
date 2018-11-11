@@ -34,7 +34,7 @@ public class IncomeController extends BeeBaseController {
     @PostMapping("/append")
     @ApiOperation("添加一条收益记录")
     public ResponseResult<Income> saveIncome(@RequestBody @ApiParam @Valid IncomeDTO income) {
-        return parseResult("添加失败", incomeService.saveIncome(getUserId(), income));
+        return parseResult("添加失败", incomeService.saveIncome(getUserId(), income), true);
     }
 
     @DeleteMapping("/remove")
@@ -49,7 +49,7 @@ public class IncomeController extends BeeBaseController {
     @ApiOperation("更新记录")
     public ResponseResult<Income> updateIncome(@PathVariable String incomeId,
                                                @RequestBody @ApiParam @Valid IncomeDTO income) {
-        return parseResult("更新失败", incomeService.updateIncome(getUserId(), incomeId, income));
+        return parseResult("更新失败", incomeService.updateIncome(getUserId(), incomeId, income), true);
     }
 
     @GetMapping("/list")
@@ -57,6 +57,6 @@ public class IncomeController extends BeeBaseController {
     @ApiImplicitParams({@ApiImplicitParam(name = "category", value = "分类"), @ApiImplicitParam(name = "start", value =
             "开始日期"), @ApiImplicitParam(name = "end", value = "截止日期")})
     public ResponseResult<ArrayList<Income>> list(String category, Date start, Date end) {
-        return parseResult("没有找到数据", incomeService.listIncome(getUserId(), category, start, end));
+        return parseResult("没有找到数据", incomeService.listIncome(getUserId(), category, start, end), true);
     }
 }

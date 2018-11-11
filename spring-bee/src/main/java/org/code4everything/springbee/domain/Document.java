@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.code4everything.boot.annotations.Sealed;
 import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
@@ -24,6 +25,7 @@ public class Document implements Serializable {
     @ApiModelProperty("文件编号")
     private String id;
 
+    @Sealed
     @ApiModelProperty("文件本地路径（敏感数据）")
     private String localPath;
 

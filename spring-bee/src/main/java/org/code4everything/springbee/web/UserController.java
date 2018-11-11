@@ -40,7 +40,7 @@ public class UserController extends BeeBaseController {
     @ApiImplicitParams({@ApiImplicitParam(name = "oldPassword", required = true, value = "原密码"),
             @ApiImplicitParam(name = "newPassword", required = true, value = "新密码")})
     public ResponseResult<Boolean> updatePassword(@RequestParam String oldPassword, @RequestParam String newPassword) {
-        return parseResult("更新成功", "原密码不正确", userService.updatePassword(getUser(), oldPassword, newPassword));
+        return parseResult("更新成功", "原密码不正确", userService.updatePassword(getUser(), oldPassword, newPassword), false);
     }
 
     @PutMapping("/password/reset")
@@ -86,6 +86,6 @@ public class UserController extends BeeBaseController {
     @GetMapping("/info")
     @ApiOperation("获取用户信息")
     public ResponseResult<User> getUserInfo() {
-        return parseResult("未获取到用户信息，请登录", getUser());
+        return parseResult("未获取到用户信息，请登录", getUser(), true);
     }
 }

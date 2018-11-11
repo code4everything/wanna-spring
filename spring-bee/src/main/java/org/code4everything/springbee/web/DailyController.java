@@ -41,13 +41,13 @@ public class DailyController extends BeeBaseController {
         if (dailyService.exists(getUserId(), "", daily)) {
             return errorResult("添加失败，该日期记录已经存在");
         }
-        return parseResult("添加失败", dailyService.saveDaily(getUserId(), daily));
+        return parseResult("添加失败", dailyService.saveDaily(getUserId(), daily), true);
     }
 
     @GetMapping("/get")
     @ApiImplicitParam(name = "date", value = "日期", required = true, dataTypeClass = Date.class)
     public ResponseResult<Daily> getDaily(@RequestParam Date date) {
-        return parseResult("该日期还没有记录哦", dailyService.getDaily(getUserId(), date));
+        return parseResult("该日期还没有记录哦", dailyService.getDaily(getUserId(), date), true);
     }
 
     @DeleteMapping("/remove")
@@ -65,7 +65,7 @@ public class DailyController extends BeeBaseController {
         if (dailyService.exists(getUserId(), dailyId, daily)) {
             return errorResult("更新失败，该日期记录已经存在");
         }
-        return parseResult("更新失败", dailyService.updateDaily(dailyId, daily));
+        return parseResult("更新失败", dailyService.updateDaily(dailyId, daily), true);
     }
 
     @GetMapping("/list")
@@ -74,6 +74,6 @@ public class DailyController extends BeeBaseController {
             dataTypeClass = Date.class), @ApiImplicitParam(name = "end", value = "结束时间", required = true,
             dataTypeClass = Date.class)})
     public ResponseResult<ArrayList<Daily>> listByDate(@RequestParam Date start, @RequestParam Date end) {
-        return parseResult("查询失败", dailyService.listDaily(getUserId(), start, end));
+        return parseResult("查询失败", dailyService.listDaily(getUserId(), start, end), true);
     }
 }

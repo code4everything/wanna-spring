@@ -27,10 +27,14 @@ public class SpringBeeApplication {
     private static BeeConfigBean beeConfigBean;
 
     public static void main(String[] args) {
-        BootConfig.setDebug(true);
+        // 配置基本信息
+        BootConfig.setDebug(false);
         BootConfig.setMaxUploadFileSize(IntegerConsts.FileSize.MB);
+        // 启动项目
         SpringApplication.run(SpringBeeApplication.class, args);
+        // 配置文件路径
         String configFile = FileUtils.currentWorkDir() + File.separator + "config.json";
+        // 监听配置文件
         FileUtils.watchFile(configFile, new FileWatcher() {
             @Override
             public void doSomething() {

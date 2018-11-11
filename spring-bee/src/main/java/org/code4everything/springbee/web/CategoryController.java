@@ -38,12 +38,12 @@ public class CategoryController extends BeeBaseController {
         if (categoryService.exists(getUserId(), name)) {
             return errorResult("该分类已存在，无需添加");
         }
-        return parseResult("添加分类失败", categoryService.appendCategory(getUserId(), name));
+        return parseResult("添加分类失败", categoryService.appendCategory(getUserId(), name), true);
     }
 
     @GetMapping("/list")
     @ApiOperation("列出我的分类")
     public ResponseResult<ArrayList<Category>> list() {
-        return parseResult("您还没有任何添加分类信息", categoryService.listCategory(getUserId()));
+        return parseResult("您还没有任何添加分类信息", categoryService.listCategory(getUserId()), true);
     }
 }

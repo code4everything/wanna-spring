@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.code4everything.boot.annotations.Sealed;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -22,6 +23,7 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     @Id
+    @Sealed
     @ApiModelProperty("用户编号（敏感数据）")
     private String id;
 
@@ -34,6 +36,7 @@ public class User implements Serializable {
     @ApiModelProperty("头像地址")
     private String avatar;
 
+    @Sealed
     @ApiModelProperty("密码（敏感数据)")
     private String password;
 

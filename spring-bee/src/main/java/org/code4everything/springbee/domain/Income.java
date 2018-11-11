@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.code4everything.boot.annotations.Sealed;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -25,6 +26,7 @@ public class Income implements Serializable {
     @ApiModelProperty("收益编号")
     private String id;
 
+    @Sealed
     @ApiModelProperty("资产编号")
     private String assetId;
 

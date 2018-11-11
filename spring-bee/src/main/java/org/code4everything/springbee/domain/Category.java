@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.code4everything.boot.annotations.Sealed;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -25,6 +26,7 @@ public class Category implements Serializable {
     @ApiModelProperty("编号")
     private String id;
 
+    @Sealed
     @ApiModelProperty("用户编号（敏感数据）")
     private String userId;
 

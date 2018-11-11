@@ -37,7 +37,7 @@ public class TodoController extends BeeBaseController {
     @ApiImplicitParams({@ApiImplicitParam(name = "doingDate", value = "计划完成日期", required = true),
             @ApiImplicitParam(name = "content", value = "事项内容", required = true)})
     public ResponseResult<Todo> saveTodo(@RequestParam String doingDate, @RequestParam String content) {
-        return parseResult("添加失败", todoService.saveTodo(getUserId(), doingDate, content));
+        return parseResult("添加失败", todoService.saveTodo(getUserId(), doingDate, content), true);
     }
 
     @DeleteMapping("/remove")
@@ -53,7 +53,7 @@ public class TodoController extends BeeBaseController {
     @ApiImplicitParams({@ApiImplicitParam(name = "todoId", value = "事项编号", required = true), @ApiImplicitParam(name =
             "content", value = "事项内容", required = true)})
     public ResponseResult<Todo> updateContent(@RequestParam String todoId, @RequestParam String content) {
-        return parseResult("更新失败", todoService.updateTodo(todoId, content));
+        return parseResult("更新失败", todoService.updateTodo(todoId, content), true);
     }
 
     @PutMapping("/status/toggle")
@@ -61,7 +61,7 @@ public class TodoController extends BeeBaseController {
     @ApiImplicitParams({@ApiImplicitParam(name = "todoId", value = "事项编号", required = true), @ApiImplicitParam(name =
             "status", value = "状态", required = true, allowableValues = "0, 1")})
     public ResponseResult<Todo> updateStatus(@RequestParam String todoId, @RequestParam String status) {
-        return parseResult("更新失败", todoService.updateTodoStatus(todoId, status));
+        return parseResult("更新失败", todoService.updateTodoStatus(todoId, status), true);
     }
 
     @GetMapping("/date/list")
@@ -72,13 +72,13 @@ public class TodoController extends BeeBaseController {
 
     @GetMapping("/not-done/list")
     public ResponseResult<ArrayList<Todo>> listNotDone(@RequestParam String date) {
-        return parseResult("没有未完成的待办事项哦", todoService.listNotDoneBeforeDate(getUserId(), date));
+        return parseResult("没有未完成的待办事项哦", todoService.listNotDoneBeforeDate(getUserId(), date), true);
     }
 
     @GetMapping("/list")
     @ApiOperation("列出事项")
     @ApiImplicitParam(name = "date", value = "日期", required = true)
     public ResponseResult<ArrayList<Todo>> listTodo(@RequestParam String date) {
-        return parseResult("该日期没有数据", todoService.listTodo(date));
+        return parseResult("该日期没有数据", todoService.listTodo(date), true);
     }
 }
