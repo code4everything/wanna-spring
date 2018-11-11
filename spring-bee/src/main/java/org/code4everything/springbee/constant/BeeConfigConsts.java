@@ -41,10 +41,5 @@ public class BeeConfigConsts {
      */
     public static final String DOCUMENT_MAPPING = "/user/document/";
 
-    /**
-     * 自定义配置RSA私钥路径（可定义绝对路径）
-     */
-    public static final String PRIVATE_RSA_KEY_PATH = "classpath:/rsa/private.key";
-
     private BeeConfigConsts() {}
 }
