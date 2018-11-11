@@ -18,18 +18,19 @@
         </div>
       </div>
       <!--任务列表-->
-      <div v-for="(todo,index) in todos" :key="index" class="row todo" :data-index="index">
-        <div class="col-sm-12 col-12" :id="idPrefix+index">
-          <div class="pretty p-default p-round p-jelly">
-            <input type="checkbox" @click="toggleStatus"/>
-            <div class="state p-success-o">
-              <label></label>
-            </div>
-          </div>
-          <input type="text" :class="['border-0 bg-light todo-item w-75',todo.status==='1'?'deleted':'']"
-                 v-model="todo.content" @blur="updateTodo"/>
-          <a href="javascript:" class="text-danger" @click="remove" v-html="isMobile?removeIcon:removeTip"></a>
+      <todo-template :todos="todos" :id-prefix="idPrefix"></todo-template>
+      <br/>
+    </div>
+    <div class="col-12 col-sm-12"><br/></div>
+    <!--未完成的待办事项-->
+    <div class="text-left rounded bg-light col-10 offset-1 col-sm-11 offset-sm-1">
+      <br/>
+      <div class="row">
+        <div class="col-sm-12 col-12 border border-top-0 border-left-0 border-right-0 border-bottom"
+             style="padding-bottom: 10px;margin-bottom: 10px;">
+          <h6>{{date+undoTip}}</h6>
         </div>
+        <todo-template :todos="undos" :id-prefix="undoIdPrefix"></todo-template>
       </div>
       <br/>
     </div>
@@ -37,65 +38,29 @@
 </template>
 
 <script>/* eslint-disable */
-import utils from '../../assets/js/utils'
 import validator from '../../../static/js/validator.min'
 import layer from '../../../static/js/layer'
-import {
-  requestListTodo,
-  requestRemoveTodo,
-  requestSaveTodo,
-  requestToggleTodoStatus,
-  requestUpdateTodo
-} from '../../api/api'
+import {requestListTodo, requestListUndo, requestSaveTodo} from '../../api/api'
+import TodoTemplate from '../template/TodoTemplate'
 
 export default {
   name: 'Todo',
+  components: {TodoTemplate},
   data () {
     return {
-      removeIcon: '<i class="glyphicon glyphicon-trash"></i>',
-      removeTip: '删除',
       todoTip: '添加任务',
+      undoTip: '之前未完成的代办事项',
       content: '',
       idPrefix: 'todo-item-',
-      isMobile: false,
+      undoIdPrefix: 'undo-item-',
       defaultTodo: {content: '测试', createTime: '', doingDate: '', doneTime: '', id: '', status: '0'},
       todos: [],
+      undos: [],
       isFirst: true
     }
   },
   props: ['date'],
   methods: {
-    toggleStatus: function () {
-      let src = window.event.srcElement
-      let index = $(src).parents('div.todo').attr('data-index')
-      let status = src.checked ? '1' : '0'
-      requestToggleTodoStatus(this.todos[index].id, status).then(data => {
-        if (data.code === 200) {
-          this.todos[index].status = status
-        } else {
-          src.checked = false
-          layer.alert(data.msg)
-        }
-      })
-    },
-    remove: function () {
-      let self = this
-      let index = $(window.event.srcElement).parents('div.todo').attr('data-index')
-      layer.confirm('是否确定删除索引位置位于 “' + (parseInt(index) + 1) + '” 的待办事项', {
-        btn: ['确定', '取消']
-      }, function () {
-        layer.load(1)
-        requestRemoveTodo(self.todos[index].id).then(data => {
-          layer.closeAll()
-          if (data.code === 200) {
-            self.todos.splice(index, 1)
-          } else {
-            layer.alert(data.msg)
-          }
-        })
-        layer.closeAll()
-      })
-    },
     saveTodo: function () {
       if (validator.isEmpty(this.content)) {
         layer.alert('数据不能为空')
@@ -112,18 +77,6 @@ export default {
         })
       }
     },
-    updateTodo: function () {
-      let index = $(window.event.srcElement).parents('div.todo').attr('data-index')
-      if (validator.isEmpty(this.todos[index].content)) {
-        layer.alert('数据不能为空')
-      } else {
-        requestUpdateTodo(this.todos[index].id, this.todos[index].content).then(data => {
-          if (data.code !== 200) {
-            layer.alert(data.msg)
-          }
-        })
-      }
-    },
     listTodo: function () {
       this.todos = []
       layer.load(1)
@@ -135,12 +88,24 @@ export default {
           layer.alert(data.msg)
         }
       })
+    },
+    listUndo: function () {
+      this.undos = []
+      layer.load(1)
+      requestListUndo(this.date).then(data => {
+        layer.closeAll()
+        if (data.code === 200) {
+          this.undos = data.data
+        } else {
+          layer.alert(data.msg)
+        }
+      })
     }
   },
   mounted: function () {
-    this.isMobile = utils.isMobile()
     setTimeout(() => {
       this.listTodo()
+      this.listUndo()
       this.isFirst = false
       // 修改父组件的日期列表
       this.$parent.changeDate(-7, 7)
@@ -174,10 +139,6 @@ export default {
 <style scoped>
   @import '../../../static/css/pretty-checkbox.min.css';
   @import "../../assets/css/style.css";
-
-  .deleted {
-    text-decoration: line-through;
-  }
 
   .todo-item {
     outline: none;

@@ -32,6 +32,10 @@ axios.interceptors.response.use(response => {
   return Promise.resolve(error.response.data || error.response)
 })
 
+export const requestListUndo = date => {
+  return axios.get(`/user/todo/undo/list?date=${date}`)
+}
+
 export const requestRemoveTodo = id => {
   return axios.delete(`/user/todo/remove?todoId=${id}`)
 }
