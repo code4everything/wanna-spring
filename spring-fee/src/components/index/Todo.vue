@@ -30,8 +30,8 @@
              style="padding-bottom: 10px;margin-bottom: 10px;">
           <h6>{{date+undoTip}}</h6>
         </div>
-        <todo-template :todos="undos" :id-prefix="undoIdPrefix"></todo-template>
       </div>
+      <todo-template :todos="undos" :id-prefix="undoIdPrefix"></todo-template>
       <br/>
     </div>
   </div>
