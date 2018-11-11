@@ -2,8 +2,6 @@ package org.code4everything.springbee.service;
 
 import org.code4everything.springbee.domain.Daily;
 import org.code4everything.springbee.model.DailyDTO;
-import org.code4everything.springbee.model.DailyDateVO;
-import org.code4everything.springbee.model.QueryDailyDTO;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -16,11 +14,9 @@ public interface DailyService {
 
     boolean exists(String dailyId);
 
-    ArrayList<DailyDateVO> listDailyDate(String userId);
-
     Daily getDaily(String userId, Date date);
 
-    ArrayList<Daily> listDaily(String userId, QueryDailyDTO query);
+    ArrayList<Daily> listDaily(String userId, Date startDate, Date endDate);
 
     void remove(String dailyId);
 

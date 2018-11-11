@@ -28,14 +28,8 @@ public class Daily implements Serializable {
     @ApiModelProperty("用户编号（敏感数据）")
     private String userId;
 
-    @ApiModelProperty("记录的年份")
-    private Integer year;
-
-    @ApiModelProperty("记录的月份")
-    private Integer month;
-
-    @ApiModelProperty("记录的号数")
-    private Integer day;
+    @ApiModelProperty("记录的日期")
+    private String date;
 
     @ApiModelProperty("记录时间")
     private Long createTime;

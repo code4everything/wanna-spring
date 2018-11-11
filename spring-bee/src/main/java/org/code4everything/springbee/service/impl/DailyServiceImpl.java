@@ -1,21 +1,12 @@
 package org.code4everything.springbee.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.google.common.collect.Lists;
-import com.mongodb.BasicDBObject;
-import com.mongodb.client.DistinctIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import com.zhazhapan.util.model.SimpleDateTime;
-import org.bson.Document;
 import org.code4everything.boot.annotations.AopLog;
 import org.code4everything.springbee.dao.DailyDAO;
 import org.code4everything.springbee.domain.Daily;
 import org.code4everything.springbee.model.DailyDTO;
-import org.code4everything.springbee.model.DailyDateVO;
-import org.code4everything.springbee.model.DailyMonthVO;
-import org.code4everything.springbee.model.QueryDailyDTO;
 import org.code4everything.springbee.service.DailyService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 /**
  * @author pantao
@@ -50,68 +41,18 @@ public class DailyServiceImpl implements DailyService {
     }
 
     @Override
-    @AopLog("列出记录的所有日期")
-    public ArrayList<DailyDateVO> listDailyDate(String userId) {
-        // TODO: 2018/9/23 由于此函数查询比较耗时，需将结果放入缓存中
-        // 查询年份
-        BasicDBObject dbObject = new BasicDBObject("userId", userId);
-        MongoCollection<Document> collection = mongoTemplate.getCollection("daily");
-        DistinctIterable<Integer> years = collection.distinct("year", dbObject, Integer.class);
-        MongoCursor<Integer> yearCursor = years.iterator();
-        ArrayList<DailyDateVO> dateVOList = new ArrayList<>(64);
-        // 遍历年份
-        while (yearCursor.hasNext()) {
-            DailyDateVO dateVO = new DailyDateVO();
-            Integer year = yearCursor.next();
-            dateVO.setYear(year);
-            // 查询月份
-            dbObject.put("year", year);
-            DistinctIterable<Integer> months = collection.distinct("month", dbObject, Integer.class);
-            MongoCursor<Integer> monthCursor = months.iterator();
-            ArrayList<DailyMonthVO> monthVOList = new ArrayList<>(16);
-            // 遍历月份
-            while (monthCursor.hasNext()) {
-                DailyMonthVO monthVO = new DailyMonthVO();
-                Integer month = monthCursor.next();
-                monthVO.setMonth(month);
-                // 查询日期
-                dbObject.put("month", month);
-                DistinctIterable<Integer> days = collection.distinct("day", dbObject, Integer.class);
-                List<Integer> dayList = new ArrayList<>(32);
-                for (Integer day : days) {
-                    dayList.add(day);
-                }
-                monthVO.setDays(dayList);
-                monthVOList.add(monthVO);
-            }
-            dateVO.setMonths(monthVOList);
-            dateVOList.add(dateVO);
-        }
-        return dateVOList;
-    }
-
-    @Override
     @AopLog("查找日程记录")
     public Daily getDaily(String userId, Date date) {
-        SimpleDateTime query = new SimpleDateTime(date);
-        return dailyDAO.getByUserIdAndYearAndMonthAndDay(userId, query.getYear(), query.getMonth() + 1, query.getDay());
+        return dailyDAO.getByUserIdAndDate(userId, DateUtil.formatDate(date));
     }
 
     @Override
     @AopLog("列出日程记录")
-    public ArrayList<Daily> listDaily(String userId, QueryDailyDTO query) {
-        boolean queryMonth = query.getMonth() > 0;
-        boolean queryDay = query.getDay() > 0;
-        if (queryMonth && queryDay) {
-            return Lists.newArrayList(dailyDAO.getByUserIdAndYearAndMonthAndDay(userId, query.getYear(),
-                    query.getMonth(), query.getDay()));
-        } else if (queryMonth) {
-            return dailyDAO.getByUserIdAndYearAndMonth(userId, query.getYear(), query.getMonth());
-        } else if (queryDay) {
-            return dailyDAO.getByUserIdAndYearAndDay(userId, query.getYear(), query.getDay());
-        } else {
-            return dailyDAO.getByUserIdAndYear(userId, query.getYear());
-        }
+    public ArrayList<Daily> listDaily(String userId, Date startDate, Date endDate) {
+        // TODO: 2018/11/11 待测试
+        String start = DateUtil.formatDate(startDate);
+        String end = DateUtil.formatDate(endDate);
+        return dailyDAO.getByUserIdAndDateGreaterThanEqualAndDateLessThanEqual(userId, start, end);
     }
 
     @Override
@@ -123,8 +64,7 @@ public class DailyServiceImpl implements DailyService {
     @Override
     @AopLog("添加日程记录")
     public Daily saveDaily(String userId, DailyDTO dailyDTO) {
-        Daily daily = new Daily();
-        parseDailyDTO(dailyDTO, daily);
+        Daily daily = parseDailyDTO(dailyDTO, null);
         daily.setCreateTime(System.currentTimeMillis());
         daily.setId(IdUtil.simpleUUID());
         daily.setUserId(userId);
@@ -134,9 +74,7 @@ public class DailyServiceImpl implements DailyService {
     @Override
     @AopLog("检测日程记录是否存在")
     public boolean exists(String userId, String dailyId, DailyDTO dailyDTO) {
-        SimpleDateTime date = new SimpleDateTime(dailyDTO.getDate());
-        Daily daily = dailyDAO.getByUserIdAndYearAndMonthAndDay(userId, date.getYear(), date.getMonth() + 1,
-                date.getDay());
+        Daily daily = dailyDAO.getByUserIdAndDate(userId, DateUtil.formatDate(dailyDTO.getDate()));
         return ObjectUtil.isNotNull(daily) && !dailyId.equals(daily.getId());
     }
 
@@ -151,9 +89,14 @@ public class DailyServiceImpl implements DailyService {
     }
 
     private Daily parseDailyDTO(DailyDTO dailyDTO, Daily daily) {
+        if (Objects.isNull(daily)) {
+            daily = new Daily();
+        }
         BeanUtils.copyProperties(dailyDTO, daily);
-        BeanUtils.copyProperties(new SimpleDateTime(dailyDTO.getDate()), daily);
-        daily.setMonth(daily.getMonth() + 1);
+        if (Objects.isNull(dailyDTO.getDate())) {
+            dailyDTO.setDate(new Date(System.currentTimeMillis()));
+        }
+        daily.setDate(DateUtil.formatDate(dailyDTO.getDate()));
         return daily;
     }
 }

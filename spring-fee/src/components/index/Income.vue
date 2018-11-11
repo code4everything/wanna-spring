@@ -45,7 +45,7 @@
           <div class="bg-light rounded col-10 offset-1 text-left" :data-index="index">
             <div class="row vertical-middle">
               <div class="col-12">
-                <h6 v-html="formatDateString(income)"></h6>
+                <h6 v-html="income.date"></h6>
                 <h6 v-html="formatIncomeString(income)"></h6>
               </div>
               <div class="col-12 text-left">
@@ -71,7 +71,7 @@
           <tbody>
           <tr v-for="(income,index) in incomes" :key="index" :data-index="index" class="data">
             <td>{{index+1}}</td>
-            <td>{{formatDateString(income)}}</td>
+            <td>{{income.date}}</td>
             <td>{{formatTypeString(income)}}</td>
             <td>{{income.category}}</td>
             <td>{{Number(income.money/100).toFixed(2)}}</td>
@@ -154,9 +154,6 @@ export default {
     formatIncomeString: function (income) {
       return this.formatTypeString(income) + this.space + income.category + this.space + (income.money / 100).toFixed(2) + this.space + this.unit
     },
-    formatDateString: function (income) {
-      return income.year + '-' + String(income.month).padStart(2, '0') + '-' + String(income.day).padStart(2, '0')
-    },
     formatTypeString: function (income) {
       return income.type < 0 ? '支出' : '收入'
     },
@@ -179,7 +176,6 @@ export default {
         this.currentIncome.date = dayjs(new Date()).format('YYYY-MM-DD')
       } else {
         this.currentIncome = utils.clone(this.incomes[this.currentIndex])
-        this.currentIncome.date = this.formatDateString(this.currentIncome)
         this.currentIncome.money = this.currentIncome.money / 100
       }
       $('#asset-modal').modal('show')

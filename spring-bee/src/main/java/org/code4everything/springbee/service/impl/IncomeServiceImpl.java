@@ -1,18 +1,15 @@
 package org.code4everything.springbee.service.impl;
 
-import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.zhazhapan.util.model.SimpleDateTime;
 import org.code4everything.boot.annotations.AopLog;
-import org.code4everything.springbee.constant.BeeValueConsts;
 import org.code4everything.springbee.dao.AssetDAO;
 import org.code4everything.springbee.dao.IncomeDAO;
 import org.code4everything.springbee.domain.Asset;
 import org.code4everything.springbee.domain.Income;
 import org.code4everything.springbee.model.IncomeDTO;
-import org.code4everything.springbee.model.QueryIncomeDTO;
 import org.code4everything.springbee.service.IncomeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +19,9 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * @author pantao
@@ -52,37 +51,17 @@ public class IncomeServiceImpl implements IncomeService {
 
     @Override
     @AopLog("查询收益记录")
-    public ArrayList listIncome(String userId, QueryIncomeDTO queryIncomeDTO) {
+    public ArrayList listIncome(String userId, String category, Date start, Date end) {
         Query query = new Query();
         Criteria criteria = Criteria.where("assetId").is(getAssetByUserId(userId).getId());
-        final String y = "year";
-        final String m = "month";
-        final String d = "day";
-        if (ObjectUtil.isNotNull(queryIncomeDTO)) {
-            ArrayList<Criteria> criteriaList = new ArrayList<>(4);
-            if (StrUtil.isNotEmpty(queryIncomeDTO.getCategory())) {
-                criteriaList.add(Criteria.where("category").is(queryIncomeDTO.getCategory()));
-            }
-            if (StrUtil.isNotEmpty(queryIncomeDTO.getStart())) {
-                SimpleDateTime date = new SimpleDateTime(queryIncomeDTO.getStart(), BeeValueConsts.DATE_FORMAT);
-                Criteria dayCriteria = Criteria.where(m).is(date.getMonth() + 1).and(d).gte(date.getDay());
-                Criteria join = new Criteria().orOperator(Criteria.where(m).gt(date.getMonth() + 1), dayCriteria);
-                Criteria monthCriteria = new Criteria().andOperator(Criteria.where(y).is(date.getYear()), join);
-                criteriaList.add(new Criteria().orOperator(Criteria.where(y).gt(date.getYear()), monthCriteria));
-            }
-            if (StrUtil.isNotEmpty(queryIncomeDTO.getEnd())) {
-                SimpleDateTime date = new SimpleDateTime(queryIncomeDTO.getEnd(), BeeValueConsts.DATE_FORMAT);
-                Criteria dayCriteria = Criteria.where(m).is(date.getMonth() + 1).and(d).lte(date.getDay());
-                Criteria join = new Criteria().orOperator(Criteria.where(m).lt(date.getMonth() + 1), dayCriteria);
-                Criteria monthCriteria = new Criteria().andOperator(Criteria.where(y).is(date.getYear()), join);
-                criteriaList.add(new Criteria().orOperator(Criteria.where(y).lt(date.getYear()), monthCriteria));
-            }
-            if (CollectionUtil.isNotEmpty(criteriaList)) {
-                criteria.andOperator(criteriaList.toArray(new Criteria[0]));
-            }
+        Criteria dateGreatThan = Criteria.where("date").gte(DateUtil.formatDate(start));
+        Criteria dateLessThan = Criteria.where("date").lte(DateUtil.formatDate(end));
+        criteria.andOperator(dateGreatThan, dateLessThan);
+        if (StrUtil.isNotEmpty(category)) {
+            criteria.andOperator(Criteria.where("category").is(category));
         }
         query.addCriteria(criteria);
-        query.with(new Sort(Sort.Direction.DESC, y, m, d, "createTime"));
+        query.with(new Sort(Sort.Direction.DESC, "date", "createTime"));
         return (ArrayList<Income>) mongoTemplate.find(query, Income.class);
     }
 
@@ -94,11 +73,8 @@ public class IncomeServiceImpl implements IncomeService {
             return null;
         }
         Long changeValue = incomeDTO.getMoney() * incomeDTO.getType() - income.getMoney() * income.getType();
-        BeanUtils.copyProperties(incomeDTO, income);
-        BeanUtils.copyProperties(new SimpleDateTime(incomeDTO.getDate()), income);
-        income.setMonth(income.getMonth() + 1);
         updateAssetBalance(userId, changeValue);
-        return incomeDAO.save(income);
+        return incomeDAO.save(parseIncomeDTO(incomeDTO, income));
     }
 
     @Override
@@ -114,10 +90,7 @@ public class IncomeServiceImpl implements IncomeService {
     @Override
     @AopLog("添加收益记录")
     public Income saveIncome(String userId, IncomeDTO incomeDTO) {
-        Income income = new Income();
-        BeanUtils.copyProperties(incomeDTO, income);
-        BeanUtils.copyProperties(new SimpleDateTime(incomeDTO.getDate()), income);
-        income.setMonth(income.getMonth() + 1);
+        Income income = parseIncomeDTO(incomeDTO, null);
         income.setCreateTime(System.currentTimeMillis());
         income.setId(IdUtil.simpleUUID());
         income.setAssetId(updateAssetBalance(userId, income.getMoney() * income.getType()));
@@ -143,5 +116,14 @@ public class IncomeServiceImpl implements IncomeService {
             assetDAO.save(asset);
         }
         return asset;
+    }
+
+    private Income parseIncomeDTO(IncomeDTO incomeDTO, Income income) {
+        if (Objects.isNull(income)) {
+            income = new Income();
+        }
+        BeanUtils.copyProperties(incomeDTO, income);
+        income.setDate(DateUtil.formatDate(incomeDTO.getDate()));
+        return income;
     }
 }

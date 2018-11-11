@@ -1,16 +1,11 @@
 package org.code4everything.springbee.web;
 
 import cn.hutool.core.date.DateUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.code4everything.boot.bean.ResponseResult;
 import org.code4everything.springbee.domain.Daily;
 import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.DailyDTO;
-import org.code4everything.springbee.model.DailyDateVO;
-import org.code4everything.springbee.model.QueryDailyDTO;
 import org.code4everything.springbee.service.DailyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -75,13 +70,10 @@ public class DailyController extends BeeBaseController {
 
     @GetMapping("/list")
     @ApiOperation("列出日程记录")
-    public ResponseResult<ArrayList<Daily>> listByDate(@RequestBody @ApiParam @Valid QueryDailyDTO queryDaily) {
-        return parseResult("查询失败", dailyService.listDaily(getUserId(), queryDaily));
-    }
-
-    @GetMapping("/date/list")
-    @ApiOperation("列出记录的日期")
-    public ResponseResult<ArrayList<DailyDateVO>> listDailyDate() {
-        return parseResult("没有找到相关数据", dailyService.listDailyDate(getUserId()));
+    @ApiImplicitParams({@ApiImplicitParam(name = "start", value = "开始时间", required = true,
+            dataTypeClass = Date.class), @ApiImplicitParam(name = "end", value = "结束时间", required = true,
+            dataTypeClass = Date.class)})
+    public ResponseResult<ArrayList<Daily>> listByDate(@RequestParam Date start, @RequestParam Date end) {
+        return parseResult("查询失败", dailyService.listDaily(getUserId(), start, end));
     }
 }

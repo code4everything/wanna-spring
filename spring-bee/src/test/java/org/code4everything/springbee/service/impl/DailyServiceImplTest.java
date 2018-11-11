@@ -3,12 +3,9 @@ package org.code4everything.springbee.service.impl;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
 import org.code4everything.springbee.BaseTest;
-import org.code4everything.springbee.constant.TestConsts;
 import org.code4everything.springbee.dao.DailyDAO;
 import org.code4everything.springbee.domain.Daily;
 import org.code4everything.springbee.model.DailyDTO;
-import org.code4everything.springbee.model.DailyDateVO;
-import org.code4everything.springbee.model.QueryDailyDTO;
 import org.code4everything.springbee.service.DailyService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -36,15 +33,11 @@ public class DailyServiceImplTest extends BaseTest {
     }
 
     @Test
-    public void listDailyDate() {
-        List<DailyDateVO> dailyDateVOS = dailyService.listDailyDate(getUser().getId());
-        Assert.assertNotNull(dailyDateVOS);
-        System.out.println(dailyDateVOS);
-    }
-
-    @Test
     public void listDaily() {
-        List<Daily> dailies = dailyService.listDaily(getUser().getId(), new QueryDailyDTO(TestConsts.YEAR, 0, 0));
+        Long millis = System.currentTimeMillis();
+        Date start = new Date(millis - 30 * 24 * 60 * 60 * 1000);
+        Date end = new Date(millis);
+        List<Daily> dailies = dailyService.listDaily(getUser().getId(), start, end);
         Assert.assertNotNull(dailies);
         System.out.println(dailies);
     }

@@ -1,13 +1,11 @@
 package org.code4everything.springbee.service.impl;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
 import org.code4everything.springbee.BaseTest;
 import org.code4everything.springbee.constant.TestConsts;
 import org.code4everything.springbee.dao.IncomeDAO;
 import org.code4everything.springbee.domain.Income;
 import org.code4everything.springbee.model.IncomeDTO;
-import org.code4everything.springbee.model.QueryIncomeDTO;
 import org.code4everything.springbee.service.IncomeService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -36,10 +34,10 @@ public class IncomeServiceImplTest extends BaseTest {
 
     @Test
     public void listIncome() {
-        QueryIncomeDTO queryIncomeDTO = new QueryIncomeDTO();
-        queryIncomeDTO.setStart(DateUtil.formatDate(new Date(System.currentTimeMillis())));
-        queryIncomeDTO.setEnd(DateUtil.formatDate(new Date(System.currentTimeMillis())));
-        List<Income> incomes = incomeService.listIncome(getUser().getId(), queryIncomeDTO);
+        Long millis = System.currentTimeMillis();
+        Date start = new Date(millis - 30 * 24 * 60 * 60 * 1000);
+        Date end = new Date(millis);
+        List<Income> incomes = incomeService.listIncome(getUser().getId(), "", start, end);
         Assert.assertNotNull(incomes);
         System.out.println(incomes);
     }

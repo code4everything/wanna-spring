@@ -5,13 +5,13 @@ import org.code4everything.boot.bean.ResponseResult;
 import org.code4everything.springbee.domain.Income;
 import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.IncomeDTO;
-import org.code4everything.springbee.model.QueryIncomeDTO;
 import org.code4everything.springbee.service.IncomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.sql.Date;
 import java.util.ArrayList;
 
 /**
@@ -56,8 +56,7 @@ public class IncomeController extends BeeBaseController {
     @ApiOperation("列出收益详情")
     @ApiImplicitParams({@ApiImplicitParam(name = "category", value = "分类"), @ApiImplicitParam(name = "start", value =
             "开始日期"), @ApiImplicitParam(name = "end", value = "截止日期")})
-    public ResponseResult<ArrayList<Income>> list(String category, String start, String end) {
-        QueryIncomeDTO queryIncome = new QueryIncomeDTO(start, end, category);
-        return parseResult("没有找到数据", incomeService.listIncome(getUserId(), queryIncome));
+    public ResponseResult<ArrayList<Income>> list(String category, Date start, Date end) {
+        return parseResult("没有找到数据", incomeService.listIncome(getUserId(), category, start, end));
     }
 }

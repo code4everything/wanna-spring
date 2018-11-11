@@ -15,11 +15,8 @@ public interface DailyDAO extends MongoRepository<Daily, String> {
 
     Daily getById(String dailyId);
 
-    ArrayList<Daily> getByUserIdAndYearAndMonth(String userId, Integer year, Integer month);
+    ArrayList<Daily> getByUserIdAndDateGreaterThanEqualAndDateLessThanEqual(String userId, String startDate,
+                                                                            String endDate);
 
-    Daily getByUserIdAndYearAndMonthAndDay(String userId, Integer year, Integer month, Integer day);
-
-    ArrayList<Daily> getByUserIdAndYearAndDay(String userId, Integer year, Integer day);
-
-    ArrayList<Daily> getByUserIdAndYear(String userId, Integer year);
+    Daily getByUserIdAndDate(String userId, String date);
 }

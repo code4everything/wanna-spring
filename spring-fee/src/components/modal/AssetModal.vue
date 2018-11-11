@@ -33,7 +33,7 @@
               <div class="col-sm-4 col-6">
                 <input type="text" class="form-control" :placeholder="categoryTip" :title="categoryTip"
                        data-toggle="tooltip" v-show="editable" v-model="income.category" @keyup.enter="saveCategory"
-                       @blur="editable=false" id="category-edit"/>
+                       @blur="saveCategory" id="category-edit"/>
                 <select v-show="!editable" class="form-control" :title="categoryTip" v-model="income.category"
                         data-toggle="tooltip" @dblclick="toEdit" @keyup.enter="toEdit">
                   <option v-for="(category,index) in categories" :value="category" :key="index">{{category}}</option>
@@ -113,9 +113,9 @@ export default {
         layer.load(1)
         requestSaveCategory(this.income.category).then(data => {
           layer.closeAll()
+          self.editable = false
           if (data.code === 200) {
             self.categories.push(data.data.name)
-            self.editable = false
           } else {
             layer.alert(data.msg)
           }

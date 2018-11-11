@@ -34,14 +34,8 @@ public class Income implements Serializable {
     @ApiModelProperty(value = "付款方式（1其他，2支付宝，3微信，4银联，5信用卡，6现金）", allowableValues = "0, 1, 2, 3, 4, 5, 6")
     private String way;
 
-    @ApiModelProperty("年份")
-    private Integer year;
-
-    @ApiModelProperty("月份")
-    private Integer month;
-
-    @ApiModelProperty("号数")
-    private Integer day;
+    @ApiModelProperty("日期")
+    private String date;
 
     @ApiModelProperty("金额")
     private Long money;
