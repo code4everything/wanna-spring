@@ -115,6 +115,7 @@ export default {
     date: function () {
       if (!this.isFirst) {
         this.listTodo()
+        this.listUndo()
       }
     }
   },
