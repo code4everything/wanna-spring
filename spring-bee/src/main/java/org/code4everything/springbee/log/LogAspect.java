@@ -7,7 +7,7 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.code4everything.boot.constant.MessageConsts;
+import org.code4everything.boot.constant.StringConsts;
 import org.code4everything.boot.log.AopLogUtils;
 import org.code4everything.boot.service.LogService;
 import org.code4everything.springbee.domain.Log;
@@ -55,7 +55,7 @@ public class LogAspect {
         // 定义日志缓存
         Cache<String, Log> cache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.SECONDS).build();
         // 定义缓存键
-        String key = request.getHeader(MessageConsts.TOKEN_EN) + Thread.currentThread().getId();
+        String key = request.getHeader(StringConsts.TOKEN) + Thread.currentThread().getId();
         AopLogUtils.saveLog(logLogService, cache, key, joinPoint, throwable);
     }
 }

@@ -7,7 +7,7 @@ import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 import org.code4everything.boot.annotations.AopLog;
-import org.code4everything.boot.constant.SymbolConsts;
+import org.code4everything.boot.constant.StringConsts;
 import org.code4everything.springbee.dao.TodoDAO;
 import org.code4everything.springbee.domain.Todo;
 import org.code4everything.springbee.service.TodoService;
@@ -66,7 +66,7 @@ public class TodoServiceImpl implements TodoService {
         if (ObjectUtil.isNull(todo)) {
             return null;
         }
-        if (SymbolConsts.ONE.equals(status)) {
+        if (StringConsts.ONE.equals(status)) {
             todo.setStatus("1");
             todo.setDoneTime(System.currentTimeMillis());
         } else {
