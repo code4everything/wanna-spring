@@ -57,7 +57,7 @@ public class IncomeServiceImpl implements IncomeService {
 
     @Override
     @AopLog("查询收益记录")
-    public ArrayList listIncome(String userId, String category, Date start, Date end) {
+    public ArrayList<Income> listIncome(String userId, String category, Date start, Date end) {
         Query query = new Query();
         Criteria criteria = Criteria.where("assetId").is(getAssetByUserId(userId).getId());
         Criteria dateGreatThan = Criteria.where("date").gte(DateUtil.formatDate(start));
