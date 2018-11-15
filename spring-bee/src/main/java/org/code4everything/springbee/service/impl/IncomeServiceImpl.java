@@ -117,12 +117,15 @@ public class IncomeServiceImpl implements IncomeService {
             if (Objects.isNull(asset)) {
                 // 防止出现重复值
                 synchronized (IncomeServiceImpl.class) {
-                    asset = new Asset();
-                    asset.setBalance(0L);
-                    asset.setCreateTime(System.currentTimeMillis());
-                    asset.setId(IdUtil.simpleUUID());
-                    asset.setUserId(userId);
-                    assetDAO.save(asset);
+                    asset = assetDAO.getByUserId(userId);
+                    if (Objects.isNull(asset)) {
+                        asset = new Asset();
+                        asset.setBalance(0L);
+                        asset.setCreateTime(System.currentTimeMillis());
+                        asset.setId(IdUtil.simpleUUID());
+                        asset.setUserId(userId);
+                        assetDAO.save(asset);
+                    }
                 }
             }
             putAssetForRedis(userId, asset);
