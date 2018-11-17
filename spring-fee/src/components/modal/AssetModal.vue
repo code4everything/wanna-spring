@@ -14,42 +14,42 @@
           <div class="container data" :data-id="income.id">
             <div class="row">
               <div class="col-sm-8 col-7">
-                <input type="date" class="form-control" :placeholder="dateTip" :title="dateTip"
-                       data-toggle="tooltip" v-model="income.date"/>
+                <el-date-picker :placeholder="dateTip" :title="dateTip" class="w-100"
+                                data-toggle="tooltip" v-model="income.date"/>
               </div>
               <div class="col-sm-4 col-5">
-                <select class="form-control" :title="typeTip" v-model="income.type" data-toggle="tooltip">
-                  <option v-for="(type,index) in types" :value="type.value" :key="index">{{type.tip}}</option>
-                </select>
+                <el-select :title="typeTip" v-model="income.type" data-toggle="tooltip">
+                  <el-option v-for="(type,index) in types" :value="type.value" :key="index"
+                             :label="type.tip"></el-option>
+                </el-select>
               </div>
             </div>
             <br/>
             <div class="row">
               <div class="col-sm-4 col-6">
-                <select class="form-control" :title="payWayTip" v-model="income.way" data-toggle="tooltip">
-                  <option v-for="(payWay,index) in payWays" :value="index+1" :key="index">{{payWay}}</option>
-                </select>
+                <el-select :title="payWayTip" v-model="income.way" data-toggle="tooltip">
+                  <el-option v-for="(payWay,index) in payWays" :value="index+1" :key="index"
+                             :label="payWay"></el-option>
+                </el-select>
               </div>
               <div class="col-sm-4 col-6">
-                <input type="text" class="form-control" :placeholder="categoryTip" :title="categoryTip"
-                       data-toggle="tooltip" v-show="editable" v-model="income.category" @keyup.enter="saveCategory"
-                       @blur="saveCategory" id="category-edit"/>
-                <select v-show="!editable" class="form-control" :title="categoryTip" v-model="income.category"
-                        data-toggle="tooltip" @dblclick="toEdit" @keyup.enter="toEdit">
-                  <option v-for="(category,index) in categories" :value="category" :key="index">{{category}}</option>
-                </select>
+                <el-select v-show="!editable" :title="categoryTip" v-model="income.category" filterable
+                           data-toggle="tooltip" @keyup.enter="saveCategory">
+                  <el-option v-for="(category,index) in categories" :value="category" :key="index"
+                             :label="category"></el-option>
+                </el-select>
               </div>
               <div v-if="isMobile" class="col-12"><br/></div>
               <div class="col-sm-4 col-12">
-                <input type="text" class="form-control" :placeholder="moneyTip" data-toggle="tooltip" :title="moneyTip"
-                       v-model="income.money"/>
+                <el-input type="number" :placeholder="moneyTip" data-toggle="tooltip" :title="moneyTip"
+                          v-model="income.money"/>
               </div>
             </div>
             <br/>
             <div class="row">
               <div class="col-sm-12 col-12">
-                <textarea class="form-control" :placeholder="remarkTip" data-toggle="tooltip" :title="remarkTip"
-                          v-model="income.remark"></textarea>
+                <el-input type="textarea" :placeholder="remarkTip" data-toggle="tooltip" :title="remarkTip"
+                          v-model="income.remark" rows="3"></el-input>
               </div>
             </div>
           </div>
@@ -99,10 +99,6 @@ export default {
   },
   props: ['income', 'payWays'],
   methods: {
-    toEdit: function () {
-      this.editable = true
-      setTimeout(() => $('#category-edit').focus(), 200)
-    },
     saveCategory: function () {
       let self = this
       if (validator.isEmpty(this.income.category)) {

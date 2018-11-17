@@ -11,12 +11,12 @@
             <h5 v-else class="h5-v-middle" v-html="formatAssetString()"></h5>
           </div>
           <div v-if="!isMobile" class="col-sm-3">
-            <input type="date" class="form-control" :placeholder="dateStartTip" :title="dateStartTip"
-                   data-toggle="tooltip" v-model="startDate" @change="listIncome"/>
+            <el-date-picker :placeholder="dateStartTip" :title="dateStartTip" class="w-100"
+                            data-toggle="tooltip" v-model="startDate" @change="listIncome"/>
           </div>
           <div v-if="!isMobile" class="col-sm-3">
-            <input type="date" class="form-control" :placeholder="dateEndTip" :title="dateEndTip"
-                   data-toggle="tooltip" v-model="endDate" @change="listIncome"/>
+            <el-date-picker :placeholder="dateEndTip" :title="dateEndTip" class="w-100"
+                            data-toggle="tooltip" v-model="endDate" @change="listIncome"/>
           </div>
           <div class="col-sm-3 col-4">
             <div class="row">
