@@ -14,19 +14,19 @@
           <div class="container data" :data-id="dailies.id">
             <div class="row">
               <div class="col-sm-6 col-6">
-                <input type="text" class="form-control" :placeholder="startTimeTip" :title="startTimeTip"
-                       data-toggle="tooltip" v-model="dailies.startTime"/>
+                <el-time-picker :placeholder="startTimeTip" :title="startTimeTip" class="w-100"
+                                data-toggle="tooltip" v-model="dailies.startTime"/>
               </div>
               <div class="col-sm-6 col-6">
-                <input type="text" class="form-control" :placeholder="endTimeTip" :title="endTimeTip"
-                       data-toggle="tooltip" v-model="dailies.endTime"/>
+                <el-time-picker :placeholder="endTimeTip" :title="endTimeTip" class="w-100"
+                                data-toggle="tooltip" v-model="dailies.endTime"/>
               </div>
             </div>
             <br/>
             <div class="row">
               <div class="col-sm-12 col-12">
-                <textarea class="form-control" :placeholder="contentTip" data-toggle="tooltip" :title="contentTip"
-                          v-model="dailies.content"></textarea>
+                <el-input :placeholder="contentTip" data-toggle="tooltip" :title="contentTip" type="textarea"
+                          v-model="dailies.content" rows="3"></el-input>
               </div>
             </div>
           </div>

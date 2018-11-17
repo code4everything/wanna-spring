@@ -7,19 +7,19 @@
       <div class="row">
         <div class="col-sm-2 col-4 text-right"><h5 class="h5-v-middle">{{weatherTip}}：</h5></div>
         <div class="col-sm-3 col-7">
-          <input type="text" class="form-control" v-model="daily.weather" :placeholder="weatherTip"/>
+          <el-input type="text" v-model="daily.weather" :placeholder="weatherTip"/>
         </div>
         <div v-if="isMobile" class="col-12"><br/></div>
         <div class="col-sm-2 col-4 text-right"><h5 class="h5-v-middle">{{scoreTip}}：</h5></div>
         <div class="col-sm-3 col-7">
-          <input type="number" class="form-control" v-model="daily.score" :placeholder="scoreTip"/>
+          <el-input-number class="w-100" type="number" v-model="daily.score" :placeholder="scoreTip"/>
         </div>
       </div>
       <br/>
       <div class="row">
         <div class="col-sm-2 col-4 text-right"><h5 class="h5-v-middle">{{contentTip}}：</h5></div>
         <div class="col-sm-8 col-7">
-          <textarea class="form-control" v-model="daily.content" :placeholder="contentTip" rows="5"></textarea>
+          <el-input type="textarea" v-model="daily.content" :placeholder="contentTip" rows="5"></el-input>
         </div>
       </div>
       <br/>
@@ -91,7 +91,7 @@ export default {
       editTip: '编辑',
       removeTip: '删除',
       defaultDailyDetail: {content: '', dailyId: '', endTime: '', id: '', startTime: ''},
-      defaultDaily: {id: '', score: '', weather: '', content: '', date: ''},
+      defaultDaily: {id: '', score: 8, weather: '', content: '', date: ''},
       daily: {},
       ths: ['编号', '开始', '结束', '记录', '动作'],
       dailyDetail: [],
@@ -108,14 +108,14 @@ export default {
       }
     },
     showModal: function () {
-      if (validator.isEmpty(this.daily.id)) {
-        layer.alert('请先保存日程记录')
-      } else {
-        this.currentIndex = $(window.event.srcElement).parents('.data').attr('data-index')
-        let daily = utils.isNull(this.currentIndex) ? this.defaultDailyDetail : this.dailyDetail[this.currentIndex]
-        this.currentDaily = utils.clone(daily)
-        $('#daily-modal').modal('show')
-      }
+      // if (validator.isEmpty(this.daily.id)) {
+      //   layer.alert('请先保存日程记录')
+      // } else {
+      this.currentIndex = $(window.event.srcElement).parents('.data').attr('data-index')
+      let daily = utils.isNull(this.currentIndex) ? this.defaultDailyDetail : this.dailyDetail[this.currentIndex]
+      this.currentDaily = utils.clone(daily)
+      $('#daily-modal').modal('show')
+      // }
     },
     remove: function () {
       let index = $(window.event.srcElement).parents('.data').attr('data-index')
