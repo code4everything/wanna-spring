@@ -5,14 +5,13 @@
       <!--移动端-->
       <div v-if="isMobile" class="row">
         <div class="col-10 offset-1 rounded bg-light">
+          <br/>
           <div class="row">
             <div class="col-10 offset-1">
-              <br/>
-              <input type="date" class="form-control" v-model="date" :placeholder="dateTip" :title="dateTip"
-                     data-toggle="tooltip"/>
-              <br/>
+              <el-date-picker v-model="date" type="date"></el-date-picker>
             </div>
           </div>
+          <br/>
         </div>
       </div>
       <!--电脑端-->
@@ -20,13 +19,11 @@
         <div class="bg-light rounded row">
           <div class="col-sm-12"><br/></div>
           <div class="col-sm-10 offset-sm-1">
-            <input type="date" class="form-control" v-model="dateStart" :placeholder="dateStartTip"
-                   :title="dateStartTip" data-toggle="tooltip"/>
+            <el-date-picker v-model="dateStart" type="date"></el-date-picker>
           </div>
           <div class="col-sm-12"><br/></div>
           <div class="col-sm-10 offset-sm-1">
-            <input type="date" class="form-control" v-model="dateEnd" :placeholder="dateEndTip" :title="dateEndTip"
-                   data-toggle="tooltip"/>
+            <el-date-picker v-model="dateEnd" type="date"></el-date-picker>
           </div>
           <div class="col-sm-12"><br/></div>
         </div>
@@ -35,8 +32,8 @@
           <div class="col-sm-10 offset-sm-1 justify-content-center">
             <br/>
             <div class="list-group text-center">
-              <a @click="dateChange" class="list-group-item list-group-item-action" v-for="(date,index) in dates"
-                 :key="index">{{date}}</a>
+              <a @click="dateChange" class="list-group-item list-group-item-action border-0"
+                 v-for="(date,index) in dates" :key="index">{{date}}</a>
             </div>
             <br/>
           </div>
@@ -127,5 +124,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
