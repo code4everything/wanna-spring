@@ -2,20 +2,25 @@
 <template>
   <div>
     <h3>{{loginWelcomeMessage}}</h3><br/>
-    <input type="text" id="login-name" class="form-control" :placeholder="loginNameTip" maxlength="50"/>
-    <br/>
-    <input type="password" id="password" maxlength="50" class="form-control" :placeholder="loginPasswordTip"/>
-    <br/>
-    <button class="btn btn-primary btn-block" @click="login">{{loginTip}}</button>
-    <br/>
-    <div class="form-inline row">
-      <div class="col-sm-6 col-6 text-left">
-        <a class="btn btn-link text-success" :href="registerPath">{{registerPathTip}}</a>
+    <el-form>
+      <el-form-item>
+        <el-input type="text" v-model="loginName" :placeholder="loginNameTip" maxlength="50"/>
+      </el-form-item>
+      <el-form-item>
+        <el-input type="password" v-model="password" maxlength="50" :placeholder="loginPasswordTip"/>
+      </el-form-item>
+      <el-form-item>
+        <el-button class="btn-block" type="primary" @click="login">{{loginTip}}</el-button>
+      </el-form-item>
+      <div class="form-inline row">
+        <div class="col-sm-6 col-6 text-left">
+          <a class="btn btn-link text-success" :href="registerPath">{{registerPathTip}}</a>
+        </div>
+        <div class="col-sm-6 col-6 text-right">
+          <a class="btn btn-link text-danger" :href="passwordResetPath">{{passwordResetPathTip}}</a>
+        </div>
       </div>
-      <div class="col-sm-6 col-6 text-right">
-        <a class="btn btn-link text-danger" :href="passwordResetPath">{{passwordResetPathTip}}</a>
-      </div>
-    </div>
+    </el-form>
   </div>
 </template>
 
@@ -36,18 +41,18 @@ export default {
       loginPasswordTip: '登录密码',
       loginTip: '登录',
       registerPathTip: '还没有账号？',
-      passwordResetPathTip: '忘记密码？'
+      passwordResetPathTip: '忘记密码？',
+      loginName: '',
+      password: ''
     }
   },
   methods: {
     login: function () {
-      let loginName = $('#login-name').val()
-      let password = $('#password').val()
-      if (validator.isEmpty(password)) {
+      if (validator.isEmpty(this.password)) {
         layer.alert('密码不能为空')
       } else {
         layer.load(1)
-        requestLogin({loginName: loginName, password: password}).then(data => {
+        requestLogin({loginName: this.loginName, password: this.password}).then(data => {
           layer.closeAll()
           if (data.code === 200) {
             cookie.set('token', data.data)
