@@ -1,5 +1,6 @@
 package org.code4everything.springbee.config;
 
+import org.code4everything.boot.redis.RedisTemplateUtils;
 import org.code4everything.springbee.domain.Asset;
 import org.code4everything.springbee.domain.Log;
 import org.code4everything.springbee.domain.User;
@@ -7,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
  * @author pantao
@@ -23,25 +23,16 @@ public class BeeBeanConfiguration {
 
     @Bean
     public RedisTemplate<String, Asset> assetRedisTemplate() {
-        RedisTemplate<String, Asset> assetRedisTemplate = new RedisTemplate<>();
-        assetRedisTemplate.setConnectionFactory(jedisConnectionFactory());
-        assetRedisTemplate.setKeySerializer(new StringRedisSerializer());
-        return assetRedisTemplate;
+        return RedisTemplateUtils.newTemplate(Asset.class);
     }
 
     @Bean
     public RedisTemplate<String, Log> logRedisTemplate() {
-        RedisTemplate<String, Log> logRedisTemplate = new RedisTemplate<>();
-        logRedisTemplate.setKeySerializer(new StringRedisSerializer());
-        logRedisTemplate.setConnectionFactory(jedisConnectionFactory());
-        return logRedisTemplate;
+        return RedisTemplateUtils.newTemplate(Log.class);
     }
 
     @Bean
     public RedisTemplate<String, User> userRedisTemplate() {
-        RedisTemplate<String, User> userRedisTemplate = new RedisTemplate<>();
-        userRedisTemplate.setConnectionFactory(jedisConnectionFactory());
-        userRedisTemplate.setKeySerializer(new StringRedisSerializer());
-        return userRedisTemplate;
+        return RedisTemplateUtils.newTemplate(User.class);
     }
 }
