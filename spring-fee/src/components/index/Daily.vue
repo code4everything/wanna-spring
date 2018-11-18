@@ -157,6 +157,8 @@ export default {
       layer.closeAll()
       if (data.code === 200) {
         this.daily = data.data
+        let idx = this.$parent.chartData.rows.length - 1
+        this.$parent.chartData.rows[idx].score = data.data.score
         layer.alert('保存成功')
       } else {
         layer.alert(data.msg)
@@ -208,6 +210,7 @@ export default {
     setTimeout(() => {
       this.listDaily()
       this.isFirst = false
+      this.$parent.getChartData()
     }, 200)
   },
   updated: function () {

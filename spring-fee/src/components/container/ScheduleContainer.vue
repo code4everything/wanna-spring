@@ -33,7 +33,7 @@
         <div class="row bg-light rounded">
           <div class="col-sm-12"><br/></div>
           <div class="col-sm-12">
-            <ve-line :data="chartData"></ve-line>
+            <ve-line :data="chartData" :extend="{'xAxis.0.axisLabel.rotate': 45}"></ve-line>
           </div>
         </div>
         <br/>
@@ -50,6 +50,8 @@
 <script>/* eslint-disable */
 import utils from '../../assets/js/utils'
 import dayjs from 'dayjs'
+import app from '../../App'
+import {requestListDaily, requestListTodoCount} from '../../api/api'
 
 export default {
   name: 'ScheduleContainer',
@@ -61,12 +63,36 @@ export default {
       dateEnd: '',
       dateTip: '日期',
       chartData: {
-        columns: ['date', '统计'],
+        columns: [],
         rows: []
+      },
+      isFirst: true
+    }
+  },
+  methods: {
+    getChartData: function () {
+      let href = '/' + window.location.hash
+      if (href === app.data().path.daily) {
+        requestListDaily(this.dateStart, this.dateEnd).then(data => this.handleData(data, '分数'))
+      } else if (href === app.data().path.todo) {
+        requestListTodoCount(this.dateStart, this.dateEnd).then(data => this.handleData(data, '数量'))
+      }
+      this.isFirst = false
+    },
+    handleData: function (data, col) {
+      this.chartData.rows = []
+      this.chartData.columns = ['date', col]
+      if (data.code === 200) {
+        data.data.forEach(item => {
+          let ele = {'date': dayjs(item.date).format('MM-DD')}
+          ele[col] = item.score
+          this.chartData.rows.push(ele)
+        })
+      } else {
+        console.error(data.msg)
       }
     }
   },
-  methods: {},
   mounted: function () {
     this.isMobile = utils.isMobile()
     let now = dayjs().format('YYYY-MM-DD')
@@ -75,10 +101,15 @@ export default {
   },
   watch: {
     dateStart: function () {
-      // for future
+      if (!this.isFirst) {
+        this.getChartData()
+      }
     },
     dateEnd: function () {
       this.date = this.dateEnd
+      if (!this.isFirst) {
+        this.getChartData()
+      }
     }
   },
   updated: function () {

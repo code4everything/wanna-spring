@@ -32,6 +32,14 @@ axios.interceptors.response.use(response => {
   return Promise.resolve(error.response.data || error.response)
 })
 
+export const requestListTodoCount = (start, end) => {
+  return axios.get(`/user/todo/count/list?start=${start}&end=${end}`)
+}
+
+export const requestListDaily = (start, end) => {
+  return axios.get(`/user/daily/list?start=${start}&end=${end}`)
+}
+
 export const requestListIncomeYear = (startYear, endYear) => {
   return axios.get(`/user/asset/income/year/list?startYear=${startYear}&endYear=${endYear}`)
 }
