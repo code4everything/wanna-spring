@@ -14,7 +14,8 @@
           <div class="container data" :data-id="income.id">
             <div class="row">
               <div class="col-sm-8 col-7">
-                <el-date-picker :placeholder="dateTip" :title="dateTip" class="w-100" value-format="yyyy-MM-dd"
+                <el-date-picker :editable="false" :clearable="false" :placeholder="dateTip" :title="dateTip"
+                                class="w-100" value-format="yyyy-MM-dd"
                                 data-toggle="tooltip" v-model="income.date"/>
               </div>
               <div class="col-sm-4 col-5">

@@ -1,5 +1,6 @@
 package org.code4everything.springbee.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.mongodb.BasicDBObject;
@@ -10,12 +11,14 @@ import org.code4everything.boot.annotations.AopLog;
 import org.code4everything.boot.constant.StringConsts;
 import org.code4everything.springbee.dao.TodoDAO;
 import org.code4everything.springbee.domain.Todo;
+import org.code4everything.springbee.model.TodoCountVO;
 import org.code4everything.springbee.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * @author pantao
@@ -42,8 +45,8 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     @AopLog("列出指定日期的待办事项")
-    public ArrayList<Todo> listTodo(String doingDate) {
-        return todoDAO.getByDoingDate(doingDate);
+    public ArrayList<Todo> listTodo(String userId, String doingDate) {
+        return todoDAO.getByUserIdAndDoingDate(userId, doingDate);
     }
 
     @Override
@@ -57,6 +60,21 @@ public class TodoServiceImpl implements TodoService {
             dateList.add(date);
         }
         return dateList;
+    }
+
+    @Override
+    public ArrayList<TodoCountVO> listTodoCount(String userId, Date start, Date end) {
+        ArrayList<TodoCountVO> list = new ArrayList<>();
+        end = DateUtil.endOfDay(end);
+        while (start.before(end)) {
+            TodoCountVO countVO = new TodoCountVO();
+            String startDate = DateUtil.formatDate(start);
+            countVO.setDate(startDate);
+            countVO.setScore(todoDAO.countByDoingDate(startDate));
+            list.add(countVO);
+            start = DateUtil.offsetDay(start, 1);
+        }
+        return list;
     }
 
     @Override

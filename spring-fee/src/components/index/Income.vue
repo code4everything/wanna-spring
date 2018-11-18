@@ -11,11 +11,13 @@
             <h5 v-else class="h5-v-middle" v-html="formatAssetString()"></h5>
           </div>
           <div v-if="!isMobile" class="col-sm-3">
-            <el-date-picker :placeholder="dateStartTip" :title="dateStartTip" class="w-100" value-format="yyyy-MM-dd"
+            <el-date-picker :editable="false" :clearable="false" :placeholder="dateStartTip" :title="dateStartTip"
+                            class="w-100" value-format="yyyy-MM-dd"
                             data-toggle="tooltip" v-model="startDate" @change="listIncome"/>
           </div>
           <div v-if="!isMobile" class="col-sm-3">
-            <el-date-picker :placeholder="dateEndTip" :title="dateEndTip" class="w-100" value-format="yyyy-MM-dd"
+            <el-date-picker :editable="false" :clearable="false" :placeholder="dateEndTip" :title="dateEndTip"
+                            class="w-100" value-format="yyyy-MM-dd"
                             data-toggle="tooltip" v-model="endDate" @change="listIncome"/>
           </div>
           <div class="col-sm-3 col-4">
@@ -99,6 +101,60 @@
     </div>
     <br/>
     <asset-modal :income="currentIncome" :pay-ways="payWays"></asset-modal>
+    <!-- 报表弹窗 -->
+    <el-dialog v-if="!isMobile" title="收益报表" :visible.sync="dialogVisible" :fullscreen="true">
+      <!-- 基本数据 -->
+      <div class="row">
+        <div class="col-sm-4">
+          <ve-pie :data="categoryData"></ve-pie>
+        </div>
+        <div class="col-sm-8">
+          <ve-line :data="dayData"></ve-line>
+        </div>
+      </div>
+      <!-- 月度报表 -->
+      <div class="row">
+        <div class="col-sm-1 offset-sm-3"><h5 class="h5-v-middle">月度报表</h5></div>
+        <div class="col-sm-2">
+          <el-date-picker :editable="false" :clearable="false" v-model="startMonth" type="month" placeholder="开始月份"
+                          value-format="yyyy-MM"></el-date-picker>
+        </div>
+        <div class="col-sm-2">
+          <el-date-picker :editable="false" :clearable="false" v-model="endMonth" type="month" placeholder="结束月份"
+                          value-format="yyyy-MM"></el-date-picker>
+        </div>
+        <div class="col-sm-1">
+          <button class="btn btn-outline-success btn-block" @click="listIncomeMonth">查询</button>
+        </div>
+      </div>
+      <br/>
+      <div class="row">
+        <div class="col-sm-12">
+          <ve-histogram :data="monthData"></ve-histogram>
+        </div>
+      </div>
+      <!-- 年度报表 -->
+      <div class="row">
+        <div class="col-sm-1 offset-sm-3"><h5 class="h5-v-middle">年度报表</h5></div>
+        <div class="col-sm-2">
+          <el-date-picker :editable="false" :clearable="false" v-model="startYear" type="year" placeholder="开始年份"
+                          value-format="yyyy"></el-date-picker>
+        </div>
+        <div class="col-sm-2">
+          <el-date-picker :editable="false" :clearable="false" v-model="endYear" type="year" placeholder="结束年份"
+                          value-format="yyyy"></el-date-picker>
+        </div>
+        <div class="col-sm-1">
+          <button class="btn btn-outline-success btn-block" @click="listIncomeYear">查询</button>
+        </div>
+      </div>
+      <br/>
+      <div class="row">
+        <div class="col-sm-12">
+          <ve-histogram :data="yearData"></ve-histogram>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -106,8 +162,15 @@
 import utils from '../../assets/js/utils'
 import layer from '../../../static/js/layer'
 import AssetModal from '../modal/AssetModal'
+import validator from '../../../static/js/validator.min'
 import dayjs from 'dayjs'
-import {requestAssetBalance, requestListIncome, requestRemoveIncome} from '../../api/api'
+import {
+  requestAssetBalance,
+  requestListIncome,
+  requestListIncomeMonth,
+  requestListIncomeYear,
+  requestRemoveIncome
+} from '../../api/api'
 
 export default {
   name: 'Income',
@@ -134,7 +197,28 @@ export default {
       startDate: '',
       endDate: '',
       totalExpenseTip: '支出合计',
-      totalExpense: 0
+      totalExpense: 0,
+      dialogVisible: false,
+      categoryData: {
+        columns: ['category', 'total'],
+        rows: []
+      },
+      dayData: {
+        columns: ['date', '支出'],
+        rows: []
+      },
+      startMonth: '',
+      endMonth: '',
+      monthData: {
+        columns: ['month', '支出'],
+        rows: []
+      },
+      startYear: '',
+      endYear: '',
+      yearData: {
+        columns: ['year', '支出'],
+        rows: []
+      }
     }
   },
   methods: {
@@ -170,7 +254,7 @@ export default {
       return income.type < 0 ? '支出' : '收入'
     },
     showReporter: function () {
-      layer.alert('敬请期待')
+      this.dialogVisible = true
     },
     updateIncome: function (income) {
       this.getAssetBalance()
@@ -212,6 +296,42 @@ export default {
           layer.alert(data.msg)
         }
       })
+    },
+    listIncomeMonth: function () {
+      if (validator.isEmpty(this.startMonth) || validator.isEmpty(this.endMonth)) {
+        this.$message.error('月份不能为空')
+      } else {
+        this.monthData.rows = []
+        layer.load(1)
+        requestListIncomeMonth(this.startMonth, this.endMonth).then(data => {
+          layer.closeAll()
+          if (data.code === 200) {
+            data.data.forEach(item => {
+              this.monthData.rows.push({'month': item.date, '支出': (item.money / 100).toFixed(2)})
+            })
+          } else {
+            this.$message.error(data.msg)
+          }
+        })
+      }
+    },
+    listIncomeYear: function () {
+      if (validator.isEmpty(this.startYear) || validator.isEmpty(this.endYear)) {
+        this.$message.error('年份不能为空')
+      } else {
+        this.yearData.rows = []
+        layer.load(1)
+        requestListIncomeYear(this.startYear, this.endYear).then(data => {
+          layer.closeAll()
+          if (data.code === 200) {
+            data.data.forEach(item => {
+              this.yearData.rows.push({'year': item.date, '支出': (item.money / 100).toFixed(2)})
+            })
+          } else {
+            this.$message.error(data.msg)
+          }
+        })
+      }
     }
   },
   mounted: function () {
@@ -226,11 +346,40 @@ export default {
   watch: {
     incomes: function () {
       if (!this.isMobile) {
+        // 清空数据
+        this.categoryData.rows = []
+        this.dayData.rows = []
         this.totalExpense = 0
         this.incomes.forEach(income => {
           if (income.type === -1) {
+            // 统计支出合计
             this.totalExpense += income.money
+            // 统计分类合计
+            let dest = this.categoryData.rows.filter(item => {
+              return item.category === income.category
+            })
+            if (dest.length > 0) {
+              dest[0].total += income.money
+            } else {
+              this.categoryData.rows.push({'category': income.category, 'total': income.money})
+            }
+            // 统计日支出合计
+            dest = this.dayData.rows.filter(item => {
+              return item.date === income.date
+            })
+            if (dest.length > 0) {
+              dest[0]['支出'] += income.money
+            } else {
+              this.dayData.rows.unshift({'date': income.date, '支出': income.money})
+            }
           }
+        })
+        // 格式化数据
+        this.categoryData.rows.forEach(item => {
+          item.total = (item.total / 100).toFixed(2)
+        })
+        this.dayData.rows.forEach(item => {
+          item['支出'] = (item['支出'] / 100).toFixed(2)
         })
       }
     }

@@ -71,6 +71,8 @@ export default {
           if (data.code === 200) {
             this.content = ''
             this.todos.push(data.data)
+            let idx = this.$parent.chartData.rows.length - 1
+            this.$parent.chartData.rows[idx].score++
           } else {
             layer.alert(data.msg)
           }
@@ -107,6 +109,7 @@ export default {
       this.listTodo()
       this.listUndo()
       this.isFirst = false
+      this.$parent.getChartData()
     }, 200)
   },
   watch: {

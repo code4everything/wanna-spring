@@ -7,11 +7,13 @@ import io.swagger.annotations.ApiOperation;
 import org.code4everything.boot.bean.ResponseResult;
 import org.code4everything.springbee.domain.Todo;
 import org.code4everything.springbee.domain.User;
+import org.code4everything.springbee.model.TodoCountVO;
 import org.code4everything.springbee.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 /**
@@ -79,6 +81,15 @@ public class TodoController extends BeeBaseController {
     @ApiOperation("列出事项")
     @ApiImplicitParam(name = "date", value = "日期", required = true)
     public ResponseResult<ArrayList<Todo>> listTodo(@RequestParam String date) {
-        return parseResult("该日期没有数据", todoService.listTodo(date), true);
+        return parseResult("该日期没有数据", todoService.listTodo(getUserId(), date), true);
+    }
+
+    @GetMapping("/count/list")
+    @ApiOperation("列出日程记录")
+    @ApiImplicitParams({@ApiImplicitParam(name = "start", value = "开始时间", required = true,
+            dataTypeClass = Date.class), @ApiImplicitParam(name = "end", value = "结束时间", required = true,
+            dataTypeClass = Date.class)})
+    public ResponseResult<ArrayList<TodoCountVO>> listByDate(@RequestParam Date start, @RequestParam Date end) {
+        return parseResult("糟糕，没有数据", todoService.listTodoCount(getUserId(), start, end), true);
     }
 }

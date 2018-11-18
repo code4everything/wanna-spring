@@ -8,7 +8,8 @@
           <br/>
           <div class="row">
             <div class="col-10 offset-1">
-              <el-date-picker v-model="date" type="date" value-format="yyyy-MM-dd"></el-date-picker>
+              <el-date-picker :editable="false" :clearable="false" v-model="date" type="date"
+                              value-format="yyyy-MM-dd"></el-date-picker>
             </div>
           </div>
           <br/>
@@ -17,16 +18,23 @@
       <!--电脑端-->
       <div v-else>
         <div class="bg-light rounded row">
-          <!--for future-->
-          <!--<div class="col-sm-12"><br/></div>-->
-          <!--<div class="col-sm-10 offset-sm-1">-->
-          <!--<el-date-picker v-model="dateStart" type="date" value-format="yyyy-MM-dd"></el-date-picker>-->
-          <!--</div>-->
           <div class="col-sm-12"><br/></div>
           <div class="col-sm-10 offset-sm-1">
-            <el-date-picker v-model="dateEnd" type="date" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker v-model="dateStart" type="date" value-format="yyyy-MM-dd"></el-date-picker>
           </div>
           <div class="col-sm-12"><br/></div>
+          <div class="col-sm-10 offset-sm-1">
+            <el-date-picker :editable="false" :clearable="false" v-model="dateEnd" type="date"
+                            value-format="yyyy-MM-dd"></el-date-picker>
+          </div>
+          <div class="col-sm-12"><br/></div>
+        </div>
+        <br/>
+        <div class="row bg-light rounded">
+          <div class="col-sm-12"><br/></div>
+          <div class="col-sm-12">
+            <ve-line :data="chartData" :extend="{'xAxis.0.axisLabel.rotate': 45}"></ve-line>
+          </div>
         </div>
         <br/>
       </div>
@@ -42,6 +50,8 @@
 <script>/* eslint-disable */
 import utils from '../../assets/js/utils'
 import dayjs from 'dayjs'
+import app from '../../App'
+import {requestListDaily, requestListTodoCount} from '../../api/api'
 
 export default {
   name: 'ScheduleContainer',
@@ -52,20 +62,54 @@ export default {
       dateStart: '',
       dateEnd: '',
       dateTip: '日期',
+      chartData: {
+        columns: [],
+        rows: []
+      },
+      isFirst: true
     }
   },
-  methods: {},
+  methods: {
+    getChartData: function () {
+      let href = '/' + window.location.hash
+      if (href === app.data().path.daily) {
+        requestListDaily(this.dateStart, this.dateEnd).then(data => this.handleData(data, '分数'))
+      } else if (href === app.data().path.todo) {
+        requestListTodoCount(this.dateStart, this.dateEnd).then(data => this.handleData(data, '数量'))
+      }
+      this.isFirst = false
+    },
+    handleData: function (data, col) {
+      this.chartData.rows = []
+      this.chartData.columns = ['date', col]
+      if (data.code === 200) {
+        data.data.forEach(item => {
+          let ele = {'date': dayjs(item.date).format('MM-DD')}
+          ele[col] = item.score
+          this.chartData.rows.push(ele)
+        })
+      } else {
+        console.error(data.msg)
+      }
+    }
+  },
   mounted: function () {
     this.isMobile = utils.isMobile()
     let now = dayjs().format('YYYY-MM-DD')
-    this.date = this.dateEnd = this.dateStart = now
+    this.date = this.dateEnd = now
+    this.dateStart = dayjs(now).add(-1, 'month').format('YYYY-MM-DD')
   },
   watch: {
     dateStart: function () {
-      // for future
+      if (!this.isFirst) {
+        this.getChartData()
+      }
     },
     dateEnd: function () {
       this.date = this.dateEnd
+      if (!this.isFirst) {
+        this.getChartData()
+      }
     }
   },
   updated: function () {
