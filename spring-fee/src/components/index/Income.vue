@@ -11,11 +11,13 @@
             <h5 v-else class="h5-v-middle" v-html="formatAssetString()"></h5>
           </div>
           <div v-if="!isMobile" class="col-sm-3">
-            <el-date-picker :placeholder="dateStartTip" :title="dateStartTip" class="w-100" value-format="yyyy-MM-dd"
+            <el-date-picker :editable="false" :clearable="false" :placeholder="dateStartTip" :title="dateStartTip"
+                            class="w-100" value-format="yyyy-MM-dd"
                             data-toggle="tooltip" v-model="startDate" @change="listIncome"/>
           </div>
           <div v-if="!isMobile" class="col-sm-3">
-            <el-date-picker :placeholder="dateEndTip" :title="dateEndTip" class="w-100" value-format="yyyy-MM-dd"
+            <el-date-picker :editable="false" :clearable="false" :placeholder="dateEndTip" :title="dateEndTip"
+                            class="w-100" value-format="yyyy-MM-dd"
                             data-toggle="tooltip" v-model="endDate" @change="listIncome"/>
           </div>
           <div class="col-sm-3 col-4">
@@ -114,10 +116,12 @@
       <div class="row">
         <div class="col-sm-1 offset-sm-3"><h5 class="h5-v-middle">月度报表</h5></div>
         <div class="col-sm-2">
-          <el-date-picker v-model="startMonth" type="month" placeholder="开始月份" value-format="yyyy-MM"></el-date-picker>
+          <el-date-picker :editable="false" :clearable="false" v-model="startMonth" type="month" placeholder="开始月份"
+                          value-format="yyyy-MM"></el-date-picker>
         </div>
         <div class="col-sm-2">
-          <el-date-picker v-model="endMonth" type="month" placeholder="结束月份" value-format="yyyy-MM"></el-date-picker>
+          <el-date-picker :editable="false" :clearable="false" v-model="endMonth" type="month" placeholder="结束月份"
+                          value-format="yyyy-MM"></el-date-picker>
         </div>
         <div class="col-sm-1">
           <button class="btn btn-outline-success btn-block" @click="listIncomeMonth">查询</button>
@@ -133,10 +137,12 @@
       <div class="row">
         <div class="col-sm-1 offset-sm-3"><h5 class="h5-v-middle">年度报表</h5></div>
         <div class="col-sm-2">
-          <el-date-picker v-model="startYear" type="year" placeholder="开始年份" value-format="yyyy"></el-date-picker>
+          <el-date-picker :editable="false" :clearable="false" v-model="startYear" type="year" placeholder="开始年份"
+                          value-format="yyyy"></el-date-picker>
         </div>
         <div class="col-sm-2">
-          <el-date-picker v-model="endYear" type="year" placeholder="结束年份" value-format="yyyy"></el-date-picker>
+          <el-date-picker :editable="false" :clearable="false" v-model="endYear" type="year" placeholder="结束年份"
+                          value-format="yyyy"></el-date-picker>
         </div>
         <div class="col-sm-1">
           <button class="btn btn-outline-success btn-block" @click="listIncomeYear">查询</button>

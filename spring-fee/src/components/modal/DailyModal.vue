@@ -70,7 +70,7 @@ export default {
   props: ['dailies'],
   methods: {
     saveDailies: function () {
-      if (validator.isEmpty(this.dailies.startTime) || validator.isEmpty(this.dailies.endTime) || validator.isEmpty(this.dailies.content)) {
+      if (this.dailies.startTime || this.dailies.endTime || validator.isEmpty(this.dailies.startTime) || validator.isEmpty(this.dailies.endTime) || validator.isEmpty(this.dailies.content)) {
         layer.alert('数据不能为空')
       } else {
         if (validator.isEmpty(this.dailies.id)) {

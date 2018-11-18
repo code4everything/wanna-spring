@@ -8,7 +8,8 @@
           <br/>
           <div class="row">
             <div class="col-10 offset-1">
-              <el-date-picker v-model="date" type="date" value-format="yyyy-MM-dd"></el-date-picker>
+              <el-date-picker :editable="false" :clearable="false" v-model="date" type="date"
+                              value-format="yyyy-MM-dd"></el-date-picker>
             </div>
           </div>
           <br/>
@@ -17,16 +18,23 @@
       <!--电脑端-->
       <div v-else>
         <div class="bg-light rounded row">
-          <!--for future-->
-          <!--<div class="col-sm-12"><br/></div>-->
-          <!--<div class="col-sm-10 offset-sm-1">-->
-          <!--<el-date-picker v-model="dateStart" type="date" value-format="yyyy-MM-dd"></el-date-picker>-->
-          <!--</div>-->
           <div class="col-sm-12"><br/></div>
           <div class="col-sm-10 offset-sm-1">
-            <el-date-picker v-model="dateEnd" type="date" value-format="yyyy-MM-dd"></el-date-picker>
+            <el-date-picker v-model="dateStart" type="date" value-format="yyyy-MM-dd"></el-date-picker>
           </div>
           <div class="col-sm-12"><br/></div>
+          <div class="col-sm-10 offset-sm-1">
+            <el-date-picker :editable="false" :clearable="false" v-model="dateEnd" type="date"
+                            value-format="yyyy-MM-dd"></el-date-picker>
+          </div>
+          <div class="col-sm-12"><br/></div>
+        </div>
+        <br/>
+        <div class="row bg-light rounded">
+          <div class="col-sm-12"><br/></div>
+          <div class="col-sm-12">
+            <ve-line :data="chartData"></ve-line>
+          </div>
         </div>
         <br/>
       </div>
@@ -52,13 +60,18 @@ export default {
       dateStart: '',
       dateEnd: '',
       dateTip: '日期',
+      chartData: {
+        columns: ['date', '统计'],
+        rows: []
+      }
     }
   },
   methods: {},
   mounted: function () {
     this.isMobile = utils.isMobile()
     let now = dayjs().format('YYYY-MM-DD')
-    this.date = this.dateEnd = this.dateStart = now
+    this.date = this.dateEnd = now
+    this.dateStart = dayjs(now).add(-1, 'month').format('YYYY-MM-DD')
   },
   watch: {
     dateStart: function () {
