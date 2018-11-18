@@ -101,6 +101,7 @@
     <asset-modal :income="currentIncome" :pay-ways="payWays"></asset-modal>
     <!-- 报表弹窗 -->
     <el-dialog v-if="!isMobile" title="收益报表" :visible.sync="dialogVisible" :fullscreen="true">
+      <!-- 基本数据 -->
       <div class="row">
         <div class="col-sm-4">
           <ve-pie :data="categoryData"></ve-pie>
@@ -109,6 +110,7 @@
           <ve-line :data="dayData"></ve-line>
         </div>
       </div>
+      <!-- 月度报表 -->
       <div class="row">
         <div class="col-sm-1 offset-sm-3"><h5 class="h5-v-middle">月度报表</h5></div>
         <div class="col-sm-2">
@@ -127,6 +129,25 @@
           <ve-histogram :data="monthData"></ve-histogram>
         </div>
       </div>
+      <!-- 年度报表 -->
+      <div class="row">
+        <div class="col-sm-1 offset-sm-3"><h5 class="h5-v-middle">年度报表</h5></div>
+        <div class="col-sm-2">
+          <el-date-picker v-model="startYear" type="year" placeholder="开始年份" value-format="yyyy"></el-date-picker>
+        </div>
+        <div class="col-sm-2">
+          <el-date-picker v-model="endYear" type="year" placeholder="结束年份" value-format="yyyy"></el-date-picker>
+        </div>
+        <div class="col-sm-1">
+          <button class="btn btn-outline-success btn-block" @click="listIncomeYear">查询</button>
+        </div>
+      </div>
+      <br/>
+      <div class="row">
+        <div class="col-sm-12">
+          <ve-histogram :data="yearData"></ve-histogram>
+        </div>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -137,7 +158,13 @@ import layer from '../../../static/js/layer'
 import AssetModal from '../modal/AssetModal'
 import validator from '../../../static/js/validator.min'
 import dayjs from 'dayjs'
-import {requestAssetBalance, requestListIncome, requestListIncomeMonth, requestRemoveIncome} from '../../api/api'
+import {
+  requestAssetBalance,
+  requestListIncome,
+  requestListIncomeMonth,
+  requestListIncomeYear,
+  requestRemoveIncome
+} from '../../api/api'
 
 export default {
   name: 'Income',
@@ -178,6 +205,12 @@ export default {
       endMonth: '',
       monthData: {
         columns: ['month', '支出'],
+        rows: []
+      },
+      startYear: '',
+      endYear: '',
+      yearData: {
+        columns: ['year', '支出'],
         rows: []
       }
     }
@@ -259,8 +292,8 @@ export default {
       })
     },
     listIncomeMonth: function () {
-      if (validator.isEmpty(this.startMonth) || validator.isEmpty(this.endMonth) || this.startMonth === this.endMonth) {
-        this.$message.error('数据格式不合法')
+      if (validator.isEmpty(this.startMonth) || validator.isEmpty(this.endMonth)) {
+        this.$message.error('月份不能为空')
       } else {
         this.monthData.rows = []
         layer.load(1)
@@ -268,7 +301,25 @@ export default {
           layer.closeAll()
           if (data.code === 200) {
             data.data.forEach(item => {
-              this.monthData.rows.push({'month': item.month, '支出': (item.money / 100).toFixed(2)})
+              this.monthData.rows.push({'month': item.date, '支出': (item.money / 100).toFixed(2)})
+            })
+          } else {
+            this.$message.error(data.msg)
+          }
+        })
+      }
+    },
+    listIncomeYear: function () {
+      if (validator.isEmpty(this.startYear) || validator.isEmpty(this.endYear)) {
+        this.$message.error('年份不能为空')
+      } else {
+        this.yearData.rows = []
+        layer.load(1)
+        requestListIncomeYear(this.startYear, this.endYear).then(data => {
+          layer.closeAll()
+          if (data.code === 200) {
+            data.data.forEach(item => {
+              this.yearData.rows.push({'year': item.date, '支出': (item.money / 100).toFixed(2)})
             })
           } else {
             this.$message.error(data.msg)

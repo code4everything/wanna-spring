@@ -32,6 +32,10 @@ axios.interceptors.response.use(response => {
   return Promise.resolve(error.response.data || error.response)
 })
 
+export const requestListIncomeYear = (startYear, endYear) => {
+  return axios.get(`/user/asset/income/year/list?startYear=${startYear}&endYear=${endYear}`)
+}
+
 export const requestListIncomeMonth = (startMonth, endMonth) => {
   return axios.get(`/user/asset/income/month/list?startMonth=${startMonth}&endMonth=${endMonth}`)
 }
