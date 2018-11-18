@@ -8,7 +8,7 @@
           <br/>
           <div class="row">
             <div class="col-10 offset-1">
-              <el-date-picker v-model="date" type="date"></el-date-picker>
+              <el-date-picker v-model="date" type="date" value-format="yyyy-MM-dd"></el-date-picker>
             </div>
           </div>
           <br/>
@@ -19,11 +19,11 @@
         <div class="bg-light rounded row">
           <div class="col-sm-12"><br/></div>
           <div class="col-sm-10 offset-sm-1">
-            <el-date-picker v-model="dateStart" type="date"></el-date-picker>
+            <el-date-picker v-model="dateStart" type="date" value-format="yyyy-MM-dd"></el-date-picker>
           </div>
           <div class="col-sm-12"><br/></div>
           <div class="col-sm-10 offset-sm-1">
-            <el-date-picker v-model="dateEnd" type="date"></el-date-picker>
+            <el-date-picker v-model="dateEnd" type="date" value-format="yyyy-MM-dd"></el-date-picker>
           </div>
           <div class="col-sm-12"><br/></div>
         </div>

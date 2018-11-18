@@ -12,7 +12,7 @@
         <div v-if="isMobile" class="col-12"><br/></div>
         <div class="col-sm-2 col-4 text-right"><h5 class="h5-v-middle">{{scoreTip}}：</h5></div>
         <div class="col-sm-3 col-7">
-          <el-input-number class="w-100" type="number" v-model="daily.score" :placeholder="scoreTip"/>
+          <el-input-number class="w-100" v-model="daily.score" :placeholder="scoreTip" :min="0" :max="10"/>
         </div>
       </div>
       <br/>
@@ -108,14 +108,14 @@ export default {
       }
     },
     showModal: function () {
-      // if (validator.isEmpty(this.daily.id)) {
-      //   layer.alert('请先保存日程记录')
-      // } else {
-      this.currentIndex = $(window.event.srcElement).parents('.data').attr('data-index')
-      let daily = utils.isNull(this.currentIndex) ? this.defaultDailyDetail : this.dailyDetail[this.currentIndex]
-      this.currentDaily = utils.clone(daily)
-      $('#daily-modal').modal('show')
-      // }
+      if (validator.isEmpty(this.daily.id)) {
+        layer.alert('请先保存日程记录')
+      } else {
+        this.currentIndex = $(window.event.srcElement).parents('.data').attr('data-index')
+        let daily = utils.isNull(this.currentIndex) ? this.defaultDailyDetail : this.dailyDetail[this.currentIndex]
+        this.currentDaily = utils.clone(daily)
+        $('#daily-modal').modal('show')
+      }
     },
     remove: function () {
       let index = $(window.event.srcElement).parents('.data').attr('data-index')

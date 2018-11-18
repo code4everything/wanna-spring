@@ -14,7 +14,7 @@
           <div class="container data" :data-id="income.id">
             <div class="row">
               <div class="col-sm-8 col-7">
-                <el-date-picker :placeholder="dateTip" :title="dateTip" class="w-100"
+                <el-date-picker :placeholder="dateTip" :title="dateTip" class="w-100" value-format="yyyy-MM-dd"
                                 data-toggle="tooltip" v-model="income.date"/>
               </div>
               <div class="col-sm-4 col-5">
@@ -33,15 +33,15 @@
                 </el-select>
               </div>
               <div class="col-sm-4 col-6">
-                <el-select v-show="!editable" :title="categoryTip" v-model="income.category" filterable
-                           data-toggle="tooltip" @keyup.enter="saveCategory">
+                <el-select :title="categoryTip" v-model="income.category" filterable allow-create
+                           data-toggle="tooltip" @change="saveCategory" default-first-option>
                   <el-option v-for="(category,index) in categories" :value="category" :key="index"
                              :label="category"></el-option>
                 </el-select>
               </div>
               <div v-if="isMobile" class="col-12"><br/></div>
               <div class="col-sm-4 col-12">
-                <el-input type="number" :placeholder="moneyTip" data-toggle="tooltip" :title="moneyTip"
+                <el-input type="text" :placeholder="moneyTip" data-toggle="tooltip" :title="moneyTip"
                           v-model="income.money"/>
               </div>
             </div>
@@ -92,7 +92,6 @@ export default {
       categoryTip: '分类，双击或回车编辑',
       closeTip: '关闭',
       saveTip: '保存',
-      editable: false,
       types: [{value: -1, tip: '支出'}, {value: 1, tip: '收入'}],
       categories: ['未分类']
     }
@@ -103,13 +102,11 @@ export default {
       let self = this
       if (validator.isEmpty(this.income.category)) {
         this.income.category = this.categories[0]
-        this.editable = false
       }
-      if (this.editable) {
+      if (!this.categories.includes(this.income.category)) {
         layer.load(1)
         requestSaveCategory(this.income.category).then(data => {
           layer.closeAll()
-          self.editable = false
           if (data.code === 200) {
             self.categories.push(data.data.name)
           } else {

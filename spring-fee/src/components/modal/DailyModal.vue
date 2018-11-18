@@ -14,11 +14,11 @@
           <div class="container data" :data-id="dailies.id">
             <div class="row">
               <div class="col-sm-6 col-6">
-                <el-time-picker :placeholder="startTimeTip" :title="startTimeTip" class="w-100"
+                <el-time-picker :placeholder="startTimeTip" :title="startTimeTip" class="w-100" value-format="HH:mm:ss"
                                 data-toggle="tooltip" v-model="dailies.startTime"/>
               </div>
               <div class="col-sm-6 col-6">
-                <el-time-picker :placeholder="endTimeTip" :title="endTimeTip" class="w-100"
+                <el-time-picker :placeholder="endTimeTip" :title="endTimeTip" class="w-100" value-format="HH:mm:ss"
                                 data-toggle="tooltip" v-model="dailies.endTime"/>
               </div>
             </div>

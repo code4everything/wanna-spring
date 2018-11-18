@@ -11,11 +11,11 @@
             <h5 v-else class="h5-v-middle" v-html="formatAssetString()"></h5>
           </div>
           <div v-if="!isMobile" class="col-sm-3">
-            <el-date-picker :placeholder="dateStartTip" :title="dateStartTip" class="w-100"
+            <el-date-picker :placeholder="dateStartTip" :title="dateStartTip" class="w-100" value-format="yyyy-MM-dd"
                             data-toggle="tooltip" v-model="startDate" @change="listIncome"/>
           </div>
           <div v-if="!isMobile" class="col-sm-3">
-            <el-date-picker :placeholder="dateEndTip" :title="dateEndTip" class="w-100"
+            <el-date-picker :placeholder="dateEndTip" :title="dateEndTip" class="w-100" value-format="yyyy-MM-dd"
                             data-toggle="tooltip" v-model="endDate" @change="listIncome"/>
           </div>
           <div class="col-sm-3 col-4">
@@ -118,7 +118,7 @@ export default {
       currentIncome: {},
       currentIndex: 0,
       ths: ['编号', '日期', '类型', '分类', '金额', '支付方式', '创建时间', '动作'],
-      defaultIncome: {category: '未分类', date: '', money: '', remark: '', type: -1, way: 1, id: ''},
+      defaultIncome: {category: '未分类', date: '', money: '', remark: '', type: -1, way: 2, id: ''},
       payWays: ['其他', '支付宝', '微信', '银联', '信用卡', '现金'],
       incomes: [],
       startDate: '',
