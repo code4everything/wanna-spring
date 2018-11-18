@@ -107,8 +107,6 @@ export default {
       this.listTodo()
       this.listUndo()
       this.isFirst = false
-      // 修改父组件的日期列表
-      this.$parent.changeDate(-7, 7)
     }, 200)
   },
   watch: {

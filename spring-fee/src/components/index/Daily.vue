@@ -208,8 +208,6 @@ export default {
     setTimeout(() => {
       this.listDaily()
       this.isFirst = false
-      // 修改父组件日期列表
-      this.$parent.changeDate(-7, 0)
     }, 200)
   },
   updated: function () {

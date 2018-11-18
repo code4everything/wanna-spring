@@ -17,26 +17,16 @@
       <!--电脑端-->
       <div v-else>
         <div class="bg-light rounded row">
-          <div class="col-sm-12"><br/></div>
-          <div class="col-sm-10 offset-sm-1">
-            <el-date-picker v-model="dateStart" type="date" value-format="yyyy-MM-dd"></el-date-picker>
-          </div>
+          <!--for future-->
+          <!--<div class="col-sm-12"><br/></div>-->
+          <!--<div class="col-sm-10 offset-sm-1">-->
+          <!--<el-date-picker v-model="dateStart" type="date" value-format="yyyy-MM-dd"></el-date-picker>-->
+          <!--</div>-->
           <div class="col-sm-12"><br/></div>
           <div class="col-sm-10 offset-sm-1">
             <el-date-picker v-model="dateEnd" type="date" value-format="yyyy-MM-dd"></el-date-picker>
           </div>
           <div class="col-sm-12"><br/></div>
-        </div>
-        <br/>
-        <div class="bg-light rounded row">
-          <div class="col-sm-10 offset-sm-1 justify-content-center">
-            <br/>
-            <div class="list-group text-center">
-              <a @click="dateChange" class="list-group-item list-group-item-action border-0"
-                 v-for="(date,index) in dates" :key="index">{{date}}</a>
-            </div>
-            <br/>
-          </div>
         </div>
         <br/>
       </div>
@@ -62,48 +52,9 @@ export default {
       dateStart: '',
       dateEnd: '',
       dateTip: '日期',
-      dateStartTip: '开始日期',
-      dateEndTip: '结束日期',
-      dates: []
     }
   },
-  methods: {
-    updateDateList: function () {
-      if (this.dateStart <= this.dateEnd) {
-        this.dates = []
-        let now = this.dateStart
-        this.dates.push(this.dateStart)
-        while (now !== this.dateEnd) {
-          now = dayjs(now).add(1, 'day').format('YYYY-MM-DD')
-          this.dates.push(now)
-        }
-      }
-    },
-    dateChange: function () {
-      this.date = $(window.event.srcElement).text()
-      this.changeActiveDate()
-    },
-    changeDate: function (leftOffset, rightOffset) {
-      if (!this.isMobile) {
-        this.dateStart = dayjs().add(leftOffset, 'day').format('YYYY-MM-DD')
-        this.dateEnd = dayjs().add(rightOffset, 'day').format('YYYY-MM-DD')
-        setTimeout(() => this.changeActiveDate(), 500)
-      }
-    },
-    changeActiveDate: function () {
-      if (!this.isMobile) {
-        let className = 'list-group-item-primary'
-        let self = this
-        $('.list-group-item').each(function () {
-          if ($(this).text() === self.date) {
-            $(this).addClass(className)
-          } else {
-            $(this).removeClass(className)
-          }
-        })
-      }
-    }
-  },
+  methods: {},
   mounted: function () {
     this.isMobile = utils.isMobile()
     let now = dayjs().format('YYYY-MM-DD')
@@ -111,10 +62,10 @@ export default {
   },
   watch: {
     dateStart: function () {
-      this.updateDateList()
+      // for future
     },
     dateEnd: function () {
-      this.updateDateList()
+      this.date = this.dateEnd
     }
   },
   updated: function () {
