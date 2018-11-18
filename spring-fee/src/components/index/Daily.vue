@@ -157,8 +157,7 @@ export default {
       layer.closeAll()
       if (data.code === 200) {
         this.daily = data.data
-        let idx = this.$parent.chartData.rows.length - 1
-        this.$parent.chartData.rows[idx].score = data.data.score
+        this.$parent.getChartData()
         layer.alert('保存成功')
       } else {
         layer.alert(data.msg)

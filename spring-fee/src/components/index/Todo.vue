@@ -55,7 +55,9 @@ export default {
       undoIdPrefix: 'undo-item-',
       defaultTodo: {content: '测试', createTime: '', doingDate: '', doneTime: '', id: '', status: '0'},
       todos: [],
+      todoLength: 0,
       undos: [],
+      undoLength: 0,
       isFirst: true
     }
   },
@@ -71,8 +73,6 @@ export default {
           if (data.code === 200) {
             this.content = ''
             this.todos.push(data.data)
-            let idx = this.$parent.chartData.rows.length - 1
-            this.$parent.chartData.rows[idx].score++
           } else {
             layer.alert(data.msg)
           }
@@ -109,7 +109,6 @@ export default {
       this.listTodo()
       this.listUndo()
       this.isFirst = false
-      this.$parent.getChartData()
     }, 200)
   },
   watch: {
@@ -117,6 +116,20 @@ export default {
       if (!this.isFirst) {
         this.listTodo()
         this.listUndo()
+      }
+    },
+    todos: function () {
+      if (this.todos.length !== this.todoLength) {
+        this.todoLength = this.todos.length
+        this.$parent.getChartData()
+      }
+    },
+    undos: function () {
+      if (this.undos.length !== this.undoLength) {
+        this.undoLength = this.undos.length
+        if (!this.isFirst) {
+          this.$parent.getChartData()
+        }
       }
     }
   },
