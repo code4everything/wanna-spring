@@ -31,7 +31,10 @@
         </div>
         <br/>
         <div class="row bg-light rounded">
-          <div class="col-sm-12"><br/></div>
+          <div class="col-sm-12 text-right"><br/>
+            <button class="btn btn-outline-success" @click="dialogVisible=true"><i
+              class="glyphicon glyphicon-fullscreen"></i></button>
+          </div>
           <div class="col-sm-12">
             <ve-line :data="chartData" :extend="{'xAxis.0.axisLabel.rotate': 45}"></ve-line>
           </div>
@@ -43,6 +46,9 @@
     <div class="col-sm-8 col-12">
       <router-view :date="date"></router-view>
     </div>
+    <el-dialog v-if="!isMobile" :visible.sync="dialogVisible" :fullscreen="true">
+      <ve-line :data="fullChartData"></ve-line>
+    </el-dialog>
   </div>
 </template>
 
@@ -66,27 +72,37 @@ export default {
         columns: [],
         rows: []
       },
-      isFirst: true
+      isFirst: true,
+      dialogVisible: false,
+      fullChartData: {
+        columns: [],
+        rows: []
+      },
     }
   },
   methods: {
     getChartData: function () {
       let href = '/' + window.location.hash
       if (href === app.data().path.daily) {
-        requestListDaily(this.dateStart, this.dateEnd).then(data => this.handleData(data, '分数'))
+        requestListDaily(this.dateStart, this.dateEnd).then(data => this.handleData(data, '每日得分'))
       } else if (href === app.data().path.todo) {
-        requestListTodoCount(this.dateStart, this.dateEnd).then(data => this.handleData(data, '数量'))
+        requestListTodoCount(this.dateStart, this.dateEnd).then(data => this.handleData(data, '每日代办数量'))
       }
       this.isFirst = false
     },
     handleData: function (data, col) {
       this.chartData.rows = []
       this.chartData.columns = ['date', col]
+      this.fullChartData.rows = []
+      this.fullChartData.columns = ['date', col]
       if (data.code === 200) {
         data.data.forEach(item => {
           let ele = {'date': dayjs(item.date).format('MM-DD')}
           ele[col] = item.score
           this.chartData.rows.push(ele)
+          ele = {'date': item.date}
+          ele[col] = item.score
+          this.fullChartData.rows.push(ele)
         })
       } else {
         console.error(data.msg)
