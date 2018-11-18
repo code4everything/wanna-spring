@@ -74,7 +74,7 @@
             <td>{{income.date}}</td>
             <td>{{formatTypeString(income)}}</td>
             <td>{{income.category}}</td>
-            <td>{{Number(income.money/100).toFixed(2)}}</td>
+            <td>{{Number(income.money / 100).toFixed(2)}}</td>
             <td>{{payWays[income.way-1]}}</td>
             <!--suppress JSUnresolvedVariable -->
             <td>{{formatDate(income.createTime)}}</td>
@@ -82,6 +82,16 @@
               <a class="text-info" href="javascript:" @click="showModal">{{editTip}}</a>
               &emsp;<a href="javascript:" class="text-danger" @click="remove">{{removeTip}}</a>
             </td>
+          </tr>
+          <tr v-show="totalExpense>0">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{{totalExpenseTip}}</td>
+            <td>{{Number(totalExpense / 100).toFixed(2)+' '+unit}}</td>
           </tr>
           </tbody>
         </table>
@@ -122,7 +132,9 @@ export default {
       payWays: ['其他', '支付宝', '微信', '银联', '信用卡', '现金'],
       incomes: [],
       startDate: '',
-      endDate: ''
+      endDate: '',
+      totalExpenseTip: '支出合计',
+      totalExpense: 0
     }
   },
   methods: {
@@ -210,6 +222,18 @@ export default {
   },
   updated: function () {
     $('[data-toggle="tooltip"]').tooltip()
+  },
+  watch: {
+    incomes: function () {
+      if (!this.isMobile) {
+        this.totalExpense = 0
+        this.incomes.forEach(income => {
+          if (income.type === -1) {
+            this.totalExpense += income.money
+          }
+        })
+      }
+    }
   }
 }
 </script>
