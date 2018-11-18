@@ -4,8 +4,8 @@ import io.swagger.annotations.*;
 import org.code4everything.boot.bean.ResponseResult;
 import org.code4everything.springbee.domain.Income;
 import org.code4everything.springbee.domain.User;
+import org.code4everything.springbee.model.IncomeBillVO;
 import org.code4everything.springbee.model.IncomeDTO;
-import org.code4everything.springbee.model.IncomeMonthVO;
 import org.code4everything.springbee.service.IncomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -63,8 +63,20 @@ public class IncomeController extends BeeBaseController {
 
     @GetMapping("/month/list")
     @ApiOperation("列出月账单")
-    public ResponseResult<ArrayList<IncomeMonthVO>> listMonth(@RequestParam String startMonth,
-                                                              @RequestParam String endMonth) {
+    @ApiImplicitParams({@ApiImplicitParam(name = "startMonth", value = "开始月份", required = true, example = "2018-01"),
+            @ApiImplicitParam(name = "endMonth", value = "结束月份", required = true, example = "2018-12")})
+    public ResponseResult<ArrayList<IncomeBillVO>> listMonth(@RequestParam String startMonth,
+                                                             @RequestParam String endMonth) {
         return parseResult("糟糕，没有数据", incomeService.listMonth(getUserId(), startMonth, endMonth));
+    }
+
+    @GetMapping("/year/list")
+    @ApiOperation("列出年账单")
+    @ApiImplicitParams({@ApiImplicitParam(name = "startYear", value = "开始年份", required = true, example = "2014",
+            dataType = "int"), @ApiImplicitParam(name = "endYear", value = "结束年份", required = true, example = "2018",
+            dataType = "int")})
+    public ResponseResult<ArrayList<IncomeBillVO>> listYear(@RequestParam Integer startYear,
+                                                            @RequestParam Integer endYear) {
+        return parseResult("糟糕，没有数据", incomeService.listYear(getUserId(), startYear, endYear));
     }
 }

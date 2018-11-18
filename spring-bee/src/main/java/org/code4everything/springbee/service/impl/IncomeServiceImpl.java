@@ -10,8 +10,8 @@ import org.code4everything.springbee.dao.AssetDAO;
 import org.code4everything.springbee.dao.IncomeDAO;
 import org.code4everything.springbee.domain.Asset;
 import org.code4everything.springbee.domain.Income;
+import org.code4everything.springbee.model.IncomeBillVO;
 import org.code4everything.springbee.model.IncomeDTO;
-import org.code4everything.springbee.model.IncomeMonthVO;
 import org.code4everything.springbee.service.IncomeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +33,8 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 public class IncomeServiceImpl implements IncomeService {
+
+    private static final String HYPHEN = "-";
 
     private final AssetDAO assetDAO;
 
@@ -74,24 +76,49 @@ public class IncomeServiceImpl implements IncomeService {
     }
 
     @Override
+    @AopLog("查询年度账单")
+    public ArrayList<IncomeBillVO> listYear(String userId, Integer startYear, Integer endYear) {
+        ArrayList<IncomeBillVO> list = new ArrayList<>();
+        if (startYear > endYear) {
+            return list;
+        }
+        while (startYear <= endYear) {
+            IncomeBillVO billVO = new IncomeBillVO();
+            billVO.setDate(String.valueOf(startYear));
+            Date start = DateUtil.parseDate(billVO.getDate() + HYPHEN + "01" + HYPHEN + "01");
+            Date end = DateUtil.endOfYear(start);
+            ArrayList<Income> incomes = listIncome(userId, "", start, end);
+            long money = 0;
+            for (Income income : incomes) {
+                if (income.getType() == -1) {
+                    money += income.getMoney();
+                }
+            }
+            billVO.setMoney(money);
+            list.add(billVO);
+            startYear++;
+        }
+        return list;
+    }
+
+    @Override
     @AopLog("查询月度账单")
-    public ArrayList<IncomeMonthVO> listMonth(String userId, String startMonth, String endMonth) {
-        ArrayList<IncomeMonthVO> list = new ArrayList<>();
+    public ArrayList<IncomeBillVO> listMonth(String userId, String startMonth, String endMonth) {
+        ArrayList<IncomeBillVO> list = new ArrayList<>();
         if (startMonth.compareTo(endMonth) >= 0) {
             return list;
         }
-        final String hyphen = "-";
-        String[] starts = startMonth.split(hyphen);
+        String[] starts = startMonth.split(HYPHEN);
         int yearStart = Integer.parseInt(starts[0]);
         int monthStart = Integer.parseInt(starts[1]);
-        String[] ends = endMonth.split(hyphen);
+        String[] ends = endMonth.split(HYPHEN);
         int yearEnd = Integer.parseInt(ends[0]);
         int monthEnd = Integer.parseInt(ends[1]);
         while (yearStart < yearEnd || (yearStart == yearEnd && monthStart <= monthEnd)) {
-            IncomeMonthVO monthVO = new IncomeMonthVO();
-            String month = yearStart + hyphen + Strings.padStart(String.valueOf(monthStart), 2, '0');
-            monthVO.setMonth(month);
-            Date start = DateUtil.parseDate(month + hyphen + "01");
+            IncomeBillVO billVO = new IncomeBillVO();
+            String month = yearStart + HYPHEN + Strings.padStart(String.valueOf(monthStart), 2, '0');
+            billVO.setDate(month);
+            Date start = DateUtil.parseDate(month + HYPHEN + "01");
             Date end = DateUtil.endOfMonth(start);
             ArrayList<Income> incomes = listIncome(userId, "", start, end);
             long money = 0;
@@ -100,8 +127,8 @@ public class IncomeServiceImpl implements IncomeService {
                     money += income.getMoney();
                 }
             }
-            monthVO.setMoney(money);
-            list.add(monthVO);
+            billVO.setMoney(money);
+            list.add(billVO);
             if (++monthStart > 12) {
                 yearStart++;
                 monthStart = 1;

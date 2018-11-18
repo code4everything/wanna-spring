@@ -14,10 +14,10 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "incomeMonthVO", description = "月账单")
-public class IncomeMonthVO implements Serializable {
+@ApiModel(value = "incomeBillVO", description = "月账单")
+public class IncomeBillVO implements Serializable {
 
-    private String month;
+    private String date;
 
     private Long money;
 }

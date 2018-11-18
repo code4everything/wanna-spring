@@ -6,7 +6,7 @@ import org.code4everything.springbee.constant.TestConsts;
 import org.code4everything.springbee.dao.IncomeDAO;
 import org.code4everything.springbee.domain.Income;
 import org.code4everything.springbee.model.IncomeDTO;
-import org.code4everything.springbee.model.IncomeMonthVO;
+import org.code4everything.springbee.model.IncomeBillVO;
 import org.code4everything.springbee.service.IncomeService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -75,7 +75,7 @@ public class IncomeServiceImplTest extends BaseTest {
 
     @Test
     public void listMonth() {
-        List<IncomeMonthVO> list = incomeService.listMonth(getUser().getId(), "2018-01", "2018-12");
+        List<IncomeBillVO> list = incomeService.listMonth(getUser().getId(), "2018-01", "2018-12");
         Assert.assertNotNull(list);
         System.out.println(list);
     }

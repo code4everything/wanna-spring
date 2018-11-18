@@ -1,8 +1,8 @@
 package org.code4everything.springbee.service;
 
 import org.code4everything.springbee.domain.Income;
+import org.code4everything.springbee.model.IncomeBillVO;
 import org.code4everything.springbee.model.IncomeDTO;
-import org.code4everything.springbee.model.IncomeMonthVO;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,7 +17,9 @@ public interface IncomeService {
 
     ArrayList<Income> listIncome(String userId, String category, Date start, Date end);
 
-    ArrayList<IncomeMonthVO> listMonth(String userId, String startMonth, String endMonth);
+    ArrayList<IncomeBillVO> listYear(String userId, Integer startYear, Integer endYear);
+
+    ArrayList<IncomeBillVO> listMonth(String userId, String startMonth, String endMonth);
 
     Income updateIncome(String userId, String incomeId, IncomeDTO incomeDTO);
 
