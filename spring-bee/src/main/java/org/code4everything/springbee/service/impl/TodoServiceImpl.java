@@ -70,7 +70,7 @@ public class TodoServiceImpl implements TodoService {
             TodoCountVO countVO = new TodoCountVO();
             String startDate = DateUtil.formatDate(start);
             countVO.setDate(startDate);
-            countVO.setScore(todoDAO.countByDoingDate(startDate));
+            countVO.setScore(todoDAO.countByUserIdAndDoingDate(userId, startDate));
             list.add(countVO);
             start = DateUtil.offsetDay(start, 1);
         }

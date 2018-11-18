@@ -17,7 +17,7 @@ public interface TodoDAO extends MongoRepository<Todo, String> {
 
     Todo getById(String todoId);
 
-    Integer countByDoingDate(String doingDate);
+    Integer countByUserIdAndDoingDate(String userId, String doingDate);
 
     ArrayList<Todo> getByUserIdAndDoingDate(String userId, String doingDate);
 }
