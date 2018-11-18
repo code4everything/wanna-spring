@@ -58,7 +58,7 @@ public class DailyServiceImpl implements DailyService {
         Criteria dateLessThan = Criteria.where("date").lte(DateUtil.formatDate(endDate));
         criteria.andOperator(dateGreatThan, dateLessThan);
         query.addCriteria(criteria);
-        query.with(new Sort(Sort.Direction.DESC, "date"));
+        query.with(new Sort(Sort.Direction.ASC, "date"));
         return (ArrayList<Daily>) mongoTemplate.find(query, Daily.class);
     }
 

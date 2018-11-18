@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
@@ -29,7 +29,8 @@ public class TodoServiceImplTest extends BaseTest {
 
     @Test
     public void listTodo() {
-        List<Todo> todos = todoService.listTodo(DateUtil.formatDate(new Date(System.currentTimeMillis())));
+        List<Todo> todos = todoService.listTodo(getUser().getId(),
+                DateUtil.formatDate(new Date(System.currentTimeMillis())));
         Assert.assertNotNull(todos);
         System.out.println(todos);
     }
@@ -60,5 +61,10 @@ public class TodoServiceImplTest extends BaseTest {
     public void saveTodo() {
         Assert.assertNotNull(todoService.saveTodo(getUser().getId(),
                 DateUtil.formatDate(new Date(System.currentTimeMillis())), RandomUtil.randomString(6)));
+    }
+
+    @Test
+    public void listTodoCount() {
+        System.out.println(todoService.listTodoCount(getUser().getId(), new Date(), new Date()));
     }
 }
