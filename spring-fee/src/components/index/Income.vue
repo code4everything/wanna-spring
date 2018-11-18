@@ -99,6 +99,17 @@
     </div>
     <br/>
     <asset-modal :income="currentIncome" :pay-ways="payWays"></asset-modal>
+    <!-- 报表弹窗 -->
+    <el-dialog v-if="!isMobile" title="收益报表" :visible.sync="dialogVisible" :fullscreen="true">
+      <div class="row">
+        <div class="col-sm-4">
+          <ve-pie :data="categoryData"></ve-pie>
+        </div>
+        <div class="col-sm-8">
+          <ve-line :data="dayData"></ve-line>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -134,7 +145,16 @@ export default {
       startDate: '',
       endDate: '',
       totalExpenseTip: '支出合计',
-      totalExpense: 0
+      totalExpense: 0,
+      dialogVisible: false,
+      categoryData: {
+        columns: ['category', 'total'],
+        rows: []
+      },
+      dayData: {
+        columns: ['date', '支出'],
+        rows: []
+      }
     }
   },
   methods: {
@@ -170,7 +190,7 @@ export default {
       return income.type < 0 ? '支出' : '收入'
     },
     showReporter: function () {
-      layer.alert('敬请期待')
+      this.dialogVisible = true
     },
     updateIncome: function (income) {
       this.getAssetBalance()
@@ -226,11 +246,40 @@ export default {
   watch: {
     incomes: function () {
       if (!this.isMobile) {
+        // 清空数据
+        this.categoryData.rows = []
+        this.dayData.rows = []
         this.totalExpense = 0
         this.incomes.forEach(income => {
           if (income.type === -1) {
+            // 统计支出合计
             this.totalExpense += income.money
+            // 统计分类合计
+            let dest = this.categoryData.rows.filter(item => {
+              return item.category === income.category
+            })
+            if (dest.length > 0) {
+              dest[0].total += income.money
+            } else {
+              this.categoryData.rows.push({'category': income.category, 'total': income.money})
+            }
+            // 统计日支出合计
+            dest = this.dayData.rows.filter(item => {
+              return item.date === income.date
+            })
+            if (dest.length > 0) {
+              dest[0]['支出'] += income.money
+            } else {
+              this.dayData.rows.unshift({'date': income.date, '支出': income.money})
+            }
           }
+        })
+        // 格式化数据
+        this.categoryData.rows.forEach(item => {
+          item.total = (item.total / 100).toFixed(2)
+        })
+        this.dayData.rows.forEach(item => {
+          item['支出'] = (item['支出'] / 100).toFixed(2)
         })
       }
     }
