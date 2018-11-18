@@ -4,12 +4,14 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.google.common.base.Strings;
 import org.code4everything.boot.annotations.AopLog;
 import org.code4everything.springbee.dao.AssetDAO;
 import org.code4everything.springbee.dao.IncomeDAO;
 import org.code4everything.springbee.domain.Asset;
 import org.code4everything.springbee.domain.Income;
 import org.code4everything.springbee.model.IncomeDTO;
+import org.code4everything.springbee.model.IncomeMonthVO;
 import org.code4everything.springbee.service.IncomeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +22,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -69,6 +71,43 @@ public class IncomeServiceImpl implements IncomeService {
         query.addCriteria(criteria);
         query.with(new Sort(Sort.Direction.DESC, "date", "createTime"));
         return (ArrayList<Income>) mongoTemplate.find(query, Income.class);
+    }
+
+    @Override
+    @AopLog("查询月度账单")
+    public ArrayList<IncomeMonthVO> listMonth(String userId, String startMonth, String endMonth) {
+        ArrayList<IncomeMonthVO> list = new ArrayList<>();
+        if (startMonth.compareTo(endMonth) >= 0) {
+            return list;
+        }
+        final String hyphen = "-";
+        String[] starts = startMonth.split(hyphen);
+        int yearStart = Integer.parseInt(starts[0]);
+        int monthStart = Integer.parseInt(starts[1]);
+        String[] ends = endMonth.split(hyphen);
+        int yearEnd = Integer.parseInt(ends[0]);
+        int monthEnd = Integer.parseInt(ends[1]);
+        while (yearStart < yearEnd || (yearStart == yearEnd && monthStart <= monthEnd)) {
+            IncomeMonthVO monthVO = new IncomeMonthVO();
+            String month = yearStart + hyphen + Strings.padStart(String.valueOf(monthStart), 2, '0');
+            monthVO.setMonth(month);
+            Date start = DateUtil.parseDate(month + hyphen + "01");
+            Date end = DateUtil.endOfMonth(start);
+            ArrayList<Income> incomes = listIncome(userId, "", start, end);
+            long money = 0;
+            for (Income income : incomes) {
+                if (income.getType() == -1) {
+                    money += income.getMoney();
+                }
+            }
+            monthVO.setMoney(money);
+            list.add(monthVO);
+            if (++monthStart > 12) {
+                yearStart++;
+                monthStart = 1;
+            }
+        }
+        return list;
     }
 
     @Override

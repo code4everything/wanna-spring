@@ -2,9 +2,10 @@ package org.code4everything.springbee.service;
 
 import org.code4everything.springbee.domain.Income;
 import org.code4everything.springbee.model.IncomeDTO;
+import org.code4everything.springbee.model.IncomeMonthVO;
 
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * @author pantao
@@ -15,6 +16,8 @@ public interface IncomeService {
     Long getAssetBalance(String userId);
 
     ArrayList<Income> listIncome(String userId, String category, Date start, Date end);
+
+    ArrayList<IncomeMonthVO> listMonth(String userId, String startMonth, String endMonth);
 
     Income updateIncome(String userId, String incomeId, IncomeDTO incomeDTO);
 
