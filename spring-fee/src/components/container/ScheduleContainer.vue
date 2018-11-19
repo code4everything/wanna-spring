@@ -45,7 +45,7 @@
           </div>
           <div class="col-sm-12"><br/></div>
           <div class="col-sm-12">
-            <ve-line :data="chartData" :extend="{'xAxis.0.axisLabel.rotate': 45}"></ve-line>
+            <ve-line :data="chartData" :extend="extend"></ve-line>
           </div>
         </div>
         <br/>
@@ -56,7 +56,7 @@
       <router-view :date="date"></router-view>
     </div>
     <el-dialog v-if="!isMobile" :visible.sync="dialogVisible" :fullscreen="true">
-      <ve-line :data="fullChartData"></ve-line>
+      <ve-line :data="fullChartData" :extend="extend"></ve-line>
     </el-dialog>
   </div>
 </template>
@@ -87,6 +87,7 @@ export default {
         columns: [],
         rows: []
       },
+      extend: {'xAxis.0.axisLabel.rotate': 45}
     }
   },
   methods: {
