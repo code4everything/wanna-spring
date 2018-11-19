@@ -32,7 +32,6 @@
 <script>/* eslint-disable indent */
 import app from '../App'
 import $ from 'jquery'
-import validator from '../../static/js/validator.min'
 import cookie from 'js-cookie'
 
 const activeStr = 'active'
@@ -68,11 +67,6 @@ export default {
     }
   },
   mounted: function () {
-    // 检测当前用户是否登录
-    let token = cookie.get('token')
-    if (token === null || validator.isEmpty(token)) {
-      window.location.href = app.data().path.login
-    }
     // 检测路径，并路由到指定路径
     const href = '/' + window.location.hash
     if (href === app.data().path.index) {
