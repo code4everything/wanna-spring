@@ -114,17 +114,21 @@
       </div>
       <!-- 月度报表 -->
       <div class="row">
-        <div class="col-sm-2 offset-sm-1"><h5 class="h5-v-middle">月度报表</h5></div>
-        <div class="col-sm-3">
-          <el-date-picker :editable="false" :clearable="false" v-model="startMonth" type="month" placeholder="开始月份"
-                          value-format="yyyy-MM"></el-date-picker>
-        </div>
-        <div class="col-sm-3">
-          <el-date-picker :editable="false" :clearable="false" v-model="endMonth" type="month" placeholder="结束月份"
-                          value-format="yyyy-MM"></el-date-picker>
-        </div>
-        <div class="col-sm-2">
-          <button class="btn btn-outline-success btn-block" @click="listIncomeMonth">查询</button>
+        <div class="col-sm-6 offset-sm-3">
+          <div class="row">
+            <div class="col-sm-3"><h5 class="h5-v-middle">月度报表</h5></div>
+            <div class="col-sm-3">
+              <el-date-picker :editable="false" :clearable="false" v-model="startMonth" type="month" placeholder="开始月份"
+                              value-format="yyyy-MM" class="w-100"></el-date-picker>
+            </div>
+            <div class="col-sm-3">
+              <el-date-picker :editable="false" :clearable="false" v-model="endMonth" type="month" placeholder="结束月份"
+                              value-format="yyyy-MM" class="w-100"></el-date-picker>
+            </div>
+            <div class="col-sm-3">
+              <button class="btn btn-outline-success btn-block" @click="listIncomeMonth">查询</button>
+            </div>
+          </div>
         </div>
       </div>
       <br/>
@@ -135,17 +139,21 @@
       </div>
       <!-- 年度报表 -->
       <div class="row">
-        <div class="col-sm-2 offset-sm-2"><h5 class="h5-v-middle">年度报表</h5></div>
-        <div class="col-sm-3">
-          <el-date-picker :editable="false" :clearable="false" v-model="startYear" type="year" placeholder="开始年份"
-                          value-format="yyyy"></el-date-picker>
-        </div>
-        <div class="col-sm-3">
-          <el-date-picker :editable="false" :clearable="false" v-model="endYear" type="year" placeholder="结束年份"
-                          value-format="yyyy"></el-date-picker>
-        </div>
-        <div class="col-sm-2">
-          <button class="btn btn-outline-success btn-block" @click="listIncomeYear">查询</button>
+        <div class="col-sm-6 offset-sm-3">
+          <div class="row">
+            <div class="col-sm-3"><h5 class="h5-v-middle">年度报表</h5></div>
+            <div class="col-sm-3">
+              <el-date-picker :editable="false" :clearable="false" v-model="startYear" type="year" placeholder="开始年份"
+                              value-format="yyyy" class="w-100"></el-date-picker>
+            </div>
+            <div class="col-sm-3">
+              <el-date-picker :editable="false" :clearable="false" v-model="endYear" type="year" placeholder="结束年份"
+                              value-format="yyyy" class="w-100"></el-date-picker>
+            </div>
+            <div class="col-sm-3">
+              <button class="btn btn-outline-success btn-block" @click="listIncomeYear">查询</button>
+            </div>
+          </div>
         </div>
       </div>
       <br/>
