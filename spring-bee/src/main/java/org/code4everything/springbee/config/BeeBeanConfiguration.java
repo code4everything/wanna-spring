@@ -6,7 +6,6 @@ import org.code4everything.springbee.domain.Log;
 import org.code4everything.springbee.domain.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 /**
@@ -15,11 +14,6 @@ import org.springframework.data.redis.core.RedisTemplate;
  */
 @Configuration
 public class BeeBeanConfiguration {
-
-    @Bean
-    public JedisConnectionFactory jedisConnectionFactory() {
-        return new JedisConnectionFactory();
-    }
 
     @Bean
     public RedisTemplate<String, Asset> assetRedisTemplate() {
