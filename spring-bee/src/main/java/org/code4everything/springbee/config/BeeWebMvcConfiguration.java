@@ -60,7 +60,7 @@ public class BeeWebMvcConfiguration implements WebMvcConfigurer {
                 User user = userRedisTemplate.opsForValue().get(Strings.nullToEmpty(token));
                 if (ObjectUtil.isNull(user)) {
                     // 非法用户，禁止访问
-                    LOGGER.error(StrUtil.format("auth error, uuid: {}, ip: {}", token, request.getRemoteAddr()));
+                    LOGGER.error(StrUtil.format("auth error, token: {}, ip: {}", token, request.getRemoteAddr()));
                     request.getRequestDispatcher("/error/auth").forward(request, response);
                     return false;
                 }

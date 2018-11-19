@@ -19,4 +19,6 @@ public class BeeConfigBean extends ConfigBean {
     private Integer tokenExpired;
 
     private String storagePath;
+
+    private Boolean shouldSaveLog;
 }

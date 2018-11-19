@@ -10,5 +10,6 @@
     "/user"
   ],
   "blackListPrefix": [],
-  "storagePath": ""
+  "storagePath": "",
+  "shouldSaveLog": false
 }
