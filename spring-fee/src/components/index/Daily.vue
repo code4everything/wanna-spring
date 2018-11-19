@@ -207,10 +207,12 @@ export default {
       this.ths.pop()
     }
     setTimeout(() => {
-      this.listDaily()
-      this.isFirst = false
-      this.$parent.getChartData()
-    }, 200)
+      if (utils.isNotNull(this.date) && !validator.isEmpty(this.date)) {
+        this.listDaily()
+        this.isFirst = false
+        this.$parent.getChartData()
+      }
+    }, 500)
   },
   updated: function () {
     $('[data-toggle="tooltip"]').tooltip()

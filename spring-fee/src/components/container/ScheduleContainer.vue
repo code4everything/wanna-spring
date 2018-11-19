@@ -82,13 +82,15 @@ export default {
   },
   methods: {
     getChartData: function () {
-      let href = '/' + window.location.hash
-      if (href === app.data().path.daily) {
-        requestListDaily(this.dateStart, this.dateEnd).then(data => this.handleData(data, '每日得分'))
-      } else if (href === app.data().path.todo) {
-        requestListTodoCount(this.dateStart, this.dateEnd).then(data => this.handleData(data, '每日代办数量'))
+      if (!this.isMobile) {
+        let href = '/' + window.location.hash
+        if (href === app.data().path.daily) {
+          requestListDaily(this.dateStart, this.dateEnd).then(data => this.handleData(data, '每日得分'))
+        } else if (href === app.data().path.todo) {
+          requestListTodoCount(this.dateStart, this.dateEnd).then(data => this.handleData(data, '每日代办数量'))
+        }
+        this.isFirst = false
       }
-      this.isFirst = false
     },
     handleData: function (data, col) {
       this.chartData.rows = []
