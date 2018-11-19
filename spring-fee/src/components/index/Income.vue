@@ -11,14 +11,12 @@
             <h5 v-else class="h5-v-middle" v-html="formatAssetString()"></h5>
           </div>
           <div v-if="!isMobile" class="col-sm-3">
-            <el-date-picker :editable="false" :clearable="false" :placeholder="dateStartTip" :title="dateStartTip"
-                            class="w-100" value-format="yyyy-MM-dd"
-                            data-toggle="tooltip" v-model="startDate" @change="listIncome"/>
+            <el-date-picker :editable="false" :clearable="false" :placeholder="dateStartTip"
+                            class="w-100" value-format="yyyy-MM-dd" v-model="startDate" @change="listIncome"/>
           </div>
           <div v-if="!isMobile" class="col-sm-3">
-            <el-date-picker :editable="false" :clearable="false" :placeholder="dateEndTip" :title="dateEndTip"
-                            class="w-100" value-format="yyyy-MM-dd"
-                            data-toggle="tooltip" v-model="endDate" @change="listIncome"/>
+            <el-date-picker :editable="false" :clearable="false" :placeholder="dateEndTip"
+                            class="w-100" value-format="yyyy-MM-dd" v-model="endDate" @change="listIncome"/>
           </div>
           <div class="col-sm-3 col-4">
             <div class="row">
@@ -347,9 +345,6 @@ export default {
     this.startDate = dayjs().add(-30, 'day').format('YYYY-MM-DD')
     this.endDate = dayjs().format('YYYY-MM-DD')
     this.listIncome()
-  },
-  updated: function () {
-    $('[data-toggle="tooltip"]').tooltip()
   },
   watch: {
     incomes: function () {

@@ -213,9 +213,6 @@ export default {
         this.$parent.getChartData()
       }
     }, 500)
-  },
-  updated: function () {
-    $('[data-toggle="tooltip"]').tooltip()
   }
 }
 </script>

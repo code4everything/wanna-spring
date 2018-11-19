@@ -14,12 +14,11 @@
           <div class="container data" :data-id="income.id">
             <div class="row">
               <div class="col-sm-8 col-7">
-                <el-date-picker :editable="false" :clearable="false" :placeholder="dateTip" :title="dateTip"
-                                class="w-100" value-format="yyyy-MM-dd"
-                                data-toggle="tooltip" v-model="income.date"/>
+                <el-date-picker :editable="false" :clearable="false" :placeholder="dateTip"
+                                class="w-100" value-format="yyyy-MM-dd" v-model="income.date"/>
               </div>
               <div class="col-sm-4 col-5">
-                <el-select :title="typeTip" v-model="income.type" data-toggle="tooltip">
+                <el-select v-model="income.type">
                   <el-option v-for="(type,index) in types" :value="type.value" :key="index"
                              :label="type.tip"></el-option>
                 </el-select>
@@ -28,29 +27,27 @@
             <br/>
             <div class="row">
               <div class="col-sm-4 col-6">
-                <el-select :title="payWayTip" v-model="income.way" data-toggle="tooltip">
+                <el-select v-model="income.way">
                   <el-option v-for="(payWay,index) in payWays" :value="index+1" :key="index"
                              :label="payWay"></el-option>
                 </el-select>
               </div>
               <div class="col-sm-4 col-6">
-                <el-select :title="categoryTip" v-model="income.category" filterable allow-create
-                           data-toggle="tooltip" @change="saveCategory" default-first-option>
+                <el-select v-model="income.category" filterable allow-create @change="saveCategory"
+                           default-first-option>
                   <el-option v-for="(category,index) in categories" :value="category" :key="index"
                              :label="category"></el-option>
                 </el-select>
               </div>
               <div v-if="isMobile" class="col-12"><br/></div>
               <div class="col-sm-4 col-12">
-                <el-input type="text" :placeholder="moneyTip" data-toggle="tooltip" :title="moneyTip"
-                          v-model="income.money"/>
+                <el-input type="text" :placeholder="moneyTip" v-model="income.money"/>
               </div>
             </div>
             <br/>
             <div class="row">
               <div class="col-sm-12 col-12">
-                <el-input type="textarea" :placeholder="remarkTip" data-toggle="tooltip" :title="remarkTip"
-                          v-model="income.remark" rows="3"></el-input>
+                <el-input type="textarea" :placeholder="remarkTip" v-model="income.remark" rows="3"></el-input>
               </div>
             </div>
           </div>

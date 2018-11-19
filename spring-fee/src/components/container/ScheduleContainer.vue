@@ -129,9 +129,6 @@ export default {
         this.getChartData()
       }
     }
-  },
-  updated: function () {
-    $('input[data-toggle="tooltip"]').tooltip()
   }
 }
 </script>
