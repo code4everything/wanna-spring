@@ -1,7 +1,7 @@
 <!--suppress HtmlFormInputWithoutLabel -->
 <template>
   <div class="row">
-    <div class="col-sm-4 col-12">
+    <div class="col-sm-5 col-12">
       <!--移动端-->
       <div v-if="isMobile" class="row">
         <div class="col-10 offset-1 rounded bg-light">
@@ -19,22 +19,31 @@
       <div v-else>
         <div class="bg-light rounded row">
           <div class="col-sm-12"><br/></div>
-          <div class="col-sm-10 offset-sm-1">
-            <el-date-picker v-model="dateStart" type="date" value-format="yyyy-MM-dd"></el-date-picker>
+          <div class="col-sm-5 text-right">
+            <h5 style="padding-top: 7px;">当前日期：</h5>
           </div>
-          <div class="col-sm-12"><br/></div>
-          <div class="col-sm-10 offset-sm-1">
-            <el-date-picker :editable="false" :clearable="false" v-model="dateEnd" type="date"
-                            value-format="yyyy-MM-dd"></el-date-picker>
+          <div class="col-sm-7 text-left">
+            <el-date-picker :editable="false" :clearable="false" v-model="date" type="date"
+                            value-format="yyyy-MM-dd" class="w-75"></el-date-picker>
           </div>
           <div class="col-sm-12"><br/></div>
         </div>
         <br/>
         <div class="row bg-light rounded">
-          <div class="col-sm-12 text-right"><br/>
+          <div class="col-sm-12"><br/></div>
+          <div class="col-sm-5">
+            <el-date-picker :editable="false" :clearable="false" v-model="dateStart" type="date"
+                            value-format="yyyy-MM-dd" class="w-100"></el-date-picker>
+          </div>
+          <div class="col-sm-5">
+            <el-date-picker :editable="false" :clearable="false" v-model="dateEnd" type="date"
+                            value-format="yyyy-MM-dd" class="w-100"></el-date-picker>
+          </div>
+          <div class="col-sm-2">
             <button class="btn btn-outline-success" @click="dialogVisible=true"><i
               class="glyphicon glyphicon-fullscreen"></i></button>
           </div>
+          <div class="col-sm-12"><br/></div>
           <div class="col-sm-12">
             <ve-line :data="chartData" :extend="{'xAxis.0.axisLabel.rotate': 45}"></ve-line>
           </div>
@@ -43,7 +52,7 @@
       </div>
     </div>
     <div v-if="isMobile" class="col-12"><br/></div>
-    <div class="col-sm-8 col-12">
+    <div class="col-sm-7 col-12">
       <router-view :date="date"></router-view>
     </div>
     <el-dialog v-if="!isMobile" :visible.sync="dialogVisible" :fullscreen="true">
@@ -124,7 +133,6 @@ export default {
       }
     },
     dateEnd: function () {
-      this.date = this.dateEnd
       if (!this.isFirst) {
         this.getChartData()
       }

@@ -11,20 +11,20 @@
         </div>
         <div v-if="isMobile" class="col-12"><br/></div>
         <div class="col-sm-2 col-4 text-right"><h5 class="h5-v-middle">{{scoreTip}}：</h5></div>
-        <div class="col-sm-3 col-7">
+        <div class="col-sm-4 col-7">
           <el-input-number class="w-100" v-model="daily.score" :placeholder="scoreTip" :min="0" :max="10"/>
         </div>
       </div>
       <br/>
       <div class="row">
         <div class="col-sm-2 col-4 text-right"><h5 class="h5-v-middle">{{contentTip}}：</h5></div>
-        <div class="col-sm-8 col-7">
+        <div class="col-sm-9 col-7">
           <el-input type="textarea" v-model="daily.content" :placeholder="contentTip" rows="5"></el-input>
         </div>
       </div>
       <br/>
       <div class="row">
-        <div class="col-sm-8 offset-sm-2 offset-1 col-10 text-right">
+        <div class="col-sm-10 offset-sm-1 offset-1 col-10 text-right">
           <button class="btn btn-info" @click="showModal"><i class="glyphicon glyphicon-plus-sign"></i>
             {{saveDetailTip}}
           </button>
