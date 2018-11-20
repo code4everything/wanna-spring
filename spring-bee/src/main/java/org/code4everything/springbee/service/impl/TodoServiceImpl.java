@@ -100,6 +100,10 @@ public class TodoServiceImpl implements TodoService {
         if (ObjectUtil.isNull(todo)) {
             return null;
         }
+        // 状态已完成时不能修改内容
+        if (StringConsts.ONE.equals(todo.getStatus())) {
+            return todo;
+        }
         todo.setContent(content);
         return todoDAO.save(todo);
     }
