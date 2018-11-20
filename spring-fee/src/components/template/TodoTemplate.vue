@@ -4,13 +4,13 @@
     <div v-for="(todo,index) in todos" :key="index" class="row todo" :data-index="index">
       <div class="col-sm-12 col-12" :id="idPrefix+index">
         <div class="pretty p-default p-round p-jelly">
-          <input type="checkbox" @click="toggleStatus"/>
+          <input type="checkbox" @click="toggleStatus" :checked="todo.status==='1'"/>
           <div class="state p-success-o">
             <label></label>
           </div>
         </div>
         <input type="text" :class="['border-0 bg-light todo-item w-75',todo.status==='1'?'deleted':'']"
-               v-model="todo.content" @blur="updateTodo"/>
+               v-model="todo.content" @blur="updateTodo" :disabled="todo.status==='1'"/>
         <a href="javascript:" class="text-danger" @click="remove" v-html="isMobile?removeIcon:removeTip"></a>
       </div>
     </div>

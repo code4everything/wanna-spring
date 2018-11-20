@@ -135,20 +135,6 @@ export default {
         }
       }
     }
-  },
-  updated: function () {
-    this.todos.forEach((todo, index) => {
-      let parent = $(`#${this.idPrefix}${index}`)
-      let status = $(parent).find('input[type="checkbox"]')
-      let content = $(parent).find('input[type="text"]')
-      if (todo.status === '1') {
-        $(status).attr('checked', 'checked')
-        $(content).attr('disabled', 'disabled')
-      } else {
-        $(status).removeAttr('checked')
-        $(content).removeAttr('disabled')
-      }
-    })
   }
 }
 </script>
