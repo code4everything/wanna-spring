@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * @author pantao
@@ -21,6 +22,23 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     public CategoryServiceImpl(CategoryDAO categoryDAO) {this.categoryDAO = categoryDAO;}
+
+    @Override
+    public void updateCategory(String categoryId, String name) {
+        Optional<Category> categoryOptional = categoryDAO.findById(categoryId);
+        if (categoryOptional.isPresent()) {
+            Category category = categoryOptional.get();
+            if (!name.equals(category.getName())) {
+                category.setName(name);
+                categoryDAO.save(category);
+            }
+        }
+    }
+
+    @Override
+    public void removeCategory(String categoryId) {
+        categoryDAO.deleteById(categoryId);
+    }
 
     @Override
     @AopLog("检查分类是否存在")

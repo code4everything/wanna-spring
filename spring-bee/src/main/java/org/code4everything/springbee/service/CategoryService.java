@@ -10,6 +10,10 @@ import java.util.ArrayList;
  */
 public interface CategoryService {
 
+    void updateCategory(String categoryId, String name);
+
+    void removeCategory(String categoryId);
+
     boolean exists(String userId, String name);
 
     ArrayList<Category> listCategory(String userId);
