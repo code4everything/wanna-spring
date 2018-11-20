@@ -2,7 +2,6 @@ package org.code4everything.springbee.web;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.code4everything.boot.bean.ResponseResult;
 import org.code4everything.springbee.domain.Category;
@@ -33,7 +32,7 @@ public class CategoryController extends BeeBaseController {
 
     @PostMapping("/append")
     @ApiOperation("添加分类")
-    @ApiImplicitParams({@ApiImplicitParam(name = "name", value = "分类名", required = true)})
+    @ApiImplicitParam(name = "name", value = "分类名", required = true)
     public ResponseResult<Category> saveCategory(@RequestParam String name) {
         if (categoryService.exists(getUserId(), name)) {
             return errorResult("该分类已存在，无需添加");
@@ -45,5 +44,19 @@ public class CategoryController extends BeeBaseController {
     @ApiOperation("列出我的分类")
     public ResponseResult<ArrayList<Category>> list() {
         return parseResult("您还没有任何添加分类信息", categoryService.listCategory(getUserId()), true);
+    }
+
+    @DeleteMapping("/{categoryId}/remove")
+    @ApiOperation("删除分类")
+    public ResponseResult<Boolean> removeCategory(@PathVariable String categoryId) {
+        categoryService.removeCategory(categoryId);
+        return new ResponseResult<>("删除成功", true);
+    }
+
+    @PutMapping("/{categoryId}/update")
+    @ApiImplicitParam(name = "name", value = "分类名", required = true)
+    public ResponseResult<Boolean> updateCategory(@PathVariable String categoryId, @RequestParam String name) {
+        categoryService.updateCategory(categoryId, name);
+        return new ResponseResult<>("更新成功", true);
     }
 }
