@@ -84,7 +84,7 @@ public class TodoServiceImpl implements TodoService {
         if (ObjectUtil.isNull(todo)) {
             return null;
         }
-        if (StringConsts.ONE.equals(status)) {
+        if (StringConsts.Sign.ONE.equals(status)) {
             todo.setStatus("1");
             todo.setDoneTime(System.currentTimeMillis());
         } else {
@@ -101,7 +101,7 @@ public class TodoServiceImpl implements TodoService {
             return null;
         }
         // 状态已完成时不能修改内容
-        if (StringConsts.ONE.equals(todo.getStatus())) {
+        if (StringConsts.Sign.ONE.equals(todo.getStatus())) {
             return todo;
         }
         todo.setContent(content);
