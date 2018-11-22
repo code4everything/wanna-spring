@@ -98,7 +98,17 @@ Wanna Spring是一个记录个人信息，采用前后端分离的项目。
         
         >  打包后上传 target 目录下面的 spring-bee-x.x.x.jar 文件至服务器（建议新建一个文件夹），同时将 [config.json](spring-bee/config.json) 上传至同级目录
         
-    3. 升级HTTPS
+    3. 运行
+    
+        ``` shell
+        # 运行，防止BASH窗口关闭时，进程挂掉
+        setsid java -jar spring-bee.x.x.x.jar &
+        # 关闭进程
+        lsof -i:8023 # 查找运行的端口，会看到运行在此端口的进程的PID
+        kill -9 PID # 强制关闭进程
+        ```
+        
+    4. 升级HTTPS
     
         *使用宝塔工具*
     
