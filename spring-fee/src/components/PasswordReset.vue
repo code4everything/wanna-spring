@@ -40,7 +40,7 @@
 <script>/* eslint-disable */
 import app from '../App'
 import validator from '../../static/js/validator.min'
-import {requestResetPassword, requestValidateVerifyCode, requestVerifyCode} from "../api/api";
+import {requestResetPassword, requestValidateVerifyCode, requestVerifyCode} from '../api/api'
 
 export default {
   name: 'PasswordReset',
@@ -83,7 +83,7 @@ export default {
       let vcode = $('#verify-code').val()
       let email = $('#register-name').val()
       if (vcode.length === 6 && validator.isEmail(email)) {
-        requestValidateVerifyCode({email: email, vcode: vcode}).then(data => {
+        requestValidateVerifyCode(email, vcode).then(data => {
           this.verifyCodeErrorTip = data.code === 200 ? '' : '验证码错误'
         })
       }

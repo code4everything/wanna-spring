@@ -52,7 +52,7 @@ export default {
         layer.alert('密码不能为空')
       } else {
         layer.load(1)
-        requestLogin({loginName: this.loginName, password: this.password}).then(data => {
+        requestLogin(this.loginName, this.password).then(data => {
           layer.closeAll()
           if (data.code === 200) {
             cookie.set('token', data.data)

@@ -18,7 +18,7 @@
         </div>
       </div>
       <!--任务列表-->
-      <todo-template :todos="todos" :id-prefix="idPrefix"></todo-template>
+      <todo-item :todos="todos" :id-prefix="idPrefix"></todo-item>
       <br/>
     </div>
     <div class="col-12 col-sm-12"><br/></div>
@@ -31,7 +31,7 @@
           <h6>{{date+undoTip}}</h6>
         </div>
       </div>
-      <todo-template :todos="undos" :id-prefix="undoIdPrefix"></todo-template>
+      <todo-item :todos="undos" :id-prefix="undoIdPrefix"></todo-item>
       <br/>
     </div>
   </div>

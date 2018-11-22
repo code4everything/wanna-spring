@@ -7,6 +7,7 @@ const host = 'http://localhost:8099'
 axios.defaults.timeout = 10000
 
 axios.interceptors.request.use(config => {
+  // 加时间戳，防止缓存
   config.url = host + config.url + (config.url.includes('?') ? '&' : '?') + 'timestamp=' + new Date().getTime()
   console.info(`request url -> ${config.url}`)
   config.headers = {
@@ -15,7 +16,6 @@ axios.interceptors.request.use(config => {
   }
   return config
 }, error => {
-  alert('连接超时')
   return Promise.resolve(error)
 })
 
@@ -26,7 +26,6 @@ axios.interceptors.response.use(response => {
 }, error => {
   layer.closeAll()
   if (error.response !== undefined) {
-    // alert(error.response.data.msg)
     console.error(error.response.data)
   }
   return Promise.resolve(error.response.data || error.response)
@@ -113,7 +112,7 @@ export const requestListIncome = (category, start, end) => {
 }
 
 export const requestUpdateIncome = (id, params) => {
-  return axios.put('/user/asset/income/' + id + '/update', params)
+  return axios.put(`/user/asset/income/${id}/update`, params)
 }
 
 export const requestSaveIncome = params => {
@@ -128,8 +127,8 @@ export const requestSaveCategory = name => {
   return axios.post('/user/category/append?name=' + name)
 }
 
-export const requestLogin = params => {
-  return axios.put('/user/login?loginName=' + params.loginName + '&password=' + params.password)
+export const requestLogin = (loginName, password) => {
+  return axios.put(`/user/login?loginName=${loginName}&password=${password}`)
 }
 
 export const requestRegister = params => {
@@ -140,8 +139,8 @@ export const requestVerifyCode = email => {
   return axios.post('/common/vcode/send?email=' + email)
 }
 
-export const requestValidateVerifyCode = params => {
-  return axios.get('/common/vcode/verify?email=' + params.email + '&vcode=' + params.vcode)
+export const requestValidateVerifyCode = (email, vcode) => {
+  return axios.get(`/common/vcode/verify?email=${email}&vcode=${vcode}`)
 }
 
 export const requestResetPassword = params => {

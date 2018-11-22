@@ -91,7 +91,7 @@ export default {
       let vcode = $('#verify-code').val()
       let email = $('#register-name').val()
       if (vcode.length === 6 && validator.isEmail(email)) {
-        requestValidateVerifyCode({email: email, vcode: vcode}).then(data => {
+        requestValidateVerifyCode(email, vcode).then(data => {
           this.verifyCodeErrorTip = data.code === 200 ? '' : '验证码错误'
         })
       }
