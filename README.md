@@ -75,6 +75,7 @@ Wanna Spring是一个记录个人信息，采用前后端分离的项目。
             # 去掉注释
             spring.profiles.active=prod
             ```  
+            
         - 修改 [application-prod.properties](spring-bee/src/main/resources/application-prod.properties) 文件
         
              ``` properties
@@ -84,7 +85,8 @@ Wanna Spring是一个记录个人信息，采用前后端分离的项目。
              spring.mail.protocol=mail server protocol
              spring.mail.username=mail username
              spring.mail.password=mail password or key
-             ```    
+             ```   
+              
         - 根据实际情况修改 [config.json](spring-bee/config.json) 文件
         
     2. 打包部署
