@@ -41,12 +41,12 @@
 import validator from '../../../static/js/validator.min'
 import layer from '../../../static/js/layer'
 import {requestListTodo, requestListUndo, requestSaveTodo} from '../../api/api'
-import TodoTemplate from '../template/TodoTemplate'
+import TodoItem from './todo/TodoItem'
 import utils from '../../assets/js/utils'
 
 export default {
   name: 'Todo',
-  components: {TodoTemplate},
+  components: {TodoItem: TodoItem},
   data () {
     return {
       todoTip: '添加任务',

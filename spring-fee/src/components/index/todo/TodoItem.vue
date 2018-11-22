@@ -18,13 +18,13 @@
 </template>
 
 <script>/* eslint-disable */
-import utils from '../../assets/js/utils'
-import {requestRemoveTodo, requestToggleTodoStatus, requestUpdateTodo} from '../../api/api'
-import validator from '../../../static/js/validator.min'
-import layer from '../../../static/js/layer'
+import utils from '../../../assets/js/utils'
+import {requestRemoveTodo, requestToggleTodoStatus, requestUpdateTodo} from '../../../api/api'
+import validator from '../../../../static/js/validator.min'
+import layer from '../../../../static/js/layer'
 
 export default {
-  name: 'TodoTemplate',
+  name: 'TodoItem',
   data () {
     return {
       removeIcon: '<i class="glyphicon glyphicon-trash"></i>',
@@ -85,8 +85,8 @@ export default {
 </script>
 
 <style scoped>
-  @import '../../../static/css/pretty-checkbox.min.css';
-  @import "../../assets/css/style.css";
+  @import '../../../../static/css/pretty-checkbox.min.css';
+  @import "../../../assets/css/style.css";
 
   .deleted {
     text-decoration: line-through;
