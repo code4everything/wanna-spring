@@ -25,11 +25,8 @@
       <br/>
       <div class="row">
         <div class="col-sm-10 offset-sm-1 offset-1 col-10 text-right">
-          <button class="btn btn-info" @click="showModal"><i class="glyphicon glyphicon-plus-sign"></i>
-            {{saveDetailTip}}
-          </button>
-          <button class="btn btn-primary" @click="saveDaily"><i class="glyphicon glyphicon-floppy-disk"></i> {{saveTip}}
-          </button>
+          <el-button type="warning" icon="el-icon-circle-plus" @click="showModal">{{saveDetailTip}}</el-button>
+          <el-button type="primary" icon="el-icon-success" @click="saveDaily">{{saveTip}}</el-button>
         </div>
       </div>
       <br/>
@@ -38,26 +35,16 @@
     <!--日程详细记录-->
     <div class="rounded bg-light col-10 offset-1 col-sm-11 offset-sm-1">
       <br/>
-      <table class="table table-hover">
-        <thead>
-        <tr>
-          <th v-for="(th,index) in ths" :key="index">{{th}}</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(dailies,index) in dailyDetail" :key="index" :data-index="index" class="data"
-            @click="showModalOnMobile">
-          <td v-if="!isMobile">{{index+1}}</td>
-          <td>{{dailies.startTime}}</td>
-          <td>{{dailies.endTime}}</td>
-          <td>{{dailies.content}}</td>
-          <td v-if="!isMobile">
-            <a class="text-primary" href="javascript:" @click="showModal">{{editTip}}</a>
-            &emsp;<a href="javascript:" class="text-danger" @click="remove">{{removeTip}}</a>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      <el-table :data="dailyDetail">
+        <el-table-column type="index" v-if="!isMobile"></el-table-column>
+        <el-table-column prop="startTime" label="开始"></el-table-column>
+        <el-table-column prop="endTime" label="结束"></el-table-column>
+        <el-table-column prop="content" label="记录"></el-table-column>
+        <el-table-column label="动作" v-if="!isMobile">
+          <a class="text-primary" href="javascript:" @click="showModal">{{editTip}}</a>
+          &emsp;<a href="javascript:" class="text-danger" @click="remove">{{removeTip}}</a>
+        </el-table-column>
+      </el-table>
     </div>
     <div class="col-12 col-sm-12"><br/></div>
     <daily-modal :dailies="currentDaily"></daily-modal>
@@ -75,7 +62,6 @@ import {
   requestSaveDaily,
   requestUpdateDaily
 } from '../../api/api'
-import layer from '../../../static/js/layer'
 
 export default {
   name: 'Daily',
@@ -93,7 +79,6 @@ export default {
       defaultDailyDetail: {content: '', dailyId: '', endTime: '', id: '', startTime: ''},
       defaultDaily: {id: '', score: 8, weather: '', content: '', date: ''},
       daily: {},
-      ths: ['编号', '开始', '结束', '记录', '动作'],
       dailyDetail: [],
       currentIndex: 0,
       currentDaily: {},
@@ -109,7 +94,11 @@ export default {
     },
     showModal: function () {
       if (validator.isEmpty(this.daily.id)) {
-        layer.alert('请先保存日程记录')
+        this.$message({
+          showClose: true,
+          message: '请先保存日程记录',
+          type: 'warning'
+        })
       } else {
         this.currentIndex = $(window.event.srcElement).parents('.data').attr('data-index')
         let daily = utils.isNull(this.currentIndex) ? this.defaultDailyDetail : this.dailyDetail[this.currentIndex]
@@ -118,49 +107,40 @@ export default {
       }
     },
     remove: function () {
+      // TODO table更新后index同样需要更新
       let index = $(window.event.srcElement).parents('.data').attr('data-index')
       if (utils.isNull(index)) {
         index = this.currentIndex
       }
       if (utils.isNotNull(index)) {
         let self = this
-        layer.confirm('是否确定删除索引位置位于 “' + (parseInt(index) + 1) + '” 的日程记录', {
-          btn: ['确定', '取消']
-        }, function () {
-          layer.load(1)
+        this.$confirm(`是否确定删除索引位置位于 '${parseInt(index) + 1}' 的日程记录`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
           requestRemoveDailies(self.dailyDetail[index].id).then(data => {
-            layer.closeAll()
             if (data.code === 200) {
               self.dailyDetail.splice(index, 1)
-            } else {
-              layer.closeAll()
+              utils.showSuccess(data.msg)
             }
           })
-          layer.closeAll()
         })
       }
     },
     saveDaily: function () {
-      if ($.isNumeric(this.daily.score)) {
-        this.daily.date = this.date
-        layer.load(1)
-        if (validator.isEmpty(this.daily.id)) {
-          requestSaveDaily(this.daily).then(data => this.handleDailyReturnData(data))
-        } else {
-          requestUpdateDaily(this.daily).then(data => this.handleDailyReturnData(data))
-        }
+      this.daily.date = this.date
+      if (validator.isEmpty(this.daily.id)) {
+        requestSaveDaily(this.daily).then(data => this.handleDailyReturnData(data))
       } else {
-        layer.alert('数据不能为空')
+        requestUpdateDaily(this.daily).then(data => this.handleDailyReturnData(data))
       }
     },
     handleDailyReturnData: function (data) {
-      layer.closeAll()
       if (data.code === 200) {
         this.daily = data.data
         this.$parent.getChartData()
-        layer.alert('保存成功')
-      } else {
-        layer.alert(data.msg)
+        utils.showSuccess(data.msg)
       }
     },
     updateDailies: function (dailies) {
@@ -174,20 +154,14 @@ export default {
     listDaily: function () {
       this.daily = utils.clone(this.defaultDaily)
       this.dailyDetail = []
-      layer.load(1)
       requestGetDaily(this.date).then(data => {
-        layer.closeAll()
         if (data.code === 200) {
           this.daily = data.data
           requestListDailies(data.data.id).then(data => {
             if (data.code === 200) {
               this.dailyDetail = data.data
-            } else {
-              layer.alert(data.msg)
             }
           })
-        } else {
-          layer.alert(data.msg)
         }
       })
     }
@@ -202,10 +176,6 @@ export default {
   mounted: function () {
     this.currentDaily = utils.clone(this.defaultDailyDetail)
     this.isMobile = utils.isMobile()
-    if (this.isMobile) {
-      this.ths.shift()
-      this.ths.pop()
-    }
     setTimeout(() => {
       if (utils.isNotNull(this.date) && !validator.isEmpty(this.date)) {
         this.listDaily()

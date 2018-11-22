@@ -1,4 +1,7 @@
 export default {
+  showSuccess: function (msg) {
+    this.$message({showClose: true, message: msg, type: 'success'})
+  },
   clone: function (object) {
     return JSON.parse(JSON.stringify(object))
   },

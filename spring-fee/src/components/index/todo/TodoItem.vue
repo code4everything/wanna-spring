@@ -21,7 +21,6 @@
 import utils from '../../../assets/js/utils'
 import {requestRemoveTodo, requestToggleTodoStatus, requestUpdateTodo} from '../../../api/api'
 import validator from '../../../../static/js/validator.min'
-import {Loading} from 'element-ui'
 
 export default {
   name: 'TodoItem',
@@ -43,11 +42,6 @@ export default {
           this.todos[index].status = status
         } else {
           src.checked = false
-          this.$message({
-            showClose: true,
-            message: data.msg,
-            type: 'error'
-          })
         }
       })
     },
@@ -59,22 +53,10 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        let loading = Loading.service({})
         requestRemoveTodo(self.todos[index].id).then(data => {
-          loading.close()
           if (data.code === 200) {
             self.todos.splice(index, 1)
-            this.$message({
-              type: 'success',
-              message: '删除成功!',
-              showClose: true
-            })
-          } else {
-            this.$message({
-              showClose: true,
-              message: data.msg,
-              type: 'error'
-            })
+            utils.showSuccess(data.msg)
           }
         })
       })
@@ -82,20 +64,9 @@ export default {
     updateTodo: function () {
       let index = $(window.event.srcElement).parents('div.todo').attr('data-index')
       if (validator.isEmpty(this.todos[index].content)) {
-        this.$message({
-          message: '数据不能为空',
-          type: 'warning'
-        })
+        this.$message({message: '数据不能为空', type: 'warning', showClose: true})
       } else {
-        requestUpdateTodo(this.todos[index].id, this.todos[index].content).then(data => {
-          if (data.code !== 200) {
-            this.$message({
-              showClose: true,
-              message: data.msg,
-              type: 'error'
-            })
-          }
-        })
+        requestUpdateTodo(this.todos[index].id, this.todos[index].content)
       }
     }
   },

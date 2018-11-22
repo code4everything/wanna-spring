@@ -1,8 +1,10 @@
 import axios from 'axios'
-import layer from '../../static/js/layer'
 import cookie from 'js-cookie'
+import {Loading} from 'element-ui'
 
 const host = 'http://localhost:8099'
+
+let loading
 
 axios.defaults.timeout = 10000
 
@@ -14,17 +16,25 @@ axios.interceptors.request.use(config => {
     'Content-Type': 'application/json',
     token: cookie.get('token')
   }
+  loading = Loading.service({})
   return config
 }, error => {
   return Promise.resolve(error)
 })
 
 axios.interceptors.response.use(response => {
+  loading.close()
   const data = response.data
-  console.info(data)
+  if (data.code !== 200) {
+    this.$message({
+      showClose: true,
+      message: data.msg,
+      type: 'error'
+    })
+  }
   return data
 }, error => {
-  layer.closeAll()
+  loading.close()
   if (error.response !== undefined) {
     console.error(error.response.data)
   }
