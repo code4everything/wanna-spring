@@ -21,7 +21,7 @@
 import utils from '../../../assets/js/utils'
 import {requestRemoveTodo, requestToggleTodoStatus, requestUpdateTodo} from '../../../api/api'
 import validator from '../../../../static/js/validator.min'
-import layer from '../../../../static/js/layer'
+import {Loading} from 'element-ui'
 
 export default {
   name: 'TodoItem',
@@ -43,36 +43,57 @@ export default {
           this.todos[index].status = status
         } else {
           src.checked = false
-          layer.alert(data.msg)
+          this.$message({
+            showClose: true,
+            message: data.msg,
+            type: 'error'
+          })
         }
       })
     },
     remove: function () {
       let self = this
       let index = $(window.event.srcElement).parents('div.todo').attr('data-index')
-      layer.confirm('是否确定删除索引位置位于 “' + (parseInt(index) + 1) + '” 的待办事项', {
-        btn: ['确定', '取消']
-      }, function () {
-        layer.load(1)
+      this.$confirm(`是否确定删除索引位置位于 '${parseInt(index) + 1}' 的待办事项`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        let loading = Loading.service({})
         requestRemoveTodo(self.todos[index].id).then(data => {
-          layer.closeAll()
+          loading.close()
           if (data.code === 200) {
             self.todos.splice(index, 1)
+            this.$message({
+              type: 'success',
+              message: '删除成功!',
+              showClose: true
+            })
           } else {
-            layer.alert(data.msg)
+            this.$message({
+              showClose: true,
+              message: data.msg,
+              type: 'error'
+            })
           }
         })
-        layer.closeAll()
       })
     },
     updateTodo: function () {
       let index = $(window.event.srcElement).parents('div.todo').attr('data-index')
       if (validator.isEmpty(this.todos[index].content)) {
-        layer.alert('数据不能为空')
+        this.$message({
+          message: '数据不能为空',
+          type: 'warning'
+        })
       } else {
         requestUpdateTodo(this.todos[index].id, this.todos[index].content).then(data => {
           if (data.code !== 200) {
-            layer.alert(data.msg)
+            this.$message({
+              showClose: true,
+              message: data.msg,
+              type: 'error'
+            })
           }
         })
       }
