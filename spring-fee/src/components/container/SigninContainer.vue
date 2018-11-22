@@ -9,7 +9,6 @@
 </template>
 
 <script>/* eslint-disable indent */
-
 import utils from '../../assets/js/utils'
 
 export default {
