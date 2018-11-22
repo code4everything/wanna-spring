@@ -28,7 +28,7 @@ import java.io.IOException;
  **/
 @RestController
 @RequestMapping("/user/document")
-@Api(value = "/user/document")
+@Api(tags = "文件资源接口")
 public class DocumentController extends BeeBaseController {
 
     private final DocumentService documentService;

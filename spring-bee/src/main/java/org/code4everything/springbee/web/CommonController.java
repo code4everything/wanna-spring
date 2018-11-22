@@ -17,7 +17,7 @@ import javax.mail.MessagingException;
  */
 @RestController
 @RequestMapping("/common")
-@Api(value = "/common")
+@Api(tags = "公共接口")
 public class CommonController extends BeeBaseController {
 
     private final CommonService commonService;

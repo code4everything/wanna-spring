@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 @RestController
 @RequestMapping("/user/category")
-@Api(value = "/user/category")
+@Api(tags = "分类接口")
 public class CategoryController extends BeeBaseController {
 
     private final CategoryService categoryService;
@@ -54,6 +54,7 @@ public class CategoryController extends BeeBaseController {
     }
 
     @PutMapping("/{categoryId}/update")
+    @ApiOperation("更新分类名称")
     @ApiImplicitParam(name = "name", value = "分类名", required = true)
     public ResponseResult<Boolean> updateCategory(@PathVariable String categoryId, @RequestParam String name) {
         categoryService.updateCategory(categoryId, name);

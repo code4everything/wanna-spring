@@ -22,7 +22,7 @@ import java.util.ArrayList;
  */
 @RestController
 @RequestMapping("/user/todo")
-@Api(value = "/user/todo")
+@Api(tags = "代办事项接口")
 public class TodoController extends BeeBaseController {
 
     private final TodoService todoService;
@@ -73,6 +73,7 @@ public class TodoController extends BeeBaseController {
     }
 
     @GetMapping("/undo/list")
+    @ApiOperation("列出某个日期之前未完成的待办事项")
     public ResponseResult<ArrayList<Todo>> listUndo(@RequestParam String date) {
         return parseResult("没有未完成的待办事项哦", todoService.listUndoBeforeDate(getUserId(), date), true);
     }

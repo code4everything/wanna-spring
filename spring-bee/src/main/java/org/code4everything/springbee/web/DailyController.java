@@ -21,7 +21,7 @@ import java.util.ArrayList;
  */
 @RestController
 @RequestMapping("/user/daily")
-@Api(value = "/user/daily")
+@Api(tags = "日程接口")
 public class DailyController extends BeeBaseController {
 
     private final DailyService dailyService;

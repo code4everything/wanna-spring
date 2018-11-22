@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/user/asset")
-@Api(value = "/user/asset")
+@Api(tags = "资产接口")
 public class AssetController extends BeeBaseController {
 
     private final IncomeService incomeService;

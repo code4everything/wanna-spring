@@ -21,7 +21,7 @@ import java.util.ArrayList;
  */
 @RestController
 @RequestMapping("/user/asset/income")
-@Api(value = "/user/asset/income")
+@Api(tags = "收益接口")
 public class IncomeController extends BeeBaseController {
 
     private final IncomeService incomeService;

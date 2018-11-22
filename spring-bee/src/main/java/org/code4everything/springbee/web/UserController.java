@@ -20,7 +20,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/user")
-@Api(value = "/user")
+@Api(tags = "用户接口")
 public class UserController extends BeeBaseController {
 
     private final UserService userService;

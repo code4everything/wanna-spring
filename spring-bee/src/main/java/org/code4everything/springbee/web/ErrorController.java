@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import org.code4everything.boot.bean.ResponseResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @author pantao
@@ -13,15 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RestController
 @RequestMapping("/error")
-@Api(value = "/error")
+@Api(tags = "错误接口", hidden = true)
 public class ErrorController extends BeeBaseController {
 
+    @ApiIgnore
     @RequestMapping("/auth")
     @ApiOperation("身份验证失败")
     public ResponseResult<String> authError() {
         return errorResult(HttpStatus.HTTP_UNAUTHORIZED, "身份验证失败，请登录");
     }
 
+    @ApiIgnore
     @RequestMapping("/banned")
     @ApiOperation("禁止访问")
     public ResponseResult<String> bannedError() {
