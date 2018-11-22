@@ -1,7 +1,7 @@
 ### 项目简介
 
 Wanna Spring是一个记录个人信息，采用前后端分离的项目。
-项目的初衷是我想在这个信息时代，能记录下自己的每一天，也是一个学习前后端分离的实践项目，供大家一起参考、学习、讨论，写的不好的地方还请多多指教。
+项目的初衷是我想在这个信息时代，能记录下自己的每一天，也是一个学习前后端分离的实践项目，供大家参考、学习、讨论，小白一枚，写的不好的地方还请多多指教。
 
 ### 技术选型
 
@@ -60,7 +60,7 @@ Wanna Spring是一个记录个人信息，采用前后端分离的项目。
         
              ``` properties
              # 下面的信息必须使用自己的，如果示例的邮箱发送邮件过于频繁，将会导致邮件服务被关闭
-             # 如果开通邮箱的第三方登录，请自行百度谷歌
+             # 如何开通邮箱的第三方登录，请自行百度谷歌
              spring.mail.host=mail server host
              spring.mail.protocol=mail server protocol
              spring.mail.username=mail username
@@ -87,9 +87,9 @@ Wanna Spring是一个记录个人信息，采用前后端分离的项目。
     1. 修改 [api.js](spring-fee/src/api/api.js) 文件
     
         ``` javascript
-        # 修改成自己的主机
+        // 修改成自己的主机
         const host = 'https://spring-api.yourdomain.com'
-        # 注释掉URL打印
+        // 注释掉URL打印
         // console.info(`request url -> ${config.url}`)
         ```
     2. 打包
@@ -106,11 +106,11 @@ Wanna Spring是一个记录个人信息，采用前后端分离的项目。
     
         ![create_website](images/create_website_for_bt.png)
         
-        然后压缩 [index.html & static](spring-fee/dist)，并上传至网站根目录，解压即可
+        然后压缩 `dist` 目录下的 [index.html & static](spring-fee/dist) 文件，并上传至网站根目录，解压即可
         
     4. 升级成HTTPS
     
 ### 写在最后
 
-欢迎大家一起来交流学习，反馈BUG或建议什么的，有兴趣的小伙伴欢迎贡献代码哦，觉得不错的请点个赞支持一下吧。
-永远相信明天更美好，哈哈！
+欢迎大家一起来交流学习，反馈BUG或建议什么的，本人QQ735817834，有兴趣的小伙伴欢迎贡献代码哦，觉得不错的请点个赞支持一下吧。
+喝碗鸡汤，永远相信明天更美好，哈哈！
