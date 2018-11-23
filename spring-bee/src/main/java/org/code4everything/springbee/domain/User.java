@@ -24,7 +24,7 @@ public class User implements Serializable {
 
     @Id
     @Sealed
-    @ApiModelProperty("用户编号（敏感数据）")
+    @ApiModelProperty("用户编号")
     private String id;
 
     @ApiModelProperty("用户名")
@@ -37,7 +37,7 @@ public class User implements Serializable {
     private String avatar;
 
     @Sealed
-    @ApiModelProperty("密码（敏感数据)")
+    @ApiModelProperty("密码")
     private String password;
 
     @ApiModelProperty("个人简介")

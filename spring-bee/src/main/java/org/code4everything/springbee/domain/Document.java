@@ -26,7 +26,7 @@ public class Document implements Serializable {
     private String id;
 
     @Sealed
-    @ApiModelProperty("文件本地路径（敏感数据）")
+    @ApiModelProperty("文件本地路径")
     private String localPath;
 
     @ApiModelProperty("访问链接")

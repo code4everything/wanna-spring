@@ -27,7 +27,7 @@ public class Todo implements Serializable {
     private String id;
 
     @Sealed
-    @ApiModelProperty("用户编号（敏感数据）")
+    @ApiModelProperty("用户编号")
     private String userId;
 
     @ApiModelProperty("计划事项完成的日期")

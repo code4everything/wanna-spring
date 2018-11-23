@@ -27,7 +27,7 @@ public class Daily implements Serializable {
     private String id;
 
     @Sealed
-    @ApiModelProperty("用户编号（敏感数据）")
+    @ApiModelProperty("用户编号")
     private String userId;
 
     @ApiModelProperty("记录的日期")
@@ -36,7 +36,7 @@ public class Daily implements Serializable {
     @ApiModelProperty("记录时间")
     private Long createTime;
 
-    @ApiModelProperty("评价：0~9，6分以下表现欠佳（反思），6分合格，7分还行，8分优秀，9以上非常优秀")
+    @ApiModelProperty("评价：0~10，6分以下表现欠佳，6分合格，7分还行，8分优秀，9以上非常优秀")
     private Integer score;
 
     @ApiModelProperty("天气")
