@@ -11,5 +11,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IncomeDAO extends MongoRepository<Income, String> {
 
+    /**
+     * 获取收益信息
+     *
+     * @param incomeId 记录编号
+     *
+     * @return 收益消息
+     */
     Income getById(String incomeId);
 }

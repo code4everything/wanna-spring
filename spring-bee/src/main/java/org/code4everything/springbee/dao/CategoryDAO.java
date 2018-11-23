@@ -13,7 +13,22 @@ import java.util.ArrayList;
 @Repository
 public interface CategoryDAO extends MongoRepository<Category, String> {
 
+    /**
+     * 验证分类是否存在
+     *
+     * @param userId 用户编号
+     * @param name 用户名
+     *
+     * @return 分类是否存在
+     */
     boolean existsByUserIdAndName(String userId, String name);
 
+    /**
+     * 列出用户的所有分类
+     *
+     * @param userId 用户编号
+     *
+     * @return 分类列表
+     */
     ArrayList<Category> getByUserId(String userId);
 }

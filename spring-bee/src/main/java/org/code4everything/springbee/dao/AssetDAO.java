@@ -11,5 +11,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AssetDAO extends MongoRepository<Asset, String> {
 
+    /**
+     * 通过用户编号获取资产信息
+     *
+     * @param userId 用户编号
+     *
+     * @return 资产信息
+     */
     Asset getByUserId(String userId);
 }
