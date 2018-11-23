@@ -108,12 +108,15 @@ public class IncomeServiceImpl implements IncomeService {
         if (startMonth.compareTo(endMonth) >= 0) {
             return list;
         }
+        // 解析开始日期的年和月
         String[] starts = startMonth.split(HYPHEN);
         int yearStart = Integer.parseInt(starts[0]);
         int monthStart = Integer.parseInt(starts[1]);
+        // 解析截止日期的年和月
         String[] ends = endMonth.split(HYPHEN);
         int yearEnd = Integer.parseInt(ends[0]);
         int monthEnd = Integer.parseInt(ends[1]);
+        // 统计每个月的中支出
         while (yearStart < yearEnd || (yearStart == yearEnd && monthStart <= monthEnd)) {
             IncomeBillVO billVO = new IncomeBillVO();
             String month = yearStart + HYPHEN + Strings.padStart(String.valueOf(monthStart), 2, '0');
@@ -144,6 +147,7 @@ public class IncomeServiceImpl implements IncomeService {
         if (ObjectUtil.isNull(income)) {
             return null;
         }
+        // 计算改变的资产总值
         Long changeValue = incomeDTO.getMoney() * incomeDTO.getType() - income.getMoney() * income.getType();
         updateAssetBalance(userId, changeValue);
         return incomeDAO.save(parseIncomeDTO(incomeDTO, income));

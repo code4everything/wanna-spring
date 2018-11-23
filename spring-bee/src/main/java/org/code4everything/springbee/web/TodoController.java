@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * @author pantao
@@ -74,14 +74,15 @@ public class TodoController extends BeeBaseController {
 
     @GetMapping("/undo/list")
     @ApiOperation("列出某个日期之前未完成的待办事项")
-    public ResponseResult<ArrayList<Todo>> listUndo(@RequestParam String date) {
+    @ApiImplicitParam(name = "date", value = "日期", required = true, dataTypeClass = Date.class)
+    public ResponseResult<ArrayList<Todo>> listUndo(@RequestParam Date date) {
         return parseResult("没有未完成的待办事项哦", todoService.listUndoBeforeDate(getUserId(), date), true);
     }
 
     @GetMapping("/list")
     @ApiOperation("列出事项")
-    @ApiImplicitParam(name = "date", value = "日期", required = true)
-    public ResponseResult<ArrayList<Todo>> listTodo(@RequestParam String date) {
+    @ApiImplicitParam(name = "date", value = "日期", required = true, dataTypeClass = Date.class)
+    public ResponseResult<ArrayList<Todo>> listTodo(@RequestParam Date date) {
         return parseResult("该日期没有数据", todoService.listTodo(getUserId(), date), true);
     }
 

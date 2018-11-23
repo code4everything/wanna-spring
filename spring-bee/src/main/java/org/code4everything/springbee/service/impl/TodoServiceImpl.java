@@ -39,14 +39,14 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     @AopLog("获取指定日期之前所有未完成的待办事项")
-    public ArrayList<Todo> listUndoBeforeDate(String userId, String date) {
-        return todoDAO.getByUserIdAndStatusAndDoingDateLessThan(userId, "0", date);
+    public ArrayList<Todo> listUndoBeforeDate(String userId, Date date) {
+        return todoDAO.getByUserIdAndStatusAndDoingDateLessThan(userId, "0", DateUtil.formatDate(date));
     }
 
     @Override
     @AopLog("列出指定日期的待办事项")
-    public ArrayList<Todo> listTodo(String userId, String doingDate) {
-        return todoDAO.getByUserIdAndDoingDate(userId, doingDate);
+    public ArrayList<Todo> listTodo(String userId, Date doingDate) {
+        return todoDAO.getByUserIdAndDoingDate(userId, DateUtil.formatDate(doingDate));
     }
 
     @Override

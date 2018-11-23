@@ -66,15 +66,15 @@ public class CommonServiceImpl implements CommonService {
 
     @Override
     @AopLog("发送验证码")
-    public void sendVcode(String to) throws MessagingException {
+    public void sendVcode(String email) throws MessagingException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
         helper.setFrom(from);
-        helper.setTo(to);
+        helper.setTo(email);
         helper.setSubject("验证码");
         String vcode = RandomUtil.randomNumbers(6);
         helper.setText(StrUtil.format("您的验证码：{}", vcode));
         mailSender.send(mimeMessage);
-        stringRedisTemplate.opsForValue().set("vcode:" + to, vcode, 30, TimeUnit.MINUTES);
+        stringRedisTemplate.opsForValue().set("vcode:" + email, vcode, 30, TimeUnit.MINUTES);
     }
 }

@@ -8,11 +8,41 @@ import javax.mail.MessagingException;
  */
 public interface CommonService {
 
+    /**
+     * 检测用户名是否存在
+     *
+     * @param username 用户名
+     *
+     * @return 是否存在
+     */
     boolean existsUsername(String username);
 
+    /**
+     * 检测邮箱是否存在
+     *
+     * @param email 邮箱
+     *
+     * @return 是否存在
+     */
     boolean existsEmail(String email);
 
+    /**
+     * 校验验证码是否正确
+     *
+     * @param email 邮箱
+     * @param vcode 验证码
+     * @param shouldDelete 校验通过后是否删除验证码
+     *
+     * @return 是否正确
+     */
     boolean isVcodeValidated(String email, String vcode, boolean shouldDelete);
 
-    void sendVcode(String to) throws MessagingException;
+    /**
+     * 发送验证码
+     *
+     * @param email 邮箱
+     *
+     * @throws MessagingException 可能发生的异常
+     */
+    void sendVcode(String email) throws MessagingException;
 }
