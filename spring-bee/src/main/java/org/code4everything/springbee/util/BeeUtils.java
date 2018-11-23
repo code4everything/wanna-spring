@@ -30,7 +30,7 @@ public class BeeUtils {
             configBean = new BeeConfigBean();
         }
         assert configBean != null;
-        // 设置默认值
+        // 如果字段值为空，则设置成默认值
         if (Validator.isNull(configBean.getTokenExpired())) {
             configBean.setTokenExpired(BeeConfigConsts.TOKEN_EXPIRED);
         }
@@ -48,5 +48,4 @@ public class BeeUtils {
         }
         return configBean;
     }
-
 }
