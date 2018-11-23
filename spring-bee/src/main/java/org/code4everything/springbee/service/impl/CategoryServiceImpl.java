@@ -24,11 +24,12 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryServiceImpl(CategoryDAO categoryDAO) {this.categoryDAO = categoryDAO;}
 
     @Override
-    public void updateCategory(String categoryId, String name) {
-        Optional<Category> categoryOptional = categoryDAO.findById(categoryId);
-        if (categoryOptional.isPresent()) {
-            Category category = categoryOptional.get();
-            if (!name.equals(category.getName())) {
+    public void updateCategory(String categoryId, String userId, String name) {
+        // 如果分类名称不存在时，才更新分类名称
+        if (!exists(userId, name)) {
+            Optional<Category> categoryOptional = categoryDAO.findById(categoryId);
+            if (categoryOptional.isPresent()) {
+                Category category = categoryOptional.get();
                 category.setName(name);
                 categoryDAO.save(category);
             }

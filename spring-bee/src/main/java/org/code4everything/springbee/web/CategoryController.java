@@ -57,7 +57,7 @@ public class CategoryController extends BeeBaseController {
     @ApiOperation("更新分类名称")
     @ApiImplicitParam(name = "name", value = "分类名", required = true)
     public ResponseResult<Boolean> updateCategory(@PathVariable String categoryId, @RequestParam String name) {
-        categoryService.updateCategory(categoryId, name);
+        categoryService.updateCategory(getUserId(), categoryId, name);
         return new ResponseResult<>("更新成功", true);
     }
 }

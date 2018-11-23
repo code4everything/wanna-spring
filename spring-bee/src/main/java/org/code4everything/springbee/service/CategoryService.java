@@ -12,11 +12,11 @@ public interface CategoryService {
 
     /**
      * 更新分类
-     *
-     * @param categoryId 分类的编号
+     *  @param categoryId 分类的编号
+     * @param userId
      * @param name 分类名称
      */
-    void updateCategory(String categoryId, String name);
+    void updateCategory(String categoryId, String userId, String name);
 
     /**
      * 删除分类
