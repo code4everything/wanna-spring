@@ -24,15 +24,7 @@ axios.interceptors.request.use(config => {
 
 axios.interceptors.response.use(response => {
   loading.close()
-  const data = response.data
-  if (data.code !== 200) {
-    this.$message({
-      showClose: true,
-      message: data.msg,
-      type: 'error'
-    })
-  }
-  return data
+  return response.data
 }, error => {
   loading.close()
   if (error.response !== undefined) {

@@ -29,8 +29,7 @@ public class TodoServiceImplTest extends BaseTest {
 
     @Test
     public void listTodo() {
-        List<Todo> todos = todoService.listTodo(getUser().getId(),
-                DateUtil.formatDate(new Date(System.currentTimeMillis())));
+        List<Todo> todos = todoService.listTodo(getUser().getId(), new Date(System.currentTimeMillis()));
         Assert.assertNotNull(todos);
         System.out.println(todos);
     }

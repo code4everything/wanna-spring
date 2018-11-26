@@ -80,7 +80,6 @@ export default {
       }
     },
     handleDailiesReturnData: function (data) {
-      layer.closeAll()
       if (data.code === 200) {
         this.$parent.updateDailies(data.data)
       } else {

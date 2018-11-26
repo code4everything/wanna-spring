@@ -72,9 +72,7 @@ export default {
     sendVerifyCode: function () {
       let email = $('#register-name').val()
       if (validator.isEmail(email)) {
-        layer.load(1)
         requestVerifyCode(email).then(data => {
-          layer.closeAll()
           layer.alert(data.msg)
         })
       }
@@ -95,9 +93,7 @@ export default {
       if (validator.isEmpty(email) || validator.isEmpty(vcode) || validator.isEmpty(newPassword)) {
         layer.alert('数据不能为空')
       } else if (validator.isEmpty(this.passwordResetNameErrorTip) && validator.isEmpty(this.newPasswordConfirmErrorTip) && validator.isEmpty(this.verifyCodeErrorTip)) {
-        layer.load(1)
         requestResetPassword({email: email, newPassword: newPassword, vcode: vcode}).then(data => {
-          layer.closeAll()
           if (data.code === 200) {
             window.location = this.loginPath
           } else {

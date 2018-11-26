@@ -1,17 +1,18 @@
 <!--suppress HtmlFormInputWithoutLabel, JSUndefinedPropertyAssignment, CssUnusedSymbol -->
 <template>
   <div>
-    <div v-for="(todo,index) in todos" :key="index" class="row todo" :data-index="index">
-      <div class="col-sm-12 col-12" :id="idPrefix+index">
+    <div :data-index="index" :key="index" class="row todo" v-for="(todo,index) in todos">
+      <div :id="idPrefix+index" class="col-sm-12 col-12">
         <div class="pretty p-default p-round p-jelly">
-          <input type="checkbox" @click="toggleStatus" :checked="todo.status==='1'"/>
+          <input :checked="todo.status==='1'" @click="toggleStatus" type="checkbox"/>
           <div class="state p-success-o">
             <label></label>
           </div>
         </div>
-        <input type="text" :class="['border-0 bg-light todo-item w-75',todo.status==='1'?'deleted':'']"
-               v-model="todo.content" @blur="updateTodo" :disabled="todo.status==='1'"/>
-        <a href="javascript:" class="text-danger" @click="remove" v-html="isMobile?removeIcon:removeTip"></a>
+        <input :class="['border-0 bg-light todo-item w-75',todo.status==='1'?'deleted':'']"
+               :disabled="todo.status==='1'"
+               @blur="updateTodo" type="text" v-model="todo.content"/>
+        <a @click="remove" class="text-danger" href="javascript:" v-html="isMobile?removeIcon:removeTip"></a>
       </div>
     </div>
   </div>
@@ -42,6 +43,7 @@ export default {
           this.todos[index].status = status
         } else {
           src.checked = false
+          utils.showError(data.msg)
         }
       })
     },
@@ -57,6 +59,8 @@ export default {
           if (data.code === 200) {
             self.todos.splice(index, 1)
             utils.showSuccess(data.msg)
+          } else {
+            utils.showError(data.msg)
           }
         })
       })

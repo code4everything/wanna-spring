@@ -102,9 +102,7 @@ export default {
         this.income.category = this.categories[0]
       }
       if (!this.categories.includes(this.income.category)) {
-        layer.load(1)
         requestSaveCategory(this.income.category).then(data => {
-          layer.closeAll()
           if (data.code === 200) {
             self.categories.push(data.data.name)
           } else {
@@ -120,7 +118,6 @@ export default {
         }
         //处理金额
         this.income.money = Number(this.income.money).toFixed(2) * 100
-        layer.load(1)
         if (validator.isEmpty(this.income.id)) {
           requestSaveIncome(this.income).then(data => this.handleIncomeReturnData(data))
         } else {
@@ -131,7 +128,6 @@ export default {
       }
     },
     handleIncomeReturnData: function (data) {
-      layer.closeAll()
       if (data.code === 200) {
         this.$parent.updateIncome(data.data)
       } else {

@@ -7,26 +7,26 @@
       <div class="row">
         <div class="col-sm-2 col-4 text-right"><h5 class="h5-v-middle">{{weatherTip}}：</h5></div>
         <div class="col-sm-3 col-7">
-          <el-input type="text" v-model="daily.weather" :placeholder="weatherTip"/>
+          <el-input :placeholder="weatherTip" type="text" v-model="daily.weather"/>
         </div>
-        <div v-if="isMobile" class="col-12"><br/></div>
+        <div class="col-12" v-if="isMobile"><br/></div>
         <div class="col-sm-2 col-4 text-right"><h5 class="h5-v-middle">{{scoreTip}}：</h5></div>
         <div class="col-sm-4 col-7">
-          <el-input-number class="w-100" v-model="daily.score" :placeholder="scoreTip" :min="0" :max="10"/>
+          <el-input-number :max="10" :min="0" :placeholder="scoreTip" class="w-100" v-model="daily.score"/>
         </div>
       </div>
       <br/>
       <div class="row">
         <div class="col-sm-2 col-4 text-right"><h5 class="h5-v-middle">{{contentTip}}：</h5></div>
         <div class="col-sm-9 col-7">
-          <el-input type="textarea" v-model="daily.content" :placeholder="contentTip" rows="5"></el-input>
+          <el-input :placeholder="contentTip" rows="5" type="textarea" v-model="daily.content"></el-input>
         </div>
       </div>
       <br/>
       <div class="row">
         <div class="col-sm-10 offset-sm-1 offset-1 col-10 text-right">
-          <el-button type="warning" icon="el-icon-circle-plus" @click="showModal">{{saveDetailTip}}</el-button>
-          <el-button type="primary" icon="el-icon-success" @click="saveDaily">{{saveTip}}</el-button>
+          <el-button @click="showModal" icon="el-icon-circle-plus" type="warning">{{saveDetailTip}}</el-button>
+          <el-button @click="saveDaily" icon="el-icon-success" type="primary">{{saveTip}}</el-button>
         </div>
       </div>
       <br/>
@@ -37,12 +37,12 @@
       <br/>
       <el-table :data="dailyDetail">
         <el-table-column type="index" v-if="!isMobile"></el-table-column>
-        <el-table-column prop="startTime" label="开始"></el-table-column>
-        <el-table-column prop="endTime" label="结束"></el-table-column>
-        <el-table-column prop="content" label="记录"></el-table-column>
+        <el-table-column label="开始" prop="startTime"></el-table-column>
+        <el-table-column label="结束" prop="endTime"></el-table-column>
+        <el-table-column label="记录" prop="content"></el-table-column>
         <el-table-column label="动作" v-if="!isMobile">
-          <a class="text-primary" href="javascript:" @click="showModal">{{editTip}}</a>
-          &emsp;<a href="javascript:" class="text-danger" @click="remove">{{removeTip}}</a>
+          <a @click="showModal" class="text-primary" href="javascript:">{{editTip}}</a>
+          &emsp;<a @click="remove" class="text-danger" href="javascript:">{{removeTip}}</a>
         </el-table-column>
       </el-table>
     </div>
@@ -123,6 +123,8 @@ export default {
             if (data.code === 200) {
               self.dailyDetail.splice(index, 1)
               utils.showSuccess(data.msg)
+            } else {
+              utils.showError(data.msg)
             }
           })
         })
@@ -141,6 +143,8 @@ export default {
         this.daily = data.data
         this.$parent.getChartData()
         utils.showSuccess(data.msg)
+      } else {
+        utils.showError(data.msg)
       }
     },
     updateDailies: function (dailies) {
@@ -162,6 +166,8 @@ export default {
               this.dailyDetail = data.data
             }
           })
+        } else {
+          utils.showError(data.msg)
         }
       })
     }

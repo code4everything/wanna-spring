@@ -51,9 +51,7 @@ export default {
       if (validator.isEmpty(this.password)) {
         layer.alert('密码不能为空')
       } else {
-        layer.load(1)
         requestLogin(this.loginName, this.password).then(data => {
-          layer.closeAll()
           if (data.code === 200) {
             cookie.set('token', data.data)
             window.location = app.data().path.index

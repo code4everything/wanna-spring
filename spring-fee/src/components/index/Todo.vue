@@ -68,9 +68,7 @@ export default {
       if (validator.isEmpty(this.content)) {
         layer.alert('数据不能为空')
       } else {
-        layer.load(1)
         requestSaveTodo(this.date, this.content).then(data => {
-          layer.closeAll()
           if (data.code === 200) {
             this.content = ''
             this.todos.push(data.data)
@@ -82,9 +80,7 @@ export default {
     },
     listTodo: function () {
       this.todos = []
-      layer.load(1)
       requestListTodo(this.date).then(data => {
-        layer.closeAll()
         if (data.code === 200) {
           this.todos = data.data
         } else {
@@ -94,9 +90,7 @@ export default {
     },
     listUndo: function () {
       this.undos = []
-      layer.load(1)
       requestListUndo(this.date).then(data => {
-        layer.closeAll()
         if (data.code === 200) {
           this.undos = data.data
         } else {

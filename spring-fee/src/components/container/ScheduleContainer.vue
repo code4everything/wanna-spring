@@ -3,12 +3,12 @@
   <div class="row">
     <div class="col-sm-5 col-12">
       <!--移动端-->
-      <div v-if="isMobile" class="row">
+      <div class="row" v-if="isMobile">
         <div class="col-10 offset-1 rounded bg-light">
           <br/>
           <div class="row">
             <div class="col-10 offset-1">
-              <el-date-picker :editable="false" :clearable="false" v-model="date" type="date"
+              <el-date-picker :clearable="false" :editable="false" type="date" v-model="date"
                               value-format="yyyy-MM-dd"></el-date-picker>
             </div>
           </div>
@@ -23,8 +23,8 @@
             <h5 style="padding-top: 7px;">当前日期：</h5>
           </div>
           <div class="col-sm-7 text-left">
-            <el-date-picker :editable="false" :clearable="false" v-model="date" type="date"
-                            value-format="yyyy-MM-dd" class="w-75"></el-date-picker>
+            <el-date-picker :clearable="false" :editable="false" class="w-75" type="date"
+                            v-model="date" value-format="yyyy-MM-dd"></el-date-picker>
           </div>
           <div class="col-sm-12"><br/></div>
         </div>
@@ -32,15 +32,15 @@
         <div class="row bg-light rounded">
           <div class="col-sm-12"><br/></div>
           <div class="col-sm-5">
-            <el-date-picker :editable="false" :clearable="false" v-model="dateStart" type="date"
-                            value-format="yyyy-MM-dd" class="w-100"></el-date-picker>
+            <el-date-picker :clearable="false" :editable="false" class="w-100" type="date"
+                            v-model="dateStart" value-format="yyyy-MM-dd"></el-date-picker>
           </div>
           <div class="col-sm-5">
-            <el-date-picker :editable="false" :clearable="false" v-model="dateEnd" type="date"
-                            value-format="yyyy-MM-dd" class="w-100"></el-date-picker>
+            <el-date-picker :clearable="false" :editable="false" class="w-100" type="date"
+                            v-model="dateEnd" value-format="yyyy-MM-dd"></el-date-picker>
           </div>
           <div class="col-sm-2">
-            <button class="btn btn-outline-success" @click="dialogVisible=true"><i
+            <button @click="dialogVisible=true" class="btn btn-outline-success"><i
               class="glyphicon glyphicon-fullscreen"></i></button>
           </div>
           <div class="col-sm-12"><br/></div>
@@ -51,11 +51,11 @@
         <br/>
       </div>
     </div>
-    <div v-if="isMobile" class="col-12"><br/></div>
+    <div class="col-12" v-if="isMobile"><br/></div>
     <div class="col-sm-7 col-12">
       <router-view :date="date"></router-view>
     </div>
-    <el-dialog v-if="!isMobile" :visible.sync="dialogVisible" :fullscreen="true">
+    <el-dialog :fullscreen="true" :visible.sync="dialogVisible" v-if="!isMobile">
       <ve-line :data="fullChartData" :extend="extend"></ve-line>
     </el-dialog>
   </div>
@@ -117,7 +117,7 @@ export default {
           this.fullChartData.rows.push(ele)
         })
       } else {
-        console.error(data.msg)
+        utils.showError(data.msg)
       }
     }
   },

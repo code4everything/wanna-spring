@@ -1,4 +1,8 @@
 export default {
+  showError: function (msg) {
+    console.error(msg)
+    this.$message({showClose: true, message: msg, type: 'error'})
+  },
   showSuccess: function (msg) {
     this.$message({showClose: true, message: msg, type: 'success'})
   },

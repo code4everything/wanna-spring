@@ -234,9 +234,7 @@ export default {
       layer.confirm('是否确定删除索引位置位于 “' + (parseInt(key) + 1) + '” 的收益记录', {
         btn: ['确定', '取消']
       }, function () {
-        layer.load(1)
         requestRemoveIncome(self.incomes[key].id).then(data => {
-          layer.closeAll()
           if (data.code === 200) {
             self.getAssetBalance()
             self.incomes.splice(key, 1)
@@ -283,10 +281,8 @@ export default {
       $('#asset-modal').modal('show')
     },
     listIncome: function () {
-      layer.load(1)
       this.getAssetBalance()
       requestListIncome('', this.startDate, this.endDate).then(data => {
-        layer.closeAll()
         if (data.code === 200) {
           this.incomes = data.data
         } else {
@@ -308,9 +304,7 @@ export default {
         this.$message.error('月份不能为空')
       } else {
         this.monthData.rows = []
-        layer.load(1)
         requestListIncomeMonth(this.startMonth, this.endMonth).then(data => {
-          layer.closeAll()
           if (data.code === 200) {
             data.data.forEach(item => {
               this.monthData.rows.push({'month': item.date, '支出': (item.money / 100).toFixed(2)})
@@ -326,9 +320,7 @@ export default {
         this.$message.error('年份不能为空')
       } else {
         this.yearData.rows = []
-        layer.load(1)
         requestListIncomeYear(this.startYear, this.endYear).then(data => {
-          layer.closeAll()
           if (data.code === 200) {
             data.data.forEach(item => {
               this.yearData.rows.push({'year': item.date, '支出': (item.money / 100).toFixed(2)})
