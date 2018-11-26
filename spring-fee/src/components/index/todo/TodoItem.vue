@@ -63,6 +63,7 @@ export default {
             utils.showError(data.msg)
           }
         })
+      }).catch(() => {
       })
     },
     updateTodo: function () {
