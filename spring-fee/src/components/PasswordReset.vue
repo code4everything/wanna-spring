@@ -2,36 +2,37 @@
 <template>
   <div>
     <h3>{{passwordResetWelcomeMessage}}</h3><br/>
-    <input type="text" class="form-control email" id="register-name" maxlength="100"
-           :placeholder="passwordResetNameTip" @keyup="checkRegisterName"/>
+    <input :placeholder="passwordResetNameTip" @keyup="checkRegisterName" class="form-control email" id="register-name"
+           maxlength="100" type="text"/>
     <label class="form-check-label text-danger">{{passwordResetNameErrorTip}}</label>
     <br/>
     <div class="form-inline text-justify-all row">
       <div class="col-sm-7 col-md-7 col-6">
-        <input type="text" id="verify-code" maxlength="6" class="w-100 form-control email-verify-code"
-               :placeholder="verifyCodeTip" @keyup="validateVerifyCode"/>
+        <input :placeholder="verifyCodeTip" @keyup="validateVerifyCode" class="w-100 form-control email-verify-code"
+               id="verify-code" maxlength="6" type="text"/>
       </div>
       <div class="col-sm-5 col-md-5 col-6 text-right">
-        <button class="btn btn-outline-info sendVerifyCode btn-block" @click="sendVerifyCode">{{verifyCodeSendTip}}
+        <button @click="sendVerifyCode" class="btn btn-outline-info sendVerifyCode btn-block">{{verifyCodeSendTip}}
         </button>
       </div>
     </div>
     <label class="form-check-label text-danger">{{verifyCodeErrorTip}}</label>
     <br/>
-    <input type="password" id="new-password" maxlength="50" class="form-control password"
-           :placeholder="newPasswordTip">
+    <input :placeholder="newPasswordTip" class="form-control password" id="new-password" maxlength="50"
+           type="password">
     <label class="form-check-label text-danger">{{newPasswordErrorTip}}</label>
     <br/>
-    <input type="password" id="confirm-password" max="50" class="form-control confirm-password"
-           :placeholder="newPasswordConfirmTip" @keyup="checkPasswordConsistency">
+    <input :placeholder="newPasswordConfirmTip" @keyup="checkPasswordConsistency" class="form-control confirm-password"
+           id="confirm-password"
+           max="50" type="password">
     <label class="form-check-label text-danger">{{newPasswordConfirmErrorTip}}</label>
     <br/>
     <div class="text-center row">
       <div class="col-6 col-sm-6">
-        <a class="btn btn-outline-primary btn-block" :href="loginPath">{{loginTip}}</a>
+        <a :href="loginPath" class="btn btn-outline-primary btn-block">{{loginTip}}</a>
       </div>
       <div class="col-6 col-sm-6">
-        <button class="btn btn-danger btn-block" @click="resetPassword">{{passwordResetTip}}</button>
+        <button @click="resetPassword" class="btn btn-danger btn-block">{{passwordResetTip}}</button>
       </div>
     </div>
   </div>

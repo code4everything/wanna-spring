@@ -6,29 +6,30 @@
       <div class="bg-light rounded col-10 offset-1 offset-sm-0 col-sm-12">
         <br/>
         <div class="row">
-          <div class="col-sm-3 col-8 text-left">
+          <div class="col-sm-5 col-8 text-left">
             <h6 style="padding-top: 10px;" v-html="formatAssetString()" v-if="isMobile"></h6>
             <h5 class="h5-v-middle" v-else v-html="formatAssetString()"></h5>
           </div>
-          <div class="col-sm-3" v-if="!isMobile">
+          <div class="col-sm-2 text-right" v-if="!isMobile">
             <el-date-picker :clearable="false" :editable="false" :placeholder="dateStartTip"
                             @change="listIncome" class="w-100" v-model="startDate" value-format="yyyy-MM-dd"/>
           </div>
-          <div class="col-sm-3" v-if="!isMobile">
+          <div class="col-sm-2 text-left" v-if="!isMobile">
             <el-date-picker :clearable="false" :editable="false" :placeholder="dateEndTip"
                             @change="listIncome" class="w-100" v-model="endDate" value-format="yyyy-MM-dd"/>
           </div>
-          <div class="col-sm-3 col-4">
+          <div class="col-sm-3 col-4 text-left">
             <div class="row">
               <div class="col-sm-6 col-12">
-                <button @click="showModal" class="btn btn-primary btn-block"><i
-                  class="glyphicon glyphicon-plus-sign"></i> {{addIncomeTip}}
-                </button>
+                <el-button @click="showModal(null)" class="w-100" type="primary"><i
+                  class="glyphicon glyphicon-plus-sign"></i>
+                  {{addIncomeTip}}
+                </el-button>
               </div>
               <div class="col-sm-6 col-6" v-if="!isMobile">
-                <button @click="showReporter" class="btn btn-info btn-block"><i
-                  class="glyphicon glyphicon-stats"></i> {{reporterTip}}
-                </button>
+                <el-button @click="showReporter" class="w-100" type="success"><i class="glyphicon glyphicon-stats"></i>
+                  {{reporterTip}}
+                </el-button>
               </div>
             </div>
           </div>
@@ -49,8 +50,8 @@
                 <h6 v-html="formatIncomeString(income)"></h6>
               </div>
               <div class="col-12 text-left">
-                <a @click="showModal" class="text-info" href="javascript:">{{editTip}}</a>
-                &emsp;<a @click="remove" class="text-danger" href="javascript:">{{removeTip}}</a>
+                <a @click="showModal(null)" class="text-info" href="javascript:">{{editTip}}</a>
+                &emsp;<a @click="remove(null)" class="text-danger" href="javascript:">{{removeTip}}</a>
               </div>
             </div>
           </div>
@@ -62,39 +63,37 @@
     <div class="row" v-else>
       <div class="col-sm-12 bg-light rounded justify-content-center text-center">
         <br/>
-        <table class="table table-hover">
-          <thead>
-          <tr>
-            <th :key="index" v-for="(th,index) in ths">{{th}}</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr :data-index="index" :key="index" class="data" v-for="(income,index) in incomes">
-            <td>{{index+1}}</td>
-            <td>{{income.date}}</td>
-            <td>{{formatTypeString(income)}}</td>
-            <td>{{income.category}}</td>
-            <td>{{Number(income.money / 100).toFixed(2)}}</td>
-            <td>{{payWays[income.way-1]}}</td>
-            <!--suppress JSUnresolvedVariable -->
-            <td>{{formatDate(income.createTime)}}</td>
-            <td>
-              <a @click="showModal" class="text-info" href="javascript:">{{editTip}}</a>
-              &emsp;<a @click="remove" class="text-danger" href="javascript:">{{removeTip}}</a>
-            </td>
-          </tr>
-          <tr v-show="totalExpense>0">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>{{totalExpenseTip}}</td>
-            <td>{{Number(totalExpense / 100).toFixed(2)+' '+unit}}</td>
-          </tr>
-          </tbody>
-        </table>
+        <el-table :data="incomes">
+          <el-table-column type="index"></el-table-column>
+          <el-table-column align="center" label="日期" prop="date"></el-table-column>
+          <el-table-column align="center" label="类型">
+            <template slot-scope="scope">
+              <span>{{formatTypeString(scope.row)}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="分类" prop="category"></el-table-column>
+          <el-table-column align="center" label="金额">
+            <template slot-scope="scope">
+              <span>{{Number(scope.row.money / 100).toFixed(2)}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="支付方式">
+            <template slot-scope="scope">
+              <span>{{payWays[scope.row.way-1]}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="创建时间">
+            <template slot-scope="scope">
+              <span>{{formatDate(scope.row.createTime)}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="操作">
+            <template slot-scope="scope">
+              <a @click="showModal(scope.$index)" class="text-primary" href="javascript:">{{editTip}}</a>
+              &emsp;<a @click="remove(scope.$index)" class="text-danger" href="javascript:">{{removeTip}}</a>
+            </template>
+          </el-table-column>
+        </el-table>
       </div>
     </div>
     <br/>
@@ -166,7 +165,6 @@
 
 <script>/* eslint-disable */
 import utils from '../../assets/js/utils'
-import layer from '../../../static/js/layer'
 import AssetModal from '../modal/AssetModal'
 import validator from '../../../static/js/validator.min'
 import dayjs from 'dayjs'
@@ -228,21 +226,23 @@ export default {
     }
   },
   methods: {
-    remove: function () {
-      let key = $(window.event.srcElement).parents('.data').attr('data-index')
+    remove: function (index) {
+      let key = utils.isNull(index) ? $(window.event.srcElement).parents('.data').attr('data-index') : index
       let self = this
-      layer.confirm('是否确定删除索引位置位于 “' + (parseInt(key) + 1) + '” 的收益记录', {
-        btn: ['确定', '取消']
-      }, function () {
+      this.$confirm(`是否确定删除索引位置位于 “${parseInt(key) + 1}” 的收益记录`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
         requestRemoveIncome(self.incomes[key].id).then(data => {
           if (data.code === 200) {
             self.getAssetBalance()
             self.incomes.splice(key, 1)
           } else {
-            layer.alert(data.msg)
+            utils.showError(this, data.msg)
           }
         })
-        layer.closeAll()
+      }).catch(() => {
       })
     },
     formatDate: function (date) {
@@ -269,8 +269,8 @@ export default {
         this.incomes.splice(this.currentIndex, 1, income)
       }
     },
-    showModal: function () {
-      this.currentIndex = $(window.event.srcElement).parents('.data').attr('data-index')
+    showModal: function (index) {
+      this.currentIndex = utils.isNull(index) ? $(window.event.srcElement).parents('.data').attr('data-index') : index
       if (utils.isNull(this.currentIndex)) {
         this.currentIncome = utils.clone(this.defaultIncome)
         this.currentIncome.date = dayjs(new Date()).format('YYYY-MM-DD')
@@ -286,7 +286,7 @@ export default {
         if (data.code === 200) {
           this.incomes = data.data
         } else {
-          layer.alert(data.msg)
+          utils.showError(this, data.msg)
         }
       })
     },
@@ -295,7 +295,7 @@ export default {
         if (data.code === 200) {
           this.asset = data.data / 100
         } else {
-          layer.alert(data.msg)
+          utils.showError(this, data.msg)
         }
       })
     },

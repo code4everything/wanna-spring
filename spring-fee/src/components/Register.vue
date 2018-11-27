@@ -2,40 +2,41 @@
 <template>
   <div>
     <h3>{{registerWelcomeMessage}}</h3><br/>
-    <input type="text" id="username" maxlength="50" class="form-control" :placeholder="usernameTip"/>
+    <input :placeholder="usernameTip" class="form-control" id="username" maxlength="50" type="text"/>
     <label class="form-check-label text-danger">{{usernameErrorTip}}</label>
     <br/>
-    <input type="text" id="register-name" maxlength="100" :class="['form-control','register-name']"
-           :placeholder="registerNameTip" @keyup="checkRegisterName">
+    <input :class="['form-control','register-name']" :placeholder="registerNameTip" @keyup="checkRegisterName"
+           id="register-name"
+           maxlength="100" type="text">
     <label class="form-check-label text-danger">{{registerNameErrorTip}}</label>
     <br/>
     <div class="form-inline text-justify-all row">
       <div class="col-sm-7 col-6">
-        <input type="number" id="verify-code" maxlength="6"
-               class="w-100 form-control verify-code"
-               :placeholder="verifyCodeTip" @keyup="validateVerifyCode"/>
+        <input :placeholder="verifyCodeTip" @keyup="validateVerifyCode" class="w-100 form-control verify-code"
+               id="verify-code" maxlength="6" type="text"/>
       </div>
       <div class="col-sm-5 col-6 text-right">
-        <button class="btn btn-outline-info sendVerifyCode btn-block" @click="sendVerifyCode">{{verifyCodeSendTip}}
+        <button @click="sendVerifyCode" class="btn btn-outline-info sendVerifyCode btn-block">{{verifyCodeSendTip}}
         </button>
       </div>
     </div>
     <label class="form-check-label text-danger">{{verifyCodeErrorTip}}</label>
     <br/>
-    <input type="password" id="register-password" maxlength="50" class="form-control password"
-           :placeholder="passwordTip">
+    <input :placeholder="passwordTip" class="form-control password" id="register-password" maxlength="50"
+           type="password">
     <label class="form-check-label text-danger">{{passwordErrorTip}}</label>
     <br/>
-    <input type="password" id="confirm-password" max="50" class="form-control confirm-password"
-           :placeholder="passwordConfirmTip" @keyup="checkPasswordConsistency">
+    <input :placeholder="passwordConfirmTip" @keyup="checkPasswordConsistency" class="form-control confirm-password"
+           id="confirm-password"
+           max="50" type="password">
     <label class="form-check-label text-danger">{{passwordConfirmErrorTip}}</label>
     <br/>
     <div class="text-center row">
       <div class="col-6 col-sm-6">
-        <a class="btn btn-outline-warning btn-block" :href="loginPath">{{loginPathTip}}</a>
+        <a :href="loginPath" class="btn btn-outline-warning btn-block">{{loginPathTip}}</a>
       </div>
       <div class="col-6 col-sm-6">
-        <button class="btn btn-primary btn-block" @click="register">{{registerTip}}</button>
+        <button @click="register" class="btn btn-primary btn-block">{{registerTip}}</button>
       </div>
     </div>
   </div>

@@ -10,7 +10,7 @@
         <el-input :placeholder="loginPasswordTip" maxlength="50" type="password" v-model="password"/>
       </el-form-item>
       <el-form-item>
-        <button @click="login" class="btn btn-primary btn-block">{{loginTip}}</button>
+        <el-button @click="login" class="btn-block" type="primary">{{loginTip}}</el-button>
       </el-form-item>
       <div class="form-inline row">
         <div class="col-sm-6 col-6 text-left">

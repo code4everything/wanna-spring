@@ -40,12 +40,12 @@
       <br/>
       <el-table :data="dailyDetail" @row-click="showModalOnMobile">
         <div v-if="!isMobile">
-          <el-table-column type="index"></el-table-column>
+          <el-table-column align="center" type="index"></el-table-column>
         </div>
-        <el-table-column label="开始" prop="startTime"></el-table-column>
-        <el-table-column label="结束" prop="endTime"></el-table-column>
-        <el-table-column label="记录" prop="content"></el-table-column>
-        <el-table-column label="操作" v-if="!isMobile">
+        <el-table-column align="center" label="开始" prop="startTime"></el-table-column>
+        <el-table-column align="center" label="结束" prop="endTime"></el-table-column>
+        <el-table-column align="center" label="记录" prop="content"></el-table-column>
+        <el-table-column align="center" label="操作" v-if="!isMobile">
           <template slot-scope="scope">
             <a @click="showModal(scope.$index)" class="text-primary" href="javascript:">{{editTip}}</a>
             &emsp;<a @click="remove(scope.$index)" class="text-danger" href="javascript:">{{removeTip}}</a>
