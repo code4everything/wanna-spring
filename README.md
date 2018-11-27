@@ -73,25 +73,25 @@ Wanna Spring是一个记录个人信息，采用前后端分离的项目。
 
 1. 修改必要的配置
 
-  - 修改 [application.properties](spring-bee/src/main/resources/application.properties) 文件
+    - 修改 [application.properties](spring-bee/src/main/resources/application.properties) 文件
 
-    ``` properties
-    # 去掉注释
-    spring.profiles.active=prod
-    ```
+        ``` properties
+        # 去掉注释
+        spring.profiles.active=prod
+        ```
 
-  - 修改 [application-prod.properties](spring-bee/src/main/resources/application-prod.properties) 文件
+    - 修改 [application-prod.properties](spring-bee/src/main/resources/application-prod.properties) 文件
 
-    ``` properties
-    # 下面的信息必须使用自己的，如果示例的邮箱发送邮件过于频繁，将会导致示例邮箱的邮件服务被关闭
-    # 如何开通邮箱的第三方登录，请自行谷歌百度
-    spring.mail.host=mail server host
-    spring.mail.protocol=mail server protocol
-    spring.mail.username=mail username
-    spring.mail.password=mail password or key
-    ```
+        ``` properties
+        # 下面的信息必须使用自己的，如果示例的邮箱发送邮件过于频繁，将会导致示例邮箱的邮件服务被关闭
+        # 如何开通邮箱的第三方登录，请自行谷歌百度
+        spring.mail.host=mail server host
+        spring.mail.protocol=mail server protocol
+        spring.mail.username=mail username
+        spring.mail.password=mail password or key
+        ```
 
-  - 根据实际情况修改 [config.json](spring-bee/config.json) 文件
+    - 根据实际情况修改 [config.json](spring-bee/config.json) 文件
 
 2. 打包部署
 
@@ -102,7 +102,7 @@ Wanna Spring是一个记录个人信息，采用前后端分离的项目。
     mvn package -Dmaven.test.skip=true
     ```
 
-  >  打包后上传 target 目录下面的 spring-bee-x.x.x.jar 文件至服务器（建议新建一个文件夹），同时将 [config.json](spring-bee/config.json) 上传至同级目录
+    >  打包后上传 target 目录下面的 spring-bee-x.x.x.jar 文件至服务器（建议新建一个文件夹），同时将 [config.json](spring-bee/config.json) 上传至同级目录
 
 3. 运行
 
@@ -116,9 +116,7 @@ Wanna Spring是一个记录个人信息，采用前后端分离的项目。
 
 4. 升级HTTPS
 
-   *使用宝塔工具*
-
-   创建一个站点
+   使用宝塔工具，创建一个站点
 
    ![create_website](images/create_api_website_for_bt.png)
 
