@@ -44,7 +44,7 @@
         </div>
         <el-table-column align="center" label="开始" prop="startTime"></el-table-column>
         <el-table-column align="center" label="结束" prop="endTime"></el-table-column>
-        <el-table-column align="center" label="记录" prop="content"></el-table-column>
+        <el-table-column align="center" label="记录" prop="content" min-width="150" show-overflow-tooltip></el-table-column>
         <el-table-column align="center" label="操作" v-if="!isMobile">
           <template slot-scope="scope">
             <a @click="showModal(scope.$index)" class="text-primary" href="javascript:">{{editTip}}</a>

@@ -30,7 +30,7 @@ axios.interceptors.response.use(response => {
   if (error.response !== undefined) {
     console.error(error.response.data)
   }
-  return Promise.resolve(error.response.data || error.response)
+  return Promise.resolve(error.response)
 })
 
 export const requestListTodoCount = (start, end) => {

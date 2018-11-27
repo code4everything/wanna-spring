@@ -63,33 +63,20 @@
     <div class="row" v-else>
       <div class="col-sm-12 bg-light rounded justify-content-center text-center">
         <br/>
-        <el-table :data="incomes">
+        <el-table :data="incomes" ref="filterTable">
           <el-table-column type="index"></el-table-column>
-          <el-table-column align="center" label="日期" prop="date"></el-table-column>
-          <el-table-column align="center" label="类型">
-            <template slot-scope="scope">
-              <span>{{formatTypeString(scope.row)}}</span>
-            </template>
-          </el-table-column>
+          <el-table-column align="center" label="日期" prop="date" sortable sort-by="date"></el-table-column>
+          <el-table-column align="center" label="类型" :formatter="formatTypeString"></el-table-column>
           <el-table-column align="center" label="分类" prop="category"></el-table-column>
-          <el-table-column align="center" label="金额">
-            <template slot-scope="scope">
-              <span>{{Number(scope.row.money / 100).toFixed(2)}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="支付方式">
-            <template slot-scope="scope">
-              <span>{{payWays[scope.row.way-1]}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="center" label="创建时间">
-            <template slot-scope="scope">
-              <span>{{formatDate(scope.row.createTime)}}</span>
-            </template>
-          </el-table-column>
+          <el-table-column align="center" label="金额" sortable :formatter="formatMoney"
+                           sort-by="money"></el-table-column>
+          <el-table-column align="center" label="支付方式" :formatter="formatPayWay"></el-table-column>
+          <el-table-column align="center" label="创建时间" min-width="200" sortable sort-by="createTime"
+                           :formatter="formatDate"></el-table-column>
           <el-table-column align="center" label="操作">
             <template slot-scope="scope">
-              <a @click="showModal(scope.$index)" class="text-primary" href="javascript:">{{editTip}}</a>
+              <a @click="showModal(scope.row)" class="text-primary"
+                 href="javascript:">{{editTip}}</a>
               &emsp;<a @click="remove(scope.$index)" class="text-danger" href="javascript:">{{removeTip}}</a>
             </template>
           </el-table-column>
@@ -200,8 +187,6 @@ export default {
       incomes: [],
       startDate: '',
       endDate: '',
-      totalExpenseTip: '支出合计',
-      totalExpense: 0,
       dialogVisible: false,
       categoryData: {
         columns: ['category', 'total'],
@@ -245,8 +230,8 @@ export default {
       }).catch(() => {
       })
     },
-    formatDate: function (date) {
-      return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
+    formatDate: function (income) {
+      return dayjs(income.createTime).format('YYYY-MM-DD HH:mm:ss')
     },
     formatAssetString: function () {
       return this.assetTip + Number(this.asset).toFixed(2) + this.space + this.unit
@@ -256,6 +241,12 @@ export default {
     },
     formatTypeString: function (income) {
       return income.type < 0 ? '支出' : '收入'
+    },
+    formatMoney: function (income) {
+      return Number(income.money / 100).toFixed(2)
+    },
+    formatPayWay: function (income) {
+      return this.payWays[income.way - 1]
     },
     showReporter: function () {
       this.dialogVisible = true
@@ -270,6 +261,9 @@ export default {
       }
     },
     showModal: function (index) {
+      if (index !== null && typeof index === 'object') {
+        index = this.incomes.indexOf(index)
+      }
       this.currentIndex = utils.isNull(index) ? $(window.event.srcElement).parents('.data').attr('data-index') : index
       if (utils.isNull(this.currentIndex)) {
         this.currentIncome = utils.clone(this.defaultIncome)
@@ -278,6 +272,7 @@ export default {
         this.currentIncome = utils.clone(this.incomes[this.currentIndex])
         this.currentIncome.money = this.currentIncome.money / 100
       }
+      this.currentIncome.way = Number.parseInt(this.currentIncome.way)
       $('#asset-modal').modal('show')
     },
     listIncome: function () {
@@ -344,11 +339,8 @@ export default {
         // 清空数据
         this.categoryData.rows = []
         this.dayData.rows = []
-        this.totalExpense = 0
         this.incomes.forEach(income => {
           if (income.type === -1) {
-            // 统计支出合计
-            this.totalExpense += income.money
             // 统计分类合计
             let dest = this.categoryData.rows.filter(item => {
               return item.category === income.category
