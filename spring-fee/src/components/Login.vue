@@ -4,20 +4,20 @@
     <h3>{{loginWelcomeMessage}}</h3><br/>
     <el-form>
       <el-form-item>
-        <el-input type="text" v-model="loginName" :placeholder="loginNameTip" maxlength="50"/>
+        <el-input :placeholder="loginNameTip" maxlength="50" type="text" v-model="loginName"/>
       </el-form-item>
       <el-form-item>
-        <el-input type="password" v-model="password" maxlength="50" :placeholder="loginPasswordTip"/>
+        <el-input :placeholder="loginPasswordTip" maxlength="50" type="password" v-model="password"/>
       </el-form-item>
       <el-form-item>
-        <button class="btn btn-primary btn-block" @click="login">{{loginTip}}</button>
+        <button @click="login" class="btn btn-primary btn-block">{{loginTip}}</button>
       </el-form-item>
       <div class="form-inline row">
         <div class="col-sm-6 col-6 text-left">
-          <a class="btn btn-link text-success" :href="registerPath">{{registerPathTip}}</a>
+          <a :href="registerPath" class="btn btn-link text-success">{{registerPathTip}}</a>
         </div>
         <div class="col-sm-6 col-6 text-right">
-          <a class="btn btn-link text-danger" :href="passwordResetPath">{{passwordResetPathTip}}</a>
+          <a :href="passwordResetPath" class="btn btn-link text-danger">{{passwordResetPathTip}}</a>
         </div>
       </div>
     </el-form>
@@ -54,7 +54,7 @@ export default {
         requestLogin(this.loginName, this.password).then(data => {
           if (data.code === 200) {
             cookie.set('token', data.data)
-            window.location = app.data().path.index
+            window.location.href = app.data().path.income
           } else {
             layer.alert(data.msg)
           }

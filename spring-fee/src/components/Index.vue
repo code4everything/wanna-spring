@@ -3,21 +3,21 @@
   <div>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
       <img :src="logoUrl" class="navbar-brand rounded-circle" style="width: 2rem;height: 2.5rem;"/>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar"
-              @click="toggleSearchStatus" aria-expanded="false">
+      <button @click="toggleSearchStatus" aria-expanded="false" class="navbar-toggler" data-target="#collapsibleNavbar"
+              data-toggle="collapse" type="button">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav nav nav-pills">
-          <li class="nav-item" v-for="(menu,index) in menus" :key="index">
-            <a class="nav-link" :id="menu.id" data-toggle="pill" :href="menu.href"
-               @click="navigateTo">{{menu.title}}</a>
+          <li :key="index" class="nav-item" v-for="(menu,index) in menus">
+            <a :href="menu.href" :id="menu.id" @click="navigateTo" class="nav-link"
+               data-toggle="pill">{{menu.title}}</a>
           </li>
         </ul>
       </div>
       <div class="form-inline w-50" v-show="shouldShowSearch">
-        <input class="form-control border-dark bg-dark text-white form-control-sm w-100" type="search"
-               :placeholder="searchTip" id="search"/>
+        <input :placeholder="searchTip" class="form-control border-dark bg-dark text-white form-control-sm w-100"
+               id="search" type="search"/>
       </div>
     </nav>
     <br/>

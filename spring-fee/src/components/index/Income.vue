@@ -7,26 +7,26 @@
         <br/>
         <div class="row">
           <div class="col-sm-3 col-8 text-left">
-            <h6 v-if="isMobile" style="padding-top: 10px;" v-html="formatAssetString()"></h6>
-            <h5 v-else class="h5-v-middle" v-html="formatAssetString()"></h5>
+            <h6 style="padding-top: 10px;" v-html="formatAssetString()" v-if="isMobile"></h6>
+            <h5 class="h5-v-middle" v-else v-html="formatAssetString()"></h5>
           </div>
-          <div v-if="!isMobile" class="col-sm-3">
-            <el-date-picker :editable="false" :clearable="false" :placeholder="dateStartTip"
-                            class="w-100" value-format="yyyy-MM-dd" v-model="startDate" @change="listIncome"/>
+          <div class="col-sm-3" v-if="!isMobile">
+            <el-date-picker :clearable="false" :editable="false" :placeholder="dateStartTip"
+                            @change="listIncome" class="w-100" v-model="startDate" value-format="yyyy-MM-dd"/>
           </div>
-          <div v-if="!isMobile" class="col-sm-3">
-            <el-date-picker :editable="false" :clearable="false" :placeholder="dateEndTip"
-                            class="w-100" value-format="yyyy-MM-dd" v-model="endDate" @change="listIncome"/>
+          <div class="col-sm-3" v-if="!isMobile">
+            <el-date-picker :clearable="false" :editable="false" :placeholder="dateEndTip"
+                            @change="listIncome" class="w-100" v-model="endDate" value-format="yyyy-MM-dd"/>
           </div>
           <div class="col-sm-3 col-4">
             <div class="row">
               <div class="col-sm-6 col-12">
-                <button class="btn btn-primary btn-block" @click="showModal"><i
+                <button @click="showModal" class="btn btn-primary btn-block"><i
                   class="glyphicon glyphicon-plus-sign"></i> {{addIncomeTip}}
                 </button>
               </div>
-              <div v-if="!isMobile" class="col-sm-6 col-6">
-                <button class="btn btn-info btn-block" @click="showReporter"><i
+              <div class="col-sm-6 col-6" v-if="!isMobile">
+                <button @click="showReporter" class="btn btn-info btn-block"><i
                   class="glyphicon glyphicon-stats"></i> {{reporterTip}}
                 </button>
               </div>
@@ -40,17 +40,17 @@
     <br/>
     <!--移动端-->
     <div v-if="isMobile">
-      <div v-for="(income,index) in incomes" :key="index">
-        <div class="row data" :data-index="index">
-          <div class="bg-light rounded col-10 offset-1 text-left" :data-index="index">
+      <div :key="index" v-for="(income,index) in incomes">
+        <div :data-index="index" class="row data">
+          <div :data-index="index" class="bg-light rounded col-10 offset-1 text-left">
             <div class="row vertical-middle">
               <div class="col-12">
                 <h6 v-html="income.date"></h6>
                 <h6 v-html="formatIncomeString(income)"></h6>
               </div>
               <div class="col-12 text-left">
-                <a href="javascript:" class="text-info" @click="showModal">{{editTip}}</a>
-                &emsp;<a href="javascript:" class="text-danger" @click="remove">{{removeTip}}</a>
+                <a @click="showModal" class="text-info" href="javascript:">{{editTip}}</a>
+                &emsp;<a @click="remove" class="text-danger" href="javascript:">{{removeTip}}</a>
               </div>
             </div>
           </div>
@@ -59,17 +59,17 @@
       </div>
     </div>
     <!--电脑端-->
-    <div v-else class="row">
+    <div class="row" v-else>
       <div class="col-sm-12 bg-light rounded justify-content-center text-center">
         <br/>
         <table class="table table-hover">
           <thead>
           <tr>
-            <th v-for="(th,index) in ths" :key="index">{{th}}</th>
+            <th :key="index" v-for="(th,index) in ths">{{th}}</th>
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(income,index) in incomes" :key="index" :data-index="index" class="data">
+          <tr :data-index="index" :key="index" class="data" v-for="(income,index) in incomes">
             <td>{{index+1}}</td>
             <td>{{income.date}}</td>
             <td>{{formatTypeString(income)}}</td>
@@ -79,8 +79,8 @@
             <!--suppress JSUnresolvedVariable -->
             <td>{{formatDate(income.createTime)}}</td>
             <td>
-              <a class="text-info" href="javascript:" @click="showModal">{{editTip}}</a>
-              &emsp;<a href="javascript:" class="text-danger" @click="remove">{{removeTip}}</a>
+              <a @click="showModal" class="text-info" href="javascript:">{{editTip}}</a>
+              &emsp;<a @click="remove" class="text-danger" href="javascript:">{{removeTip}}</a>
             </td>
           </tr>
           <tr v-show="totalExpense>0">
@@ -100,7 +100,7 @@
     <br/>
     <asset-modal :income="currentIncome" :pay-ways="payWays"></asset-modal>
     <!-- 报表弹窗 -->
-    <el-dialog v-if="!isMobile" title="收益报表" :visible.sync="dialogVisible" :fullscreen="true">
+    <el-dialog :fullscreen="true" :visible.sync="dialogVisible" title="收益报表" v-if="!isMobile">
       <!-- 基本数据 -->
       <div class="row">
         <div class="col-sm-4">
@@ -116,15 +116,15 @@
           <div class="row">
             <div class="col-sm-3"><h5 class="h5-v-middle">月度报表</h5></div>
             <div class="col-sm-3">
-              <el-date-picker :editable="false" :clearable="false" v-model="startMonth" type="month" placeholder="开始月份"
-                              value-format="yyyy-MM" class="w-100"></el-date-picker>
+              <el-date-picker :clearable="false" :editable="false" class="w-100" placeholder="开始月份" type="month"
+                              v-model="startMonth" value-format="yyyy-MM"></el-date-picker>
             </div>
             <div class="col-sm-3">
-              <el-date-picker :editable="false" :clearable="false" v-model="endMonth" type="month" placeholder="结束月份"
-                              value-format="yyyy-MM" class="w-100"></el-date-picker>
+              <el-date-picker :clearable="false" :editable="false" class="w-100" placeholder="结束月份" type="month"
+                              v-model="endMonth" value-format="yyyy-MM"></el-date-picker>
             </div>
             <div class="col-sm-3">
-              <button class="btn btn-outline-success btn-block" @click="listIncomeMonth">查询</button>
+              <button @click="listIncomeMonth" class="btn btn-outline-success btn-block">查询</button>
             </div>
           </div>
         </div>
@@ -141,15 +141,15 @@
           <div class="row">
             <div class="col-sm-3"><h5 class="h5-v-middle">年度报表</h5></div>
             <div class="col-sm-3">
-              <el-date-picker :editable="false" :clearable="false" v-model="startYear" type="year" placeholder="开始年份"
-                              value-format="yyyy" class="w-100"></el-date-picker>
+              <el-date-picker :clearable="false" :editable="false" class="w-100" placeholder="开始年份" type="year"
+                              v-model="startYear" value-format="yyyy"></el-date-picker>
             </div>
             <div class="col-sm-3">
-              <el-date-picker :editable="false" :clearable="false" v-model="endYear" type="year" placeholder="结束年份"
-                              value-format="yyyy" class="w-100"></el-date-picker>
+              <el-date-picker :clearable="false" :editable="false" class="w-100" placeholder="结束年份" type="year"
+                              v-model="endYear" value-format="yyyy"></el-date-picker>
             </div>
             <div class="col-sm-3">
-              <button class="btn btn-outline-success btn-block" @click="listIncomeYear">查询</button>
+              <button @click="listIncomeYear" class="btn btn-outline-success btn-block">查询</button>
             </div>
           </div>
         </div>
