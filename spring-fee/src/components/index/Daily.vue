@@ -25,8 +25,11 @@
       <br/>
       <div class="row">
         <div class="col-sm-10 offset-sm-1 offset-1 col-10 text-right">
-          <el-button @click="showModal(null)" icon="el-icon-circle-plus" type="warning">{{saveDetailTip}}</el-button>
-          <el-button @click="saveDaily" icon="el-icon-success" type="primary">{{saveTip}}</el-button>
+          <el-button @click="showModal(null)" type="warning"><i class="glyphicon glyphicon-plus-sign"></i>
+            {{saveDetailTip}}
+          </el-button>
+          <el-button @click="saveDaily" type="primary"><i class="glyphicon glyphicon-floppy-disk"></i> {{saveTip}}
+          </el-button>
         </div>
       </div>
       <br/>
@@ -109,8 +112,15 @@ export default {
     remove: function (index) {
       if (utils.isNull(index)) {
         index = this.currentIndex
+      } else if (typeof index === 'object') {
+        for (let i = 0; i < this.dailyDetail.length; i++) {
+          if (this.dailyDetail[i].id === index.id) {
+            index = i
+            break
+          }
+        }
       }
-      if (utils.isNotNull(index)) {
+      if (utils.isNotNull(index) && index > -1) {
         let self = this
         this.$confirm(`是否确定删除索引位置位于 '${parseInt(index) + 1}' 的日程记录`, '提示', {
           confirmButtonText: '确定',

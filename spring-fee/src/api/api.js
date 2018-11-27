@@ -9,6 +9,7 @@ let loading
 axios.defaults.timeout = 10000
 
 axios.interceptors.request.use(config => {
+  loading = Loading.service({})
   // 加时间戳，防止缓存
   config.url = host + config.url + (config.url.includes('?') ? '&' : '?') + 'timestamp=' + new Date().getTime()
   console.info(`request url -> ${config.url}`)
@@ -16,7 +17,6 @@ axios.interceptors.request.use(config => {
     'Content-Type': 'application/json',
     token: cookie.get('token')
   }
-  loading = Loading.service({})
   return config
 }, error => {
   return Promise.resolve(error)

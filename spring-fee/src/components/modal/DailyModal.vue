@@ -31,15 +31,13 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-secondary" data-dismiss="modal" type="button"><i
-            class="glyphicon glyphicon-remove"></i>{{closeTip}}
-          </button>
-          <button @click="this.$parent.remove" class="btn btn-danger" data-dismiss="modal" type="button"><i
-            class="glyphicon glyphicon-trash"></i>{{removeTip}}
-          </button>
-          <button @click="saveDailies" class="btn btn-success" type="button"><i
-            class="glyphicon glyphicon-floppy-open"></i>{{saveTip}}
-          </button>
+          <el-button data-dismiss="modal" type="info"><i class="glyphicon glyphicon-remove"></i> {{closeTip}}
+          </el-button>
+          <el-button @click="remove" data-dismiss="modal" type="danger"><i class="glyphicon glyphicon-trash"></i>
+            {{removeTip}}
+          </el-button>
+          <el-button @click="saveDailies" type="success"><i class="glyphicon glyphicon-floppy-open"></i> {{saveTip}}
+          </el-button>
         </div>
       </div>
     </div>
@@ -85,6 +83,9 @@ export default {
       } else {
         layer.alert(data.msg)
       }
+    },
+    remove: function () {
+      this.$parent.remove(this.dailies)
     }
   },
   mounted: function () {

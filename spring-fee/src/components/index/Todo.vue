@@ -13,17 +13,17 @@
               <label></label>
             </div>
           </div>
-          <input type="text" class="border-0 bg-light todo-item w-75" v-model="content" :placeholder="todoTip"
-                 @keyup.enter="saveTodo"/>
+          <input :placeholder="todoTip" @keyup.enter="saveTodo" class="border-0 bg-light todo-item w-75" type="text"
+                 v-model="content"/>
         </div>
       </div>
       <!--任务列表-->
-      <todo-item :todos="todos" :id-prefix="idPrefix"></todo-item>
+      <todo-item :id-prefix="idPrefix" :todos="todos"></todo-item>
       <br/>
     </div>
     <div class="col-12 col-sm-12"><br/></div>
     <!--未完成的待办事项-->
-    <div v-show="undos.length>0" class="text-left rounded bg-light col-10 offset-1 col-sm-11 offset-sm-1">
+    <div class="text-left rounded bg-light col-10 offset-1 col-sm-11 offset-sm-1" v-show="undos.length>0">
       <br/>
       <div class="row">
         <div class="col-sm-12 col-12 border border-top-0 border-left-0 border-right-0 border-bottom"
@@ -31,7 +31,7 @@
           <h6>{{date+undoTip}}</h6>
         </div>
       </div>
-      <todo-item :todos="undos" :id-prefix="undoIdPrefix"></todo-item>
+      <todo-item :id-prefix="undoIdPrefix" :todos="undos"></todo-item>
       <br/>
     </div>
   </div>
@@ -39,7 +39,6 @@
 
 <script>/* eslint-disable */
 import validator from '../../../static/js/validator.min'
-import layer from '../../../static/js/layer'
 import {requestListTodo, requestListUndo, requestSaveTodo} from '../../api/api'
 import TodoItem from './todo/TodoItem'
 import utils from '../../assets/js/utils'
@@ -66,14 +65,15 @@ export default {
   methods: {
     saveTodo: function () {
       if (validator.isEmpty(this.content)) {
-        layer.alert('数据不能为空')
+        utils.showWarning(this, '数据不能为空')
       } else {
         requestSaveTodo(this.date, this.content).then(data => {
           if (data.code === 200) {
             this.content = ''
             this.todos.push(data.data)
+            utils.showSuccess(this, data.msg)
           } else {
-            layer.alert(data.msg)
+            utils.showError(this, data.msg)
           }
         })
       }
@@ -84,7 +84,7 @@ export default {
         if (data.code === 200) {
           this.todos = data.data
         } else {
-          layer.alert(data.msg)
+          utils.showError(this, data.msg)
         }
       })
     },
@@ -94,7 +94,7 @@ export default {
         if (data.code === 200) {
           this.undos = data.data
         } else {
-          layer.alert(data.msg)
+          utils.showError(this, data.msg)
         }
       })
     }

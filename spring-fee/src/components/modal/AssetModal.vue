@@ -1,26 +1,26 @@
 <!--suppress HtmlFormInputWithoutLabel -->
 <template>
-  <div class="modal fade" id="asset-modal" tabindex="-1" role="dialog"
-       aria-labelledby="asset-modal-label" aria-hidden="true">
-    <div class="modal-dialog" :style="{width:isMobile?'90%':'100%'}">
+  <div aria-hidden="true" aria-labelledby="asset-modal-label" class="modal fade" id="asset-modal"
+       role="dialog" tabindex="-1">
+    <div :style="{width:isMobile?'90%':'100%'}" class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title" id="asset-modal-label">{{title}}</h4>
-          <button type="button" class="close" data-dismiss="modal"
-                  aria-hidden="true">&times;
+          <button aria-hidden="true" class="close" data-dismiss="modal"
+                  type="button">&times;
           </button>
         </div>
         <div class="modal-body">
-          <div class="container data" :data-id="income.id">
+          <div :data-id="income.id" class="container data">
             <div class="row">
               <div class="col-sm-8 col-7">
-                <el-date-picker :editable="false" :clearable="false" :placeholder="dateTip"
-                                class="w-100" value-format="yyyy-MM-dd" v-model="income.date"/>
+                <el-date-picker :clearable="false" :editable="false" :placeholder="dateTip"
+                                class="w-100" v-model="income.date" value-format="yyyy-MM-dd"/>
               </div>
               <div class="col-sm-4 col-5">
                 <el-select v-model="income.type">
-                  <el-option v-for="(type,index) in types" :value="type.value" :key="index"
-                             :label="type.tip"></el-option>
+                  <el-option :key="index" :label="type.tip" :value="type.value"
+                             v-for="(type,index) in types"></el-option>
                 </el-select>
               </div>
             </div>
@@ -28,39 +28,35 @@
             <div class="row">
               <div class="col-sm-4 col-6">
                 <el-select v-model="income.way">
-                  <el-option v-for="(payWay,index) in payWays" :value="index+1" :key="index"
-                             :label="payWay"></el-option>
+                  <el-option :key="index" :label="payWay" :value="index+1"
+                             v-for="(payWay,index) in payWays"></el-option>
                 </el-select>
               </div>
               <div class="col-sm-4 col-6">
-                <el-select v-model="income.category" filterable allow-create @change="saveCategory"
-                           default-first-option>
-                  <el-option v-for="(category,index) in categories" :value="category" :key="index"
-                             :label="category"></el-option>
+                <el-select @change="saveCategory" allow-create default-first-option filterable
+                           v-model="income.category">
+                  <el-option :key="index" :label="category" :value="category"
+                             v-for="(category,index) in categories"></el-option>
                 </el-select>
               </div>
-              <div v-if="isMobile" class="col-12"><br/></div>
+              <div class="col-12" v-if="isMobile"><br/></div>
               <div class="col-sm-4 col-12">
-                <el-input type="text" :placeholder="moneyTip" v-model="income.money"/>
+                <el-input :placeholder="moneyTip" type="text" v-model="income.money"/>
               </div>
             </div>
             <br/>
             <div class="row">
               <div class="col-sm-12 col-12">
-                <el-input type="textarea" :placeholder="remarkTip" v-model="income.remark" rows="3"></el-input>
+                <el-input :placeholder="remarkTip" rows="3" type="textarea" v-model="income.remark"></el-input>
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
-            class="glyphicon glyphicon-remove"></i>
-            {{closeTip}}
-          </button>
-          <button type="button" class="btn btn-success" @click="saveIncome"><i
-            class="glyphicon glyphicon-floppy-open"></i>
-            {{saveTip}}
-          </button>
+          <el-button data-dismiss="modal" type="info"><i class="glyphicon glyphicon-remove"></i> {{closeTip}}
+          </el-button>
+          <el-button @click="saveIncome" type="success"><i class="glyphicon glyphicon-floppy-open"></i> {{saveTip}}
+          </el-button>
         </div>
       </div>
     </div>
