@@ -1,10 +1,13 @@
 export default {
-  showError: function (msg) {
-    console.error(msg)
-    this.$message({showClose: true, message: msg, type: 'error'})
+  showWarning: function (self, msg) {
+    self.$message({showClose: true, message: msg, type: 'warning'})
   },
-  showSuccess: function (msg) {
-    this.$message({showClose: true, message: msg, type: 'success'})
+  showError: function (self, msg) {
+    console.error(msg)
+    self.$message({showClose: true, message: msg, type: 'error'})
+  },
+  showSuccess: function (self, msg) {
+    self.$message({showClose: true, message: msg, type: 'success'})
   },
   clone: function (object) {
     return JSON.parse(JSON.stringify(object))

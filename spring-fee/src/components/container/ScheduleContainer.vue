@@ -117,7 +117,7 @@ export default {
           this.fullChartData.rows.push(ele)
         })
       } else {
-        utils.showError(data.msg)
+        utils.showError(this, data.msg)
       }
     }
   },

@@ -25,7 +25,7 @@
       <br/>
       <div class="row">
         <div class="col-sm-10 offset-sm-1 offset-1 col-10 text-right">
-          <el-button @click="showModal" icon="el-icon-circle-plus" type="warning">{{saveDetailTip}}</el-button>
+          <el-button @click="showModal(null)" icon="el-icon-circle-plus" type="warning">{{saveDetailTip}}</el-button>
           <el-button @click="saveDaily" icon="el-icon-success" type="primary">{{saveTip}}</el-button>
         </div>
       </div>
@@ -35,14 +35,18 @@
     <!--日程详细记录-->
     <div class="rounded bg-light col-10 offset-1 col-sm-11 offset-sm-1">
       <br/>
-      <el-table :data="dailyDetail">
-        <el-table-column type="index" v-if="!isMobile"></el-table-column>
+      <el-table :data="dailyDetail" @row-click="showModalOnMobile">
+        <div v-if="!isMobile">
+          <el-table-column type="index"></el-table-column>
+        </div>
         <el-table-column label="开始" prop="startTime"></el-table-column>
         <el-table-column label="结束" prop="endTime"></el-table-column>
         <el-table-column label="记录" prop="content"></el-table-column>
-        <el-table-column label="动作" v-if="!isMobile">
-          <a @click="showModal" class="text-primary" href="javascript:">{{editTip}}</a>
-          &emsp;<a @click="remove" class="text-danger" href="javascript:">{{removeTip}}</a>
+        <el-table-column label="操作" v-if="!isMobile">
+          <template slot-scope="scope">
+            <a @click="showModal(scope.$index)" class="text-primary" href="javascript:">{{editTip}}</a>
+            &emsp;<a @click="remove(scope.$index)" class="text-danger" href="javascript:">{{removeTip}}</a>
+          </template>
         </el-table-column>
       </el-table>
     </div>
@@ -87,28 +91,22 @@ export default {
   },
   props: ['date'],
   methods: {
-    showModalOnMobile: function () {
+    showModalOnMobile: function (row) {
       if (this.isMobile) {
-        this.showModal()
+        this.showModal(this.dailyDetail.indexOf(row))
       }
     },
-    showModal: function () {
+    showModal: function (index) {
       if (validator.isEmpty(this.daily.id)) {
-        this.$message({
-          showClose: true,
-          message: '请先保存日程记录',
-          type: 'warning'
-        })
+        utils.showWarning(this, '请先保存日程记录')
       } else {
-        this.currentIndex = $(window.event.srcElement).parents('.data').attr('data-index')
+        this.currentIndex = index
         let daily = utils.isNull(this.currentIndex) ? this.defaultDailyDetail : this.dailyDetail[this.currentIndex]
         this.currentDaily = utils.clone(daily)
         $('#daily-modal').modal('show')
       }
     },
-    remove: function () {
-      // TODO table更新后index同样需要更新
-      let index = $(window.event.srcElement).parents('.data').attr('data-index')
+    remove: function (index) {
       if (utils.isNull(index)) {
         index = this.currentIndex
       }
@@ -122,11 +120,12 @@ export default {
           requestRemoveDailies(self.dailyDetail[index].id).then(data => {
             if (data.code === 200) {
               self.dailyDetail.splice(index, 1)
-              utils.showSuccess(data.msg)
+              utils.showSuccess(this, data.msg)
             } else {
-              utils.showError(data.msg)
+              utils.showError(this, data.msg)
             }
           })
+        }).catch(() => {
         })
       }
     },
@@ -142,9 +141,9 @@ export default {
       if (data.code === 200) {
         this.daily = data.data
         this.$parent.getChartData()
-        utils.showSuccess(data.msg)
+        utils.showSuccess(this, data.msg)
       } else {
-        utils.showError(data.msg)
+        utils.showError(this, data.msg)
       }
     },
     updateDailies: function (dailies) {
@@ -167,7 +166,7 @@ export default {
             }
           })
         } else {
-          utils.showError(data.msg)
+          utils.showError(this, data.msg)
         }
       })
     }

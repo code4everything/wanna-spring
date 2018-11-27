@@ -301,7 +301,7 @@ export default {
     },
     listIncomeMonth: function () {
       if (validator.isEmpty(this.startMonth) || validator.isEmpty(this.endMonth)) {
-        this.$message.error('月份不能为空')
+        utils.showWarning(this, '月份不能为空')
       } else {
         this.monthData.rows = []
         requestListIncomeMonth(this.startMonth, this.endMonth).then(data => {
@@ -310,14 +310,14 @@ export default {
               this.monthData.rows.push({'month': item.date, '支出': (item.money / 100).toFixed(2)})
             })
           } else {
-            this.$message.error(data.msg)
+            utils.showError(this, data.msg)
           }
         })
       }
     },
     listIncomeYear: function () {
       if (validator.isEmpty(this.startYear) || validator.isEmpty(this.endYear)) {
-        this.$message.error('年份不能为空')
+        utils.showWarning(this, '年份不能为空')
       } else {
         this.yearData.rows = []
         requestListIncomeYear(this.startYear, this.endYear).then(data => {
@@ -326,7 +326,7 @@ export default {
               this.yearData.rows.push({'year': item.date, '支出': (item.money / 100).toFixed(2)})
             })
           } else {
-            this.$message.error(data.msg)
+            utils.showError(this, data.msg)
           }
         })
       }

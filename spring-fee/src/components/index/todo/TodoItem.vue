@@ -43,7 +43,7 @@ export default {
           this.todos[index].status = status
         } else {
           src.checked = false
-          utils.showError(data.msg)
+          utils.showError(this, data.msg)
         }
       })
     },
@@ -58,9 +58,9 @@ export default {
         requestRemoveTodo(self.todos[index].id).then(data => {
           if (data.code === 200) {
             self.todos.splice(index, 1)
-            utils.showSuccess(data.msg)
+            utils.showSuccess(this, data.msg)
           } else {
-            utils.showError(data.msg)
+            utils.showError(this, data.msg)
           }
         })
       }).catch(() => {
@@ -69,7 +69,7 @@ export default {
     updateTodo: function () {
       let index = $(window.event.srcElement).parents('div.todo').attr('data-index')
       if (validator.isEmpty(this.todos[index].content)) {
-        this.$message({message: '数据不能为空', type: 'warning', showClose: true})
+        utils.showWarning(this, '数据不能为空')
       } else {
         requestUpdateTodo(this.todos[index].id, this.todos[index].content)
       }

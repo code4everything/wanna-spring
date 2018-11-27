@@ -1,43 +1,43 @@
 <!--suppress HtmlFormInputWithoutLabel -->
 <template>
-  <div class="modal fade" id="daily-modal" tabindex="-1" role="dialog"
-       aria-labelledby="daily-modal-label" aria-hidden="true">
-    <div class="modal-dialog" :style="{width:isMobile?'90%':'100%'}">
+  <div aria-hidden="true" aria-labelledby="daily-modal-label" class="modal fade" id="daily-modal"
+       role="dialog" tabindex="-1">
+    <div :style="{width:isMobile?'90%':'100%'}" class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title" id="daily-modal-label">{{title}}</h4>
-          <button type="button" class="close" data-dismiss="modal"
-                  aria-hidden="true">&times;
+          <button aria-hidden="true" class="close" data-dismiss="modal"
+                  type="button">&times;
           </button>
         </div>
         <div class="modal-body">
-          <div class="container data" :data-id="dailies.id">
+          <div :data-id="dailies.id" class="container data">
             <div class="row">
               <div class="col-sm-6 col-6">
-                <el-time-picker :placeholder="startTimeTip" class="w-100" value-format="HH:mm:ss"
-                                v-model="dailies.startTime"/>
+                <el-time-picker :placeholder="startTimeTip" class="w-100" v-model="dailies.startTime"
+                                value-format="HH:mm:ss"/>
               </div>
               <div class="col-sm-6 col-6">
-                <el-time-picker :placeholder="endTimeTip" class="w-100" value-format="HH:mm:ss"
-                                v-model="dailies.endTime"/>
+                <el-time-picker :placeholder="endTimeTip" class="w-100" v-model="dailies.endTime"
+                                value-format="HH:mm:ss"/>
               </div>
             </div>
             <br/>
             <div class="row">
               <div class="col-sm-12 col-12">
-                <el-input :placeholder="contentTip" type="textarea" v-model="dailies.content" rows="3"></el-input>
+                <el-input :placeholder="contentTip" rows="3" type="textarea" v-model="dailies.content"></el-input>
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i
+          <button class="btn btn-secondary" data-dismiss="modal" type="button"><i
             class="glyphicon glyphicon-remove"></i>{{closeTip}}
           </button>
-          <button type="button" class="btn btn-danger" data-dismiss="modal" @click="this.$parent.remove"><i
+          <button @click="this.$parent.remove" class="btn btn-danger" data-dismiss="modal" type="button"><i
             class="glyphicon glyphicon-trash"></i>{{removeTip}}
           </button>
-          <button type="button" class="btn btn-success" @click="saveDailies"><i
+          <button @click="saveDailies" class="btn btn-success" type="button"><i
             class="glyphicon glyphicon-floppy-open"></i>{{saveTip}}
           </button>
         </div>
@@ -69,8 +69,8 @@ export default {
   props: ['dailies'],
   methods: {
     saveDailies: function () {
-      if (this.dailies.startTime || this.dailies.endTime || validator.isEmpty(this.dailies.startTime) || validator.isEmpty(this.dailies.endTime) || validator.isEmpty(this.dailies.content)) {
-        layer.alert('数据不能为空')
+      if (!this.dailies.startTime || !this.dailies.endTime || validator.isEmpty(this.dailies.startTime) || validator.isEmpty(this.dailies.endTime) || validator.isEmpty(this.dailies.content)) {
+        utils.showWarning(this, '数据不能为空')
       } else {
         if (validator.isEmpty(this.dailies.id)) {
           requestSaveDailies(this.$parent.daily.id, this.dailies).then(data => this.handleDailiesReturnData(data))
