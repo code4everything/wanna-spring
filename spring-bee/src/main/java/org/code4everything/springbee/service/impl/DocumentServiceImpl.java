@@ -1,7 +1,6 @@
 package org.code4everything.springbee.service.impl;
 
 import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.IdUtil;
 import org.code4everything.boot.annotations.AopLog;
 import org.code4everything.boot.bean.MultipartFileBean;
@@ -12,6 +11,8 @@ import org.code4everything.springbee.domain.Document;
 import org.code4everything.springbee.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 /**
  * @author pantao
@@ -29,7 +30,7 @@ public class DocumentServiceImpl implements DocumentService {
     @AopLog("通过访问链接获取本地路径")
     public String getLocalPathByAccessUrl(String accessUrl) {
         Document document = documentDAO.getByAccessUrl(accessUrl);
-        return Validator.isNull(document) ? "" : document.getAccessUrl();
+        return Objects.isNull(document) ? "" : document.getAccessUrl();
     }
 
     @Override
