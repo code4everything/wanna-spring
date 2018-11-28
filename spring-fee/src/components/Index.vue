@@ -3,7 +3,7 @@
   <div>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
       <img :src="logoUrl" class="navbar-brand rounded-circle" style="width: 2rem;height: 2.5rem;"/>
-      <button @click="toggleSearchStatus" aria-expanded="false" class="navbar-toggler" data-target="#collapsibleNavbar"
+      <button aria-expanded="false" class="navbar-toggler" data-target="#collapsibleNavbar"
               data-toggle="collapse" type="button">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -14,10 +14,6 @@
                data-toggle="pill">{{menu.title}}</a>
           </li>
         </ul>
-      </div>
-      <div class="form-inline w-50" v-show="shouldShowSearch">
-        <input :placeholder="searchTip" class="form-control border-dark bg-dark text-white form-control-sm w-100"
-               id="search" type="search"/>
       </div>
     </nav>
     <br/>
@@ -40,7 +36,6 @@ export default {
   name: 'Index',
   data () {
     return {
-      shouldShowSearch: true,
       logoUrl: 'static/img/logo.png',
       searchTip: '搜索',
       menus: [{
@@ -92,9 +87,6 @@ export default {
       } else {
         window.location.href = href
       }
-    },
-    toggleSearchStatus: function () {
-      this.shouldShowSearch = $('.navbar-toggler').attr('aria-expanded') === 'true'
     }
   }
 }
