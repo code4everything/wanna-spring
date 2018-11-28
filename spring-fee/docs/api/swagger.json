@@ -19,47 +19,47 @@
   "basePath": "/",
   "tags": [
     {
-      "name": "asset-controller",
-      "description": "流动资产"
+      "name": "代办事项接口",
+      "description": "Todo Controller"
     },
     {
-      "name": "category-controller",
-      "description": "分类接口"
+      "name": "公共接口",
+      "description": "Common Controller"
     },
     {
-      "name": "common-controller",
-      "description": "公共接口"
+      "name": "分类接口",
+      "description": "Category Controller"
     },
     {
-      "name": "dailies-controller",
-      "description": "日程详情接口"
+      "name": "收益接口",
+      "description": "Income Controller"
     },
     {
-      "name": "daily-controller",
-      "description": "日程记录接口"
+      "name": "文件资源接口",
+      "description": "Document Controller"
     },
     {
-      "name": "document-controller",
-      "description": "文档接口"
+      "name": "日程接口",
+      "description": "Daily Controller"
     },
     {
-      "name": "income-controller",
-      "description": "收益详情"
+      "name": "日程详细记录接口",
+      "description": "Dailies Controller"
     },
     {
-      "name": "todo-controller",
-      "description": "代办事项接口"
+      "name": "用户接口",
+      "description": "User Controller"
     },
     {
-      "name": "user-controller",
-      "description": "用户接口"
+      "name": "资产接口",
+      "description": "Asset Controller"
     }
   ],
   "paths": {
     "/common/current-time": {
       "get": {
         "tags": [
-          "common-controller"
+          "公共接口"
         ],
         "summary": "获取服务器当前时间",
         "operationId": "getCurrentTimestampUsingGET",
@@ -70,7 +70,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject"
+              "$ref": "#/definitions/ResponseResult«string»"
             }
           },
           "401": {
@@ -95,7 +95,7 @@
     "/common/email/exists": {
       "get": {
         "tags": [
-          "common-controller"
+          "公共接口"
         ],
         "summary": "邮箱是否存在",
         "operationId": "existsEmailUsingGET",
@@ -115,7 +115,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«boolean»"
+              "$ref": "#/definitions/ResponseResult«boolean»"
             }
           },
           "401": {
@@ -140,7 +140,7 @@
     "/common/username/exists": {
       "get": {
         "tags": [
-          "common-controller"
+          "公共接口"
         ],
         "summary": "用户名是否存在",
         "operationId": "existsUsernameUsingGET",
@@ -160,7 +160,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«boolean»"
+              "$ref": "#/definitions/ResponseResult«boolean»"
             }
           },
           "401": {
@@ -185,7 +185,7 @@
     "/common/vcode/send": {
       "post": {
         "tags": [
-          "common-controller"
+          "公共接口"
         ],
         "summary": "发送验证码",
         "operationId": "sendVcodeUsingPOST",
@@ -208,7 +208,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject"
+              "$ref": "#/definitions/ResponseResult«string»"
             }
           },
           "201": {
@@ -236,7 +236,7 @@
     "/common/vcode/verify": {
       "get": {
         "tags": [
-          "common-controller"
+          "公共接口"
         ],
         "summary": "验证码是否正确",
         "operationId": "verifyVcodeUsingGET",
@@ -263,7 +263,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject"
+              "$ref": "#/definitions/ResponseResult«boolean»"
             }
           },
           "401": {
@@ -288,7 +288,7 @@
     "/user/asset/balance": {
       "get": {
         "tags": [
-          "asset-controller"
+          "资产接口"
         ],
         "summary": "获取流动资产",
         "operationId": "getBalanceUsingGET",
@@ -299,7 +299,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«long»"
+              "$ref": "#/definitions/ResponseResult«long»"
             }
           },
           "401": {
@@ -324,7 +324,7 @@
     "/user/asset/income/append": {
       "post": {
         "tags": [
-          "income-controller"
+          "收益接口"
         ],
         "summary": "添加一条收益记录",
         "operationId": "saveIncomeUsingPOST",
@@ -349,7 +349,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«income»"
+              "$ref": "#/definitions/ResponseResult«income»"
             }
           },
           "201": {
@@ -377,7 +377,7 @@
     "/user/asset/income/list": {
       "get": {
         "tags": [
-          "income-controller"
+          "收益接口"
         ],
         "summary": "列出收益详情",
         "operationId": "listUsingGET_1",
@@ -386,20 +386,86 @@
         ],
         "parameters": [
           {
-            "in": "body",
-            "name": "queryIncome",
-            "description": "queryIncome",
+            "name": "category",
+            "in": "query",
+            "description": "分类",
             "required": false,
-            "schema": {
-              "$ref": "#/definitions/queryIncomeDTO"
-            }
+            "type": "string"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "截止日期",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "开始日期",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«List«income»»"
+              "$ref": "#/definitions/ResponseResult«ArrayList«income»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/asset/income/month/list": {
+      "get": {
+        "tags": [
+          "收益接口"
+        ],
+        "summary": "列出月账单",
+        "operationId": "listMonthUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "endMonth",
+            "in": "query",
+            "description": "结束月份",
+            "required": true,
+            "type": "string",
+            "x-example": "2018-12"
+          },
+          {
+            "name": "startMonth",
+            "in": "query",
+            "description": "开始月份",
+            "required": true,
+            "type": "string",
+            "x-example": "2018-01"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResponseResult«ArrayList«incomeBillVO»»"
             }
           },
           "401": {
@@ -424,7 +490,7 @@
     "/user/asset/income/remove": {
       "delete": {
         "tags": [
-          "income-controller"
+          "收益接口"
         ],
         "summary": "删除一条收益记录",
         "operationId": "removeUsingDELETE_1",
@@ -444,7 +510,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«object»"
+              "$ref": "#/definitions/ResponseResult«string»"
             }
           },
           "204": {
@@ -466,10 +532,66 @@
         ]
       }
     },
+    "/user/asset/income/year/list": {
+      "get": {
+        "tags": [
+          "收益接口"
+        ],
+        "summary": "列出年账单",
+        "operationId": "listYearUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "endYear",
+            "in": "query",
+            "description": "结束年份",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "x-example": 2018
+          },
+          {
+            "name": "startYear",
+            "in": "query",
+            "description": "开始年份",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "x-example": 2014
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResponseResult«ArrayList«incomeBillVO»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
     "/user/asset/income/{incomeId}/update": {
       "put": {
         "tags": [
-          "income-controller"
+          "收益接口"
         ],
         "summary": "更新记录",
         "operationId": "updateIncomeUsingPUT",
@@ -501,7 +623,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«income»"
+              "$ref": "#/definitions/ResponseResult«income»"
             }
           },
           "201": {
@@ -529,7 +651,7 @@
     "/user/category/append": {
       "post": {
         "tags": [
-          "category-controller"
+          "分类接口"
         ],
         "summary": "添加分类",
         "operationId": "saveCategoryUsingPOST",
@@ -552,7 +674,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«category»"
+              "$ref": "#/definitions/ResponseResult«category»"
             }
           },
           "201": {
@@ -580,7 +702,7 @@
     "/user/category/list": {
       "get": {
         "tags": [
-          "category-controller"
+          "分类接口"
         ],
         "summary": "列出我的分类",
         "operationId": "listUsingGET",
@@ -591,7 +713,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«List«category»»"
+              "$ref": "#/definitions/ResponseResult«ArrayList«category»»"
             }
           },
           "401": {
@@ -613,13 +735,58 @@
         ]
       }
     },
-    "/user/daily/create": {
-      "post": {
+    "/user/category/{categoryId}/remove": {
+      "delete": {
         "tags": [
-          "daily-controller"
+          "分类接口"
         ],
-        "summary": "添加记录",
-        "operationId": "saveDailyUsingPOST",
+        "summary": "删除分类",
+        "operationId": "removeCategoryUsingDELETE",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "description": "categoryId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResponseResult«boolean»"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/user/category/{categoryId}/update": {
+      "put": {
+        "tags": [
+          "分类接口"
+        ],
+        "summary": "更新分类名称",
+        "operationId": "updateCategoryUsingPUT",
         "consumes": [
           "application/json"
         ],
@@ -628,20 +795,25 @@
         ],
         "parameters": [
           {
-            "in": "body",
-            "name": "daily",
-            "description": "daily",
-            "required": false,
-            "schema": {
-              "$ref": "#/definitions/dailyDTO"
-            }
+            "name": "categoryId",
+            "in": "path",
+            "description": "categoryId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "分类名",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«daily»"
+              "$ref": "#/definitions/ResponseResult«boolean»"
             }
           },
           "201": {
@@ -666,22 +838,39 @@
         ]
       }
     },
-    "/user/daily/date/list": {
-      "get": {
+    "/user/daily/create": {
+      "post": {
         "tags": [
-          "daily-controller"
+          "日程接口"
         ],
-        "summary": "列出记录的日期",
-        "operationId": "listDailyDateUsingGET",
+        "summary": "添加记录",
+        "operationId": "saveDailyUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
         "produces": [
           "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "daily",
+            "description": "daily",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/dailyDTO"
+            }
+          }
         ],
         "responses": {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«List«dailyDateVO»»"
+              "$ref": "#/definitions/ResponseResult«daily»"
             }
+          },
+          "201": {
+            "description": "Created"
           },
           "401": {
             "description": "Unauthorized"
@@ -705,7 +894,7 @@
     "/user/daily/detail/append/{dailyId}": {
       "post": {
         "tags": [
-          "dailies-controller"
+          "日程详细记录接口"
         ],
         "summary": "添加一条详情记录",
         "operationId": "appendUsingPOST",
@@ -737,7 +926,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«dailyDetail»"
+              "$ref": "#/definitions/ResponseResult«dailyDetail»"
             }
           },
           "201": {
@@ -765,7 +954,7 @@
     "/user/daily/detail/list": {
       "get": {
         "tags": [
-          "dailies-controller"
+          "日程详细记录接口"
         ],
         "summary": "列出日程详情",
         "operationId": "listByDailyIdUsingGET",
@@ -785,7 +974,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«List«dailyDetail»»"
+              "$ref": "#/definitions/ResponseResult«ArrayList«dailyDetail»»"
             }
           },
           "401": {
@@ -810,7 +999,7 @@
     "/user/daily/detail/remove": {
       "delete": {
         "tags": [
-          "dailies-controller"
+          "日程详细记录接口"
         ],
         "summary": "删除一条详情",
         "operationId": "removeUsingDELETE",
@@ -830,7 +1019,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«object»"
+              "$ref": "#/definitions/ResponseResult«string»"
             }
           },
           "204": {
@@ -855,7 +1044,7 @@
     "/user/daily/detail/{dailiesId}/update": {
       "put": {
         "tags": [
-          "dailies-controller"
+          "日程详细记录接口"
         ],
         "summary": "更新详情",
         "operationId": "updateDailiesUsingPUT",
@@ -887,7 +1076,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«dailyDetail»"
+              "$ref": "#/definitions/ResponseResult«dailyDetail»"
             }
           },
           "201": {
@@ -912,10 +1101,55 @@
         ]
       }
     },
+    "/user/daily/get": {
+      "get": {
+        "tags": [
+          "日程接口"
+        ],
+        "summary": "getDaily",
+        "operationId": "getDailyUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "description": "日期",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResponseResult«daily»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
     "/user/daily/list": {
       "get": {
         "tags": [
-          "daily-controller"
+          "日程接口"
         ],
         "summary": "列出日程记录",
         "operationId": "listByDateUsingGET",
@@ -924,20 +1158,25 @@
         ],
         "parameters": [
           {
-            "in": "body",
-            "name": "queryDaily",
-            "description": "queryDaily",
-            "required": false,
-            "schema": {
-              "$ref": "#/definitions/queryDailyDTO"
-            }
+            "name": "end",
+            "in": "query",
+            "description": "结束时间",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "开始时间",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«List«daily»»"
+              "$ref": "#/definitions/ResponseResult«ArrayList«daily»»"
             }
           },
           "401": {
@@ -962,7 +1201,7 @@
     "/user/daily/remove": {
       "delete": {
         "tags": [
-          "daily-controller"
+          "日程接口"
         ],
         "summary": "删除记录",
         "operationId": "removeDailyUsingDELETE",
@@ -982,7 +1221,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«object»"
+              "$ref": "#/definitions/ResponseResult«string»"
             }
           },
           "204": {
@@ -1007,7 +1246,7 @@
     "/user/daily/{dailyId}/update": {
       "put": {
         "tags": [
-          "daily-controller"
+          "日程接口"
         ],
         "summary": "更新记录",
         "operationId": "updateDailyUsingPUT",
@@ -1039,7 +1278,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«daily»"
+              "$ref": "#/definitions/ResponseResult«daily»"
             }
           },
           "201": {
@@ -1067,7 +1306,7 @@
     "/user/document/**": {
       "get": {
         "tags": [
-          "document-controller"
+          "文件资源接口"
         ],
         "summary": "获取文件资源",
         "operationId": "getUsingGET",
@@ -1103,7 +1342,7 @@
     "/user/document/upload": {
       "post": {
         "tags": [
-          "document-controller"
+          "文件资源接口"
         ],
         "summary": "上传文件",
         "operationId": "uploadUsingPOST",
@@ -1126,7 +1365,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«document»"
+              "$ref": "#/definitions/ResponseResult«document»"
             }
           },
           "201": {
@@ -1154,7 +1393,7 @@
     "/user/info": {
       "get": {
         "tags": [
-          "user-controller"
+          "用户接口"
         ],
         "summary": "获取用户信息",
         "operationId": "getUserInfoUsingGET",
@@ -1165,7 +1404,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«user»"
+              "$ref": "#/definitions/ResponseResult«user»"
             }
           },
           "401": {
@@ -1188,7 +1427,7 @@
       },
       "put": {
         "tags": [
-          "user-controller"
+          "用户接口"
         ],
         "summary": "更新信息",
         "operationId": "updateInfoUsingPUT",
@@ -1213,7 +1452,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject"
+              "$ref": "#/definitions/ResponseResult«boolean»"
             }
           },
           "201": {
@@ -1241,7 +1480,7 @@
     "/user/login": {
       "put": {
         "tags": [
-          "user-controller"
+          "用户接口"
         ],
         "summary": "登录",
         "operationId": "loginUsingPUT",
@@ -1271,7 +1510,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«string»"
+              "$ref": "#/definitions/ResponseResult«string»"
             }
           },
           "201": {
@@ -1299,7 +1538,7 @@
     "/user/password/reset": {
       "put": {
         "tags": [
-          "user-controller"
+          "用户接口"
         ],
         "summary": "重置密码",
         "operationId": "resetPasswordUsingPUT",
@@ -1324,7 +1563,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject"
+              "$ref": "#/definitions/ResponseResult«string»"
             }
           },
           "201": {
@@ -1352,7 +1591,7 @@
     "/user/password/update": {
       "put": {
         "tags": [
-          "user-controller"
+          "用户接口"
         ],
         "summary": "更新密码",
         "operationId": "updatePasswordUsingPUT",
@@ -1382,7 +1621,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject"
+              "$ref": "#/definitions/ResponseResult«boolean»"
             }
           },
           "201": {
@@ -1410,7 +1649,7 @@
     "/user/register": {
       "post": {
         "tags": [
-          "user-controller"
+          "用户接口"
         ],
         "summary": "注册",
         "operationId": "registerUsingPOST",
@@ -1435,7 +1674,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject"
+              "$ref": "#/definitions/ResponseResult«string»"
             }
           },
           "201": {
@@ -1460,10 +1699,62 @@
         ]
       }
     },
+    "/user/todo/count/list": {
+      "get": {
+        "tags": [
+          "代办事项接口"
+        ],
+        "summary": "列出日程记录",
+        "operationId": "listByDateUsingGET_1",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "end",
+            "in": "query",
+            "description": "结束时间",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "开始时间",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResponseResult«ArrayList«todoCountVO»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
     "/user/todo/create": {
       "post": {
         "tags": [
-          "todo-controller"
+          "代办事项接口"
         ],
         "summary": "添加代办事项",
         "operationId": "saveTodoUsingPOST",
@@ -1493,7 +1784,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«todo»"
+              "$ref": "#/definitions/ResponseResult«todo»"
             }
           },
           "201": {
@@ -1521,7 +1812,7 @@
     "/user/todo/date/list": {
       "get": {
         "tags": [
-          "todo-controller"
+          "代办事项接口"
         ],
         "summary": "列出所有日期",
         "operationId": "listDateUsingGET",
@@ -1532,7 +1823,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«List«date»»"
+              "$ref": "#/definitions/ResponseResult«ArrayList«string»»"
             }
           },
           "401": {
@@ -1557,7 +1848,7 @@
     "/user/todo/list": {
       "get": {
         "tags": [
-          "todo-controller"
+          "代办事项接口"
         ],
         "summary": "列出事项",
         "operationId": "listTodoUsingGET",
@@ -1577,7 +1868,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«List«todo»»"
+              "$ref": "#/definitions/ResponseResult«ArrayList«todo»»"
             }
           },
           "401": {
@@ -1602,7 +1893,7 @@
     "/user/todo/remove": {
       "delete": {
         "tags": [
-          "todo-controller"
+          "代办事项接口"
         ],
         "summary": "删除一条代办事项",
         "operationId": "removeUsingDELETE_2",
@@ -1622,7 +1913,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«object»"
+              "$ref": "#/definitions/ResponseResult«string»"
             }
           },
           "204": {
@@ -1647,7 +1938,7 @@
     "/user/todo/status/toggle": {
       "put": {
         "tags": [
-          "todo-controller"
+          "代办事项接口"
         ],
         "summary": "更新事项状态",
         "operationId": "updateStatusUsingPUT",
@@ -1681,7 +1972,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«object»"
+              "$ref": "#/definitions/ResponseResult«todo»"
             }
           },
           "201": {
@@ -1706,10 +1997,55 @@
         ]
       }
     },
+    "/user/todo/undo/list": {
+      "get": {
+        "tags": [
+          "代办事项接口"
+        ],
+        "summary": "列出某个日期之前未完成的待办事项",
+        "operationId": "listUndoUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "description": "日期",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResponseResult«ArrayList«todo»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
     "/user/todo/update": {
       "put": {
         "tags": [
-          "todo-controller"
+          "代办事项接口"
         ],
         "summary": "更新代办事项内容",
         "operationId": "updateContentUsingPUT",
@@ -1739,7 +2075,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/ResultObject«todo»"
+              "$ref": "#/definitions/ResponseResult«todo»"
             }
           },
           "201": {
@@ -1786,29 +2122,7 @@
       },
       "title": "InputStreamSource"
     },
-    "ResultObject": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "data": {
-          "type": "object"
-        },
-        "message": {
-          "type": "string"
-        },
-        "status": {
-          "type": "string"
-        },
-        "timestamp": {
-          "$ref": "#/definitions/Timestamp"
-        }
-      },
-      "title": "ResultObject"
-    },
-    "ResultObject«List«category»»": {
+    "ResponseResult«ArrayList«category»»": {
       "type": "object",
       "properties": {
         "code": {
@@ -1821,44 +2135,16 @@
             "$ref": "#/definitions/category"
           }
         },
-        "message": {
-          "type": "string"
-        },
-        "status": {
+        "msg": {
           "type": "string"
         },
         "timestamp": {
           "$ref": "#/definitions/Timestamp"
         }
       },
-      "title": "ResultObject«List«category»»"
+      "title": "ResponseResult«ArrayList«category»»"
     },
-    "ResultObject«List«dailyDateVO»»": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "data": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/dailyDateVO"
-          }
-        },
-        "message": {
-          "type": "string"
-        },
-        "status": {
-          "type": "string"
-        },
-        "timestamp": {
-          "$ref": "#/definitions/Timestamp"
-        }
-      },
-      "title": "ResultObject«List«dailyDateVO»»"
-    },
-    "ResultObject«List«dailyDetail»»": {
+    "ResponseResult«ArrayList«dailyDetail»»": {
       "type": "object",
       "properties": {
         "code": {
@@ -1871,19 +2157,16 @@
             "$ref": "#/definitions/dailyDetail"
           }
         },
-        "message": {
-          "type": "string"
-        },
-        "status": {
+        "msg": {
           "type": "string"
         },
         "timestamp": {
           "$ref": "#/definitions/Timestamp"
         }
       },
-      "title": "ResultObject«List«dailyDetail»»"
+      "title": "ResponseResult«ArrayList«dailyDetail»»"
     },
-    "ResultObject«List«daily»»": {
+    "ResponseResult«ArrayList«daily»»": {
       "type": "object",
       "properties": {
         "code": {
@@ -1896,19 +2179,16 @@
             "$ref": "#/definitions/daily"
           }
         },
-        "message": {
-          "type": "string"
-        },
-        "status": {
+        "msg": {
           "type": "string"
         },
         "timestamp": {
           "$ref": "#/definitions/Timestamp"
         }
       },
-      "title": "ResultObject«List«daily»»"
+      "title": "ResponseResult«ArrayList«daily»»"
     },
-    "ResultObject«List«date»»": {
+    "ResponseResult«ArrayList«incomeBillVO»»": {
       "type": "object",
       "properties": {
         "code": {
@@ -1918,23 +2198,19 @@
         "data": {
           "type": "array",
           "items": {
-            "type": "string",
-            "format": "date"
+            "$ref": "#/definitions/incomeBillVO"
           }
         },
-        "message": {
-          "type": "string"
-        },
-        "status": {
+        "msg": {
           "type": "string"
         },
         "timestamp": {
           "$ref": "#/definitions/Timestamp"
         }
       },
-      "title": "ResultObject«List«date»»"
+      "title": "ResponseResult«ArrayList«incomeBillVO»»"
     },
-    "ResultObject«List«income»»": {
+    "ResponseResult«ArrayList«income»»": {
       "type": "object",
       "properties": {
         "code": {
@@ -1947,19 +2223,60 @@
             "$ref": "#/definitions/income"
           }
         },
-        "message": {
-          "type": "string"
-        },
-        "status": {
+        "msg": {
           "type": "string"
         },
         "timestamp": {
           "$ref": "#/definitions/Timestamp"
         }
       },
-      "title": "ResultObject«List«income»»"
+      "title": "ResponseResult«ArrayList«income»»"
     },
-    "ResultObject«List«todo»»": {
+    "ResponseResult«ArrayList«string»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "msg": {
+          "type": "string"
+        },
+        "timestamp": {
+          "$ref": "#/definitions/Timestamp"
+        }
+      },
+      "title": "ResponseResult«ArrayList«string»»"
+    },
+    "ResponseResult«ArrayList«todoCountVO»»": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/todoCountVO"
+          }
+        },
+        "msg": {
+          "type": "string"
+        },
+        "timestamp": {
+          "$ref": "#/definitions/Timestamp"
+        }
+      },
+      "title": "ResponseResult«ArrayList«todoCountVO»»"
+    },
+    "ResponseResult«ArrayList«todo»»": {
       "type": "object",
       "properties": {
         "code": {
@@ -1972,19 +2289,16 @@
             "$ref": "#/definitions/todo"
           }
         },
-        "message": {
-          "type": "string"
-        },
-        "status": {
+        "msg": {
           "type": "string"
         },
         "timestamp": {
           "$ref": "#/definitions/Timestamp"
         }
       },
-      "title": "ResultObject«List«todo»»"
+      "title": "ResponseResult«ArrayList«todo»»"
     },
-    "ResultObject«boolean»": {
+    "ResponseResult«boolean»": {
       "type": "object",
       "properties": {
         "code": {
@@ -1994,19 +2308,16 @@
         "data": {
           "type": "boolean"
         },
-        "message": {
-          "type": "string"
-        },
-        "status": {
+        "msg": {
           "type": "string"
         },
         "timestamp": {
           "$ref": "#/definitions/Timestamp"
         }
       },
-      "title": "ResultObject«boolean»"
+      "title": "ResponseResult«boolean»"
     },
-    "ResultObject«category»": {
+    "ResponseResult«category»": {
       "type": "object",
       "properties": {
         "code": {
@@ -2016,19 +2327,16 @@
         "data": {
           "$ref": "#/definitions/category"
         },
-        "message": {
-          "type": "string"
-        },
-        "status": {
+        "msg": {
           "type": "string"
         },
         "timestamp": {
           "$ref": "#/definitions/Timestamp"
         }
       },
-      "title": "ResultObject«category»"
+      "title": "ResponseResult«category»"
     },
-    "ResultObject«dailyDetail»": {
+    "ResponseResult«dailyDetail»": {
       "type": "object",
       "properties": {
         "code": {
@@ -2038,19 +2346,16 @@
         "data": {
           "$ref": "#/definitions/dailyDetail"
         },
-        "message": {
-          "type": "string"
-        },
-        "status": {
+        "msg": {
           "type": "string"
         },
         "timestamp": {
           "$ref": "#/definitions/Timestamp"
         }
       },
-      "title": "ResultObject«dailyDetail»"
+      "title": "ResponseResult«dailyDetail»"
     },
-    "ResultObject«daily»": {
+    "ResponseResult«daily»": {
       "type": "object",
       "properties": {
         "code": {
@@ -2060,19 +2365,16 @@
         "data": {
           "$ref": "#/definitions/daily"
         },
-        "message": {
-          "type": "string"
-        },
-        "status": {
+        "msg": {
           "type": "string"
         },
         "timestamp": {
           "$ref": "#/definitions/Timestamp"
         }
       },
-      "title": "ResultObject«daily»"
+      "title": "ResponseResult«daily»"
     },
-    "ResultObject«document»": {
+    "ResponseResult«document»": {
       "type": "object",
       "properties": {
         "code": {
@@ -2082,19 +2384,16 @@
         "data": {
           "$ref": "#/definitions/document"
         },
-        "message": {
-          "type": "string"
-        },
-        "status": {
+        "msg": {
           "type": "string"
         },
         "timestamp": {
           "$ref": "#/definitions/Timestamp"
         }
       },
-      "title": "ResultObject«document»"
+      "title": "ResponseResult«document»"
     },
-    "ResultObject«income»": {
+    "ResponseResult«income»": {
       "type": "object",
       "properties": {
         "code": {
@@ -2104,19 +2403,16 @@
         "data": {
           "$ref": "#/definitions/income"
         },
-        "message": {
-          "type": "string"
-        },
-        "status": {
+        "msg": {
           "type": "string"
         },
         "timestamp": {
           "$ref": "#/definitions/Timestamp"
         }
       },
-      "title": "ResultObject«income»"
+      "title": "ResponseResult«income»"
     },
-    "ResultObject«long»": {
+    "ResponseResult«long»": {
       "type": "object",
       "properties": {
         "code": {
@@ -2127,41 +2423,16 @@
           "type": "integer",
           "format": "int64"
         },
-        "message": {
-          "type": "string"
-        },
-        "status": {
+        "msg": {
           "type": "string"
         },
         "timestamp": {
           "$ref": "#/definitions/Timestamp"
         }
       },
-      "title": "ResultObject«long»"
+      "title": "ResponseResult«long»"
     },
-    "ResultObject«object»": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "data": {
-          "type": "object"
-        },
-        "message": {
-          "type": "string"
-        },
-        "status": {
-          "type": "string"
-        },
-        "timestamp": {
-          "$ref": "#/definitions/Timestamp"
-        }
-      },
-      "title": "ResultObject«object»"
-    },
-    "ResultObject«string»": {
+    "ResponseResult«string»": {
       "type": "object",
       "properties": {
         "code": {
@@ -2171,19 +2442,16 @@
         "data": {
           "type": "string"
         },
-        "message": {
-          "type": "string"
-        },
-        "status": {
+        "msg": {
           "type": "string"
         },
         "timestamp": {
           "$ref": "#/definitions/Timestamp"
         }
       },
-      "title": "ResultObject«string»"
+      "title": "ResponseResult«string»"
     },
-    "ResultObject«todo»": {
+    "ResponseResult«todo»": {
       "type": "object",
       "properties": {
         "code": {
@@ -2193,19 +2461,16 @@
         "data": {
           "$ref": "#/definitions/todo"
         },
-        "message": {
-          "type": "string"
-        },
-        "status": {
+        "msg": {
           "type": "string"
         },
         "timestamp": {
           "$ref": "#/definitions/Timestamp"
         }
       },
-      "title": "ResultObject«todo»"
+      "title": "ResponseResult«todo»"
     },
-    "ResultObject«user»": {
+    "ResponseResult«user»": {
       "type": "object",
       "properties": {
         "code": {
@@ -2215,17 +2480,14 @@
         "data": {
           "$ref": "#/definitions/user"
         },
-        "message": {
-          "type": "string"
-        },
-        "status": {
+        "msg": {
           "type": "string"
         },
         "timestamp": {
           "$ref": "#/definitions/Timestamp"
         }
       },
-      "title": "ResultObject«user»"
+      "title": "ResponseResult«user»"
     },
     "Timestamp": {
       "type": "object",
@@ -2291,7 +2553,7 @@
         },
         "userId": {
           "type": "string",
-          "description": "用户编号（敏感数据）"
+          "description": "用户编号"
         }
       },
       "title": "category",
@@ -2328,37 +2590,26 @@
           "format": "int64",
           "description": "记录时间"
         },
-        "day": {
-          "type": "integer",
-          "format": "int32",
-          "description": "记录的号数"
+        "date": {
+          "type": "string",
+          "description": "记录的日期"
         },
         "id": {
           "type": "string",
           "description": "记录编号"
         },
-        "month": {
-          "type": "integer",
-          "format": "int32",
-          "description": "记录的月份"
-        },
         "score": {
           "type": "integer",
           "format": "int32",
-          "description": "评价：0~9，6分以下表现欠佳（反思），6分合格，7分还行，8分优秀，9以上非常优秀"
+          "description": "评价：0~10，6分以下表现欠佳，6分合格，7分还行，8分优秀，9以上非常优秀"
         },
         "userId": {
           "type": "string",
-          "description": "用户编号（敏感数据）"
+          "description": "用户编号"
         },
         "weather": {
           "type": "string",
           "description": "天气"
-        },
-        "year": {
-          "type": "integer",
-          "format": "int32",
-          "description": "记录的年份"
         }
       },
       "title": "daily",
@@ -2382,7 +2633,11 @@
         "score": {
           "type": "integer",
           "format": "int32",
-          "description": "评分"
+          "description": "评分",
+          "minimum": 0.0,
+          "maximum": 10.0,
+          "exclusiveMinimum": false,
+          "exclusiveMaximum": false
         },
         "weather": {
           "type": "string",
@@ -2391,25 +2646,6 @@
       },
       "title": "dailyDTO",
       "description": "日程记录"
-    },
-    "dailyDateVO": {
-      "type": "object",
-      "properties": {
-        "months": {
-          "type": "array",
-          "description": "月份列表",
-          "items": {
-            "$ref": "#/definitions/dailyMonthVO"
-          }
-        },
-        "year": {
-          "type": "integer",
-          "format": "int32",
-          "description": "记录年份"
-        }
-      },
-      "title": "dailyDateVO",
-      "description": "记录日期列表"
     },
     "dailyDetail": {
       "type": "object",
@@ -2443,26 +2679,6 @@
       "title": "dailyDetail",
       "description": "日常记录详情"
     },
-    "dailyMonthVO": {
-      "type": "object",
-      "properties": {
-        "days": {
-          "type": "array",
-          "description": "日期列表",
-          "items": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "month": {
-          "type": "integer",
-          "format": "int32",
-          "description": "记录月份"
-        }
-      },
-      "title": "dailyMonthVO",
-      "description": "记录月份列表"
-    },
     "document": {
       "type": "object",
       "properties": {
@@ -2481,7 +2697,7 @@
         },
         "localPath": {
           "type": "string",
-          "description": "文件本地路径（敏感数据）"
+          "description": "文件本地路径"
         },
         "size": {
           "type": "integer",
@@ -2512,10 +2728,9 @@
           "format": "int64",
           "description": "创建时间"
         },
-        "day": {
-          "type": "integer",
-          "format": "int32",
-          "description": "号数"
+        "date": {
+          "type": "string",
+          "description": "日期"
         },
         "id": {
           "type": "string",
@@ -2525,11 +2740,6 @@
           "type": "integer",
           "format": "int64",
           "description": "金额"
-        },
-        "month": {
-          "type": "integer",
-          "format": "int32",
-          "description": "月份"
         },
         "remark": {
           "type": "string",
@@ -2556,15 +2766,26 @@
             "5",
             "6"
           ]
-        },
-        "year": {
-          "type": "integer",
-          "format": "int32",
-          "description": "年份"
         }
       },
       "title": "income",
       "description": "收益明细，包括支出"
+    },
+    "incomeBillVO": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "description": "日期"
+        },
+        "money": {
+          "type": "integer",
+          "format": "int64",
+          "description": "支出总计"
+        }
+      },
+      "title": "incomeBillVO",
+      "description": "月账单"
     },
     "incomeDTO": {
       "type": "object",
@@ -2600,7 +2821,6 @@
           "type": "string",
           "description": "付款方式（1其他，2支付宝，3微信，4银联，5信用卡，6现金）",
           "enum": [
-            "0",
             "1",
             "2",
             "3",
@@ -2636,54 +2856,6 @@
       },
       "title": "passwordDTO",
       "description": "重置密码"
-    },
-    "queryDailyDTO": {
-      "type": "object",
-      "required": [
-        "day",
-        "month",
-        "year"
-      ],
-      "properties": {
-        "day": {
-          "type": "integer",
-          "format": "int32",
-          "description": "日期（0表示列出所有日期）"
-        },
-        "month": {
-          "type": "integer",
-          "format": "int32",
-          "description": "月份（0表示列出所有月份）"
-        },
-        "year": {
-          "type": "integer",
-          "format": "int32",
-          "description": "年份"
-        }
-      },
-      "title": "queryDailyDTO",
-      "description": "按时间查询"
-    },
-    "queryIncomeDTO": {
-      "type": "object",
-      "properties": {
-        "category": {
-          "type": "string",
-          "description": "分类（为空时查询所有分类）"
-        },
-        "end": {
-          "type": "string",
-          "format": "date",
-          "description": "截止日期（为空时没有截止日期）"
-        },
-        "start": {
-          "type": "string",
-          "format": "date",
-          "description": "开始日期（为空时没有开始日期）"
-        }
-      },
-      "title": "queryIncomeDTO",
-      "description": "查询收益详情"
     },
     "registerDTO": {
       "type": "object",
@@ -2749,11 +2921,27 @@
         },
         "userId": {
           "type": "string",
-          "description": "用户编号（敏感数据）"
+          "description": "用户编号"
         }
       },
       "title": "todo",
       "description": "待办事项"
+    },
+    "todoCountVO": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "description": "日期"
+        },
+        "score": {
+          "type": "integer",
+          "format": "int32",
+          "description": "数量"
+        }
+      },
+      "title": "todoCountVO",
+      "description": "待办事项统计"
     },
     "user": {
       "type": "object",
@@ -2786,7 +2974,7 @@
         },
         "id": {
           "type": "string",
-          "description": "用户编号（敏感数据）"
+          "description": "用户编号"
         },
         "loginTime": {
           "type": "integer",
@@ -2799,7 +2987,7 @@
         },
         "password": {
           "type": "string",
-          "description": "密码（敏感数据)"
+          "description": "密码"
         },
         "status": {
           "type": "string",

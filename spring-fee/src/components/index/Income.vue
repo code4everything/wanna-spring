@@ -62,25 +62,25 @@
     <!--电脑端-->
     <div class="row" v-else>
       <div class="col-sm-12 bg-light rounded justify-content-center text-center">
-        <br/>
         <el-table :data="incomes" ref="filterTable">
           <el-table-column type="index"></el-table-column>
-          <el-table-column align="center" label="日期" prop="date" sortable sort-by="date"></el-table-column>
-          <el-table-column align="center" label="类型" :formatter="formatTypeString"></el-table-column>
+          <el-table-column align="center" label="日期" prop="date" sort-by="date" sortable></el-table-column>
+          <el-table-column :formatter="formatTypeString" align="center" label="类型"></el-table-column>
           <el-table-column align="center" label="分类" prop="category"></el-table-column>
-          <el-table-column align="center" label="金额" sortable :formatter="formatMoney"
-                           sort-by="money"></el-table-column>
-          <el-table-column align="center" label="支付方式" :formatter="formatPayWay"></el-table-column>
-          <el-table-column align="center" label="创建时间" min-width="200" sortable sort-by="createTime"
-                           :formatter="formatDate"></el-table-column>
+          <el-table-column :formatter="formatMoney" align="center" label="金额" sort-by="money"
+                           sortable></el-table-column>
+          <el-table-column :formatter="formatPayWay" align="center" label="支付方式"></el-table-column>
+          <el-table-column :formatter="formatDate" align="center" label="创建时间" min-width="200" sort-by="createTime"
+                           sortable></el-table-column>
           <el-table-column align="center" label="操作">
             <template slot-scope="scope">
               <a @click="showModal(scope.row)" class="text-primary"
                  href="javascript:">{{editTip}}</a>
-              &emsp;<a @click="remove(scope.$index)" class="text-danger" href="javascript:">{{removeTip}}</a>
+              &emsp;<a @click="remove(scope.row)" class="text-danger" href="javascript:">{{removeTip}}</a>
             </template>
           </el-table-column>
         </el-table>
+        <br/>
       </div>
     </div>
     <br/>
@@ -212,6 +212,9 @@ export default {
   },
   methods: {
     remove: function (index) {
+      if (index !== null && typeof index === 'object') {
+        index = this.incomes.indexOf(index)
+      }
       let key = utils.isNull(index) ? $(window.event.srcElement).parents('.data').attr('data-index') : index
       let self = this
       this.$confirm(`是否确定删除索引位置位于 “${parseInt(key) + 1}” 的收益记录`, '提示', {
