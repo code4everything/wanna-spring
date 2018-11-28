@@ -3,7 +3,7 @@
 Wanna Spring是一个记录个人信息，采用前后端分离的项目。
 项目的初衷是我想在这个信息时代，能记录下自己的每一天，也是一个学习前后端分离的实践项目，供大家参考、学习、讨论，小白一枚，写的不好的地方还请多多指教。
 
-> 对于一个后端开发者来说写前端着实太吃力了 :joy:
+> 对于一个后端同学来说写前端着实太吃力了 :joy:
 
 ## 开发环境
 
@@ -60,6 +60,22 @@ Wanna Spring是一个记录个人信息，采用前后端分离的项目。
     ```
 
 ## 运行截图
+
+收益记录
+
+![income](images/income.png)
+
+支出报表
+
+![income_report](images/income_report.png)
+
+日程记录
+
+![schedule](images/schedule.png)
+
+代办事项
+
+![todo](images/todo.png)
 
 ## 部署项目
 
