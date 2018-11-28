@@ -37,14 +37,14 @@
     <div class="col-12 col-sm-12"><br/></div>
     <!--日程详细记录-->
     <div class="rounded bg-light col-10 offset-1 col-sm-11 offset-sm-1">
-      <br/>
       <el-table :data="dailyDetail" @row-click="showModalOnMobile">
         <div v-if="!isMobile">
           <el-table-column align="center" type="index"></el-table-column>
         </div>
         <el-table-column align="center" label="开始" prop="startTime"></el-table-column>
         <el-table-column align="center" label="结束" prop="endTime"></el-table-column>
-        <el-table-column align="center" label="记录" prop="content" min-width="150" show-overflow-tooltip></el-table-column>
+        <el-table-column align="center" label="记录" min-width="150" prop="content"
+                         show-overflow-tooltip></el-table-column>
         <el-table-column align="center" label="操作" v-if="!isMobile">
           <template slot-scope="scope">
             <a @click="showModal(scope.$index)" class="text-primary" href="javascript:">{{editTip}}</a>
@@ -52,6 +52,7 @@
           </template>
         </el-table-column>
       </el-table>
+      <br/>
     </div>
     <div class="col-12 col-sm-12"><br/></div>
     <daily-modal :dailies="currentDaily"></daily-modal>
