@@ -37,15 +37,22 @@
     <div class="col-12 col-sm-12"><br/></div>
     <!--日程详细记录-->
     <div class="rounded bg-light col-10 offset-1 col-sm-11 offset-sm-1">
-      <el-table :data="dailyDetail" @row-click="showModalOnMobile">
-        <div v-if="!isMobile">
-          <el-table-column align="center" type="index"></el-table-column>
-        </div>
+      <!--移动端-->
+      <el-table :data="dailyDetail" @row-click="showModalOnMobile" v-if="isMobile">
+        <el-table-column align="center" type="index"></el-table-column>
+        <el-table-column align="center" label="开始" prop="startTime"></el-table-column>
+        <el-table-column align="center" label="结束" prop="endTime"></el-table-column>
+        <el-table-column align="center" label="记录" min-width="100" prop="content"
+                         show-overflow-tooltip></el-table-column>
+      </el-table>
+      <!--电脑端-->
+      <el-table :data="dailyDetail" v-else>
+        <el-table-column align="center" type="index"></el-table-column>
         <el-table-column align="center" label="开始" prop="startTime"></el-table-column>
         <el-table-column align="center" label="结束" prop="endTime"></el-table-column>
         <el-table-column align="center" label="记录" min-width="150" prop="content"
                          show-overflow-tooltip></el-table-column>
-        <el-table-column align="center" label="操作" v-if="!isMobile">
+        <el-table-column align="center" label="操作">
           <template slot-scope="scope">
             <a @click="showModal(scope.$index)" class="text-primary" href="javascript:">{{editTip}}</a>
             &emsp;<a @click="remove(scope.$index)" class="text-danger" href="javascript:">{{removeTip}}</a>

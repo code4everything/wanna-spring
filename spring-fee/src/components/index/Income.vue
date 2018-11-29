@@ -6,7 +6,7 @@
       <div class="bg-light rounded col-10 offset-1 offset-sm-0 col-sm-12">
         <br/>
         <div class="row">
-          <div class="col-sm-5 col-8 text-left">
+          <div class="col-sm-5 col-9 text-left">
             <h6 style="padding-top: 10px;" v-html="formatAssetString()" v-if="isMobile"></h6>
             <h5 class="h5-v-middle" v-else v-html="formatAssetString()"></h5>
           </div>
@@ -18,18 +18,18 @@
             <el-date-picker :clearable="false" :editable="false" :placeholder="dateEndTip"
                             @change="listIncome" class="w-100" v-model="endDate" value-format="yyyy-MM-dd"/>
           </div>
-          <div class="col-sm-3 col-4 text-left">
+          <div class="col-sm-3 col-3 text-left">
             <div class="row">
               <div class="col-sm-6 col-12">
-                <el-button @click="showModal(null)" class="w-100" type="primary"><i
+                <button @click="showModal(null)" class="btn btn-block btn-primary"><i
                   class="glyphicon glyphicon-plus-sign"></i>
-                  {{addIncomeTip}}
-                </el-button>
+                  {{isMobile?'':addIncomeTip}}
+                </button>
               </div>
               <div class="col-sm-6 col-6" v-if="!isMobile">
-                <el-button @click="showReporter" class="w-100" type="success"><i class="glyphicon glyphicon-stats"></i>
+                <button @click="showReporter" class="btn btn-block btn-info"><i class="glyphicon glyphicon-stats"></i>
                   {{reporterTip}}
-                </el-button>
+                </button>
               </div>
             </div>
           </div>
