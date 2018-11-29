@@ -9,9 +9,11 @@
             <label></label>
           </div>
         </div>
-        <input :class="['border-0 bg-light todo-item w-75',todo.status==='1'?'deleted':'']"
-               :disabled="todo.status==='1'"
-               @blur="updateTodo" type="text" v-model="todo.content"/>
+        <el-tooltip effect="dark" :content="todo.doingDate" placement="top-start" :enterable="false">
+          <input :class="['border-0 bg-light todo-item w-75',todo.status==='1'?'deleted':'']"
+                 :disabled="todo.status==='1'" @focus="watchTodoContent" @blur="updateTodo(null)" type="text"
+                 v-model="todo.content"/>
+        </el-tooltip>
         <a @click="remove" class="text-danger" href="javascript:" v-html="isMobile?removeIcon:removeTip"></a>
       </div>
     </div>
@@ -29,7 +31,8 @@ export default {
     return {
       removeIcon: '<i class="glyphicon glyphicon-trash"></i>',
       removeTip: '删除',
-      isMobile: false
+      isMobile: false,
+      currentTodoContent: ''
     }
   },
   props: ['todos', 'idPrefix'],
@@ -66,13 +69,23 @@ export default {
       }).catch(() => {
       })
     },
-    updateTodo: function () {
-      let index = $(window.event.srcElement).parents('div.todo').attr('data-index')
-      if (validator.isEmpty(this.todos[index].content)) {
+    updateTodo: function (srcEle) {
+      let index = $(srcEle || window.event.srcElement).parents('div.todo').attr('data-index')
+      let content = this.todos[index].content
+      if (validator.isEmpty(content)) {
         utils.showWarning(this, '数据不能为空')
-      } else {
-        requestUpdateTodo(this.todos[index].id, this.todos[index].content)
+      } else if (this.currentTodoContent !== content) {
+        // 当值发生变化时，更新内容
+        requestUpdateTodo(this.todos[index].id, content)
+        this.currentTodoContent = content
       }
+    },
+    watchTodoContent: function () {
+      let srcEle = window.event.srcElement
+      this.currentTodoContent = $(srcEle).val()
+      setTimeout(() => {
+        this.updateTodo(srcEle)
+      }, 10 * 1000)
     }
   },
   mounted: function () {
