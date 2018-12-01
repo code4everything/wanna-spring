@@ -1,12 +1,17 @@
 package org.code4everything.springbee.config;
 
-import org.code4everything.boot.redis.RedisTemplateUtils;
+import org.code4everything.boot.config.BootConfig;
+import org.code4everything.boot.module.redis.RedisTemplateUtils;
+import org.code4everything.boot.web.CorsUtils;
 import org.code4everything.springbee.domain.Asset;
 import org.code4everything.springbee.domain.Log;
 import org.code4everything.springbee.domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.web.filter.CorsFilter;
 
 /**
  * @author pantao
@@ -14,6 +19,19 @@ import org.springframework.data.redis.core.RedisTemplate;
  */
 @Configuration
 public class BeeBeanConfiguration {
+
+    @Autowired
+    public BeeBeanConfiguration(RedisConnectionFactory redisConnectionFactory) {
+        BootConfig.setRedisConnectionFactory(redisConnectionFactory);
+    }
+
+    /**
+     * 跨域过滤器
+     */
+    @Bean
+    public CorsFilter corsFilter() {
+        return CorsUtils.newCorsFilter();
+    }
 
     @Bean
     public RedisTemplate<String, Asset> assetRedisTemplate() {
