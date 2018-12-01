@@ -9,7 +9,8 @@
             <label></label>
           </div>
         </div>
-        <el-tooltip effect="dark" :content="todo.doingDate" placement="top-start" :enterable="false">
+        <el-tooltip effect="dark" :content="todo.doingDate" placement="top-start" :enterable="false"
+                    :disabled="todo.doingDate===$parent.date">
           <input :class="['border-0 bg-light todo-item w-75',todo.status==='1'?'deleted':'']"
                  :disabled="todo.status==='1'" @focus="watchTodoContent" @blur="updateTodo(null)" type="text"
                  v-model="todo.content" @keyup.enter="updateTodo(null)"/>
