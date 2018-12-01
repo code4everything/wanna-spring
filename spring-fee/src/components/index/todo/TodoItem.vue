@@ -12,7 +12,7 @@
         <el-tooltip effect="dark" :content="todo.doingDate" placement="top-start" :enterable="false">
           <input :class="['border-0 bg-light todo-item w-75',todo.status==='1'?'deleted':'']"
                  :disabled="todo.status==='1'" @focus="watchTodoContent" @blur="updateTodo(null)" type="text"
-                 v-model="todo.content"/>
+                 v-model="todo.content" @keyup.enter="updateTodo(null)"/>
         </el-tooltip>
         <a @click="remove" class="text-danger" href="javascript:" v-html="isMobile?removeIcon:removeTip"></a>
       </div>
