@@ -29,6 +29,7 @@ import app from '../App'
 import validator from '../../static/js/validator.min'
 import {requestLogin} from '../api/api'
 import cookie from 'js-cookie'
+import utils from '../assets/js/utils'
 
 export default {
   name: 'Login',
@@ -49,14 +50,14 @@ export default {
   methods: {
     login: function () {
       if (validator.isEmpty(this.password)) {
-        layer.alert('密码不能为空')
+        utils.showWarning('密码不能为空')
       } else {
         requestLogin(this.loginName, this.password).then(data => {
           if (data.code === 200) {
             cookie.set('token', data.data)
             window.location.href = app.data().path.income
           } else {
-            layer.alert(data.msg)
+            utils.showError(this, data.msg)
           }
         })
       }

@@ -48,7 +48,6 @@
 import utils from '../../assets/js/utils'
 import {requestSaveDailies, requestUpdateDailies} from '../../api/api'
 import validator from '../../../static/js/validator.min'
-import layer from '../../../static/js/layer'
 
 export default {
   name: 'DailyModal',
@@ -81,7 +80,7 @@ export default {
       if (data.code === 200) {
         this.$parent.updateDailies(data.data)
       } else {
-        layer.alert(data.msg)
+        utils.showError(this, data.msg)
       }
     },
     remove: function () {

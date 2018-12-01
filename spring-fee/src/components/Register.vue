@@ -47,7 +47,7 @@ import app from '../App'
 import validator from '../../static/js/validator.min'
 import $ from '../../static/js/jquery-3.3.1'
 import {requestRegister, requestValidateVerifyCode, requestVerifyCode} from '../api/api'
-import layer from '../../static/js/layer'
+import utils from '../assets/js/utils'
 
 export default {
   name: 'Register',
@@ -82,7 +82,7 @@ export default {
       var email = $('#register-name').val()
       if (validator.isEmail(email)) {
         requestVerifyCode(email).then(data => {
-          layer.alert(data.msg)
+          utils.showSuccess(this, data.msg)
         })
       }
     },
@@ -101,17 +101,17 @@ export default {
       let email = $('#register-name').val()
       let password = $('#confirm-password').val()
       if (validator.isEmpty(username) || validator.isEmpty(email) || validator.isEmpty(vcode) || validator.isEmpty(password)) {
-        layer.alert('数据不能为空')
+        utils.showWarning(this, '数据不能为空')
       } else if (validator.isEmpty(this.registerNameErrorTip) && validator.isEmpty(this.passwordConfirmErrorTip) && validator.isEmpty(this.verifyCodeErrorTip)) {
         requestRegister({username: username, email: email, password: password, vcode: vcode}).then(data => {
           if (data.code === 200) {
             window.location = this.loginPath
           } else {
-            layer.alert(data.msg)
+            utils.showError(this, data.msg)
           }
         })
       } else {
-        layer.alert('格式不正确')
+        utils.showWarning(this, '格式不正确')
       }
     }
   }

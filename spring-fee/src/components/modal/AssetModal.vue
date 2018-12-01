@@ -67,7 +67,6 @@
 <script>/* eslint-disable */
 import utils from '../../assets/js/utils'
 import validator from '../../../static/js/validator.min'
-import layer from '../../../static/js/layer'
 import dayjs from 'dayjs'
 import $ from 'jquery'
 import {requestListCategory, requestSaveCategory, requestSaveIncome, requestUpdateIncome} from '../../api/api'
@@ -102,7 +101,7 @@ export default {
           if (data.code === 200) {
             self.categories.push(data.data.name)
           } else {
-            layer.alert(data.msg)
+            utils.showError(this, data.msg)
           }
         })
       }
@@ -120,14 +119,14 @@ export default {
           requestUpdateIncome(this.income.id, this.income).then(data => this.handleIncomeReturnData(data))
         }
       } else {
-        layer.alert('数据格式不合法')
+        utils.showWarning(this, '数据格式不合法')
       }
     },
     handleIncomeReturnData: function (data) {
       if (data.code === 200) {
         this.$parent.updateIncome(data.data)
       } else {
-        layer.alert(data.msg)
+        utils.showError(this, data.msg)
       }
     },
   },
@@ -142,7 +141,7 @@ export default {
           }
         })
       } else if (data.code === 401) {
-        layer.alert(data.msg)
+        utils.showError(this, data.msg)
       }
     })
   }
