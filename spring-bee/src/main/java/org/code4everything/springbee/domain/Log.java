@@ -51,4 +51,7 @@ public class Log implements Serializable {
 
     @ApiModelProperty("异常详情")
     private String exceptionDetail;
+
+    @ApiModelProperty("执行时长")
+    private Long executedTime;
 }

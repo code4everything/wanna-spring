@@ -1,11 +1,9 @@
 package org.code4everything.springbee.log;
 
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.code4everything.boot.constant.StringConsts;
 import org.code4everything.boot.log.AopLogUtils;
 import org.code4everything.boot.service.LogService;
 import org.code4everything.springbee.SpringBeeApplication;
@@ -23,13 +21,13 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class LogAspect {
 
-    private final LogService<Log> logLogService;
+    private final LogService<Log> logService;
 
     private final HttpServletRequest request;
 
     @Autowired
     public LogAspect(LogService<Log> logLogService, HttpServletRequest request) {
-        this.logLogService = logLogService;
+        this.logService = logLogService;
         this.request = request;
     }
 
@@ -38,22 +36,9 @@ public class LogAspect {
         // do nothing
     }
 
-    /**
-     * 记录用户操作
-     *
-     * @param joinPoint {@link JoinPoint}
-     */
-    @Before("serviceAspect()")
-    public void doBefore(JoinPoint joinPoint) {
-        doAfterThrowing(joinPoint, null);
-    }
-
-    @AfterThrowing(pointcut = "serviceAspect()", throwing = "throwable")
-    public void doAfterThrowing(JoinPoint joinPoint, Throwable throwable) {
-        if (Boolean.TRUE.equals(SpringBeeApplication.getBeeConfigBean().getShouldSaveLog())) {
-            // 定义缓存键
-            String key = request.getHeader(StringConsts.TOKEN) + Thread.currentThread().getId();
-            AopLogUtils.saveLog(logLogService, key, joinPoint, throwable);
-        }
+    @Around("serviceAspect()")
+    public Object doAround(ProceedingJoinPoint point) {
+        boolean shouldSaveLog = Boolean.TRUE.equals(SpringBeeApplication.getBeeConfigBean().getShouldSaveLog());
+        return AopLogUtils.saveLog(logService, point, shouldSaveLog).getResult();
     }
 }
