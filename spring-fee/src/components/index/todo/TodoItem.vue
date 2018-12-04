@@ -33,7 +33,8 @@ export default {
       removeIcon: '<i class="glyphicon glyphicon-trash"></i>',
       removeTip: '删除',
       isMobile: false,
-      currentTodoContent: ''
+      currentTodoContent: '',
+      timeoutCount: 0
     }
   },
   props: ['todos', 'idPrefix'],
@@ -82,10 +83,14 @@ export default {
       }
     },
     watchTodoContent: function () {
-      let srcEle = window.event.srcElement
+      const srcEle = window.event.srcElement
       this.currentTodoContent = $(srcEle).val()
+      // 防止切换频繁时导致频繁请求更新
+      const current = ++this.timeoutCount
       setTimeout(() => {
-        this.updateTodo(srcEle)
+        if (current === this.timeoutCount) {
+          this.updateTodo(srcEle)
+        }
       }, 10 * 1000)
     }
   },
