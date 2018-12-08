@@ -151,8 +151,6 @@ Wanna Spring是一个记录个人信息，采用前后端分离的项目。
     ``` javascript
     // 修改成自己的主机
     const host = 'https://spring-api.yourdomain.com'
-    // 注释掉URL打印
-    // console.info(`request url -> ${config.url}`)
     ```
 
 2. 打包

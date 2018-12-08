@@ -12,7 +12,6 @@ axios.interceptors.request.use(config => {
   loading = Loading.service({})
   // 加时间戳，防止缓存
   config.url = host + config.url + (config.url.includes('?') ? '&' : '?') + 'timestamp=' + new Date().getTime()
-  console.info(`request url -> ${config.url}`)
   config.headers = {
     'Content-Type': 'application/json',
     token: cookie.get('token')
