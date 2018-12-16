@@ -34,6 +34,7 @@
       <todo-item :id-prefix="undoIdPrefix" :todos="undos"></todo-item>
       <br/>
     </div>
+    <div class="col-12 col-sm-12"><br/></div>
   </div>
 </template>
 
