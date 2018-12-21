@@ -1,12 +1,10 @@
 package org.code4everything.springbee.web;
 
 import org.code4everything.boot.web.mvc.BaseController;
-import org.code4everything.springbee.SpringBeeApplication;
 import org.code4everything.springbee.domain.User;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.code4everything.springbee.service.UserService;
 
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author pantao
@@ -14,14 +12,14 @@ import java.util.concurrent.TimeUnit;
  */
 public class BeeBaseController extends BaseController {
 
-    private RedisTemplate<String, User> userRedisTemplate;
+    private UserService userService;
 
-    private User user;
+    private User user = null;
 
     public BeeBaseController() {}
 
-    public BeeBaseController(RedisTemplate<String, User> userRedisTemplate) {
-        this.userRedisTemplate = userRedisTemplate;
+    public BeeBaseController(UserService userService) {
+        this.userService = userService;
     }
 
     protected String getUserId() {
@@ -30,10 +28,7 @@ public class BeeBaseController extends BaseController {
 
     protected User getUser() {
         if (Objects.isNull(user)) {
-            // 更新过期时长
-            Integer tokenExpired = SpringBeeApplication.getBeeConfigBean().getTokenExpired();
-            userRedisTemplate.expire(getToken(), tokenExpired, TimeUnit.SECONDS);
-            user = userRedisTemplate.opsForValue().get(getToken());
+            user = getUser(userService);
         }
         return user;
     }

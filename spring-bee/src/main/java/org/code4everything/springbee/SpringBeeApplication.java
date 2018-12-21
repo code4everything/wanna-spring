@@ -5,7 +5,6 @@ import org.code4everything.boot.base.FileUtils;
 import org.code4everything.boot.config.BootConfig;
 import org.code4everything.boot.constant.IntegerConsts;
 import org.code4everything.boot.interfaces.FileWatcher;
-import org.code4everything.boot.web.mvc.DefaultWebInterceptor;
 import org.code4everything.springbee.config.BeeConfigBean;
 import org.code4everything.springbee.util.BeeUtils;
 import org.springframework.boot.SpringApplication;
@@ -24,21 +23,21 @@ public class SpringBeeApplication {
     private static BeeConfigBean beeConfigBean;
 
     public static void main(String[] args) {
+        // 配置文件路径
+        String configFile = FileUtils.currentWorkDir() + File.separator + "config.json";
         // 配置基本信息
         BootConfig.setDebug(false);
         BootConfig.setMaxUploadFileSize(IntegerConsts.FileSize.MB);
-        // 启动项目
-        SpringApplication.run(SpringBeeApplication.class, args);
-        // 配置文件路径
-        String configFile = FileUtils.currentWorkDir() + File.separator + "config.json";
         // 监听配置文件
         FileUtils.watchFile(configFile, new FileWatcher() {
             @Override
             public void doSomething() {
                 SpringBeeApplication.beeConfigBean = BeeUtils.parseConfigurer(configFile);
-                DefaultWebInterceptor.setConfigBean(SpringBeeApplication.beeConfigBean);
+                BootConfig.setConfigBean(SpringBeeApplication.beeConfigBean);
             }
         }, true);
+        // 启动项目
+        SpringApplication.run(SpringBeeApplication.class, args);
     }
 
     public static BeeConfigBean getBeeConfigBean() {

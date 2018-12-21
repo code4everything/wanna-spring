@@ -6,11 +6,10 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.code4everything.boot.bean.ResponseResult;
 import org.code4everything.springbee.domain.Todo;
-import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.TodoCountVO;
 import org.code4everything.springbee.service.TodoService;
+import org.code4everything.springbee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -28,8 +27,8 @@ public class TodoController extends BeeBaseController {
     private final TodoService todoService;
 
     @Autowired
-    public TodoController(TodoService todoService, RedisTemplate<String, User> userRedisTemplate) {
-        super(userRedisTemplate);
+    public TodoController(TodoService todoService, UserService userService) {
+        super(userService);
         this.todoService = todoService;
     }
 

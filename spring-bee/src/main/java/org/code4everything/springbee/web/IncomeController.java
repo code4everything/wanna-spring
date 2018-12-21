@@ -3,12 +3,11 @@ package org.code4everything.springbee.web;
 import io.swagger.annotations.*;
 import org.code4everything.boot.bean.ResponseResult;
 import org.code4everything.springbee.domain.Income;
-import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.IncomeBillVO;
 import org.code4everything.springbee.model.IncomeDTO;
 import org.code4everything.springbee.service.IncomeService;
+import org.code4everything.springbee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,8 +26,8 @@ public class IncomeController extends BeeBaseController {
     private final IncomeService incomeService;
 
     @Autowired
-    public IncomeController(IncomeService incomeService, RedisTemplate<String, User> userRedisTemplate) {
-        super(userRedisTemplate);
+    public IncomeController(IncomeService incomeService, UserService userService) {
+        super(userService);
         this.incomeService = incomeService;
     }
 

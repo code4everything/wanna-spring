@@ -44,13 +44,16 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     @AopLog("保存文件")
     public Document save(MultipartFileBean fileBean) {
-        Document document = new Document();
-        document.setAccessUrl(BeeConfigConsts.DOCUMENT_MAPPING + fileBean.getFilename());
-        document.setCreateTime(System.currentTimeMillis());
-        document.setId(IdUtil.randomUUID());
-        document.setLocalPath(SpringBeeApplication.getBeeConfigBean().getStoragePath() + fileBean.getFilename());
+        Document document = getBy(fileBean);
+        if (Objects.isNull(document)) {
+            document = new Document();
+            document.setId(IdUtil.randomUUID());
+            document.setCreateTime(System.currentTimeMillis());
+            document.setAccessUrl(BeeConfigConsts.DOCUMENT_MAPPING + fileBean.getFilename());
+            document.setLocalPath(SpringBeeApplication.getBeeConfigBean().getStoragePath() + fileBean.getFilename());
+            document.setSuffix(FileUtil.extName(fileBean.getOriginalFilename()));
+        }
         document.setSize(fileBean.getSize());
-        document.setSuffix(FileUtil.extName(fileBean.getOriginalFilename()));
         return documentDAO.save(document);
     }
 }

@@ -11,8 +11,6 @@ import org.code4everything.springbee.domain.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * @author pantao
  * @since 2018/10/13
@@ -23,12 +21,9 @@ public class LogAspect {
 
     private final LogService<Log> logService;
 
-    private final HttpServletRequest request;
-
     @Autowired
-    public LogAspect(LogService<Log> logLogService, HttpServletRequest request) {
+    public LogAspect(LogService<Log> logLogService) {
         this.logService = logLogService;
-        this.request = request;
     }
 
     @Pointcut("@annotation(org.code4everything.boot.annotations.AopLog)")

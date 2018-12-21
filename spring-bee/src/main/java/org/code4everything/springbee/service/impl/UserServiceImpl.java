@@ -3,6 +3,7 @@ package org.code4everything.springbee.service.impl;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.crypto.digest.DigestUtil;
+import com.google.common.base.Strings;
 import org.code4everything.boot.annotations.AopLog;
 import org.code4everything.springbee.SpringBeeApplication;
 import org.code4everything.springbee.dao.UserDAO;
@@ -90,5 +91,16 @@ public class UserServiceImpl implements UserService {
             return token;
         }
         return null;
+    }
+
+    @Override
+    public User getUserByToken(String token) {
+        User user = userRedisTemplate.opsForValue().get(Strings.nullToEmpty(token));
+        if (ObjectUtil.isNotNull(user)) {
+            // 更新过期时长
+            Integer tokenExpired = SpringBeeApplication.getBeeConfigBean().getTokenExpired();
+            userRedisTemplate.expire(token, tokenExpired, TimeUnit.SECONDS);
+        }
+        return user;
     }
 }

@@ -4,11 +4,10 @@ import cn.hutool.core.date.DateUtil;
 import io.swagger.annotations.*;
 import org.code4everything.boot.bean.ResponseResult;
 import org.code4everything.springbee.domain.Daily;
-import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.DailyDTO;
 import org.code4everything.springbee.service.DailyService;
+import org.code4everything.springbee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,8 +26,8 @@ public class DailyController extends BeeBaseController {
     private final DailyService dailyService;
 
     @Autowired
-    public DailyController(DailyService dailyService, RedisTemplate<String, User> userRedisTemplate) {
-        super(userRedisTemplate);
+    public DailyController(DailyService dailyService, UserService userService) {
+        super(userService);
         this.dailyService = dailyService;
     }
 

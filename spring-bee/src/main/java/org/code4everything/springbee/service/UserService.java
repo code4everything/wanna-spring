@@ -8,7 +8,7 @@ import org.code4everything.springbee.model.UserInfoDTO;
  * @author pantao
  * @since 2018/9/15
  */
-public interface UserService {
+public interface UserService extends org.code4everything.boot.service.UserService<User> {
 
     boolean updateInfo(User user, UserInfoDTO userInfoDTO);
 

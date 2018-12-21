@@ -5,10 +5,9 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.code4everything.boot.bean.ResponseResult;
 import org.code4everything.springbee.domain.Category;
-import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.service.CategoryService;
+import org.code4everything.springbee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -25,8 +24,8 @@ public class CategoryController extends BeeBaseController {
     private final CategoryService categoryService;
 
     @Autowired
-    public CategoryController(RedisTemplate<String, User> userRedisTemplate, CategoryService categoryService) {
-        super(userRedisTemplate);
+    public CategoryController(UserService userService, CategoryService categoryService) {
+        super(userService);
         this.categoryService = categoryService;
     }
 

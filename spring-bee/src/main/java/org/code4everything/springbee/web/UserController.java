@@ -9,7 +9,6 @@ import org.code4everything.springbee.model.UserInfoDTO;
 import org.code4everything.springbee.service.CommonService;
 import org.code4everything.springbee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,9 +27,8 @@ public class UserController extends BeeBaseController {
     private final CommonService commonService;
 
     @Autowired
-    public UserController(UserService userService, CommonService commonService,
-                          RedisTemplate<String, User> userRedisTemplate) {
-        super(userRedisTemplate);
+    public UserController(UserService userService, CommonService commonService) {
+        super(userService);
         this.userService = userService;
         this.commonService = commonService;
     }

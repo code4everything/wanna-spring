@@ -2,15 +2,15 @@ package org.code4everything.springbee.config;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.google.common.base.Strings;
 import org.apache.log4j.Logger;
 import org.code4everything.boot.interfaces.InterceptHandler;
+import org.code4everything.boot.web.HttpUtils;
 import org.code4everything.boot.web.mvc.DefaultExceptionHandler;
 import org.code4everything.boot.web.mvc.DefaultWebInterceptor;
 import org.code4everything.springbee.domain.User;
+import org.code4everything.springbee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.servlet.HandlerExceptionResolver;
@@ -30,18 +30,16 @@ public class BeeWebMvcConfiguration implements WebMvcConfigurer {
 
     private static final Logger LOGGER = Logger.getLogger(BeeWebMvcConfiguration.class);
 
-    private final RedisTemplate<String, User> userRedisTemplate;
+    private final UserService userUserService;
 
     @Autowired
-    public BeeWebMvcConfiguration(RedisTemplate<String, User> userRedisTemplate) {
-        this.userRedisTemplate = userRedisTemplate;
-    }
+    public BeeWebMvcConfiguration(UserService userUserService) {this.userUserService = userUserService;}
 
     @Override
     public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> resolvers) {
         DefaultExceptionHandler handler = new DefaultExceptionHandler();
         // 添加异常信息
-        handler.addException(400, "参数验证失败", HttpStatus.BAD_REQUEST, MethodArgumentNotValidException.class);
+        handler.addException(400, "参数校验失败", HttpStatus.BAD_REQUEST, MethodArgumentNotValidException.class);
         resolvers.add(handler);
     }
 
@@ -56,8 +54,8 @@ public class BeeWebMvcConfiguration implements WebMvcConfigurer {
             @Override
             public boolean handleInterceptList(HttpServletRequest request, HttpServletResponse response,
                                                Object handler) throws Exception {
-                String token = request.getHeader("token");
-                User user = userRedisTemplate.opsForValue().get(Strings.nullToEmpty(token));
+                String token = HttpUtils.getToken(request);
+                User user = userUserService.getUserByToken(token);
                 if (ObjectUtil.isNull(user)) {
                     // 非法用户，禁止访问
                     LOGGER.error(StrUtil.format("auth error, token: {}, ip: {}", token, request.getRemoteAddr()));
