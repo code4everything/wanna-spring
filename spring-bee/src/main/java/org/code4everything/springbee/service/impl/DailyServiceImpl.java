@@ -8,6 +8,7 @@ import org.code4everything.springbee.dao.DailyDAO;
 import org.code4everything.springbee.domain.Daily;
 import org.code4everything.springbee.model.DailyDTO;
 import org.code4everything.springbee.service.DailyService;
+import org.code4everything.springbee.util.BeeUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -54,9 +55,7 @@ public class DailyServiceImpl implements DailyService {
     public List<Daily> listDaily(String userId, Date startDate, Date endDate) {
         Query query = new Query();
         Criteria criteria = Criteria.where("userId").is(userId);
-        Criteria dateGreatThan = Criteria.where("date").gte(DateUtil.formatDate(startDate));
-        Criteria dateLessThan = Criteria.where("date").lte(DateUtil.formatDate(endDate));
-        criteria.andOperator(dateGreatThan, dateLessThan);
+        BeeUtils.betweenStartAndEnd(criteria, startDate, endDate);
         query.addCriteria(criteria);
         query.with(new Sort(Sort.Direction.ASC, "date"));
         return mongoTemplate.find(query, Daily.class);

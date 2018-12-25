@@ -1,11 +1,15 @@
 package org.code4everything.springbee.util;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Validator;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.log4j.Logger;
 import org.code4everything.springbee.config.BeeConfigBean;
 import org.code4everything.springbee.constant.BeeConfigConsts;
+import org.springframework.data.mongodb.core.query.Criteria;
+
+import java.util.Date;
 
 /**
  * @author pantao
@@ -16,6 +20,12 @@ public class BeeUtils {
     private static final Logger LOGGER = Logger.getLogger(BeeUtils.class);
 
     private BeeUtils() {}
+
+    public static void betweenStartAndEnd(Criteria criteria, Date start, Date end) {
+        Criteria dateGreatThan = Criteria.where("date").gte(DateUtil.formatDate(start));
+        Criteria dateLessThan = Criteria.where("date").lte(DateUtil.formatDate(end));
+        criteria.andOperator(dateGreatThan, dateLessThan);
+    }
 
     public static BeeConfigBean parseConfigurer(String configFile) {
         BeeConfigBean configBean = null;

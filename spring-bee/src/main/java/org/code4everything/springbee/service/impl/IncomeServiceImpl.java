@@ -13,6 +13,7 @@ import org.code4everything.springbee.domain.Income;
 import org.code4everything.springbee.model.IncomeBillVO;
 import org.code4everything.springbee.model.IncomeDTO;
 import org.code4everything.springbee.service.IncomeService;
+import org.code4everything.springbee.util.BeeUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -65,9 +66,7 @@ public class IncomeServiceImpl implements IncomeService {
     public List<Income> listIncome(String userId, String category, Date start, Date end) {
         Query query = new Query();
         Criteria criteria = Criteria.where("assetId").is(getAssetByUserId(userId).getId());
-        Criteria dateGreatThan = Criteria.where("date").gte(DateUtil.formatDate(start));
-        Criteria dateLessThan = Criteria.where("date").lte(DateUtil.formatDate(end));
-        criteria.andOperator(dateGreatThan, dateLessThan);
+        BeeUtils.betweenStartAndEnd(criteria, start, end);
         if (StrUtil.isNotEmpty(category)) {
             criteria.andOperator(Criteria.where("category").is(category));
         }
@@ -87,16 +86,7 @@ public class IncomeServiceImpl implements IncomeService {
             IncomeBillVO billVO = new IncomeBillVO();
             billVO.setDate(String.valueOf(startYear));
             Date start = DateUtil.parseDate(billVO.getDate() + HYPHEN + "01" + HYPHEN + "01");
-            Date end = DateUtil.endOfYear(start);
-            List<Income> incomes = listIncome(userId, "", start, end);
-            long money = 0;
-            for (Income income : incomes) {
-                if (income.getType() == -1) {
-                    money += income.getMoney();
-                }
-            }
-            billVO.setMoney(money);
-            list.add(billVO);
+            setBill(list, billVO, userId, start, DateUtil.endOfYear(start));
             startYear++;
         }
         return list;
@@ -123,16 +113,7 @@ public class IncomeServiceImpl implements IncomeService {
             String month = yearStart + HYPHEN + Strings.padStart(String.valueOf(monthStart), 2, '0');
             billVO.setDate(month);
             Date start = DateUtil.parseDate(month + HYPHEN + "01");
-            Date end = DateUtil.endOfMonth(start);
-            List<Income> incomes = listIncome(userId, "", start, end);
-            long money = 0;
-            for (Income income : incomes) {
-                if (income.getType() == -1) {
-                    money += income.getMoney();
-                }
-            }
-            billVO.setMoney(money);
-            list.add(billVO);
+            setBill(list, billVO, userId, start, DateUtil.endOfMonth(start));
             if (++monthStart > 12) {
                 yearStart++;
                 monthStart = 1;
@@ -172,6 +153,18 @@ public class IncomeServiceImpl implements IncomeService {
         income.setId(IdUtil.simpleUUID());
         income.setAssetId(updateAssetBalance(userId, income.getMoney() * income.getType()));
         return incomeDAO.save(income);
+    }
+
+    private void setBill(List<IncomeBillVO> list, IncomeBillVO billVO, String userId, Date start, Date end) {
+        List<Income> incomes = listIncome(userId, "", start, end);
+        long money = 0;
+        for (Income income : incomes) {
+            if (income.getType() == -1) {
+                money += income.getMoney();
+            }
+        }
+        billVO.setMoney(money);
+        list.add(billVO);
     }
 
     private String updateAssetBalance(String userId, Long value) {
