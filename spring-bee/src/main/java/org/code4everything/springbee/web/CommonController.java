@@ -29,14 +29,14 @@ public class CommonController extends BeeBaseController {
     @ApiOperation("用户名是否存在")
     @ApiImplicitParam(name = "username", required = true, value = "用户名")
     public ResponseResult<Boolean> existsUsername(@RequestParam String username) {
-        return parseBoolResult("用户名存在", "用户名不存在", commonService.existsUsername(username));
+        return parseBoolean("用户名存在", "用户名不存在", commonService.existsUsername(username));
     }
 
     @GetMapping("/email/exists")
     @ApiOperation("邮箱是否存在")
     @ApiImplicitParam(name = "email", value = "邮箱", required = true)
     public ResponseResult<Boolean> existsEmail(@RequestParam String email) {
-        return parseBoolResult("邮箱存在", "邮箱不存在", commonService.existsEmail(email));
+        return parseBoolean("邮箱存在", "邮箱不存在", commonService.existsEmail(email));
     }
 
     @GetMapping("/vcode/verify")
@@ -44,7 +44,7 @@ public class CommonController extends BeeBaseController {
     @ApiImplicitParams({@ApiImplicitParam(name = "email", value = "邮箱", required = true), @ApiImplicitParam(name =
             "vcode", required = true, value = "验证码")})
     public ResponseResult<Boolean> verifyVcode(@RequestParam String email, @RequestParam String vcode) {
-        return parseBoolResult("验证通过", "验证码错误", commonService.isVcodeValidated(email, vcode, false));
+        return parseBoolean("验证通过", "验证码错误", commonService.isVcodeValidated(email, vcode, false));
     }
 
     @PostMapping("/vcode/send")

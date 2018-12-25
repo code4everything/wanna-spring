@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author pantao
@@ -39,23 +40,23 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     @AopLog("获取指定日期之前所有未完成的待办事项")
-    public ArrayList<Todo> listUndoBeforeDate(String userId, Date date) {
+    public List<Todo> listUndoBeforeDate(String userId, Date date) {
         return todoDAO.getByUserIdAndStatusAndDoingDateLessThan(userId, "0", DateUtil.formatDate(date));
     }
 
     @Override
     @AopLog("列出指定日期的待办事项")
-    public ArrayList<Todo> listTodo(String userId, Date doingDate) {
+    public List<Todo> listTodo(String userId, Date doingDate) {
         return todoDAO.getByUserIdAndDoingDate(userId, DateUtil.formatDate(doingDate));
     }
 
     @Override
     @AopLog("列出所有待办事项日期")
-    public ArrayList<String> listDate(String userId) {
+    public List<String> listDate(String userId) {
         BasicDBObject dbObject = new BasicDBObject("userId", userId);
         MongoCollection<Document> collection = mongoTemplate.getCollection("todo");
         DistinctIterable<String> iterable = collection.distinct("doingDate", dbObject, String.class);
-        ArrayList<String> dateList = new ArrayList<>(128);
+        List<String> dateList = new ArrayList<>(128);
         for (String date : iterable) {
             dateList.add(date);
         }
@@ -63,8 +64,8 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public ArrayList<TodoCountVO> listTodoCount(String userId, Date start, Date end) {
-        ArrayList<TodoCountVO> list = new ArrayList<>();
+    public List<TodoCountVO> listTodoCount(String userId, Date start, Date end) {
+        List<TodoCountVO> list = new ArrayList<>();
         end = DateUtil.endOfDay(end);
         while (start.before(end)) {
             TodoCountVO countVO = new TodoCountVO();

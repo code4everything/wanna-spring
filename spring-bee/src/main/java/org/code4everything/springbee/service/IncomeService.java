@@ -4,8 +4,8 @@ import org.code4everything.springbee.domain.Income;
 import org.code4everything.springbee.model.IncomeBillVO;
 import org.code4everything.springbee.model.IncomeDTO;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author pantao
@@ -32,7 +32,7 @@ public interface IncomeService {
      *
      * @return 收益记录列表
      */
-    ArrayList<Income> listIncome(String userId, String category, Date start, Date end);
+    List<Income> listIncome(String userId, String category, Date start, Date end);
 
     /**
      * 列出每年的支出总计
@@ -43,7 +43,7 @@ public interface IncomeService {
      *
      * @return 支出总计列表
      */
-    ArrayList<IncomeBillVO> listYear(String userId, Integer startYear, Integer endYear);
+    List<IncomeBillVO> listYear(String userId, Integer startYear, Integer endYear);
 
     /**
      * 列出每月的支出总计
@@ -54,7 +54,7 @@ public interface IncomeService {
      *
      * @return 支出总计列表
      */
-    ArrayList<IncomeBillVO> listMonth(String userId, String startMonth, String endMonth);
+    List<IncomeBillVO> listMonth(String userId, String startMonth, String endMonth);
 
     /**
      * 更新收益信息

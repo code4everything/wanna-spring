@@ -73,6 +73,6 @@ public class DailyController extends BeeBaseController {
             dataTypeClass = Date.class), @ApiImplicitParam(name = "end", value = "结束时间", required = true,
             dataTypeClass = Date.class)})
     public ResponseResult<ArrayList<Daily>> listByDate(@RequestParam Date start, @RequestParam Date end) {
-        return parseResult("查询失败", dailyService.listDaily(getUserId(), start, end), true);
+        return parseCollection("查询失败", dailyService.listDaily(getUserId(), start, end), true);
     }
 }

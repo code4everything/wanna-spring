@@ -17,7 +17,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -51,7 +51,7 @@ public class DailyServiceImpl implements DailyService {
 
     @Override
     @AopLog("列出日程记录")
-    public ArrayList<Daily> listDaily(String userId, Date startDate, Date endDate) {
+    public List<Daily> listDaily(String userId, Date startDate, Date endDate) {
         Query query = new Query();
         Criteria criteria = Criteria.where("userId").is(userId);
         Criteria dateGreatThan = Criteria.where("date").gte(DateUtil.formatDate(startDate));
@@ -59,7 +59,7 @@ public class DailyServiceImpl implements DailyService {
         criteria.andOperator(dateGreatThan, dateLessThan);
         query.addCriteria(criteria);
         query.with(new Sort(Sort.Direction.ASC, "date"));
-        return (ArrayList<Daily>) mongoTemplate.find(query, Daily.class);
+        return mongoTemplate.find(query, Daily.class);
     }
 
     @Override

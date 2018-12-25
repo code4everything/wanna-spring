@@ -44,13 +44,13 @@ public class CommonServiceImpl implements CommonService {
     @Override
     @AopLog("查看用户名是否存在")
     public boolean existsUsername(String username) {
-        return userDAO.countByUsername(username) > 0;
+        return userDAO.existsByUsername(username);
     }
 
     @Override
     @AopLog("查看邮箱是否存在")
     public boolean existsEmail(String email) {
-        return userDAO.countByEmail(email) > 0;
+        return userDAO.existsByEmail(email);
     }
 
     @Override

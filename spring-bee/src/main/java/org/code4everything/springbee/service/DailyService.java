@@ -4,7 +4,7 @@ import org.code4everything.springbee.domain.Daily;
 import org.code4everything.springbee.model.DailyDTO;
 
 import java.sql.Date;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author pantao
@@ -40,7 +40,7 @@ public interface DailyService {
      *
      * @return 日程列表
      */
-    ArrayList<Daily> listDaily(String userId, Date startDate, Date endDate);
+    List<Daily> listDaily(String userId, Date startDate, Date endDate);
 
     /**
      * 删除日程

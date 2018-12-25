@@ -68,21 +68,21 @@ public class TodoController extends BeeBaseController {
     @GetMapping("/date/list")
     @ApiOperation("列出所有日期")
     public ResponseResult<ArrayList<String>> listDate() {
-        return parseResult("没有找到数据", todoService.listDate(getUserId()));
+        return parseCollection("没有找到数据", todoService.listDate(getUserId()));
     }
 
     @GetMapping("/undo/list")
     @ApiOperation("列出某个日期之前未完成的待办事项")
     @ApiImplicitParam(name = "date", value = "日期", required = true, dataTypeClass = Date.class)
     public ResponseResult<ArrayList<Todo>> listUndo(@RequestParam Date date) {
-        return parseResult("没有未完成的待办事项哦", todoService.listUndoBeforeDate(getUserId(), date), true);
+        return parseCollection("没有未完成的待办事项哦", todoService.listUndoBeforeDate(getUserId(), date), true);
     }
 
     @GetMapping("/list")
     @ApiOperation("列出事项")
     @ApiImplicitParam(name = "date", value = "日期", required = true, dataTypeClass = Date.class)
     public ResponseResult<ArrayList<Todo>> listTodo(@RequestParam Date date) {
-        return parseResult("该日期没有数据", todoService.listTodo(getUserId(), date), true);
+        return parseCollection("该日期没有数据", todoService.listTodo(getUserId(), date), true);
     }
 
     @GetMapping("/count/list")
@@ -91,6 +91,6 @@ public class TodoController extends BeeBaseController {
             dataTypeClass = Date.class), @ApiImplicitParam(name = "end", value = "结束时间", required = true,
             dataTypeClass = Date.class)})
     public ResponseResult<ArrayList<TodoCountVO>> listByDate(@RequestParam Date start, @RequestParam Date end) {
-        return parseResult("糟糕，没有数据", todoService.listTodoCount(getUserId(), start, end), true);
+        return parseCollection("糟糕，没有数据", todoService.listTodoCount(getUserId(), start, end), true);
     }
 }

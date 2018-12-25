@@ -8,7 +8,7 @@ import org.code4everything.springbee.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -49,7 +49,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @AopLog("列出分类")
-    public ArrayList<Category> listCategory(String userId) {
+    public List<Category> listCategory(String userId) {
         return categoryDAO.getByUserId(userId);
     }
 

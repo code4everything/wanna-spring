@@ -42,7 +42,7 @@ public class CategoryController extends BeeBaseController {
     @GetMapping("/list")
     @ApiOperation("列出我的分类")
     public ResponseResult<ArrayList<Category>> list() {
-        return parseResult("您还没有任何添加分类信息", categoryService.listCategory(getUserId()), true);
+        return parseCollection("您还没有任何添加分类信息", categoryService.listCategory(getUserId()), true);
     }
 
     @DeleteMapping("/{categoryId}/remove")

@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -61,7 +62,7 @@ public class IncomeServiceImpl implements IncomeService {
 
     @Override
     @AopLog("查询收益记录")
-    public ArrayList<Income> listIncome(String userId, String category, Date start, Date end) {
+    public List<Income> listIncome(String userId, String category, Date start, Date end) {
         Query query = new Query();
         Criteria criteria = Criteria.where("assetId").is(getAssetByUserId(userId).getId());
         Criteria dateGreatThan = Criteria.where("date").gte(DateUtil.formatDate(start));
@@ -72,13 +73,13 @@ public class IncomeServiceImpl implements IncomeService {
         }
         query.addCriteria(criteria);
         query.with(new Sort(Sort.Direction.DESC, "date", "createTime"));
-        return (ArrayList<Income>) mongoTemplate.find(query, Income.class);
+        return mongoTemplate.find(query, Income.class);
     }
 
     @Override
     @AopLog("查询年度账单")
-    public ArrayList<IncomeBillVO> listYear(String userId, Integer startYear, Integer endYear) {
-        ArrayList<IncomeBillVO> list = new ArrayList<>();
+    public List<IncomeBillVO> listYear(String userId, Integer startYear, Integer endYear) {
+        List<IncomeBillVO> list = new ArrayList<>();
         if (startYear > endYear) {
             return list;
         }
@@ -87,7 +88,7 @@ public class IncomeServiceImpl implements IncomeService {
             billVO.setDate(String.valueOf(startYear));
             Date start = DateUtil.parseDate(billVO.getDate() + HYPHEN + "01" + HYPHEN + "01");
             Date end = DateUtil.endOfYear(start);
-            ArrayList<Income> incomes = listIncome(userId, "", start, end);
+            List<Income> incomes = listIncome(userId, "", start, end);
             long money = 0;
             for (Income income : incomes) {
                 if (income.getType() == -1) {
@@ -103,8 +104,8 @@ public class IncomeServiceImpl implements IncomeService {
 
     @Override
     @AopLog("查询月度账单")
-    public ArrayList<IncomeBillVO> listMonth(String userId, String startMonth, String endMonth) {
-        ArrayList<IncomeBillVO> list = new ArrayList<>();
+    public List<IncomeBillVO> listMonth(String userId, String startMonth, String endMonth) {
+        List<IncomeBillVO> list = new ArrayList<>();
         if (startMonth.compareTo(endMonth) >= 0) {
             return list;
         }
@@ -123,7 +124,7 @@ public class IncomeServiceImpl implements IncomeService {
             billVO.setDate(month);
             Date start = DateUtil.parseDate(month + HYPHEN + "01");
             Date end = DateUtil.endOfMonth(start);
-            ArrayList<Income> incomes = listIncome(userId, "", start, end);
+            List<Income> incomes = listIncome(userId, "", start, end);
             long money = 0;
             for (Income income : incomes) {
                 if (income.getType() == -1) {

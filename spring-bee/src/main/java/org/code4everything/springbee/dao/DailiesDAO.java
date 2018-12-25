@@ -4,7 +4,7 @@ import org.code4everything.springbee.domain.Dailies;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author pantao
@@ -29,5 +29,5 @@ public interface DailiesDAO extends MongoRepository<Dailies, String> {
      *
      * @return 日程详细信息列表
      */
-    ArrayList<Dailies> getByDailyId(String dailyId);
+    List<Dailies> getByDailyId(String dailyId);
 }

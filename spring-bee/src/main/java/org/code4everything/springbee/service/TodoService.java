@@ -3,8 +3,8 @@ package org.code4everything.springbee.service;
 import org.code4everything.springbee.domain.Todo;
 import org.code4everything.springbee.model.TodoCountVO;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author pantao
@@ -20,7 +20,7 @@ public interface TodoService {
      *
      * @return 待办事项列表
      */
-    ArrayList<Todo> listUndoBeforeDate(String userId, Date date);
+    List<Todo> listUndoBeforeDate(String userId, Date date);
 
     /**
      * 列出所有代办事项
@@ -30,7 +30,7 @@ public interface TodoService {
      *
      * @return 待办事项列表
      */
-    ArrayList<Todo> listTodo(String userId, Date doingDate);
+    List<Todo> listTodo(String userId, Date doingDate);
 
     /**
      * 列出所有日期
@@ -39,7 +39,7 @@ public interface TodoService {
      *
      * @return 日期列表
      */
-    ArrayList<String> listDate(String userId);
+    List<String> listDate(String userId);
 
     /**
      * 统计每天的代办事项数量
@@ -50,7 +50,7 @@ public interface TodoService {
      *
      * @return 数量列表
      */
-    ArrayList<TodoCountVO> listTodoCount(String userId, Date start, Date end);
+    List<TodoCountVO> listTodoCount(String userId, Date start, Date end);
 
     /**
      * 更新代办事项状态

@@ -11,7 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author pantao
@@ -27,7 +27,7 @@ public class DailiesServiceImpl implements DailiesService {
 
     @Override
     @AopLog("获取所有日程记录详情")
-    public ArrayList<Dailies> listDailies(String dailyId) {
+    public List<Dailies> listDailies(String dailyId) {
         return dailiesDAO.getByDailyId(dailyId);
     }
 

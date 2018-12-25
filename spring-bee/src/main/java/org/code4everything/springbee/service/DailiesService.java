@@ -3,7 +3,7 @@ package org.code4everything.springbee.service;
 import org.code4everything.springbee.domain.Dailies;
 import org.code4everything.springbee.model.DailiesDTO;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author pantao
@@ -18,7 +18,7 @@ public interface DailiesService {
      *
      * @return 详细记录列表
      */
-    ArrayList<Dailies> listDailies(String dailyId);
+    List<Dailies> listDailies(String dailyId);
 
     /**
      * 更新日程详细记录

@@ -4,7 +4,7 @@ import org.code4everything.springbee.domain.Todo;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author pantao
@@ -22,7 +22,7 @@ public interface TodoDAO extends MongoRepository<Todo, String> {
      *
      * @return 待办事项列表
      */
-    ArrayList<Todo> getByUserIdAndStatusAndDoingDateLessThan(String userId, String status, String doingDate);
+    List<Todo> getByUserIdAndStatusAndDoingDateLessThan(String userId, String status, String doingDate);
 
     /**
      * 获取代办事项信息
@@ -51,5 +51,5 @@ public interface TodoDAO extends MongoRepository<Todo, String> {
      *
      * @return 代办事项列表
      */
-    ArrayList<Todo> getByUserIdAndDoingDate(String userId, String doingDate);
+    List<Todo> getByUserIdAndDoingDate(String userId, String doingDate);
 }
