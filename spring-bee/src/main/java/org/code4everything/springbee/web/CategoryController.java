@@ -49,7 +49,7 @@ public class CategoryController extends BeeBaseController {
     @ApiOperation("删除分类")
     public ResponseResult<Boolean> removeCategory(@PathVariable String categoryId) {
         categoryService.removeCategory(categoryId);
-        return new ResponseResult<>("删除成功", true);
+        return successResult("删除成功", true);
     }
 
     @PutMapping("/{categoryId}/update")
@@ -57,6 +57,6 @@ public class CategoryController extends BeeBaseController {
     @ApiImplicitParam(name = "name", value = "分类名", required = true)
     public ResponseResult<Boolean> updateCategory(@PathVariable String categoryId, @RequestParam String name) {
         categoryService.updateCategory(getUserId(), categoryId, name);
-        return new ResponseResult<>("更新成功", true);
+        return successResult("更新成功", true);
     }
 }

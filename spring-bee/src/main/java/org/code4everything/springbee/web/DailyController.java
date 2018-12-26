@@ -1,6 +1,5 @@
 package org.code4everything.springbee.web;
 
-import cn.hutool.core.date.DateUtil;
 import io.swagger.annotations.*;
 import org.code4everything.boot.bean.ResponseResult;
 import org.code4everything.springbee.domain.Daily;
@@ -34,11 +33,10 @@ public class DailyController extends BeeBaseController {
     @PostMapping("/create")
     @ApiOperation("添加记录")
     public ResponseResult<Daily> saveDaily(@RequestBody @ApiParam @Valid DailyDTO daily) {
-        if (daily.getDate().getTime() > DateUtil.endOfDay(new java.util.Date()).getTime()) {
-            return errorResult("添加失败，无法添加未来的日程记录");
-        }
-        if (dailyService.exists(getUserId(), "", daily)) {
-            return errorResult("添加失败，该日期记录已经存在");
+        ifReturn(daily.getDate().after(new Date(System.currentTimeMillis())), errorResult("添加失败，无法添加未来的日程记录"));
+        ifReturn(() -> dailyService.exists(getUserId(), "", daily), errorResult("添加失败，该日期记录已经存在"));
+        if (hasResult()) {
+            return getReturn();
         }
         return parseResult("添加失败", dailyService.saveDaily(getUserId(), daily), true);
     }
