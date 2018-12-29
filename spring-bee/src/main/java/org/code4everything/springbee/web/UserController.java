@@ -1,7 +1,6 @@
 package org.code4everything.springbee.web;
 
 import io.swagger.annotations.*;
-import org.code4everything.boot.base.function.ResponseResultFunction;
 import org.code4everything.boot.bean.ResponseResult;
 import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.PasswordDTO;
@@ -57,12 +56,14 @@ public class UserController extends BeeBaseController {
     public ResponseResult<String> register(@RequestBody @ApiParam @Valid RegisterDTO register) {
         ifReturn(commonService.existsUsername(register.getUsername()), errorResult("该用户名已经被注册啦"));
         ifReturn(() -> commonService.existsEmail(register.getEmail()), errorResult("该邮箱已经注册啦"));
-        ifReturn(() -> commonService.isVcodeValidated(register.getEmail(), register.getVcode(), true),
-                (ResponseResultFunction<String>) () -> {
+        if (hasResult()) {
+            return getReturn();
+        }
+        if (commonService.isVcodeValidated(register.getEmail(), register.getVcode(), true)) {
             userService.register(register);
             return successResult("注册成功");
-        });
-        return ifReturn(true, errorResult("验证码不正确")).getReturn();
+        }
+        return errorResult("验证码不正确");
     }
 
     @PutMapping("/login")
