@@ -69,7 +69,7 @@ import utils from '../../assets/js/utils'
 import validator from '../../../static/js/validator.min'
 import dayjs from 'dayjs'
 import $ from 'jquery'
-import {requestListCategory, requestSaveCategory, requestSaveIncome, requestUpdateIncome} from '../../api/api'
+import {requestSaveCategory, requestSaveIncome, requestUpdateIncome} from '../../api/api'
 
 export default {
   name: 'AssetModal',
@@ -85,11 +85,10 @@ export default {
       categoryTip: '分类，双击或回车编辑',
       closeTip: '关闭',
       saveTip: '保存',
-      types: [{value: -1, tip: '支出'}, {value: 1, tip: '收入'}],
-      categories: ['未分类']
+      types: [{value: -1, tip: '支出'}, {value: 1, tip: '收入'}]
     }
   },
-  props: ['income', 'payWays'],
+  props: ['income', 'payWays', 'categories'],
   methods: {
     saveCategory: function () {
       let self = this
@@ -132,18 +131,6 @@ export default {
   },
   mounted: function () {
     this.isMobile = utils.isMobile()
-    let self = this
-    requestListCategory().then(data => {
-      if (data.code === 200 && data.data.length > 0) {
-        data.data.forEach(category => {
-          if (category.name !== self.categories[0]) {
-            self.categories.push(category.name)
-          }
-        })
-      } else if (data.code === 401) {
-        utils.showError(this, data.msg)
-      }
-    })
   }
 }
 </script>

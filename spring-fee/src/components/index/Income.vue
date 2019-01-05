@@ -84,7 +84,7 @@
       </div>
     </div>
     <br/>
-    <asset-modal :income="currentIncome" :pay-ways="payWays"></asset-modal>
+    <asset-modal :income="currentIncome" :pay-ways="payWays" :categories="categories"></asset-modal>
     <!-- 报表弹窗 -->
     <el-dialog :fullscreen="true" :visible.sync="dialogVisible" title="收益报表" v-if="!isMobile">
       <!-- 基本数据 -->
@@ -101,6 +101,14 @@
           <ve-pie :data="categoryData"></ve-pie>
         </div>
         <div class="col-sm-8">
+          <div>
+            <el-select v-model="filterCategories" multiple filterable allow-create default-first-option
+                       placeholder="通过分类过滤统计" class="w-100">
+              <el-option v-for="category in categories" :key="category" :value="category">
+              </el-option>
+            </el-select>
+          </div>
+          <br/>
           <ve-line :data="dayData"></ve-line>
         </div>
       </div>
@@ -165,6 +173,7 @@ import validator from '../../../static/js/validator.min'
 import dayjs from 'dayjs'
 import {
   requestAssetBalance,
+  requestListCategory,
   requestListIncome,
   requestListIncomeMonth,
   requestListIncomeYear,
@@ -216,7 +225,9 @@ export default {
         columns: ['year', '支出'],
         rows: []
       },
-      countReporter: 'category'
+      countReporter: 'category',
+      categories: [],
+      filterCategories: []
     }
   },
   methods: {
@@ -371,25 +382,12 @@ export default {
           item.total = (item.total / 100).toFixed(2)
         })
       }
-    }
-  },
-  mounted: function () {
-    this.isMobile = utils.isMobile()
-    this.startDate = dayjs().add(-30, 'day').format('YYYY-MM-DD')
-    this.endDate = dayjs().format('YYYY-MM-DD')
-    this.listIncome()
-  },
-  watch: {
-    countReporter: function () {
-      this.generatePieReporter()
     },
-    incomes: function () {
-      this.generatePieReporter()
+    generateLineReporter: function () {
       if (!this.isMobile) {
         this.dayData.rows = []
         this.incomes.forEach(income => {
-          if (income.type === -1) {
-            // 统计日支出合计
+          if (income.type === -1 && this.filterCategories.includes(income.category)) {
             let dest = this.dayData.rows.filter(item => {
               return item.date === income.date
             })
@@ -405,6 +403,35 @@ export default {
           item['支出'] = (item['支出'] / 100).toFixed(2)
         })
       }
+    }
+  },
+  mounted: function () {
+    this.isMobile = utils.isMobile()
+    this.startDate = dayjs().add(-30, 'day').format('YYYY-MM-DD')
+    this.endDate = dayjs().format('YYYY-MM-DD')
+    this.listIncome()
+    requestListCategory().then(data => {
+      if (data.code === 200 && data.data.length > 0) {
+        data.data.forEach(category => this.categories.push(category.name))
+      } else if (data.code === 401) {
+        utils.showError(this, data.msg)
+      }
+      if (!this.categories.includes('未分类')) {
+        this.categories.unshift('未分类')
+      }
+      this.filterCategories = utils.clone(this.categories)
+    })
+  },
+  watch: {
+    countReporter: function () {
+      this.generatePieReporter()
+    },
+    filterCategories: function () {
+      this.generateLineReporter()
+    },
+    incomes: function () {
+      this.generatePieReporter()
+      this.generateLineReporter()
     }
   }
 }
