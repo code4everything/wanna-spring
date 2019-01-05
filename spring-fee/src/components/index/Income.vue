@@ -90,6 +90,14 @@
       <!-- 基本数据 -->
       <div class="row">
         <div class="col-sm-4">
+          <div class="text-center">
+            <el-select v-model="countReporter">
+              <el-option label="按类型统计" value="type"></el-option>
+              <el-option label="按分类统计" value="category"></el-option>
+              <el-option label="按支付方式统计" value="way"></el-option>
+            </el-select>
+          </div>
+          <br/>
           <ve-pie :data="categoryData"></ve-pie>
         </div>
         <div class="col-sm-8">
@@ -207,7 +215,8 @@ export default {
       yearData: {
         columns: ['year', '支出'],
         rows: []
-      }
+      },
+      countReporter: 'category'
     }
   },
   methods: {
@@ -328,6 +337,40 @@ export default {
           }
         })
       }
+    },
+    generatePieReporter: function () {
+      if (!this.isMobile) {
+        this.categoryData.rows = []
+        // 按指定方式统计
+        this.incomes.forEach(income => {
+          if (income.type === -1 || this.countReporter === 'type') {
+            let name = ''
+            switch (this.countReporter) {
+              case 'type':
+                name = income[this.countReporter] === 1 ? '收入' : '支出'
+                break
+              case 'way':
+                name = this.payWays[income[this.countReporter] - 1]
+                break
+              default:
+                name = income[this.countReporter]
+                break
+            }
+            let dest = this.categoryData.rows.filter(item => {
+              return item.category === name
+            })
+            if (dest.length > 0) {
+              dest[0].total += income.money
+            } else {
+              this.categoryData.rows.push({'category': name, 'total': income.money})
+            }
+          }
+        })
+        // 格式化数据
+        this.categoryData.rows.forEach(item => {
+          item.total = (item.total / 100).toFixed(2)
+        })
+      }
     }
   },
   mounted: function () {
@@ -337,24 +380,17 @@ export default {
     this.listIncome()
   },
   watch: {
+    countReporter: function () {
+      this.generatePieReporter()
+    },
     incomes: function () {
+      this.generatePieReporter()
       if (!this.isMobile) {
-        // 清空数据
-        this.categoryData.rows = []
         this.dayData.rows = []
         this.incomes.forEach(income => {
           if (income.type === -1) {
-            // 统计分类合计
-            let dest = this.categoryData.rows.filter(item => {
-              return item.category === income.category
-            })
-            if (dest.length > 0) {
-              dest[0].total += income.money
-            } else {
-              this.categoryData.rows.push({'category': income.category, 'total': income.money})
-            }
             // 统计日支出合计
-            dest = this.dayData.rows.filter(item => {
+            let dest = this.dayData.rows.filter(item => {
               return item.date === income.date
             })
             if (dest.length > 0) {
@@ -365,9 +401,6 @@ export default {
           }
         })
         // 格式化数据
-        this.categoryData.rows.forEach(item => {
-          item.total = (item.total / 100).toFixed(2)
-        })
         this.dayData.rows.forEach(item => {
           item['支出'] = (item['支出'] / 100).toFixed(2)
         })
