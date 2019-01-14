@@ -1,6 +1,7 @@
 package org.code4everything.springbee.service;
 
 import org.code4everything.springbee.domain.Category;
+import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ public interface CategoryService {
      * @param userId 用户编号
      * @param name 分类名称
      */
+    @Async
     void updateCategory(String categoryId, String userId, String name);
 
     /**
@@ -24,6 +26,7 @@ public interface CategoryService {
      *
      * @param categoryId 分类的编号
      */
+    @Async
     void removeCategory(String categoryId);
 
     /**

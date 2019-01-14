@@ -1,5 +1,7 @@
 package org.code4everything.springbee.service;
 
+import org.springframework.scheduling.annotation.Async;
+
 import javax.mail.MessagingException;
 
 /**
@@ -44,5 +46,6 @@ public interface CommonService {
      *
      * @throws MessagingException 可能发生的异常
      */
+    @Async
     void sendVcode(String email) throws MessagingException;
 }

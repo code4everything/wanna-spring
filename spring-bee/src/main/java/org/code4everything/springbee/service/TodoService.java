@@ -2,6 +2,7 @@ package org.code4everything.springbee.service;
 
 import org.code4everything.springbee.domain.Todo;
 import org.code4everything.springbee.model.TodoCountVO;
+import org.springframework.scheduling.annotation.Async;
 
 import java.util.Date;
 import java.util.List;
@@ -77,6 +78,7 @@ public interface TodoService {
      *
      * @param todoId 事项编号
      */
+    @Async
     void remove(String todoId);
 
     /**

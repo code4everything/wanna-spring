@@ -2,6 +2,7 @@ package org.code4everything.springbee.service;
 
 import org.code4everything.springbee.domain.Dailies;
 import org.code4everything.springbee.model.DailiesDTO;
+import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ public interface DailiesService {
      *
      * @param dailiesId 详细记录编号
      */
+    @Async
     void remove(String dailiesId);
 
     /**

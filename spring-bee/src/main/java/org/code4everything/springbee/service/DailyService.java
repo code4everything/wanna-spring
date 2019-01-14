@@ -2,6 +2,7 @@ package org.code4everything.springbee.service;
 
 import org.code4everything.springbee.domain.Daily;
 import org.code4everything.springbee.model.DailyDTO;
+import org.springframework.scheduling.annotation.Async;
 
 import java.sql.Date;
 import java.util.List;
@@ -47,6 +48,7 @@ public interface DailyService {
      *
      * @param dailyId 日程编号
      */
+    @Async
     void remove(String dailyId);
 
     /**

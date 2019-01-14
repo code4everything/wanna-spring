@@ -3,6 +3,7 @@ package org.code4everything.springbee.service;
 import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.RegisterDTO;
 import org.code4everything.springbee.model.UserInfoDTO;
+import org.springframework.scheduling.annotation.Async;
 
 /**
  * @author pantao
@@ -25,6 +26,7 @@ public interface UserService extends org.code4everything.boot.service.UserServic
      *
      * @param registerDTO 注册信息
      */
+    @Async
     void register(RegisterDTO registerDTO);
 
     /**
@@ -33,6 +35,7 @@ public interface UserService extends org.code4everything.boot.service.UserServic
      * @param email 邮箱
      * @param newPassword 新密码
      */
+    @Async
     void resetPassword(String email, String newPassword);
 
     /**
