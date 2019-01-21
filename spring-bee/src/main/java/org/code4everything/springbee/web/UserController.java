@@ -1,7 +1,7 @@
 package org.code4everything.springbee.web;
 
 import io.swagger.annotations.*;
-import org.code4everything.boot.bean.ResponseResult;
+import org.code4everything.boot.bean.Response;
 import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.PasswordDTO;
 import org.code4everything.springbee.model.RegisterDTO;
@@ -37,13 +37,13 @@ public class UserController extends BeeBaseController {
     @ApiOperation("更新密码")
     @ApiImplicitParams({@ApiImplicitParam(name = "oldPassword", required = true, value = "原密码"),
             @ApiImplicitParam(name = "newPassword", required = true, value = "新密码")})
-    public ResponseResult<Boolean> updatePassword(@RequestParam String oldPassword, @RequestParam String newPassword) {
+    public Response<Boolean> updatePassword(@RequestParam String oldPassword, @RequestParam String newPassword) {
         return parseResult("更新成功", "原密码不正确", userService.updatePassword(getUser(), oldPassword, newPassword), false);
     }
 
     @PutMapping("/password/reset")
     @ApiOperation("重置密码")
-    public ResponseResult<String> resetPassword(@RequestBody @ApiParam @Valid PasswordDTO password) {
+    public Response<String> resetPassword(@RequestBody @ApiParam @Valid PasswordDTO password) {
         if (commonService.isVcodeValidated(password.getEmail(), password.getVcode(), true)) {
             userService.resetPassword(password.getEmail(), password.getNewPassword());
             return successResult("重置密码成功");
@@ -53,7 +53,7 @@ public class UserController extends BeeBaseController {
 
     @PostMapping("/register")
     @ApiOperation("注册")
-    public ResponseResult<String> register(@RequestBody @ApiParam @Valid RegisterDTO register) {
+    public Response<String> register(@RequestBody @ApiParam @Valid RegisterDTO register) {
         ifReturn(commonService.existsUsername(register.getUsername()), errorResult("该用户名已经被注册啦"));
         ifReturn(() -> commonService.existsEmail(register.getEmail()), errorResult("该邮箱已经注册啦"));
         if (hasResult()) {
@@ -70,19 +70,19 @@ public class UserController extends BeeBaseController {
     @ApiOperation("登录")
     @ApiImplicitParams({@ApiImplicitParam(name = "loginName", value = "用户名或邮箱", required = true),
             @ApiImplicitParam(name = "password", value = "密码", required = true)})
-    public ResponseResult<String> login(@RequestParam String loginName, @RequestParam String password) {
+    public Response<String> login(@RequestParam String loginName, @RequestParam String password) {
         return parseResult("登录成功", "登录失败", userService.login(loginName, password));
     }
 
     @PutMapping("/info")
     @ApiOperation("更新信息")
-    public ResponseResult<Boolean> updateInfo(@RequestBody @ApiParam @Valid UserInfoDTO userInfo) {
+    public Response<Boolean> updateInfo(@RequestBody @ApiParam @Valid UserInfoDTO userInfo) {
         return parseResult("更新", userService.updateInfo(getUser(), userInfo));
     }
 
     @GetMapping("/info")
     @ApiOperation("获取用户信息")
-    public ResponseResult<User> getUserInfo() {
+    public Response<User> getUserInfo() {
         return parseResult("未获取到用户信息，请登录", getUser(), true);
     }
 }

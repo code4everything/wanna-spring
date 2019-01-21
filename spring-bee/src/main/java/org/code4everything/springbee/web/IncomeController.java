@@ -1,7 +1,7 @@
 package org.code4everything.springbee.web;
 
 import io.swagger.annotations.*;
-import org.code4everything.boot.bean.ResponseResult;
+import org.code4everything.boot.bean.Response;
 import org.code4everything.springbee.domain.Income;
 import org.code4everything.springbee.model.IncomeBillVO;
 import org.code4everything.springbee.model.IncomeDTO;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.sql.Date;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author pantao
@@ -33,22 +33,22 @@ public class IncomeController extends BeeBaseController {
 
     @PostMapping("/append")
     @ApiOperation("添加一条收益记录")
-    public ResponseResult<Income> saveIncome(@RequestBody @ApiParam @Valid IncomeDTO income) {
+    public Response<Income> saveIncome(@RequestBody @ApiParam @Valid IncomeDTO income) {
         return parseResult("添加失败", incomeService.saveIncome(getUserId(), income), true);
     }
 
     @DeleteMapping("/remove")
     @ApiOperation("删除一条收益记录")
     @ApiImplicitParam(name = "incomeId", value = "收益记录编号", required = true)
-    public ResponseResult<String> remove(@RequestParam String incomeId) {
+    public Response<String> remove(@RequestParam String incomeId) {
         incomeService.remove(getUserId(), incomeId);
         return successResult("删除成功");
     }
 
     @PutMapping("/{incomeId}/update")
     @ApiOperation("更新记录")
-    public ResponseResult<Income> updateIncome(@PathVariable String incomeId,
-                                               @RequestBody @ApiParam @Valid IncomeDTO income) {
+    public Response<Income> updateIncome(@PathVariable String incomeId,
+                                         @RequestBody @ApiParam @Valid IncomeDTO income) {
         return parseResult("更新失败", incomeService.updateIncome(getUserId(), incomeId, income), true);
     }
 
@@ -56,7 +56,7 @@ public class IncomeController extends BeeBaseController {
     @ApiOperation("列出收益详情")
     @ApiImplicitParams({@ApiImplicitParam(name = "category", value = "分类"), @ApiImplicitParam(name = "start", value =
             "开始日期"), @ApiImplicitParam(name = "end", value = "截止日期")})
-    public ResponseResult<ArrayList<Income>> list(String category, Date start, Date end) {
+    public Response<List<Income>> list(String category, Date start, Date end) {
         return parseCollection("没有找到数据", incomeService.listIncome(getUserId(), category, start, end), true);
     }
 
@@ -64,8 +64,7 @@ public class IncomeController extends BeeBaseController {
     @ApiOperation("列出月账单")
     @ApiImplicitParams({@ApiImplicitParam(name = "startMonth", value = "开始月份", required = true, example = "2018-01"),
             @ApiImplicitParam(name = "endMonth", value = "结束月份", required = true, example = "2018-12")})
-    public ResponseResult<ArrayList<IncomeBillVO>> listMonth(@RequestParam String startMonth,
-                                                             @RequestParam String endMonth) {
+    public Response<List<IncomeBillVO>> listMonth(@RequestParam String startMonth, @RequestParam String endMonth) {
         return parseCollection("糟糕，没有数据", incomeService.listMonth(getUserId(), startMonth, endMonth));
     }
 
@@ -74,8 +73,7 @@ public class IncomeController extends BeeBaseController {
     @ApiImplicitParams({@ApiImplicitParam(name = "startYear", value = "开始年份", required = true, example = "2014",
             dataType = "int"), @ApiImplicitParam(name = "endYear", value = "结束年份", required = true, example = "2018",
             dataType = "int")})
-    public ResponseResult<ArrayList<IncomeBillVO>> listYear(@RequestParam Integer startYear,
-                                                            @RequestParam Integer endYear) {
+    public Response<List<IncomeBillVO>> listYear(@RequestParam Integer startYear, @RequestParam Integer endYear) {
         return parseCollection("糟糕，没有数据", incomeService.listYear(getUserId(), startYear, endYear));
     }
 }

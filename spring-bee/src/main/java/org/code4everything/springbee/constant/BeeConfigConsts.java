@@ -29,7 +29,7 @@ public class BeeConfigConsts {
     /**
      * 黑名单路径
      */
-    public static final String[] BLACK_PREFIXES = {"/swagger-ui.html", "/v2/api-docs"};
+    public static final String[] BLACK_PREFIXES = {};
 
     /**
      * 自定义配置上传文件保存路径

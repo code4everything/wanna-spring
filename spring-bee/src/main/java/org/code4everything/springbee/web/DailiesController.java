@@ -4,7 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.code4everything.boot.bean.ResponseResult;
+import org.code4everything.boot.bean.Response;
 import org.code4everything.springbee.domain.Dailies;
 import org.code4everything.springbee.model.DailiesDTO;
 import org.code4everything.springbee.service.DailiesService;
@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author pantao
@@ -36,8 +36,7 @@ public class DailiesController extends BeeBaseController {
 
     @PostMapping("/append/{dailyId}")
     @ApiOperation("添加一条详情记录")
-    public ResponseResult<Dailies> append(@PathVariable String dailyId,
-                                          @RequestBody @ApiParam @Valid DailiesDTO dailies) {
+    public Response<Dailies> append(@PathVariable String dailyId, @RequestBody @ApiParam @Valid DailiesDTO dailies) {
         if (dailyService.exists(dailyId)) {
             return parseResult("添加失败", dailiesService.saveDailies(dailyId, dailies));
         }
@@ -47,22 +46,22 @@ public class DailiesController extends BeeBaseController {
     @DeleteMapping("/remove")
     @ApiOperation("删除一条详情")
     @ApiImplicitParam(name = "dailiesId", value = "详情编号", required = true)
-    public ResponseResult<String> remove(@RequestParam String dailiesId) {
+    public Response<String> remove(@RequestParam String dailiesId) {
         dailiesService.remove(dailiesId);
         return successResult("删除成功");
     }
 
     @PutMapping("/{dailiesId}/update")
     @ApiOperation("更新详情")
-    public ResponseResult<Dailies> updateDailies(@PathVariable String dailiesId,
-                                                 @RequestBody @ApiParam @Valid DailiesDTO dailies) {
+    public Response<Dailies> updateDailies(@PathVariable String dailiesId,
+                                           @RequestBody @ApiParam @Valid DailiesDTO dailies) {
         return parseResult("更新失败", dailiesService.updateDailies(dailiesId, dailies));
     }
 
     @GetMapping("/list")
     @ApiOperation("列出日程详情")
     @ApiImplicitParam(name = "dailyId", value = "日程记录编号", required = true)
-    public ResponseResult<ArrayList<Dailies>> listByDailyId(@RequestParam String dailyId) {
+    public Response<List<Dailies>> listByDailyId(@RequestParam String dailyId) {
         return parseCollection("没有找到相关记录", dailiesService.listDailies(dailyId));
     }
 }
