@@ -27,6 +27,7 @@ public class SpringBeeApplication {
         String configFile = FileUtils.currentWorkDir() + File.separator + "config.json";
         // 配置基本信息
         BootConfig.setDebug(false);
+        BootConfig.setOkCode(200);
         BootConfig.setMaxUploadFileSize(IntegerConsts.FileSize.MB);
         // 监听配置文件
         FileUtils.watchFile(configFile, new FileWatcher() {

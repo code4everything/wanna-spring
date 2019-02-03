@@ -49,6 +49,21 @@
           </div>
         </div>
         <br/>
+        <div class="row bg-light rounded">
+          <div class="col-sm-12"><br/></div>
+          <div class="col-sm-10 offset-1 text-left">
+            <span style="font-size: 18px;">最高得分：</span><span style="font-size: 24px;">{{max}}</span>
+          </div>
+          <div class="col-sm-10 offset-1 text-left">
+            <span style="font-size: 18px;">最低得分：</span><span style="font-size: 24px;">{{min}}</span>
+          </div>
+          <div class="col-sm-10 offset-1 text-left">
+            <span style="font-size: 18px;">平均得分：</span><span
+            style="font-size: 24px;">{{Number(average).toFixed(2)}}</span>
+          </div>
+          <div class="col-sm-12"><br/></div>
+        </div>
+        <br/>
       </div>
     </div>
     <div class="col-12" v-if="isMobile"><br/></div>
@@ -87,7 +102,10 @@ export default {
         columns: [],
         rows: []
       },
-      extend: {'xAxis.0.axisLabel.rotate': 45}
+      extend: {'xAxis.0.axisLabel.rotate': 45},
+      min: 0,
+      max: 0,
+      average: 0.0
     }
   },
   methods: {
@@ -107,6 +125,9 @@ export default {
       this.chartData.columns = ['date', col]
       this.fullChartData.rows = []
       this.fullChartData.columns = ['date', col]
+      this.min = 10
+      this.max = 0
+      let sum = 0.0
       if (data.code === 200) {
         data.data.forEach(item => {
           let ele = {'date': dayjs(item.date).format('MM-DD')}
@@ -115,7 +136,16 @@ export default {
           ele = {'date': item.date}
           ele[col] = item.score
           this.fullChartData.rows.push(ele)
+          // 统计
+          if (item.score < this.min) {
+            this.min = item.score
+          }
+          if (item.score > this.max) {
+            this.max = item.score
+          }
+          sum += item.score
         })
+        this.average = sum / data.data.length
       } else {
         utils.showError(this, data.msg)
       }
