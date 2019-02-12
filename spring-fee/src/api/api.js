@@ -68,8 +68,8 @@ export const requestListTodo = date => {
   return axios.get(`/user/todo/list?date=${date}`)
 }
 
-export const requestSaveTodo = (doingDate, content) => {
-  return axios.post(`/user/todo/create?doingDate=${doingDate}&content=${content}`)
+export const requestSaveTodo = (doingDate, content, offset, repeat) => {
+  return axios.post(`/user/todo/create`, {doingDate, content, offset, repeat})
 }
 
 export const requestRemoveDailies = dailiesId => {

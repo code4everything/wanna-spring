@@ -1,6 +1,21 @@
 <!--suppress HtmlFormInputWithoutLabel -->
 <template>
   <div class="row">
+    <div class="col-sm-11 col-10 offset-1 offset-sm-1 rounded bg-light">
+      <br/>
+      <div class="row">
+        <div class="col-sm-2 text-right h5-v-middle" v-if="!isMobile">日期偏移</div>
+        <div class="col-sm-3 col-6 text-left">
+          <el-input-number :max="365" :min="0" class="w-100" v-model="offset"/>
+        </div>
+        <div class="col-sm-2 text-right h5-v-middle" v-if="!isMobile">重复次数</div>
+        <div class="col-sm-3 col-6 text-left">
+          <el-input-number :max="365" :min="0" class="w-100" v-model="repeat"/>
+        </div>
+      </div>
+      <br/>
+    </div>
+    <div class="col-12 col-sm-12"><br/></div>
     <div class="text-left rounded bg-light col-10 offset-1 col-sm-11 offset-sm-1">
       <br/>
       <!--添加任务-->
@@ -47,7 +62,7 @@ import utils from '../../assets/js/utils'
 export default {
   name: 'Todo',
   components: {TodoItem: TodoItem},
-  data () {
+  data() {
     return {
       todoTip: '添加任务',
       undoTip: '之前未完成的代办事项',
@@ -59,7 +74,10 @@ export default {
       todoLength: 0,
       undos: [],
       undoLength: 0,
-      isFirst: true
+      isFirst: true,
+      offset: 0,
+      repeat: 0,
+      isMobile: false
     }
   },
   props: ['date'],
@@ -68,9 +86,11 @@ export default {
       if (validator.isEmpty(this.content)) {
         utils.showWarning(this, '数据不能为空')
       } else {
-        requestSaveTodo(this.date, this.content).then(data => {
+        requestSaveTodo(this.date, this.content, this.offset, this.repeat).then(data => {
           if (data.code === 200) {
             this.content = ''
+            this.repeat = 0
+            this.offset = 0
             this.todos.push(data.data)
             utils.showSuccess(this, data.msg)
           } else {
@@ -101,6 +121,7 @@ export default {
     }
   },
   mounted: function () {
+    this.isMobile = utils.isMobile()
     setTimeout(() => {
       if (utils.isNotNull(this.date) && !validator.isEmpty(this.date)) {
         this.listTodo()

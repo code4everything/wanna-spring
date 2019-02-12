@@ -211,7 +211,5 @@ export default {
 </script>
 
 <style scoped>
-  .h5-v-middle {
-    padding-top: 10px;
-  }
+  @import "../../assets/css/style.css";
 </style>
