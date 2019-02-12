@@ -131,10 +131,12 @@ public class TodoServiceImpl implements TodoService {
         todoDAO.save(todo);
         if (todoDTO.getOffsetWell() > 0 && todoDTO.getRepeatWell() > 0) {
             // 异步批量添加
-            final long nowMilli = DateUtil.parseDate(todoDTO.getDoingDate()).getTime();
             ThreadUtil.execute(() -> {
-                for (int i = 1; i <= todoDTO.getRepeat(); i++) {
-                    long offset = todoDTO.getOffset() * i * IntegerConsts.ONE_DAY_MILLIS;
+                long offset = 0;
+                final long nowMilli = DateUtil.parseDate(todoDTO.getDoingDate()).getTime();
+                final long offsetMillis = (long) todoDTO.getOffset() * (long) IntegerConsts.ONE_DAY_MILLIS;
+                for (int i = 0; i < todoDTO.getRepeat(); i++) {
+                    offset += offsetMillis;
                     Todo another = todo.copyInto(new Todo());
                     another.setCreateTime(System.currentTimeMillis());
                     another.setDoingDate(DateUtil.formatDate(new Date(nowMilli + offset)));
