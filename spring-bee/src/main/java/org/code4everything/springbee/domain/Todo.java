@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.code4everything.boot.annotations.Sealed;
+import org.code4everything.boot.bean.BaseBean;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -20,7 +21,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "todo", description = "待办事项")
-public class Todo implements Serializable {
+public class Todo implements BaseBean, Serializable {
 
     @Id
     @ApiModelProperty("事项编号")

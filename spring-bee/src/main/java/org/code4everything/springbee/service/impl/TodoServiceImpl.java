@@ -1,6 +1,7 @@
 package org.code4everything.springbee.service.impl;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.mongodb.BasicDBObject;
@@ -8,10 +9,12 @@ import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 import org.code4everything.boot.annotations.AopLog;
+import org.code4everything.boot.constant.IntegerConsts;
 import org.code4everything.boot.constant.StringConsts;
 import org.code4everything.springbee.dao.TodoDAO;
 import org.code4everything.springbee.domain.Todo;
 import org.code4everything.springbee.model.TodoCountVO;
+import org.code4everything.springbee.model.TodoDTO;
 import org.code4everything.springbee.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -117,14 +120,30 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     @AopLog("添加待办事项")
-    public Todo saveTodo(String userId, String doingDate, String content) {
+    public Todo saveTodo(String userId, TodoDTO todoDTO) {
         Todo todo = new Todo();
-        todo.setContent(content);
+        todo.setContent(todoDTO.getContent());
         todo.setCreateTime(System.currentTimeMillis());
-        todo.setDoingDate(doingDate);
+        todo.setDoingDate(todoDTO.getDoingDate());
         todo.setId(IdUtil.simpleUUID());
         todo.setStatus("0");
         todo.setUserId(userId);
-        return todoDAO.save(todo);
+        todoDAO.save(todo);
+        if (todoDTO.getOffsetWell() > 0 && todoDTO.getRepeatWell() > 0) {
+            // 异步批量添加
+            final long nowMilli = DateUtil.parseDate(todoDTO.getDoingDate()).getTime();
+            ThreadUtil.execute(() -> {
+                for (int i = 1; i <= todoDTO.getRepeat(); i++) {
+                    long offset = todoDTO.getOffset() * i * IntegerConsts.ONE_DAY_MILLIS;
+                    Todo another = todo.copyInto(new Todo());
+                    another.setCreateTime(System.currentTimeMillis());
+                    another.setDoingDate(DateUtil.formatDate(new Date(nowMilli + offset)));
+                    another.setId(IdUtil.simpleUUID());
+                    another.setUserId(userId);
+                    todoDAO.save(another);
+                }
+            });
+        }
+        return todo;
     }
 }

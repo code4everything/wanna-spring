@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import org.code4everything.boot.bean.Response;
 import org.code4everything.springbee.domain.Todo;
 import org.code4everything.springbee.model.TodoCountVO;
+import org.code4everything.springbee.model.TodoDTO;
 import org.code4everything.springbee.service.TodoService;
 import org.code4everything.springbee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +33,10 @@ public class TodoController extends BeeBaseController {
         this.todoService = todoService;
     }
 
-
     @PostMapping("/create")
     @ApiOperation("添加代办事项")
-    @ApiImplicitParams({@ApiImplicitParam(name = "doingDate", value = "计划完成日期", required = true),
-            @ApiImplicitParam(name = "content", value = "事项内容", required = true)})
-    public Response<Todo> saveTodo(@RequestParam String doingDate, @RequestParam String content) {
-        return parseResult("添加失败", todoService.saveTodo(getUserId(), doingDate, content), true);
+    public Response<Todo> saveTodo(@RequestBody TodoDTO todo) {
+        return parseResult("添加失败", todoService.saveTodo(getUserId(), todo), true);
     }
 
     @DeleteMapping("/remove")

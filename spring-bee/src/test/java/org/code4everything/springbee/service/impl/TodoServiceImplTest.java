@@ -1,6 +1,5 @@
 package org.code4everything.springbee.service.impl;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
 import org.code4everything.springbee.BaseTest;
 import org.code4everything.springbee.constant.TestConsts;
@@ -58,8 +57,6 @@ public class TodoServiceImplTest extends BaseTest {
 
     @Test
     public void saveTodo() {
-        Assert.assertNotNull(todoService.saveTodo(getUser().getId(),
-                DateUtil.formatDate(new Date(System.currentTimeMillis())), RandomUtil.randomString(6)));
     }
 
     @Test
