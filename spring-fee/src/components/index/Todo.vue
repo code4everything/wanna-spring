@@ -5,11 +5,11 @@
       <br/>
       <div class="row">
         <div class="col-sm-2 text-right h5-v-middle" v-if="!isMobile">日期偏移</div>
-        <div class="col-sm-3 col-6 text-left">
+        <div class="col-sm-4 col-6 text-left">
           <el-input-number :max="365" :min="0" class="w-100" v-model="offset"/>
         </div>
         <div class="col-sm-2 text-right h5-v-middle" v-if="!isMobile">重复次数</div>
-        <div class="col-sm-3 col-6 text-left">
+        <div class="col-sm-4 col-6 text-left">
           <el-input-number :max="365" :min="0" class="w-100" v-model="repeat"/>
         </div>
       </div>
