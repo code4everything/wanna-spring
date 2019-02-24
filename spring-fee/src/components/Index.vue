@@ -17,6 +17,8 @@
       </div>
     </nav>
     <br/>
+    <days-left></days-left>
+    <br/>
     <div class="row justify-content-center">
       <div class="col-sm-10 col-12">
         <router-view/>
@@ -29,11 +31,13 @@
 import app from '../App'
 import $ from 'jquery'
 import cookie from 'js-cookie'
+import DaysLeft from './DaysLeft'
 
 const activeStr = 'active'
 
 export default {
   name: 'Index',
+  components: {DaysLeft},
   data () {
     return {
       logoUrl: 'static/img/logo.png',
