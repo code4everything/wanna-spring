@@ -17,7 +17,7 @@ export default {
   name: 'DaysLeft',
   data () {
     return {
-      progress: 66,
+      progress: 0,
       color: 'green',
       tip: ''
     }
@@ -30,7 +30,7 @@ export default {
       let day = 60 * 60 * 24
       let len = Number.parseInt((end.unix() - start.unix()) / day) + 1
       let progress = Number.parseInt((now.unix() - start.unix()) / day) + 1
-      this.tip = '已过 ' + progress + ' 天'
+      this.tip = '已过 ' + progress + ' 天，共 ' + len + ' 天'
       this.progress = Number.parseInt(progress * 100 / len)
     }
   },
