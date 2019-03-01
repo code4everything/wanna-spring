@@ -6,6 +6,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.base.Strings;
 import org.code4everything.boot.annotations.AopLog;
+import org.code4everything.boot.constant.StringConsts;
 import org.code4everything.springbee.dao.AssetDAO;
 import org.code4everything.springbee.dao.IncomeDAO;
 import org.code4everything.springbee.domain.Asset;
@@ -36,7 +37,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class IncomeServiceImpl implements IncomeService {
 
-    private static final String HYPHEN = "-";
+    private static final String HYPHEN = StringConsts.Sign.HYPHEN;
 
     private final AssetDAO assetDAO;
 
