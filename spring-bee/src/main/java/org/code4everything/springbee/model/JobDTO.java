@@ -28,6 +28,9 @@ public class JobDTO implements Serializable, BaseBean {
     @ApiModelProperty("工作结束时间")
     private Long workTimeEnd;
 
+    @ApiModelProperty("公司")
+    private String company;
+
     @ApiModelProperty("方式：1正常，2加班")
     private String workWay;
 

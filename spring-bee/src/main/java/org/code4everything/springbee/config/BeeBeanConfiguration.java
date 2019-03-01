@@ -34,6 +34,11 @@ public class BeeBeanConfiguration {
     }
 
     @Bean
+    public RedisTemplate<String, String> stringRedisTemplate() {
+        return RedisTemplateUtils.newTemplate(String.class);
+    }
+
+    @Bean
     public RedisTemplate<String, Asset> assetRedisTemplate() {
         return RedisTemplateUtils.newTemplate(Asset.class);
     }

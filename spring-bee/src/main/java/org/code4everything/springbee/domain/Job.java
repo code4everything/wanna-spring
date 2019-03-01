@@ -42,6 +42,12 @@ public class Job implements Serializable {
     @ApiModelProperty("工作日志")
     private String workDiary;
 
+    @ApiModelProperty("公司")
+    private String company;
+
+    @ApiModelProperty("状态：0未处理，1已处理（加班工资，或调休）")
+    private String status;
+
     @ApiModelProperty("创建时间")
     private Long createTime;
 }
