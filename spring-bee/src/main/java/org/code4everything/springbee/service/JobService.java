@@ -20,7 +20,7 @@ public interface JobService {
 
     Page<Job> listAll(String userId, Integer offset, Integer size);
 
-    Page<Job> listByCompany(String userId, String company, Integer offset, Integer size);
+    Page<Job> listByCompanies(String userId, String company, Integer offset, Integer size);
 
     Job writeWorkDiary(String id, String workDiary);
 

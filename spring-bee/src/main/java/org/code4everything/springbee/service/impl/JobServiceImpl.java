@@ -66,7 +66,7 @@ public class JobServiceImpl implements JobService {
             companies = temp;
             stringRedisTemplate.opsForList().leftPushAll(key, companies);
         }
-        expiredCompanyAfterThreeDays(key);
+        expireCompanyAfterThreeDays(key);
         return companies;
     }
 
@@ -81,7 +81,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Page<Job> listByCompany(String userId, String company, Integer offset, Integer size) {
+    public Page<Job> listByCompanies(String userId, String company, Integer offset, Integer size) {
         return jobDAO.getByUserIdAndCompany(userId, company, getPageable(offset, size));
     }
 
@@ -132,13 +132,13 @@ public class JobServiceImpl implements JobService {
             final String key = COMPANY_KEY_PREFIX + userId;
             List<String> companies = listCompany(userId);
             if (CollUtil.isEmpty(companies) || !companies.contains(company)) {
-                stringRedisTemplate.opsForList().leftPush(key, company);
+                stringRedisTemplate.opsForList().rightPush(key, company);
             }
-            expiredCompanyAfterThreeDays(key);
+            expireCompanyAfterThreeDays(key);
         });
     }
 
-    private void expiredCompanyAfterThreeDays(final String key) {
+    private void expireCompanyAfterThreeDays(final String key) {
         stringRedisTemplate.expire(key, 3, TimeUnit.DAYS);
     }
 
