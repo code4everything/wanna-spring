@@ -31,6 +31,7 @@ public class SpringBeeApplication {
         BootConfig.setMaxUploadFileSize(IntegerConsts.FileSize.MB);
         // 监听配置文件
         FileUtils.watchFile(configFile, new FileWatcher() {
+
             @Override
             public void doSomething() {
                 SpringBeeApplication.beeConfigBean = BeeUtils.parseConfigurer(configFile);

@@ -18,7 +18,8 @@ export default {
         profile: '/#/profile',
         income: '/#/income',
         daily: '/#/daily',
-        todo: '/#/todo'
+        todo: '/#/todo',
+        job: '/#/job'
       }
     }
   }
