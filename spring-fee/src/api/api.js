@@ -32,6 +32,10 @@ axios.interceptors.response.use(response => {
   return Promise.resolve(error.response)
 })
 
+export const requestWriteDiary = (jobId, wordDiary) => {
+  return axios.put(`/user/job/${jobId}/diary`, wordDiary)
+}
+
 export const requestCompanies = () => {
   return axios.get('/user/job/companies')
 }

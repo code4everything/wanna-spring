@@ -1,3 +1,4 @@
+<!-- 暂时不考虑兼容移动端 -->
 <template>
   <div>
     <div class="row">
@@ -20,20 +21,43 @@
             </el-select>
           </div>
           <div class="col-sm-3">
-            <el-button :type="hasJob?'danger':'success'" @click="punchJob"><i class="glyphicon glyphicon-time"></i>
-              {{hasJob?'下班打卡':'上班打卡'}}
-            </el-button>
+            <div class="row">
+              <div class="col-sm-6">
+                <el-button :type="hasJob?'danger':'success'" @click="punchJob"><i class="glyphicon glyphicon-time"></i>
+                  {{hasJob?'下班打卡':'上班打卡'}}
+                </el-button>
+              </div>
+              <div class="col-sm-6">
+                <el-button :disabled="!hasJob" @click="dialogVisible=true" type="primary"><i
+                  class="glyphicon glyphicon-edit"></i> 写日志
+                </el-button>
+              </div>
+            </div>
           </div>
         </div>
         <br/>
       </div>
     </div>
+    <!--日志弹窗-->
+    <el-dialog :visible.sync="dialogVisible" title="工作日志">
+      <el-input rows="5" type="textarea" v-model="todayJob.diary"></el-input>
+      <div class="dialog-footer" slot="footer">
+        <el-button @click="dialogVisible = false">关闭</el-button>
+        <el-button @click="writeDiary" type="primary">保存</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>/* eslint-disable indent */
 import dayjs from 'dayjs'
-import {requestCompanies, requestFinishWork, requestJobOfToday, requestStartWorking} from '../../api/api'
+import {
+  requestCompanies,
+  requestFinishWork,
+  requestJobOfToday,
+  requestStartWorking,
+  requestWriteDiary
+} from '../../api/api'
 import utils from '../../assets/js/utils'
 
 export default {
@@ -47,9 +71,11 @@ export default {
       ways: ['工作', '加班'],
       weekday: ['日', '一', '二', '三', '四', '五', '六'],
       hasJob: false,
-      currentJob: {},
+      todayJob: {diary: ''},
       jobRefreshed: false,
-      lastDayOfWeek: -1
+      lastDayOfWeek: -1,
+      dialogVisible: false,
+      currentJob: {}
     }
   },
   methods: {
@@ -59,9 +85,9 @@ export default {
       }
       if (this.hasJob) {
         // 下班打卡
-        requestFinishWork(this.currentJob.id, this.myWay, this.myCompany).then(data => {
+        requestFinishWork(this.todayJob.id, this.myWay, this.myCompany).then(data => {
           if (data.code === 200) {
-            this.currentJob = data.data
+            this.todayJob = data.data
             utils.showSuccess(this, '打卡成功')
           } else {
             utils.showError(this, data.msg)
@@ -72,7 +98,7 @@ export default {
         requestStartWorking(this.myWay, this.myCompany).then(data => {
           if (data.code === 200) {
             this.hasJob = true
-            this.currentJob = data.data
+            this.todayJob = data.data
             utils.showSuccess(this, '打卡成功')
           } else {
             utils.showError(this, data.msg)
@@ -85,11 +111,21 @@ export default {
       requestJobOfToday().then(data => {
         if (data.code === 200) {
           this.hasJob = true
-          this.currentJob = data.data
+          this.todayJob = data.data
         } else {
           this.hasJob = false
         }
       })
+    },
+    writeDiary: function () {
+      requestWriteDiary(this.todayJob.id, this.todayJob.diary).then(data => {
+        if (data.code === 200) {
+          utils.showSuccess(this, data.msg)
+        } else {
+          utils.showError(this.data.msg)
+        }
+      })
+      this.dialogVisible = false
     }
   },
   mounted () {

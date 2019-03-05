@@ -1,11 +1,14 @@
 package org.code4everything.springbee.model;
 
+import cn.hutool.core.util.StrUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.code4everything.boot.bean.BaseBean;
+import org.code4everything.springbee.domain.Job;
+import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
 
@@ -36,4 +39,22 @@ public class JobDTO implements Serializable, BaseBean {
 
     @ApiModelProperty("工作日志")
     private String workDiary;
+
+    @Override
+    public <T> T copyInto(T target) {
+        if (target instanceof Job) {
+            Job job = (Job) target;
+            if (StrUtil.isNotEmpty(id)) {
+                job.setId(id);
+            }
+            job.setWorkTimeStart(workTimeStart);
+            job.setWorkTimeEnd(workTimeEnd);
+            job.setCompany(company);
+            job.setWorkWay(workWay);
+            job.setWorkDiary(workDiary);
+        } else {
+            BeanUtils.copyProperties(this, target);
+        }
+        return target;
+    }
 }
