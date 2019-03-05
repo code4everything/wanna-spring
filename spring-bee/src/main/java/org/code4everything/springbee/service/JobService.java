@@ -18,9 +18,9 @@ public interface JobService {
 
     Page<Job> listByWorkOverTime(String userId, String status, Integer offset, Integer size);
 
-    Page<Job> listAll(String userId, Integer offset, Integer size);
+    Page<Job> listAllWorked(String userId, Integer offset, Integer size);
 
-    Page<Job> listByCompanies(String userId, String company, Integer offset, Integer size);
+    Page<Job> listWorkedByCompanies(String userId, String company, Integer offset, Integer size);
 
     Job writeWorkDiary(String id, String workDiary);
 

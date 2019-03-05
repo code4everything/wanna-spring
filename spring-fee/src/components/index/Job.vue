@@ -38,6 +38,47 @@
         <br/>
       </div>
     </div>
+    <br/>
+    <div class="row">
+      <div class="col-sm-8 bg-light rounded">
+        <br/>
+        <el-tabs @tab-click="handleTabClick" v-model="currentTab">
+          <el-tab-pane label="工作记录" name="all">
+            <div class="row">
+              <div class="col-sm-12 text-left">
+                <el-select default-first-option v-model="companyFilter">
+                  <el-option :key="index" :label="company" :value="company"
+                             v-for="(company,index) in companies"></el-option>
+                </el-select>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-sm-12">
+                <job-log></job-log>
+              </div>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="加班记录" name="overtime">
+            <div class="row">
+              <div class="col-sm-12 text-left">
+                <el-select default-first-option v-model="status">
+                  <el-option :key="index" :label="state" :value="index"
+                             v-for="(state,index) in statusList"></el-option>
+                </el-select>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-sm-12">
+                <job-log></job-log>
+              </div>
+            </div>
+          </el-tab-pane>
+        </el-tabs>
+        <br/>
+      </div>
+    </div>
     <!--日志弹窗-->
     <el-dialog :visible.sync="dialogVisible" title="工作日志">
       <el-input rows="5" type="textarea" v-model="todayJob.diary"></el-input>
@@ -59,9 +100,11 @@ import {
   requestWriteDiary
 } from '../../api/api'
 import utils from '../../assets/js/utils'
+import JobLog from './job/JobLog'
 
 export default {
   name: 'Job',
+  components: {JobLog},
   data () {
     return {
       datetime: '',
@@ -75,7 +118,11 @@ export default {
       jobRefreshed: false,
       lastDayOfWeek: -1,
       dialogVisible: false,
-      currentJob: {}
+      currentJob: {},
+      currentTab: 'overtime',
+      status: '',
+      companyFilter: '',
+      statusList: ['未处理', '已处理']
     }
   },
   methods: {
@@ -126,6 +173,9 @@ export default {
         }
       })
       this.dialogVisible = false
+    },
+    handleTabClick: function () {
+      console.info('tab changed')
     }
   },
   mounted () {

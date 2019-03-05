@@ -15,9 +15,9 @@ import java.util.List;
 @Repository
 public interface JobDAO extends MongoRepository<Job, String> {
 
-    Page<Job> getByUserIdAndCompany(String userId, String company, Pageable pageable);
+    Page<Job> getByUserIdAndCompanyAndWorkWay(String userId, String company, String workWay, Pageable pageable);
 
-    Page<Job> getByUserId(String userId, Pageable pageable);
+    Page<Job> getByUserIdAndWorkWay(String userId, String workWay, Pageable pageable);
 
     Page<Job> getByUserIdAndWorkWayAndStatus(String userId, String workWay, String status, Pageable pageable);
 

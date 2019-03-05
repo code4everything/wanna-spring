@@ -98,9 +98,9 @@ public class JobController extends BeeBaseController {
     public Response<Page<Job>> listByCompany(String company, @RequestParam(defaultValue = "0") Integer offset,
                                              @RequestParam(defaultValue = "30") Integer size) {
         if (StrUtil.isEmpty(company)) {
-            return successResult(jobService.listAll(getUserId(), offset, size));
+            return successResult(jobService.listAllWorked(getUserId(), offset, size));
         } else {
-            return successResult(jobService.listByCompanies(getUserId(), company, offset, size));
+            return successResult(jobService.listWorkedByCompanies(getUserId(), company, offset, size));
         }
     }
 }

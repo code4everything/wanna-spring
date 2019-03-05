@@ -80,13 +80,13 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Page<Job> listAll(String userId, Integer offset, Integer size) {
-        return jobDAO.getByUserId(userId, getPageable(offset, size));
+    public Page<Job> listAllWorked(String userId, Integer offset, Integer size) {
+        return jobDAO.getByUserIdAndWorkWay(userId, "1", getPageable(offset, size));
     }
 
     @Override
-    public Page<Job> listByCompanies(String userId, String company, Integer offset, Integer size) {
-        return jobDAO.getByUserIdAndCompany(userId, company, getPageable(offset, size));
+    public Page<Job> listWorkedByCompanies(String userId, String company, Integer offset, Integer size) {
+        return jobDAO.getByUserIdAndCompanyAndWorkWay(userId, company, "1", getPageable(offset, size));
     }
 
     @Override
