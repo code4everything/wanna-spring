@@ -32,6 +32,42 @@ axios.interceptors.response.use(response => {
   return Promise.resolve(error.response)
 })
 
+export const requestSaveJob = (id, workTimeStart, workTimeEnd, company, workWay, workDiary) => {
+  return axios.put('/user/job', {id, workTimeStart, workTimeEnd, company, workWay, workDiary})
+}
+
+export const requestUpdateJobStatus = (jobId, status) => {
+  return axios.put(`/user/job/${jobId}/status?status=${status}`)
+}
+
+export const requestListOvertime = (status, offset, size) => {
+  return axios.get(`/user/job/overtime?status=${status}&offset=${offset}&size=${size}`)
+}
+
+export const requestListWorked = (company, offset, size) => {
+  return axios.get(`/user/job?company=${company}&offset=${offset}&size=${size}`)
+}
+
+export const requestWriteDiary = (jobId, wordDiary) => {
+  return axios.put(`/user/job/${jobId}/diary`, wordDiary)
+}
+
+export const requestCompanies = () => {
+  return axios.get('/user/job/companies')
+}
+
+export const requestFinishWork = (jobId, workWay, company) => {
+  return axios.put(`/user/job/${jobId}/finish?workWay=${workWay}&company=${company}`)
+}
+
+export const requestStartWorking = (workWay, company) => {
+  return axios.post(`/user/job/start?workWay=${workWay}&company=${company}`)
+}
+
+export const requestJobOfToday = () => {
+  return axios.get('/user/job/today')
+}
+
 export const requestListTodoCount = (start, end) => {
   return axios.get(`/user/todo/count/list?start=${start}&end=${end}`)
 }

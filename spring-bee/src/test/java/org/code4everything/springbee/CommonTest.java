@@ -1,6 +1,9 @@
 package org.code4everything.springbee;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
+import org.code4everything.springbee.domain.Job;
+import org.code4everything.springbee.model.JobDTO;
 import org.junit.Test;
 
 import java.util.Date;
@@ -15,5 +18,15 @@ public class CommonTest {
     public void dateUtil() {
         Date start = new Date();
         System.out.println(DateUtil.formatDate(DateUtil.offsetDay(start, 1)));
+    }
+
+    @Test
+    public void copy() {
+        JobDTO jobDTO = new JobDTO();
+        jobDTO.setCompany("company");
+        Job job = new Job();
+        job.setId("123456789");
+        BeanUtil.copyProperties(jobDTO, job);
+        System.out.println(job);
     }
 }

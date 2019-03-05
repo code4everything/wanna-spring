@@ -9,6 +9,7 @@ import Income from '../components/index/Income'
 import ScheduleContainer from '../components/container/ScheduleContainer'
 import Daily from '../components/index/Daily'
 import Todo from '../components/index/Todo'
+import Job from '../components/index/Job'
 
 // noinspection JSUnresolvedFunction
 Vue.use(Router)
@@ -35,6 +36,10 @@ export default new Router({
           name: 'Todo',
           component: Todo
         }]
+      }, {
+        path: '/job',
+        name: 'Job',
+        component: Job
       }]
     }, {
       path: '',
