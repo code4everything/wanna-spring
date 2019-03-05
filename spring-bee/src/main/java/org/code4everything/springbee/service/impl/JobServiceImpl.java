@@ -124,6 +124,7 @@ public class JobServiceImpl implements JobService {
         job.setWorkTimeStart(System.currentTimeMillis());
         job.setWorkWay(workWay);
         job.setCompany(company);
+        job.setWorkTimeEnd(System.currentTimeMillis());
         pushCompany(userId, company);
         return jobDAO.save(job);
     }

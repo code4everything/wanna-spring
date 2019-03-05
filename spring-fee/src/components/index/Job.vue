@@ -8,7 +8,7 @@
           <div class="col-sm-3 text-right h5-v-middle">
             <h5>{{datetime}}</h5>
           </div>
-          <div class="col-sm-4 text-left">
+          <div class="col-sm-3 text-left">
             <el-select allow-create class="w-100" default-first-option filterable v-model="myCompany">
               <el-option :key="index" :label="company" :value="company"
                          v-for="(company,index) in companies"></el-option>
@@ -20,16 +20,21 @@
                          v-for="(way,index) in ways"></el-option>
             </el-select>
           </div>
-          <div class="col-sm-3">
+          <div class="col-sm-4">
             <div class="row">
-              <div class="col-sm-6">
-                <el-button :type="hasJob?'danger':'success'" @click="punchJob"><i class="glyphicon glyphicon-time"></i>
-                  {{hasJob?'下班打卡':'上班打卡'}}
+              <div class="col-sm-4">
+                <el-button :type="hasJob?'danger':'success'" @click="punchJob" class="w-100"><i
+                  class="glyphicon glyphicon-time"></i>{{hasJob?'下班打卡':'上班打卡'}}
                 </el-button>
               </div>
-              <div class="col-sm-6">
-                <el-button :disabled="!hasJob" @click="dialogVisible=true" type="primary"><i
+              <div class="col-sm-4">
+                <el-button :disabled="!hasJob" @click="dialogVisible=true" class="w-100" type="primary"><i
                   class="glyphicon glyphicon-edit"></i> 写日志
+                </el-button>
+              </div>
+              <div class="col-sm-4">
+                <el-button @click="resetCurrentJob" class="w-100" type="warning"><i
+                  class="glyphicon glyphicon-record"></i> 新增
                 </el-button>
               </div>
             </div>
@@ -40,13 +45,72 @@
     </div>
     <br/>
     <div class="row">
-      <div class="col-sm-8 bg-light rounded">
+      <!--工作日志-->
+      <div class="col-sm-8" style="padding-right: 40px;">
         <br/>
-        <el-tabs v-model="currentTab">
-          <el-tab-pane label="工作记录" name="all">
+        <div class="row">
+          <div class="col-sm-12 rounded bg-light">
+            <el-tabs v-model="currentTab">
+              <el-tab-pane label="工作记录" name="all">
+                <div class="row">
+                  <div class="col-sm-12 text-left">
+                    <el-select default-first-option v-model="companyFilter">
+                      <el-option :key="index" :label="company" :value="company"
+                                 v-for="(company,index) in companies"></el-option>
+                    </el-select>
+                  </div>
+                </div>
+                <br/>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <job-log :jobs="jobs1" :offset="currPage1" :size="pageSize1" :total="totals1"></job-log>
+                  </div>
+                </div>
+              </el-tab-pane>
+              <el-tab-pane label="加班记录" name="overtime">
+                <div class="row">
+                  <div class="col-sm-12 text-left">
+                    <el-select default-first-option v-model="status">
+                      <el-option :key="index" :label="state" :value="index"
+                                 v-for="(state,index) in statusList"></el-option>
+                    </el-select>
+                  </div>
+                </div>
+                <br/>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <job-log :jobs="jobs2" :offset="currPage2" :size="pageSize2" :total="totals2"></job-log>
+                  </div>
+                </div>
+              </el-tab-pane>
+            </el-tabs>
+            <br/>
+          </div>
+        </div>
+      </div>
+      <!--日志详情-->
+      <div class="col-sm-4" style="padding-left: 40px;">
+        <br/>
+        <div class="row">
+          <div class="col-sm-12 rounded bg-light">
+            <br/>
             <div class="row">
-              <div class="col-sm-12 text-left">
-                <el-select default-first-option v-model="companyFilter">
+              <div class="col-sm-12">
+                <el-date-picker class="w-100" placeholder="上班时间" type="datetime"
+                                v-model="currentJob.workTimeStart"></el-date-picker>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-sm-12">
+                <el-date-picker class="w-100" placeholder="下班时间" type="datetime"
+                                v-model="currentJob.workTimeEnd"></el-date-picker>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-sm-12">
+                <el-select allow-create class="w-100" filterable v-model="currentJob.company">
                   <el-option :key="index" :label="company" :value="company"
                              v-for="(company,index) in companies"></el-option>
                 </el-select>
@@ -55,30 +119,32 @@
             <br/>
             <div class="row">
               <div class="col-sm-12">
-                <job-log :jobs="jobs1" :offset="currPage1" :size="pageSize1" :total="totals1"></job-log>
-              </div>
-            </div>
-          </el-tab-pane>
-          <el-tab-pane label="加班记录" name="overtime">
-            <div class="row">
-              <div class="col-sm-12 text-left">
-                <el-select default-first-option v-model="status">
-                  <el-option :key="index" :label="state" :value="index"
-                             v-for="(state,index) in statusList"></el-option>
+                <el-select class="w-100" default-first-option v-model="currentJob.workWay">
+                  <el-option :key="index" :label="way" :value="index+1"
+                             v-for="(way,index) in ways"></el-option>
                 </el-select>
               </div>
             </div>
             <br/>
             <div class="row">
               <div class="col-sm-12">
-                <job-log :jobs="jobs2" :offset="currPage2" :size="pageSize2" :total="totals2"></job-log>
+                <el-input placeholder="工作日志" rows="5" type="textarea" v-model="currentJob.workDiary"></el-input>
               </div>
             </div>
-          </el-tab-pane>
-        </el-tabs>
-        <br/>
+            <br/>
+            <div class="row">
+              <div class="col-sm-12">
+                <el-button @click="saveJob" class="w-100" type="success"><i class="glyphicon glyphicon-floppy-save"></i>
+                  {{saveTip}}
+                </el-button>
+              </div>
+            </div>
+            <br/>
+          </div>
+        </div>
       </div>
     </div>
+    <br/>
     <!--日志弹窗-->
     <el-dialog :visible.sync="dialogVisible" title="工作日志">
       <el-input rows="5" type="textarea" v-model="todayJob.workDiary"></el-input>
@@ -98,6 +164,7 @@ import {
   requestJobOfToday,
   requestListOvertime,
   requestListWorked,
+  requestSaveJob,
   requestStartWorking,
   requestWriteDiary
 } from '../../api/api'
@@ -120,7 +187,14 @@ export default {
       jobRefreshed: false,
       lastDayOfWeek: -1,
       dialogVisible: false,
-      currentJob: {},
+      currentJob: {
+        id: '',
+        workTimeStart: '',
+        workTimeEnd: '',
+        company: '',
+        workWay: 1,
+        workDiary: ''
+      },
       currentTab: 'overtime',
       status: '',
       companyFilter: '',
@@ -132,7 +206,8 @@ export default {
       jobs1: [],
       jobs2: [],
       totals1: 0,
-      totals2: 0
+      totals2: 0,
+      saveTip: '添加'
     }
   },
   methods: {
@@ -212,6 +287,40 @@ export default {
       } else {
         utils.showError(this, data.msg)
       }
+    },
+    resetCurrentJob: function () {
+      this.currentJob = {
+        id: '',
+        workTimeStart: '',
+        workTimeEnd: '',
+        company: this.myCompany,
+        workWay: 1,
+        workDiary: ''
+      }
+      this.saveTip = '添加'
+    },
+    setCurrentJob: function (job) {
+      this.currentJob = {
+        id: job.id,
+        workTimeStart: new Date(job.workTimeStart),
+        workTimeEnd: new Date(job.workTimeEnd),
+        company: job.company,
+        workWay: Number.parseInt(job.workWay),
+        workDiary: job.workDiary
+      }
+      this.saveTip = '更新'
+    },
+    saveJob: function () {
+      let job = this.currentJob
+      requestSaveJob(job.id, job.workTimeStart.getTime(), job.workTimeEnd.getTime(), job.company, job.workWay.toString(), job.workDiary).then(data => {
+        if (data.code === 200) {
+          this.currentJob.id = data.data.id
+          this.saveTip = '更新'
+          utils.showSuccess(this, data.msg)
+        } else {
+          utils.showError(this, data.msg)
+        }
+      })
     }
   },
   mounted () {

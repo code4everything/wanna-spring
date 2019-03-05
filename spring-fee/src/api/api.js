@@ -32,6 +32,14 @@ axios.interceptors.response.use(response => {
   return Promise.resolve(error.response)
 })
 
+export const requestSaveJob = (id, workTimeStart, workTimeEnd, company, workWay, workDiary) => {
+  return axios.put('/user/job', {id, workTimeStart, workTimeEnd, company, workWay, workDiary})
+}
+
+export const requestUpdateJobStatus = (jobId, status) => {
+  return axios.put(`/user/job/${jobId}/status?status=${status}`)
+}
+
 export const requestListOvertime = (status, offset, size) => {
   return axios.get(`/user/job/overtime?status=${status}&offset=${offset}&size=${size}`)
 }

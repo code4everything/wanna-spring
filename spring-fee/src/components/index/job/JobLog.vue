@@ -1,13 +1,13 @@
 <template>
   <div>
-    <el-table :data="jobs" ref="filterTable">
+    <el-table :data="jobs" @row-click="selectRow" ref="filterTable">
       <el-table-column :formatter="formatJobDate" align="center" label="日期"></el-table-column>
       <el-table-column :formatter="formatJobOnline" align="center" label="上班"></el-table-column>
       <el-table-column :formatter="formatJobOffline" align="center" label="下班"></el-table-column>
       <el-table-column :formatter="formatJobDuration" align="center" label="时长"></el-table-column>
       <el-table-column align="center" label="状态">
         <template slot-scope="scope">
-          <el-select :disabled="scope.row.workWay==='1'" default-first-option v-model="scope.row.status">
+          <el-select :disabled="scope.row.workWay==='1'" @change="updateStatus(scope.row)" v-model="scope.row.status">
             <el-option :key="index" :label="state" :value="index.toString()"
                        v-for="(state,index) in statusList"></el-option>
           </el-select>
@@ -24,6 +24,8 @@
 
 <script>/* eslint-disable indent */
 import dayjs from 'dayjs'
+import {requestUpdateJobStatus} from '../../../api/api'
+import utils from '../../../assets/js/utils'
 
 // noinspection JSUnresolvedVariable
 export default {
@@ -62,6 +64,16 @@ export default {
     sizeChange: function (size) {
       this.pageSize = size
       this.$parent.$parent.$parent.listLog4C(this.currPage, this.pageSize)
+    },
+    updateStatus: function (job) {
+      requestUpdateJobStatus(job.id, job.status).then(data => {
+        if (data.code !== 200) {
+          utils.showError(this, data.msg)
+        }
+      })
+    },
+    selectRow: function (job) {
+      this.$parent.$parent.$parent.setCurrentJob(job)
     }
   },
   mounted: function () {
