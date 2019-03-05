@@ -21,7 +21,7 @@ public interface JobDAO extends MongoRepository<Job, String> {
 
     Page<Job> getByUserIdAndWorkWayAndStatus(String userId, String workWay, String status, Pageable pageable);
 
-    List<Job> getDistinctByCompany();
+    List<Job> getByUserId(String userId);
 
     Job getByUserIdAndWorkTimeStartAfter(String userId, Long today);
 }

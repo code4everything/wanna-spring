@@ -4,7 +4,7 @@ import org.code4everything.springbee.domain.Job;
 import org.code4everything.springbee.model.JobDTO;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author pantao
@@ -14,7 +14,7 @@ public interface JobService {
 
     Job updateStatus(String id, String status);
 
-    List<String> listCompany(String userId);
+    Set<String> listCompany(String userId);
 
     Page<Job> listByWorkOverTime(String userId, String status, Integer offset, Integer size);
 

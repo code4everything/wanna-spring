@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author pantao
@@ -42,7 +42,7 @@ public class JobController extends BeeBaseController {
 
     @GetMapping("/companies")
     @ApiOperation("列出公司")
-    public Response<List<String>> listCompanies() {
+    public Response<Set<String>> listCompanies() {
         return successResult(jobService.listCompany(getUserId()));
     }
 

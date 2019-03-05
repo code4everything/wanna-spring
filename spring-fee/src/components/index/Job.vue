@@ -33,7 +33,7 @@
 
 <script>/* eslint-disable indent */
 import dayjs from 'dayjs'
-import {requestFinishWork, requestJobOfToday, requestStartWorking} from '../../api/api'
+import {requestCompanies, requestFinishWork, requestJobOfToday, requestStartWorking} from '../../api/api'
 import utils from '../../assets/js/utils'
 
 export default {
@@ -44,7 +44,7 @@ export default {
       companies: [],
       myCompany: '',
       myWay: 1,
-      ways: ['上班', '加班'],
+      ways: ['工作', '加班'],
       weekday: ['日', '一', '二', '三', '四', '五', '六'],
       hasJob: false,
       currentJob: {},
@@ -104,6 +104,15 @@ export default {
         this.refreshJob()
       }
     }, 1000)
+    // 列出公司
+    requestCompanies().then(data => {
+      if (data.code === 200) {
+        this.companies = data.data
+        this.myCompany = this.companies[this.companies.length - 1]
+      } else {
+        utils.showError(this, data.msg)
+      }
+    })
   }
 }
 </script>

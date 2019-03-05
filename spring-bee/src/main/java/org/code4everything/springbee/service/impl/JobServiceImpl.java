@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import org.code4everything.springbee.dao.JobDAO;
 import org.code4everything.springbee.domain.Job;
 import org.code4everything.springbee.exception.JobExistsException;
@@ -19,9 +20,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -55,19 +57,18 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public List<String> listCompany(String userId) {
+    public Set<String> listCompany(String userId) {
         final String key = COMPANY_KEY_PREFIX + userId;
-        List<String> companies = stringRedisTemplate.opsForList().range(key, 0, 128);
-        if (CollUtil.isEmpty(companies)) {
-            List<Job> jobs = jobDAO.getDistinctByCompany();
-            final List<String> temp = new ArrayList<>();
-            jobs.forEach(job -> {
-                if (job.getUserId().equals(userId)) {
-                    temp.add(job.getCompany());
-                }
-            });
+        Set<String> companies;
+        List<String> companiesFormRedis = stringRedisTemplate.opsForList().range(key, 0, 128);
+        if (CollUtil.isEmpty(companiesFormRedis)) {
+            List<Job> jobs = jobDAO.getByUserId(userId);
+            final Set<String> temp = new HashSet<>(jobs.size());
+            jobs.forEach(job -> temp.add(job.getCompany()));
             companies = temp;
             stringRedisTemplate.opsForList().leftPushAll(key, companies);
+        } else {
+            companies = new HashSet<>(companiesFormRedis);
         }
         expireCompanyAfterThreeDays(key);
         return companies;
@@ -141,8 +142,8 @@ public class JobServiceImpl implements JobService {
     private void pushCompany(String userId, String company) {
         ThreadUtil.execute(() -> {
             final String key = COMPANY_KEY_PREFIX + userId;
-            List<String> companies = listCompany(userId);
-            if (CollUtil.isEmpty(companies) || !companies.contains(company)) {
+            Set<String> companies = listCompany(userId);
+            if (StrUtil.isNotEmpty(company) && (CollUtil.isEmpty(companies) || !companies.contains(company))) {
                 stringRedisTemplate.opsForList().rightPush(key, company);
             }
             expireCompanyAfterThreeDays(key);
