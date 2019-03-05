@@ -21,6 +21,10 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination :current-page="offset" :page-size="size" :page-sizes="[30, 50, 100, 200]"
+                   :total="total" @current-change="pageChange"
+                   @size-change="sizeChange" layout="total, sizes, prev, pager, next, jumper">
+    </el-pagination>
   </div>
 </template>
 
@@ -33,7 +37,7 @@ export default {
       statusList: ['未处理', '已处理']
     }
   },
-  props: ['jobs'],
+  props: ['jobs', 'total', 'size', 'offset'],
   methods: {
     formatJobDate: function (job) {
 
@@ -46,6 +50,12 @@ export default {
     },
     formatJobDuration: function (job) {
 
+    },
+    pageChange: function (offset) {
+      this.offset = offset
+    },
+    sizeChange: function (size) {
+      this.size = size
     }
   }
 }

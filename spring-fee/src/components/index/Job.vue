@@ -42,7 +42,7 @@
     <div class="row">
       <div class="col-sm-8 bg-light rounded">
         <br/>
-        <el-tabs @tab-click="handleTabClick" v-model="currentTab">
+        <el-tabs v-model="currentTab">
           <el-tab-pane label="工作记录" name="all">
             <div class="row">
               <div class="col-sm-12 text-left">
@@ -55,7 +55,7 @@
             <br/>
             <div class="row">
               <div class="col-sm-12">
-                <job-log></job-log>
+                <job-log :jobs="jobs1" :offset="currPage1" :size="pageSize1" :total="totals1"></job-log>
               </div>
             </div>
           </el-tab-pane>
@@ -71,7 +71,7 @@
             <br/>
             <div class="row">
               <div class="col-sm-12">
-                <job-log></job-log>
+                <job-log :jobs="jobs2" :offset="currPage2" :size="pageSize2" :total="totals2"></job-log>
               </div>
             </div>
           </el-tab-pane>
@@ -81,7 +81,7 @@
     </div>
     <!--日志弹窗-->
     <el-dialog :visible.sync="dialogVisible" title="工作日志">
-      <el-input rows="5" type="textarea" v-model="todayJob.diary"></el-input>
+      <el-input rows="5" type="textarea" v-model="todayJob.workDiary"></el-input>
       <div class="dialog-footer" slot="footer">
         <el-button @click="dialogVisible = false">关闭</el-button>
         <el-button @click="writeDiary" type="primary">保存</el-button>
@@ -96,6 +96,8 @@ import {
   requestCompanies,
   requestFinishWork,
   requestJobOfToday,
+  requestListOvertime,
+  requestListWorked,
   requestStartWorking,
   requestWriteDiary
 } from '../../api/api'
@@ -114,7 +116,7 @@ export default {
       ways: ['工作', '加班'],
       weekday: ['日', '一', '二', '三', '四', '五', '六'],
       hasJob: false,
-      todayJob: {diary: ''},
+      todayJob: {workDiary: ''},
       jobRefreshed: false,
       lastDayOfWeek: -1,
       dialogVisible: false,
@@ -122,7 +124,15 @@ export default {
       currentTab: 'overtime',
       status: '',
       companyFilter: '',
-      statusList: ['未处理', '已处理']
+      statusList: ['未处理', '已处理'],
+      currPage1: 1,
+      currPage2: 1,
+      pageSize1: 30,
+      pageSize2: 30,
+      jobs1: [],
+      jobs2: [],
+      totals1: 0,
+      totals2: 0
     }
   },
   methods: {
@@ -165,7 +175,7 @@ export default {
       })
     },
     writeDiary: function () {
-      requestWriteDiary(this.todayJob.id, this.todayJob.diary).then(data => {
+      requestWriteDiary(this.todayJob.id, this.todayJob.workDiary).then(data => {
         if (data.code === 200) {
           utils.showSuccess(this, data.msg)
         } else {
@@ -174,8 +184,27 @@ export default {
       })
       this.dialogVisible = false
     },
-    handleTabClick: function () {
-      console.info('tab changed')
+    listLog: function () {
+      if (this.currentTab === 'all') {
+        requestListWorked(this.companyFilter, this.currPage1 - 1, this.pageSize1).then(data => this.handleJobData(data))
+      } else {
+        requestListOvertime(this.status, this.currPage2 - 1, this.pageSize2)
+      }
+    },
+    handleJobData: function (data) {
+      if (data.code === 200) {
+        if (this.currentTab === 'all') {
+          this.jobs1 = data.data.content
+          // noinspection JSUnresolvedVariable
+          this.totals1 = data.data.totalElements
+        } else {
+          this.jobs2 = data.data.content
+          // noinspection JSUnresolvedVariable
+          this.totals2 = data.data.totalElements
+        }
+      } else {
+        utils.showError(this, data.msg)
+      }
     }
   },
   mounted () {
@@ -199,6 +228,14 @@ export default {
         utils.showError(this, data.msg)
       }
     })
+  },
+  watch: {
+    status: function () {
+      this.listLog()
+    },
+    companyFilter: function () {
+      this.listLog()
+    }
   }
 }
 </script>

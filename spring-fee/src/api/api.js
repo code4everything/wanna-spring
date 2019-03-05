@@ -32,6 +32,14 @@ axios.interceptors.response.use(response => {
   return Promise.resolve(error.response)
 })
 
+export const requestListOvertime = (status, offset, size) => {
+  return axios.get(`/user/job/overtime?status=${status}&offset=${offset}&size=${size}`)
+}
+
+export const requestListWorked = (company, offset, size) => {
+  return axios.get(`/user/job?company=${company}&offset=${offset}&size=${size}`)
+}
+
 export const requestWriteDiary = (jobId, wordDiary) => {
   return axios.put(`/user/job/${jobId}/diary`, wordDiary)
 }
