@@ -15,7 +15,7 @@
           </div>
           <div class="col-sm-2 text-left">
             <el-select class="w-100" default-first-option v-model="myWay">
-              <el-option :key="index" :label="way" :value="way"
+              <el-option :key="index" :label="way" :value="index+1"
                          v-for="(way,index) in ways"></el-option>
             </el-select>
           </div>
@@ -33,7 +33,8 @@
 
 <script>/* eslint-disable indent */
 import dayjs from 'dayjs'
-import {requestJobOfToday} from '../../api/api'
+import {requestFinishWork, requestJobOfToday, requestStartWorking} from '../../api/api'
+import utils from '../../assets/js/utils'
 
 export default {
   name: 'Job',
@@ -42,7 +43,7 @@ export default {
       datetime: '',
       companies: [],
       myCompany: '',
-      myWay: '上班',
+      myWay: 1,
       ways: ['上班', '加班'],
       weekday: ['日', '一', '二', '三', '四', '五', '六'],
       hasJob: false,
@@ -53,7 +54,31 @@ export default {
   },
   methods: {
     punchJob: function () {
-      this.workUp = !this.workUp
+      if (!this.companies.includes(this.myCompany)) {
+        this.companies.push(this.myCompany)
+      }
+      if (this.hasJob) {
+        // 下班打卡
+        requestFinishWork(this.currentJob.id, this.myWay, this.myCompany).then(data => {
+          if (data.code === 200) {
+            this.currentJob = data.data
+            utils.showSuccess(this, '打卡成功')
+          } else {
+            utils.showError(this, data.msg)
+          }
+        })
+      } else {
+        // 上班打卡
+        requestStartWorking(this.myWay, this.myCompany).then(data => {
+          if (data.code === 200) {
+            this.hasJob = true
+            this.currentJob = data.data
+            utils.showSuccess(this, '打卡成功')
+          } else {
+            utils.showError(this, data.msg)
+          }
+        })
+      }
     },
     refreshJob: function () {
       this.jobRefreshed = true

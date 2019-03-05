@@ -10,6 +10,6 @@ import org.code4everything.boot.exception.BootException;
 public class JobNotFoundException extends BootException {
 
     public JobNotFoundException() {
-        super(HttpStatus.HTTP_NOT_FOUND, org.springframework.http.HttpStatus.NOT_FOUND, "指定的工作日志不存在");
+        super(HttpStatus.HTTP_NOT_FOUND, "指定的工作日志不存在", true);
     }
 }

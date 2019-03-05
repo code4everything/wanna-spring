@@ -32,6 +32,14 @@ axios.interceptors.response.use(response => {
   return Promise.resolve(error.response)
 })
 
+export const requestFinishWork = (jobId, workWay, company) => {
+  return axios.put(`/user/job/${jobId}/finish?workWay=${workWay}&company=${company}`)
+}
+
+export const requestStartWorking = (workWay, company) => {
+  return axios.post(`/user/job/start?workWay=${workWay}&company=${company}`)
+}
+
 export const requestJobOfToday = () => {
   return axios.get('/user/job/today')
 }

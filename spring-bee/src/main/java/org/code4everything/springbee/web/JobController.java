@@ -52,7 +52,7 @@ public class JobController extends BeeBaseController {
         return successResult(jobService.writeWorkDiary(jobId, workDiary));
     }
 
-    @PutMapping("/{jobId}/finished")
+    @PutMapping("/{jobId}/finish")
     @ApiOperation("下班打卡")
     @ApiImplicitParams({@ApiImplicitParam(name = "workWay", value = "方式：1正常，2加班", defaultValue = "1"),
             @ApiImplicitParam(name = "company", value = "公司名称", required = true)})
