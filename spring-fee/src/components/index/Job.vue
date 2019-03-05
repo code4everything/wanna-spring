@@ -186,9 +186,16 @@ export default {
     },
     listLog: function () {
       if (this.currentTab === 'all') {
-        requestListWorked(this.companyFilter, this.currPage1 - 1, this.pageSize1).then(data => this.handleJobData(data))
+        this.listLog4C(this.currPage1, this.pageSize1)
       } else {
-        requestListOvertime(this.status, this.currPage2 - 1, this.pageSize2)
+        this.listLog4C(this.currPage2, this.pageSize2)
+      }
+    },
+    listLog4C: function (currPage, size) {
+      if (this.currentTab === 'all') {
+        requestListWorked(this.companyFilter, currPage - 1, size).then(data => this.handleJobData(data))
+      } else {
+        requestListOvertime(this.status, currPage - 1, size).then(data => this.handleJobData(data))
       }
     },
     handleJobData: function (data) {

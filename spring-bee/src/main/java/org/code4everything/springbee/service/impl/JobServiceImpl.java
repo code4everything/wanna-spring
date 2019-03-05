@@ -108,6 +108,7 @@ public class JobServiceImpl implements JobService {
             job.setWorkWay(workWay);
             job.setWorkTimeEnd(System.currentTimeMillis());
             job.setCompany(company);
+            job.setStatus("0");
             pushCompany(job.getUserId(), company);
             return jobDAO.save(job);
         }
@@ -159,6 +160,7 @@ public class JobServiceImpl implements JobService {
         job.setUserId(userId);
         job.setId(IdUtil.simpleUUID());
         job.setCreateTime(System.currentTimeMillis());
+        job.setStatus("0");
         return job;
     }
 
