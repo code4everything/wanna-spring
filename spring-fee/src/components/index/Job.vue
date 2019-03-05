@@ -20,7 +20,8 @@
             </el-select>
           </div>
           <div class="col-sm-3">
-            <el-button @click="punchJob" type="success"><i class="glyphicon glyphicon-floppy-open"></i>{{workTip}}
+            <el-button :type="hasJob?'danger':'success'" @click="punchJob"><i class="glyphicon glyphicon-time"></i>
+              {{hasJob?'下班打卡':'上班打卡'}}
             </el-button>
           </div>
         </div>
@@ -32,6 +33,7 @@
 
 <script>/* eslint-disable indent */
 import dayjs from 'dayjs'
+import {requestJobOfToday} from '../../api/api'
 
 export default {
   name: 'Job',
@@ -41,19 +43,41 @@ export default {
       companies: [],
       myCompany: '',
       myWay: '上班',
-      workTip: '',
       ways: ['上班', '加班'],
-      weekday: ['日', '一', '二', '三', '四', '五', '六']
+      weekday: ['日', '一', '二', '三', '四', '五', '六'],
+      hasJob: false,
+      currentJob: {},
+      jobRefreshed: false,
+      lastDayOfWeek: -1
     }
   },
   methods: {
     punchJob: function () {
-      console.info('punch')
+      this.workUp = !this.workUp
+    },
+    refreshJob: function () {
+      this.jobRefreshed = true
+      requestJobOfToday().then(data => {
+        if (data.code === 200) {
+          this.hasJob = true
+          this.currentJob = data.data
+        } else {
+          this.hasJob = false
+        }
+      })
     }
   },
   mounted () {
     setInterval(() => {
-      this.datetime = `${dayjs().format('YYYY-MM-DD HH:mm:ss')} 星期${this.weekday[dayjs().format('d')]}`
+      // 刷新时间
+      let now = new Date()
+      let idx = dayjs(now).format('d')
+      this.datetime = `${dayjs(now).format('YYYY-MM-DD HH:mm:ss')} 星期${this.weekday[idx]}`
+      if (!this.jobRefreshed && idx > this.lastDayOfWeek) {
+        // 刷新打卡记录
+        this.lastDayOfWeek = idx
+        this.refreshJob()
+      }
     }, 1000)
   }
 }

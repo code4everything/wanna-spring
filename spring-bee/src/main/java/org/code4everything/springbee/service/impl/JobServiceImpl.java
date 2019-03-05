@@ -3,10 +3,13 @@ package org.code4everything.springbee.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.ObjectUtil;
 import org.code4everything.springbee.dao.JobDAO;
 import org.code4everything.springbee.domain.Job;
+import org.code4everything.springbee.exception.JobExistsException;
 import org.code4everything.springbee.exception.JobNotFoundException;
 import org.code4everything.springbee.model.JobDTO;
+import org.code4everything.springbee.scheduler.DateScheduler;
 import org.code4everything.springbee.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -112,6 +115,9 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public Job startWorking(String userId, String workWay, String company) {
+        if (ObjectUtil.isNotNull(getJobOfToday(userId))) {
+            throw new JobExistsException();
+        }
         Job job = getNewJob(userId);
         job.setWorkTimeStart(System.currentTimeMillis());
         job.setWorkWay(workWay);
@@ -127,7 +133,12 @@ public class JobServiceImpl implements JobService {
         return jobDAO.save(jobDTO.copyInto(job.orElseGet(() -> getNewJob(userId))));
     }
 
-    public void pushCompany(String userId, String company) {
+    @Override
+    public Job getJobOfToday(String userId) {
+        return jobDAO.getByUserIdAndWorkTimeStartAfter(userId, DateScheduler.getMillisOfTodaysStart());
+    }
+
+    private void pushCompany(String userId, String company) {
         ThreadUtil.execute(() -> {
             final String key = COMPANY_KEY_PREFIX + userId;
             List<String> companies = listCompany(userId);

@@ -9,6 +9,7 @@ import org.code4everything.boot.bean.Response;
 import org.code4everything.springbee.domain.Job;
 import org.code4everything.springbee.model.JobDTO;
 import org.code4everything.springbee.service.JobService;
+import org.code4everything.springbee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,10 @@ public class JobController extends BeeBaseController {
     private final JobService jobService;
 
     @Autowired
-    public JobController(JobService jobService) {this.jobService = jobService;}
+    public JobController(JobService jobService, UserService userService) {
+        super(userService);
+        this.jobService = jobService;
+    }
 
     @PutMapping("/{jobId}/status")
     @ApiOperation("更新加班状态")
@@ -69,6 +73,12 @@ public class JobController extends BeeBaseController {
     @ApiOperation("保存工作日志")
     public Response<Job> save(@RequestBody JobDTO jobDTO) {
         return successResult(jobService.save(getUserId(), jobDTO));
+    }
+
+    @GetMapping("/today")
+    @ApiOperation("获取今日的工作日志")
+    public Response<Job> getJobOfToday() {
+        return parseResult("今日还没有工作日志哦", jobService.getJobOfToday(getUserId()));
     }
 
     @GetMapping("/overtime")

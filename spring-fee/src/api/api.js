@@ -32,6 +32,10 @@ axios.interceptors.response.use(response => {
   return Promise.resolve(error.response)
 })
 
+export const requestJobOfToday = () => {
+  return axios.get('/user/job/today')
+}
+
 export const requestListTodoCount = (start, end) => {
   return axios.get(`/user/todo/count/list?start=${start}&end=${end}`)
 }

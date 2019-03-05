@@ -29,4 +29,6 @@ public interface JobService {
     Job startWorking(String userId, String workWay, String company);
 
     Job save(String userId, JobDTO jobDTO);
+
+    Job getJobOfToday(String userId);
 }
