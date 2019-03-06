@@ -6,7 +6,7 @@
         <br/>
         <div class="row">
           <div class="col-sm-3 text-right h5-v-middle">
-            <h5>{{datetime}}</h5>
+            <h6>{{datetime}}</h6>
           </div>
           <div class="col-sm-3 text-left">
             <el-select allow-create class="w-100" default-first-option filterable v-model="myCompany">
@@ -24,7 +24,7 @@
             <div class="row">
               <div class="col-sm-4">
                 <el-button :type="hasJob?'danger':'success'" @click="punchJob" class="w-100"><i
-                  class="glyphicon glyphicon-time"></i>{{hasJob?' 下班打卡':' 上班打卡'}}
+                  class="glyphicon glyphicon-time"></i>{{hasJob?' 下班':' 上班'}}
                 </el-button>
               </div>
               <div class="col-sm-4">
