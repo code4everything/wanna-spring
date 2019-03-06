@@ -24,7 +24,7 @@
             <div class="row">
               <div class="col-sm-4">
                 <el-button :type="hasJob?'danger':'success'" @click="punchJob" class="w-100"><i
-                  class="glyphicon glyphicon-time"></i>{{hasJob?'下班打卡':'上班打卡'}}
+                  class="glyphicon glyphicon-time"></i>{{hasJob?' 下班打卡':' 上班打卡'}}
                 </el-button>
               </div>
               <div class="col-sm-4">
@@ -50,6 +50,7 @@
         <br/>
         <div class="row">
           <div class="col-sm-12 rounded bg-light">
+            <br/>
             <el-tabs v-model="currentTab">
               <el-tab-pane label="工作记录" name="all">
                 <div class="row">
@@ -58,6 +59,9 @@
                       <el-option :key="index" :label="company" :value="company"
                                  v-for="(company,index) in companies"></el-option>
                     </el-select>
+                    &emsp;
+                    <el-button @click="listLog" round type="primary"><i class="glyphicon glyphicon-refresh"></i> 刷新
+                    </el-button>
                   </div>
                 </div>
                 <br/>
@@ -74,6 +78,9 @@
                       <el-option :key="index" :label="state" :value="index"
                                  v-for="(state,index) in statusList"></el-option>
                     </el-select>
+                    &emsp;
+                    <el-button @click="listLog" round type="primary"><i class="glyphicon glyphicon-refresh"></i> 刷新
+                    </el-button>
                   </div>
                 </div>
                 <br/>
@@ -134,9 +141,7 @@
             <br/>
             <div class="row">
               <div class="col-sm-12">
-                <el-button @click="saveJob" class="w-100" type="success"><i class="glyphicon glyphicon-floppy-save"></i>
-                  {{saveTip}}
-                </el-button>
+                <el-button @click="saveJob" class="w-100" type="success">{{saveTip}}</el-button>
               </div>
             </div>
             <br/>
@@ -207,7 +212,7 @@ export default {
       jobs2: [],
       totals1: 0,
       totals2: 0,
-      saveTip: '添加'
+      saveTip: '添  加'
     }
   },
   methods: {
@@ -297,7 +302,7 @@ export default {
         workWay: 1,
         workDiary: ''
       }
-      this.saveTip = '添加'
+      this.saveTip = '添  加'
     },
     setCurrentJob: function (job) {
       this.currentJob = {
@@ -308,7 +313,7 @@ export default {
         workWay: Number.parseInt(job.workWay),
         workDiary: job.workDiary
       }
-      this.saveTip = '更新'
+      this.saveTip = '更  新'
     },
     saveJob: function () {
       let job = this.currentJob

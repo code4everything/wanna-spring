@@ -31,7 +31,7 @@ export default {
       let len = Number.parseInt((end.unix() - start.unix()) / day) + 1
       let progress = Number.parseInt((now.unix() - start.unix()) / day) + 1
       this.tip = '已过 ' + progress + ' 天，共 ' + len + ' 天'
-      this.progress = Number.parseInt(progress * 100 / len)
+      this.progress = Number.parseFloat((progress * 100 / len).toFixed(2))
     }
   },
   mounted () {
