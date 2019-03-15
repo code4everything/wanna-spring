@@ -189,7 +189,6 @@ export default {
       weekday: ['日', '一', '二', '三', '四', '五', '六'],
       hasJob: false,
       todayJob: {workDiary: ''},
-      jobRefreshed: false,
       lastDayOfWeek: -1,
       dialogVisible: false,
       currentJob: {
@@ -244,7 +243,6 @@ export default {
       }
     },
     refreshJob: function () {
-      this.jobRefreshed = true
       requestJobOfToday().then(data => {
         if (data.code === 200) {
           this.hasJob = true
@@ -334,7 +332,7 @@ export default {
       let now = new Date()
       let idx = dayjs(now).format('d')
       this.datetime = `${dayjs(now).format('YYYY-MM-DD HH:mm:ss')} 星期${this.weekday[idx]}`
-      if (!this.jobRefreshed && idx > this.lastDayOfWeek) {
+      if (idx !== this.lastDayOfWeek) {
         // 刷新打卡记录
         this.lastDayOfWeek = idx
         this.refreshJob()

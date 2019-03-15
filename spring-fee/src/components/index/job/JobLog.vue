@@ -1,8 +1,8 @@
 <template>
   <div>
     <el-table :data="jobs" @row-click="selectRow" ref="filterTable">
-      <el-table-column :resizable="true" min-width="150px" :formatter="formatJobDate" align="center"
-                       label="日期"></el-table-column>
+      <el-table-column :formatter="formatJobDate" :resizable="true" align="center" label="日期"
+                       min-width="150px"></el-table-column>
       <el-table-column :formatter="formatJobOnline" align="center" label="上班"></el-table-column>
       <el-table-column :formatter="formatJobOffline" align="center" label="下班"></el-table-column>
       <el-table-column :formatter="formatJobDuration" align="center" label="时长"></el-table-column>
