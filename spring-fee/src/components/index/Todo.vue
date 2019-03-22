@@ -50,6 +50,10 @@
       <br/>
     </div>
     <div class="col-12 col-sm-12"><br/></div>
+    <div class="text-center col-10 offset-1 col-sm-11 offset-sm-1">
+      <a href="https://to-do.microsoft.com" target="_blank">代办事项辅助</a>
+    </div>
+    <div class="col-12 col-sm-12"><br/></div>
   </div>
 </template>
 
@@ -62,7 +66,7 @@ import utils from '../../assets/js/utils'
 export default {
   name: 'Todo',
   components: {TodoItem: TodoItem},
-  data() {
+  data () {
     return {
       todoTip: '添加任务',
       undoTip: '之前未完成的代办事项',
