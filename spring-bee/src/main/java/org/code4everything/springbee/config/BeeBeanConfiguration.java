@@ -7,10 +7,12 @@ import org.code4everything.springbee.domain.Asset;
 import org.code4everything.springbee.domain.Log;
 import org.code4everything.springbee.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.filter.CorsFilter;
 
 /**
@@ -21,8 +23,10 @@ import org.springframework.web.filter.CorsFilter;
 public class BeeBeanConfiguration {
 
     @Autowired
-    public BeeBeanConfiguration(RedisConnectionFactory redisConnectionFactory) {
+    public BeeBeanConfiguration(RedisConnectionFactory redisConnectionFactory, JavaMailSender javaMailSender, @Value(
+            "${spring.mail.username}") String outbox) {
         BootConfig.setRedisConnectionFactory(redisConnectionFactory);
+        BootConfig.setMailSender(outbox, javaMailSender);
     }
 
     /**

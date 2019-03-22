@@ -1,6 +1,7 @@
 package org.code4everything.springbee.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
+import org.code4everything.boot.message.VerifyCodeUtils;
 import org.code4everything.springbee.constant.TestConsts;
 import org.code4everything.springbee.service.CommonService;
 import org.junit.Assert;
@@ -21,7 +22,7 @@ public class CommonServiceImplTest {
 
     @Test
     public void sendVcode() throws MessagingException {
-        commonService.sendVcode(TestConsts.EMAIL);
+        VerifyCodeUtils.sendVerifyCodeByEmail(TestConsts.EMAIL, "验证码", "你的验证码：{}");
     }
 
     @Test
@@ -36,6 +37,6 @@ public class CommonServiceImplTest {
 
     @Test
     public void isVcodeValidated() {
-        Assert.assertFalse(commonService.isVcodeValidated(TestConsts.EMAIL, RandomUtil.randomString(6), true));
+        Assert.assertFalse(VerifyCodeUtils.validateVerifyCodeAndRemove(TestConsts.EMAIL, RandomUtil.randomString(6)));
     }
 }

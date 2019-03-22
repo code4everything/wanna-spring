@@ -5,12 +5,12 @@ import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import org.code4everything.boot.base.DateUtils;
 import org.code4everything.springbee.dao.JobDAO;
 import org.code4everything.springbee.domain.Job;
 import org.code4everything.springbee.exception.JobExistsException;
 import org.code4everything.springbee.exception.JobNotFoundException;
 import org.code4everything.springbee.model.JobDTO;
-import org.code4everything.springbee.scheduler.DateScheduler;
 import org.code4everything.springbee.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -138,7 +138,7 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public Job getJobOfToday(String userId) {
-        return jobDAO.getByUserIdAndWorkTimeStartAfter(userId, DateScheduler.getMillisOfTodaysStart());
+        return jobDAO.getByUserIdAndWorkTimeStartAfter(userId, DateUtils.getStartOfToday().getTime());
     }
 
     private void pushCompany(String userId, String company) {

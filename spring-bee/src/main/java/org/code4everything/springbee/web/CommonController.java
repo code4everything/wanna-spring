@@ -5,11 +5,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.code4everything.boot.bean.Response;
+import org.code4everything.boot.message.VerifyCodeUtils;
 import org.code4everything.springbee.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.mail.MessagingException;
 
 /**
  * @author pantao
@@ -44,14 +43,17 @@ public class CommonController extends BeeBaseController {
     @ApiImplicitParams({@ApiImplicitParam(name = "email", value = "邮箱", required = true), @ApiImplicitParam(name =
             "vcode", required = true, value = "验证码")})
     public Response<Boolean> verifyVcode(@RequestParam String email, @RequestParam String vcode) {
-        return parseBoolean("验证通过", "验证码错误", commonService.isVcodeValidated(email, vcode, false));
+        return parseBoolean("验证通过", "验证码错误", VerifyCodeUtils.validateVerifyCode(email, vcode));
     }
 
     @PostMapping("/vcode/send")
     @ApiOperation("发送验证码")
     @ApiImplicitParam(name = "email", value = "邮箱", required = true)
-    public Response<String> sendVcode(@RequestParam String email) throws MessagingException {
-        commonService.sendVcode(email);
+    public Response<String> sendVcode(@RequestParam String email) {
+        if (VerifyCodeUtils.isFrequently(email)) {
+            return errorResult("请勿频繁发送");
+        }
+        VerifyCodeUtils.sendVerifyCodeByEmailAsync(email, "验证码", "您的验证码：{}，请勿泄漏给他人");
         return successResult("发送成功");
     }
 

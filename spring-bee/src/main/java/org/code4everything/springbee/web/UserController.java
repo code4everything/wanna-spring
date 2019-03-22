@@ -2,6 +2,7 @@ package org.code4everything.springbee.web;
 
 import io.swagger.annotations.*;
 import org.code4everything.boot.bean.Response;
+import org.code4everything.boot.message.VerifyCodeUtils;
 import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.PasswordDTO;
 import org.code4everything.springbee.model.RegisterDTO;
@@ -44,7 +45,7 @@ public class UserController extends BeeBaseController {
     @PutMapping("/password/reset")
     @ApiOperation("重置密码")
     public Response<String> resetPassword(@RequestBody @ApiParam @Valid PasswordDTO password) {
-        if (commonService.isVcodeValidated(password.getEmail(), password.getVcode(), true)) {
+        if (VerifyCodeUtils.validateVerifyCodeAndRemove(password.getEmail(), password.getVcode())) {
             userService.resetPassword(password.getEmail(), password.getNewPassword());
             return successResult("重置密码成功");
         }
@@ -59,7 +60,7 @@ public class UserController extends BeeBaseController {
         if (hasResult()) {
             return getReturn();
         }
-        if (commonService.isVcodeValidated(register.getEmail(), register.getVcode(), true)) {
+        if (VerifyCodeUtils.validateVerifyCodeAndRemove(register.getEmail(), register.getVcode())) {
             userService.register(register);
             return successResult("注册成功");
         }
