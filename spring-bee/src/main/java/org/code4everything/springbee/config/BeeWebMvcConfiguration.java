@@ -1,14 +1,14 @@
 package org.code4everything.springbee.config;
 
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
-import org.apache.log4j.Logger;
 import org.code4everything.boot.interfaces.InterceptHandler;
 import org.code4everything.boot.web.HttpUtils;
 import org.code4everything.boot.web.mvc.DefaultExceptionHandler;
 import org.code4everything.boot.web.mvc.DefaultWebInterceptor;
 import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -28,7 +28,7 @@ import java.util.List;
 @Configuration
 public class BeeWebMvcConfiguration implements WebMvcConfigurer {
 
-    private static final Logger LOGGER = Logger.getLogger(BeeWebMvcConfiguration.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BeeWebMvcConfiguration.class);
 
     private final UserService userUserService;
 
@@ -46,6 +46,7 @@ public class BeeWebMvcConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new DefaultWebInterceptor(new InterceptHandler() {
+
             @Override
             public void handleBlackList(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
                 request.getRequestDispatcher("/error/banned").forward(request, response);
@@ -58,7 +59,7 @@ public class BeeWebMvcConfiguration implements WebMvcConfigurer {
                 User user = userUserService.getUserByToken(token);
                 if (ObjectUtil.isNull(user)) {
                     // 非法用户，禁止访问
-                    LOGGER.error(StrUtil.format("auth error, token: {}, ip: {}", token, request.getRemoteAddr()));
+                    LOGGER.error("auth error, token: {}, ip: {}", token, request.getRemoteAddr());
                     request.getRequestDispatcher("/error/auth").forward(request, response);
                     return false;
                 }

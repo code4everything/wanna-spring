@@ -4,9 +4,10 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Validator;
 import com.alibaba.fastjson.JSONObject;
-import org.apache.log4j.Logger;
 import org.code4everything.springbee.config.BeeConfigBean;
 import org.code4everything.springbee.constant.BeeConfigConsts;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.query.Criteria;
 
 import java.util.Date;
@@ -17,7 +18,7 @@ import java.util.Date;
  */
 public class BeeUtils {
 
-    private static final Logger LOGGER = Logger.getLogger(BeeUtils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BeeUtils.class);
 
     private BeeUtils() {}
 
@@ -33,7 +34,7 @@ public class BeeUtils {
             try {
                 configBean = JSONObject.parseObject(FileUtil.readUtf8String(configFile), BeeConfigBean.class);
             } catch (Exception e) {
-                LOGGER.warn("load config file error: " + e.getMessage());
+                LOGGER.warn("load config file error: {}", e.getMessage());
             }
         }
         if (Validator.isNull(configBean)) {

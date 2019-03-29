@@ -60,6 +60,6 @@ public class CommonController extends BeeBaseController {
     @GetMapping("/current-time")
     @ApiOperation("获取服务器当前时间")
     public Response<String> getCurrentTimestamp() {
-        return successResult("");
+        return successResult();
     }
 }
