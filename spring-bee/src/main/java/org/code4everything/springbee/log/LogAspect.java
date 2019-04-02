@@ -5,7 +5,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.code4everything.boot.log.AopLogUtils;
-import org.code4everything.boot.service.LogService;
+import org.code4everything.boot.service.BootLogService;
 import org.code4everything.springbee.SpringBeeApplication;
 import org.code4everything.springbee.domain.Log;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class LogAspect {
 
-    private final LogService<Log> logService;
+    private final BootLogService<Log> logService;
 
     @Autowired
-    public LogAspect(LogService<Log> logLogService) {
+    public LogAspect(BootLogService<Log> logLogService) {
         this.logService = logLogService;
     }
 

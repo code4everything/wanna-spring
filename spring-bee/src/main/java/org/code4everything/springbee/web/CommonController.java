@@ -43,7 +43,7 @@ public class CommonController extends BeeBaseController {
     @ApiImplicitParams({@ApiImplicitParam(name = "email", value = "邮箱", required = true), @ApiImplicitParam(name =
             "vcode", required = true, value = "验证码")})
     public Response<Boolean> verifyVcode(@RequestParam String email, @RequestParam String vcode) {
-        return parseBoolean("验证通过", "验证码错误", VerifyCodeUtils.validateVerifyCode(email, vcode));
+        return parseBoolean("验证通过", "验证码错误", VerifyCodeUtils.validate(email, vcode));
     }
 
     @PostMapping("/vcode/send")
@@ -53,7 +53,7 @@ public class CommonController extends BeeBaseController {
         if (VerifyCodeUtils.isFrequently(email)) {
             return errorResult("请勿频繁发送");
         }
-        VerifyCodeUtils.sendVerifyCodeByEmailAsync(email, "验证码", "您的验证码：{}，请勿泄漏给他人");
+        VerifyCodeUtils.sendByMailAsync(email, "验证码", "您的验证码：{}，请勿泄漏给他人");
         return successResult("发送成功");
     }
 

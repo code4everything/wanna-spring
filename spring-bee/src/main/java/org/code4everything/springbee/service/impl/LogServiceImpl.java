@@ -3,7 +3,7 @@ package org.code4everything.springbee.service.impl;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import org.code4everything.boot.bean.LogBean;
-import org.code4everything.boot.service.LogService;
+import org.code4everything.boot.service.BootLogService;
 import org.code4everything.springbee.dao.LogDAO;
 import org.code4everything.springbee.domain.Log;
 import org.code4everything.springbee.domain.User;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
  * @since 2018/10/14
  **/
 @Service
-public class LogServiceImpl implements LogService<Log> {
+public class LogServiceImpl implements BootLogService<Log> {
 
     private final LogDAO logDAO;
 

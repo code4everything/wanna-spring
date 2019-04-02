@@ -2,9 +2,9 @@ package org.code4everything.springbee;
 
 import com.spring4all.swagger.EnableSwagger2Doc;
 import org.code4everything.boot.base.FileUtils;
+import org.code4everything.boot.base.FileWatcher;
 import org.code4everything.boot.config.BootConfig;
 import org.code4everything.boot.constant.IntegerConsts;
-import org.code4everything.boot.interfaces.FileWatcher;
 import org.code4everything.springbee.config.BeeConfigBean;
 import org.code4everything.springbee.util.BeeUtils;
 import org.springframework.boot.SpringApplication;

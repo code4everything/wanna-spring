@@ -45,7 +45,7 @@ public class UserController extends BeeBaseController {
     @PutMapping("/password/reset")
     @ApiOperation("重置密码")
     public Response<String> resetPassword(@RequestBody @ApiParam @Valid PasswordDTO password) {
-        if (VerifyCodeUtils.validateVerifyCodeAndRemove(password.getEmail(), password.getVcode())) {
+        if (VerifyCodeUtils.validateAndRemove(password.getEmail(), password.getVcode())) {
             userService.resetPassword(password.getEmail(), password.getNewPassword());
             return successResult("重置密码成功");
         }
@@ -60,7 +60,7 @@ public class UserController extends BeeBaseController {
         if (hasResult()) {
             return getReturn();
         }
-        if (VerifyCodeUtils.validateVerifyCodeAndRemove(register.getEmail(), register.getVcode())) {
+        if (VerifyCodeUtils.validateAndRemove(register.getEmail(), register.getVcode())) {
             userService.register(register);
             return successResult("注册成功");
         }

@@ -1,10 +1,10 @@
 package org.code4everything.springbee.config;
 
 import cn.hutool.core.util.ObjectUtil;
-import org.code4everything.boot.interfaces.InterceptHandler;
 import org.code4everything.boot.web.HttpUtils;
 import org.code4everything.boot.web.mvc.DefaultExceptionHandler;
 import org.code4everything.boot.web.mvc.DefaultWebInterceptor;
+import org.code4everything.boot.web.mvc.InterceptHandler;
 import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.service.UserService;
 import org.slf4j.Logger;

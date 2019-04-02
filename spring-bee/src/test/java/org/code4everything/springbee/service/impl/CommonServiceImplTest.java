@@ -22,7 +22,7 @@ public class CommonServiceImplTest {
 
     @Test
     public void sendVcode() throws MessagingException {
-        VerifyCodeUtils.sendVerifyCodeByEmail(TestConsts.EMAIL, "验证码", "你的验证码：{}");
+        VerifyCodeUtils.sendByMail(TestConsts.EMAIL, "验证码", "你的验证码：{}");
     }
 
     @Test
@@ -37,6 +37,6 @@ public class CommonServiceImplTest {
 
     @Test
     public void isVcodeValidated() {
-        Assert.assertFalse(VerifyCodeUtils.validateVerifyCodeAndRemove(TestConsts.EMAIL, RandomUtil.randomString(6)));
+        Assert.assertFalse(VerifyCodeUtils.validateAndRemove(TestConsts.EMAIL, RandomUtil.randomString(6)));
     }
 }

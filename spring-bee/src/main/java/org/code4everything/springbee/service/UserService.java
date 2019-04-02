@@ -1,5 +1,6 @@
 package org.code4everything.springbee.service;
 
+import org.code4everything.boot.service.BootUserService;
 import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.RegisterDTO;
 import org.code4everything.springbee.model.UserInfoDTO;
@@ -9,7 +10,7 @@ import org.springframework.scheduling.annotation.Async;
  * @author pantao
  * @since 2018/9/15
  */
-public interface UserService extends org.code4everything.boot.service.UserService<User> {
+public interface UserService extends BootUserService<User> {
 
     /**
      * 更新用户信息
