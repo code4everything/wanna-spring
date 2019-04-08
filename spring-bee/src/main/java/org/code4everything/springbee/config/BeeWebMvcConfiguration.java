@@ -48,6 +48,11 @@ public class BeeWebMvcConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(new DefaultWebInterceptor(new InterceptHandler() {
 
             @Override
+            public String buildCacheKey(HttpServletRequest request) {
+                return request.getSession().getId();
+            }
+
+            @Override
             public void handleBlackList(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
                 request.getRequestDispatcher("/error/banned").forward(request, response);
             }
