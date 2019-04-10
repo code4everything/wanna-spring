@@ -49,7 +49,7 @@ public class BeeWebMvcConfiguration implements WebMvcConfigurer {
 
             @Override
             public String buildCacheKey(HttpServletRequest request) {
-                return request.getSession().getId();
+                return HttpUtils.getToken(request) + "." + request.getRequestURI();
             }
 
             @Override
