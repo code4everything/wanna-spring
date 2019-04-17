@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.code4everything.boot.annotations.Sealed;
+import org.code4everything.boot.annotation.Sealed;
 import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;

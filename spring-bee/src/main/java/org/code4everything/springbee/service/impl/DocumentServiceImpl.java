@@ -2,7 +2,7 @@ package org.code4everything.springbee.service.impl;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.IdUtil;
-import org.code4everything.boot.annotations.AopLog;
+import org.code4everything.boot.annotation.AopLog;
 import org.code4everything.boot.bean.MultipartFileBean;
 import org.code4everything.springbee.SpringBeeApplication;
 import org.code4everything.springbee.constant.BeeConfigConsts;

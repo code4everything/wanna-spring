@@ -2,7 +2,7 @@ package org.code4everything.springbee.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
-import org.code4everything.boot.annotations.AopLog;
+import org.code4everything.boot.annotation.AopLog;
 import org.code4everything.springbee.dao.DailiesDAO;
 import org.code4everything.springbee.domain.Dailies;
 import org.code4everything.springbee.model.DailiesDTO;

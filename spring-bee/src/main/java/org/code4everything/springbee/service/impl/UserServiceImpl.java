@@ -4,7 +4,7 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.google.common.base.Strings;
-import org.code4everything.boot.annotations.AopLog;
+import org.code4everything.boot.annotation.AopLog;
 import org.code4everything.springbee.SpringBeeApplication;
 import org.code4everything.springbee.dao.UserDAO;
 import org.code4everything.springbee.domain.User;

@@ -1,6 +1,6 @@
 package org.code4everything.springbee.service.impl;
 
-import org.code4everything.boot.annotations.AopLog;
+import org.code4everything.boot.annotation.AopLog;
 import org.code4everything.springbee.dao.UserDAO;
 import org.code4everything.springbee.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
