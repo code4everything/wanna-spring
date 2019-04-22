@@ -13,28 +13,12 @@ public class BeeConfigConsts {
     /**
      * 会话时长
      */
-    public static final int TOKEN_EXPIRED = BeeValueConsts.THIRTY_MINUTES;
-
-    /**
-     * 白名单路径（放行）
-     */
-    public static final String[] WHITE_PREFIXES = {"/common", "/user/password/reset", "/user/register", "/user" +
-            "/login"};
-
-    /**
-     * 拦截路径
-     */
-    public static final String[] INTERCEPT_PREFIXES = {"/user"};
-
-    /**
-     * 黑名单路径
-     */
-    public static final String[] BLACK_PREFIXES = {};
+    public static final int TOKEN_EXPIRED = 30 * 60;
 
     /**
      * 自定义配置上传文件保存路径
      */
-    public static final String STORAGE_PATH = FileUtils.currentWorkDir() + File.separator + "document" + File.separator;
+    public static final String STORAGE_PATH = FileUtils.currentWorkDir("document") + File.separator;
 
     /**
      * 如果需要修改文件的映射路径，还需要修改对应的Controller映射路径

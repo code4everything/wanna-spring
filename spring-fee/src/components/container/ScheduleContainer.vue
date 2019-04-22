@@ -128,7 +128,7 @@ export default {
       this.min = 10
       this.max = 0
       let sum = 0.0
-      if (data.code === 200) {
+      if (data.ok) {
         data.data.forEach(item => {
           let ele = {'date': dayjs(item.date).format('MM-DD')}
           ele[col] = item.score

@@ -1,6 +1,7 @@
 package org.code4everything.springbee.config;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.google.common.base.Strings;
 import org.code4everything.boot.web.HttpUtils;
 import org.code4everything.boot.web.mvc.DefaultExceptionHandler;
 import org.code4everything.boot.web.mvc.DefaultWebInterceptor;
@@ -49,7 +50,7 @@ public class BeeWebMvcConfiguration implements WebMvcConfigurer {
 
             @Override
             public String buildCacheKey(HttpServletRequest request) {
-                return HttpUtils.getToken(request) + "." + request.getRequestURI();
+                return Strings.nullToEmpty(HttpUtils.getToken(request)) + "." + request.getRequestURI();
             }
 
             @Override

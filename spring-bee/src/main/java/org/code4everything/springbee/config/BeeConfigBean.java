@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.code4everything.boot.bean.ConfigBean;
+import org.code4everything.boot.bean.InterceptorBean;
 
 /**
  * @author pantao
@@ -14,11 +14,9 @@ import org.code4everything.boot.bean.ConfigBean;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BeeConfigBean extends ConfigBean {
+public class BeeConfigBean extends InterceptorBean {
 
     private Integer tokenExpired;
 
     private String storagePath;
-
-    private Boolean shouldSaveLog;
 }

@@ -44,7 +44,7 @@ export default {
       let index = $(src).parents('div.todo').attr('data-index')
       let status = src.checked ? '1' : '0'
       requestToggleTodoStatus(this.todos[index].id, status).then(data => {
-        if (data.code === 200) {
+        if (data.ok) {
           this.todos[index].status = status
         } else {
           src.checked = false
@@ -61,7 +61,7 @@ export default {
         type: 'warning'
       }).then(() => {
         requestRemoveTodo(self.todos[index].id).then(data => {
-          if (data.code === 200) {
+          if (data.ok) {
             self.todos.splice(index, 1)
             utils.showSuccess(this, data.msg)
           } else {

@@ -97,7 +97,7 @@ export default {
       }
       if (!this.categories.includes(this.income.category)) {
         requestSaveCategory(this.income.category).then(data => {
-          if (data.code === 200) {
+          if (data.ok) {
             self.categories.push(data.data.name)
           } else {
             utils.showError(this, data.msg)
@@ -122,7 +122,7 @@ export default {
       }
     },
     handleIncomeReturnData: function (data) {
-      if (data.code === 200) {
+      if (data.ok) {
         this.$parent.updateIncome(data.data)
       } else {
         utils.showError(this, data.msg)

@@ -77,7 +77,7 @@ export default {
       }
     },
     handleDailiesReturnData: function (data) {
-      if (data.code === 200) {
+      if (data.ok) {
         this.$parent.updateDailies(data.data)
       } else {
         utils.showError(this, data.msg)

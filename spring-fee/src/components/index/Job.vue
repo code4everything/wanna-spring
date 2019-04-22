@@ -222,7 +222,7 @@ export default {
       if (this.hasJob) {
         // 下班打卡
         requestFinishWork(this.todayJob.id, this.myWay, this.myCompany).then(data => {
-          if (data.code === 200) {
+          if (data.ok) {
             this.todayJob = data.data
             utils.showSuccess(this, '打卡成功')
           } else {
@@ -232,7 +232,7 @@ export default {
       } else {
         // 上班打卡
         requestStartWorking(this.myWay, this.myCompany).then(data => {
-          if (data.code === 200) {
+          if (data.ok) {
             this.hasJob = true
             this.todayJob = data.data
             utils.showSuccess(this, '打卡成功')
@@ -244,7 +244,7 @@ export default {
     },
     refreshJob: function () {
       requestJobOfToday().then(data => {
-        if (data.code === 200) {
+        if (data.ok) {
           this.hasJob = true
           this.todayJob = data.data
         } else {
@@ -254,7 +254,7 @@ export default {
     },
     writeDiary: function () {
       requestWriteDiary(this.todayJob.id, this.todayJob.workDiary).then(data => {
-        if (data.code === 200) {
+        if (data.ok) {
           utils.showSuccess(this, data.msg)
         } else {
           utils.showError(this.data.msg)
@@ -277,7 +277,7 @@ export default {
       }
     },
     handleJobData: function (data) {
-      if (data.code === 200) {
+      if (data.ok) {
         if (this.currentTab === 'all') {
           this.jobs1 = data.data.content
           // noinspection JSUnresolvedVariable
@@ -316,7 +316,7 @@ export default {
     saveJob: function () {
       let job = this.currentJob
       requestSaveJob(job.id, job.workTimeStart.getTime(), job.workTimeEnd.getTime(), job.company, job.workWay.toString(), job.workDiary).then(data => {
-        if (data.code === 200) {
+        if (data.ok) {
           this.currentJob.id = data.data.id
           this.saveTip = '更新'
           utils.showSuccess(this, data.msg)
@@ -340,7 +340,7 @@ export default {
     }, 1000)
     // 列出公司
     requestCompanies().then(data => {
-      if (data.code === 200) {
+      if (data.ok) {
         this.companies = data.data
         this.myCompany = this.companies[this.companies.length - 1]
       } else {

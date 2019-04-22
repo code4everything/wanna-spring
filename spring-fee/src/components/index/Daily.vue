@@ -136,7 +136,7 @@ export default {
           type: 'warning'
         }).then(() => {
           requestRemoveDailies(self.dailyDetail[index].id).then(data => {
-            if (data.code === 200) {
+            if (data.ok) {
               self.dailyDetail.splice(index, 1)
               utils.showSuccess(this, data.msg)
             } else {
@@ -156,7 +156,7 @@ export default {
       }
     },
     handleDailyReturnData: function (data) {
-      if (data.code === 200) {
+      if (data.ok) {
         this.daily = data.data
         this.$parent.getChartData()
         utils.showSuccess(this, data.msg)
@@ -176,10 +176,10 @@ export default {
       this.daily = utils.clone(this.defaultDaily)
       this.dailyDetail = []
       requestGetDaily(this.date).then(data => {
-        if (data.code === 200) {
+        if (data.ok) {
           this.daily = data.data
           requestListDailies(data.data.id).then(data => {
-            if (data.code === 200) {
+            if (data.ok) {
               this.dailyDetail = data.data
             }
           })

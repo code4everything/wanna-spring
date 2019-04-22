@@ -91,7 +91,7 @@ export default {
       let email = $('#register-name').val()
       if (vcode.length === 6 && validator.isEmail(email)) {
         requestValidateVerifyCode(email, vcode).then(data => {
-          this.verifyCodeErrorTip = data.code === 200 ? '' : '验证码错误'
+          this.verifyCodeErrorTip = data.ok ? '' : '验证码错误'
         })
       }
     },
@@ -104,7 +104,7 @@ export default {
         utils.showWarning(this, '数据不能为空')
       } else if (validator.isEmpty(this.registerNameErrorTip) && validator.isEmpty(this.passwordConfirmErrorTip) && validator.isEmpty(this.verifyCodeErrorTip)) {
         requestRegister({username: username, email: email, password: password, vcode: vcode}).then(data => {
-          if (data.code === 200) {
+          if (data.ok) {
             window.location = this.loginPath
           } else {
             utils.showError(this, data.msg)

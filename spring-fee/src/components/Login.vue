@@ -53,7 +53,7 @@ export default {
         utils.showWarning('密码不能为空')
       } else {
         requestLogin(this.loginName, this.password).then(data => {
-          if (data.code === 200) {
+          if (data.ok) {
             cookie.set('token', data.data)
             window.location.href = app.data().path.income
           } else {

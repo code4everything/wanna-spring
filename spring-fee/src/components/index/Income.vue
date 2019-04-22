@@ -84,7 +84,7 @@
       </div>
     </div>
     <br/>
-    <asset-modal :income="currentIncome" :pay-ways="payWays" :categories="categories"></asset-modal>
+    <asset-modal :categories="categories" :income="currentIncome" :pay-ways="payWays"></asset-modal>
     <!-- 报表弹窗 -->
     <el-dialog :fullscreen="true" :visible.sync="dialogVisible" title="收益报表" v-if="!isMobile">
       <!-- 基本数据 -->
@@ -102,9 +102,9 @@
         </div>
         <div class="col-sm-8">
           <div>
-            <el-select v-model="filterCategories" multiple filterable allow-create default-first-option
-                       placeholder="通过分类过滤统计" class="w-100">
-              <el-option v-for="category in categories" :key="category" :value="category">
+            <el-select allow-create class="w-100" default-first-option filterable multiple
+                       placeholder="通过分类过滤统计" v-model="filterCategories">
+              <el-option :key="category" :value="category" v-for="category in categories">
               </el-option>
             </el-select>
           </div>
@@ -243,7 +243,7 @@ export default {
         type: 'warning'
       }).then(() => {
         requestRemoveIncome(self.incomes[key].id).then(data => {
-          if (data.code === 200) {
+          if (data.ok) {
             self.getAssetBalance()
             self.incomes.splice(key, 1)
           } else {
@@ -301,7 +301,7 @@ export default {
     listIncome: function () {
       this.getAssetBalance()
       requestListIncome('', this.startDate, this.endDate).then(data => {
-        if (data.code === 200) {
+        if (data.ok) {
           this.incomes = data.data
         } else {
           utils.showError(this, data.msg)
@@ -310,7 +310,7 @@ export default {
     },
     getAssetBalance: function () {
       requestAssetBalance().then(data => {
-        if (data.code === 200) {
+        if (data.ok) {
           this.asset = data.data / 100
         } else {
           utils.showError(this, data.msg)
@@ -323,7 +323,7 @@ export default {
       } else {
         this.monthData.rows = []
         requestListIncomeMonth(this.startMonth, this.endMonth).then(data => {
-          if (data.code === 200) {
+          if (data.ok) {
             data.data.forEach(item => {
               this.monthData.rows.push({'month': item.date, '支出': (item.money / 100).toFixed(2)})
             })
@@ -339,7 +339,7 @@ export default {
       } else {
         this.yearData.rows = []
         requestListIncomeYear(this.startYear, this.endYear).then(data => {
-          if (data.code === 200) {
+          if (data.ok) {
             data.data.forEach(item => {
               this.yearData.rows.push({'year': item.date, '支出': (item.money / 100).toFixed(2)})
             })
@@ -411,7 +411,7 @@ export default {
     this.endDate = dayjs().format('YYYY-MM-DD')
     this.listIncome()
     requestListCategory().then(data => {
-      if (data.code === 200 && data.data.length > 0) {
+      if (data.ok && data.data.length > 0) {
         data.data.forEach(category => this.categories.push(category.name))
       } else if (data.code === 401) {
         utils.showError(this, data.msg)

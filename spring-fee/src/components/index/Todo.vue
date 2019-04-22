@@ -91,7 +91,7 @@ export default {
         utils.showWarning(this, '数据不能为空')
       } else {
         requestSaveTodo(this.date, this.content, this.offset, this.repeat).then(data => {
-          if (data.code === 200) {
+          if (data.ok) {
             this.content = ''
             this.repeat = 0
             this.offset = 0
@@ -106,7 +106,7 @@ export default {
     listTodo: function () {
       this.todos = []
       requestListTodo(this.date).then(data => {
-        if (data.code === 200) {
+        if (data.ok) {
           this.todos = data.data
         } else {
           utils.showError(this, data.msg)
@@ -116,7 +116,7 @@ export default {
     listUndo: function () {
       this.undos = []
       requestListUndo(this.date).then(data => {
-        if (data.code === 200) {
+        if (data.ok) {
           this.undos = data.data
         } else {
           utils.showError(this, data.msg)

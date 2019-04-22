@@ -1,15 +1,14 @@
 {
   "tokenExpired": 604800,
-  "whiteListPrefix": [
+  "whitePrefixes": [
     "/common",
     "/user/password/reset",
     "/user/register",
     "/user/login"
   ],
-  "interceptorListPrefix": [
+  "interceptPrefixes": [
     "/user"
   ],
-  "blackListPrefix": [],
-  "storagePath": "",
-  "shouldSaveLog": false
+  "blackPrefixes": [],
+  "storagePath": ""
 }
