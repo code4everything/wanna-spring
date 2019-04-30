@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.code4everything.boot.base.bean.BaseBean;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -18,8 +19,8 @@ import java.io.Serializable;
 @Document
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "dailyDetail", description = "日常记录详情")
-public class Dailies implements Serializable {
+@ApiModel(description = "日常记录详情")
+public class Dailies implements BaseBean, Serializable {
 
     @Id
     @ApiModelProperty("详情编号")

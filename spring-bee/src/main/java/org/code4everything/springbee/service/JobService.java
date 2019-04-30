@@ -1,7 +1,7 @@
 package org.code4everything.springbee.service;
 
 import org.code4everything.springbee.domain.Job;
-import org.code4everything.springbee.model.JobDTO;
+import org.code4everything.springbee.model.JobVO;
 import org.springframework.data.domain.Page;
 
 import java.util.Set;
@@ -28,7 +28,7 @@ public interface JobService {
 
     Job startWorking(String userId, String workWay, String company);
 
-    Job save(String userId, JobDTO jobDTO);
+    Job save(String userId, JobVO jobVO);
 
     Job getJobOfToday(String userId);
 }

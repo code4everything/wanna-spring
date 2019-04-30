@@ -2,10 +2,10 @@ package org.code4everything.springbee.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
-import org.code4everything.boot.annotation.AopLog;
+import org.code4everything.boot.log.LogMethod;
 import org.code4everything.springbee.dao.DailiesDAO;
 import org.code4everything.springbee.domain.Dailies;
-import org.code4everything.springbee.model.DailiesDTO;
+import org.code4everything.springbee.model.DailiesVO;
 import org.code4everything.springbee.service.DailiesService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,33 +26,33 @@ public class DailiesServiceImpl implements DailiesService {
     public DailiesServiceImpl(DailiesDAO dailiesDAO) {this.dailiesDAO = dailiesDAO;}
 
     @Override
-    @AopLog("获取所有日程记录详情")
+    @LogMethod("获取所有日程记录详情")
     public List<Dailies> listDailies(String dailyId) {
         return dailiesDAO.getByDailyId(dailyId);
     }
 
     @Override
-    @AopLog("更新日程记录详情")
-    public Dailies updateDailies(String dailiesId, DailiesDTO dailiesDTO) {
+    @LogMethod("更新日程记录详情")
+    public Dailies updateDailies(String dailiesId, DailiesVO dailiesVO) {
         Dailies dailies = dailiesDAO.getById(dailiesId);
         if (ObjectUtil.isNotNull(dailies)) {
-            BeanUtils.copyProperties(dailiesDTO, dailies);
+            BeanUtils.copyProperties(dailiesVO, dailies);
             return dailiesDAO.save(dailies);
         }
         return null;
     }
 
     @Override
-    @AopLog("删除日程记录详情")
+    @LogMethod("删除日程记录详情")
     public void remove(String dailiesId) {
         dailiesDAO.deleteById(dailiesId);
     }
 
     @Override
-    @AopLog("添加日程记录详情信息")
-    public Dailies saveDailies(String dailyId, DailiesDTO dailiesDTO) {
+    @LogMethod("添加日程记录详情信息")
+    public Dailies saveDailies(String dailyId, DailiesVO dailiesVO) {
         Dailies dailies = new Dailies();
-        BeanUtils.copyProperties(dailiesDTO, dailies);
+        BeanUtils.copyProperties(dailiesVO, dailies);
         dailies.setDailyId(dailyId);
         dailies.setCreateTime(System.currentTimeMillis());
         dailies.setId(IdUtil.simpleUUID());

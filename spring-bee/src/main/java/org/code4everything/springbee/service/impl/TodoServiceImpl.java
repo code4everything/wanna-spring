@@ -8,13 +8,13 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
-import org.code4everything.boot.annotation.AopLog;
 import org.code4everything.boot.constant.IntegerConsts;
 import org.code4everything.boot.constant.StringConsts;
+import org.code4everything.boot.log.LogMethod;
 import org.code4everything.springbee.dao.TodoDAO;
 import org.code4everything.springbee.domain.Todo;
 import org.code4everything.springbee.model.TodoCountVO;
-import org.code4everything.springbee.model.TodoDTO;
+import org.code4everything.springbee.model.TodoVO;
 import org.code4everything.springbee.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -42,19 +42,19 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    @AopLog("获取指定日期之前所有未完成的待办事项")
+    @LogMethod("获取指定日期之前所有未完成的待办事项")
     public List<Todo> listUndoBeforeDate(String userId, Date date) {
         return todoDAO.getByUserIdAndStatusAndDoingDateLessThan(userId, "0", DateUtil.formatDate(date));
     }
 
     @Override
-    @AopLog("列出指定日期的待办事项")
+    @LogMethod("列出指定日期的待办事项")
     public List<Todo> listTodo(String userId, Date doingDate) {
         return todoDAO.getByUserIdAndDoingDate(userId, DateUtil.formatDate(doingDate));
     }
 
     @Override
-    @AopLog("列出所有待办事项日期")
+    @LogMethod("列出所有待办事项日期")
     public List<String> listDate(String userId) {
         BasicDBObject dbObject = new BasicDBObject("userId", userId);
         MongoCollection<Document> collection = mongoTemplate.getCollection("todo");
@@ -82,7 +82,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    @AopLog("更新待办事项状态")
+    @LogMethod("更新待办事项状态")
     public Todo updateTodoStatus(String todoId, String status) {
         Todo todo = todoDAO.getById(todoId);
         if (ObjectUtil.isNull(todo)) {
@@ -98,7 +98,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    @AopLog("更新待办事项内容")
+    @LogMethod("更新待办事项内容")
     public Todo updateTodo(String todoId, String content) {
         Todo todo = todoDAO.getById(todoId);
         if (ObjectUtil.isNull(todo)) {
@@ -113,29 +113,29 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    @AopLog("删除待办事项")
+    @LogMethod("删除待办事项")
     public void remove(String todoId) {
         todoDAO.deleteById(todoId);
     }
 
     @Override
-    @AopLog("添加待办事项")
-    public Todo saveTodo(String userId, TodoDTO todoDTO) {
+    @LogMethod("添加待办事项")
+    public Todo saveTodo(String userId, TodoVO todoVO) {
         Todo todo = new Todo();
-        todo.setContent(todoDTO.getContent());
+        todo.setContent(todoVO.getContent());
         todo.setCreateTime(System.currentTimeMillis());
-        todo.setDoingDate(todoDTO.getDoingDate());
+        todo.setDoingDate(todoVO.getDoingDate());
         todo.setId(IdUtil.simpleUUID());
         todo.setStatus("0");
         todo.setUserId(userId);
         todoDAO.save(todo);
-        if (todoDTO.getOffsetWell() > 0 && todoDTO.getRepeatWell() > 0) {
+        if (todoVO.getOffsetWell() > 0 && todoVO.getRepeatWell() > 0) {
             // 异步批量添加
             ThreadUtil.execute(() -> {
                 long offset = 0;
-                final long nowMilli = DateUtil.parseDate(todoDTO.getDoingDate()).getTime();
-                final long offsetMillis = (long) todoDTO.getOffset() * (long) IntegerConsts.ONE_DAY_MILLIS;
-                for (int i = 0; i < todoDTO.getRepeat(); i++) {
+                final long nowMilli = DateUtil.parseDate(todoVO.getDoingDate()).getTime();
+                final long offsetMillis = (long) todoVO.getOffset() * (long) IntegerConsts.ONE_DAY_MILLIS;
+                for (int i = 0; i < todoVO.getRepeat(); i++) {
                     offset += offsetMillis;
                     Todo another = todo.copyInto(new Todo());
                     another.setCreateTime(System.currentTimeMillis());

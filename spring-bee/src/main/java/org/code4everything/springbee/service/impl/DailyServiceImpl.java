@@ -3,10 +3,10 @@ package org.code4everything.springbee.service.impl;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
-import org.code4everything.boot.annotation.AopLog;
+import org.code4everything.boot.log.LogMethod;
 import org.code4everything.springbee.dao.DailyDAO;
 import org.code4everything.springbee.domain.Daily;
-import org.code4everything.springbee.model.DailyDTO;
+import org.code4everything.springbee.model.DailyVO;
 import org.code4everything.springbee.service.DailyService;
 import org.code4everything.springbee.util.BeeUtils;
 import org.springframework.beans.BeanUtils;
@@ -39,19 +39,19 @@ public class DailyServiceImpl implements DailyService {
     }
 
     @Override
-    @AopLog("检测日程记录是否存在")
+    @LogMethod("检测日程记录是否存在")
     public boolean exists(String dailyId) {
         return dailyDAO.existsById(dailyId);
     }
 
     @Override
-    @AopLog("查找日程记录")
+    @LogMethod("查找日程记录")
     public Daily getDaily(String userId, Date date) {
         return dailyDAO.getByUserIdAndDate(userId, DateUtil.formatDate(date));
     }
 
     @Override
-    @AopLog("列出日程记录")
+    @LogMethod("列出日程记录")
     public List<Daily> listDaily(String userId, Date startDate, Date endDate) {
         Query query = new Query();
         Criteria criteria = Criteria.where("userId").is(userId);
@@ -62,15 +62,15 @@ public class DailyServiceImpl implements DailyService {
     }
 
     @Override
-    @AopLog("删除日程记录")
+    @LogMethod("删除日程记录")
     public void remove(String dailyId) {
         dailyDAO.deleteById(dailyId);
     }
 
     @Override
-    @AopLog("添加日程记录")
-    public Daily saveDaily(String userId, DailyDTO dailyDTO) {
-        Daily daily = parseDailyDTO(dailyDTO, null);
+    @LogMethod("添加日程记录")
+    public Daily saveDaily(String userId, DailyVO dailyVO) {
+        Daily daily = parseDailyVO(dailyVO, null);
         daily.setCreateTime(System.currentTimeMillis());
         daily.setId(IdUtil.simpleUUID());
         daily.setUserId(userId);
@@ -78,31 +78,31 @@ public class DailyServiceImpl implements DailyService {
     }
 
     @Override
-    @AopLog("检测日程记录是否存在")
-    public boolean exists(String userId, String dailyId, DailyDTO dailyDTO) {
-        Daily daily = dailyDAO.getByUserIdAndDate(userId, DateUtil.formatDate(dailyDTO.getDate()));
+    @LogMethod("检测日程记录是否存在")
+    public boolean exists(String userId, String dailyId, DailyVO dailyVO) {
+        Daily daily = dailyDAO.getByUserIdAndDate(userId, DateUtil.formatDate(dailyVO.getDate()));
         return ObjectUtil.isNotNull(daily) && !dailyId.equals(daily.getId());
     }
 
     @Override
-    @AopLog("更新日程记录")
-    public Daily updateDaily(String dailyId, DailyDTO dailyDTO) {
+    @LogMethod("更新日程记录")
+    public Daily updateDaily(String dailyId, DailyVO dailyVO) {
         Daily daily = dailyDAO.getById(dailyId);
         if (ObjectUtil.isNull(daily)) {
             return null;
         }
-        return dailyDAO.save(parseDailyDTO(dailyDTO, daily));
+        return dailyDAO.save(parseDailyVO(dailyVO, daily));
     }
 
-    private Daily parseDailyDTO(DailyDTO dailyDTO, Daily daily) {
+    private Daily parseDailyVO(DailyVO dailyVO, Daily daily) {
         if (Objects.isNull(daily)) {
             daily = new Daily();
         }
-        BeanUtils.copyProperties(dailyDTO, daily);
-        if (Objects.isNull(dailyDTO.getDate())) {
-            dailyDTO.setDate(new Date(System.currentTimeMillis()));
+        BeanUtils.copyProperties(dailyVO, daily);
+        if (Objects.isNull(dailyVO.getDate())) {
+            dailyVO.setDate(new Date(System.currentTimeMillis()));
         }
-        daily.setDate(DateUtil.formatDate(dailyDTO.getDate()));
+        daily.setDate(DateUtil.formatDate(dailyVO.getDate()));
         return daily;
     }
 }

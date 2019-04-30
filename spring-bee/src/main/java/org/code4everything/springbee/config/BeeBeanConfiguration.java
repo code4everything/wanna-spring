@@ -1,7 +1,7 @@
 package org.code4everything.springbee.config;
 
 import org.code4everything.boot.module.redis.RedisTemplateUtils;
-import org.code4everything.boot.web.CorsUtils;
+import org.code4everything.boot.web.cors.CorsUtils;
 import org.code4everything.springbee.domain.Asset;
 import org.code4everything.springbee.domain.Log;
 import org.code4everything.springbee.domain.User;

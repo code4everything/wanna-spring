@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.code4everything.boot.base.bean.BaseBean;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -16,8 +17,8 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "dailiesDTO", description = "日程详情")
-public class DailiesDTO implements Serializable {
+@ApiModel(description = "日程详情")
+public class DailiesVO implements BaseBean, Serializable {
 
     @NotBlank
     @ApiModelProperty("开始时间")

@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.code4everything.boot.base.bean.BaseBean;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Max;
@@ -21,8 +22,8 @@ import java.sql.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "incomeDTO", description = "收益信息")
-public class IncomeDTO implements Serializable {
+@ApiModel(description = "收益信息")
+public class IncomeVO implements BaseBean, Serializable {
 
     @Max(1)
     @Min(-1)

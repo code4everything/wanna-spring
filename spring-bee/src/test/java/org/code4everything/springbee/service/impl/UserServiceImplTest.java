@@ -3,8 +3,8 @@ package org.code4everything.springbee.service.impl;
 import cn.hutool.crypto.digest.DigestUtil;
 import org.code4everything.springbee.BaseTest;
 import org.code4everything.springbee.constant.TestConsts;
-import org.code4everything.springbee.model.RegisterDTO;
-import org.code4everything.springbee.model.UserInfoDTO;
+import org.code4everything.springbee.model.RegisterVO;
+import org.code4everything.springbee.model.UserInfoVO;
 import org.code4everything.springbee.service.UserService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,11 +25,11 @@ public class UserServiceImplTest extends BaseTest {
 
     @Test
     public void updateInfo() {
-        UserInfoDTO userInfoDTO = new UserInfoDTO();
-        userInfoDTO.setBio(TestConsts.BIO);
-        userInfoDTO.setGender(TestConsts.GENDER);
-        userInfoDTO.setNickname(TestConsts.NICKNAME);
-        assert userService.updateInfo(getUser(), userInfoDTO);
+        UserInfoVO userInfoVO = new UserInfoVO();
+        userInfoVO.setBio(TestConsts.BIO);
+        userInfoVO.setGender(TestConsts.GENDER);
+        userInfoVO.setNickname(TestConsts.NICKNAME);
+        assert userService.updateInfo(getUser(), userInfoVO);
     }
 
     /**
@@ -37,11 +37,11 @@ public class UserServiceImplTest extends BaseTest {
      */
     @Test
     public void register() {
-        RegisterDTO registerDTO = new RegisterDTO();
-        registerDTO.setEmail(TestConsts.EMAIL);
-        registerDTO.setPassword(TestConsts.PASSWORD);
-        registerDTO.setUsername(TestConsts.USERNAME);
-        userService.register(registerDTO);
+        RegisterVO registerVO = new RegisterVO();
+        registerVO.setEmail(TestConsts.EMAIL);
+        registerVO.setPassword(TestConsts.PASSWORD);
+        registerVO.setUsername(TestConsts.USERNAME);
+        userService.register(registerVO);
     }
 
     @Test

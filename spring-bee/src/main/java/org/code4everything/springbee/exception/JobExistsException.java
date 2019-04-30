@@ -1,7 +1,7 @@
 package org.code4everything.springbee.exception;
 
-import cn.hutool.http.HttpStatus;
 import org.code4everything.boot.exception.BootException;
+import org.springframework.http.HttpStatus;
 
 /**
  * @author pantao
@@ -10,6 +10,6 @@ import org.code4everything.boot.exception.BootException;
 public class JobExistsException extends BootException {
 
     public JobExistsException() {
-        super(HttpStatus.HTTP_BAD_REQUEST, "工作记录已存在", true);
+        super(HttpStatus.BAD_REQUEST.value(), "工作记录已存在", true);
     }
 }

@@ -5,14 +5,14 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.base.Strings;
-import org.code4everything.boot.annotation.AopLog;
 import org.code4everything.boot.constant.StringConsts;
+import org.code4everything.boot.log.LogMethod;
 import org.code4everything.springbee.dao.AssetDAO;
 import org.code4everything.springbee.dao.IncomeDAO;
 import org.code4everything.springbee.domain.Asset;
 import org.code4everything.springbee.domain.Income;
 import org.code4everything.springbee.model.IncomeBillVO;
-import org.code4everything.springbee.model.IncomeDTO;
+import org.code4everything.springbee.model.IncomeVO;
 import org.code4everything.springbee.service.IncomeService;
 import org.code4everything.springbee.util.BeeUtils;
 import org.springframework.beans.BeanUtils;
@@ -57,13 +57,13 @@ public class IncomeServiceImpl implements IncomeService {
     }
 
     @Override
-    @AopLog("查询资产可用余额")
+    @LogMethod("查询资产可用余额")
     public Long getAssetBalance(String userId) {
         return getAssetByUserId(userId).getBalance();
     }
 
     @Override
-    @AopLog("查询收益记录")
+    @LogMethod("查询收益记录")
     public List<Income> listIncome(String userId, String category, Date start, Date end) {
         Query query = new Query();
         Criteria criteria = Criteria.where("assetId").is(getAssetByUserId(userId).getId());
@@ -77,7 +77,7 @@ public class IncomeServiceImpl implements IncomeService {
     }
 
     @Override
-    @AopLog("查询年度账单")
+    @LogMethod("查询年度账单")
     public List<IncomeBillVO> listYear(String userId, Integer startYear, Integer endYear) {
         List<IncomeBillVO> list = new ArrayList<>();
         if (startYear > endYear) {
@@ -94,7 +94,7 @@ public class IncomeServiceImpl implements IncomeService {
     }
 
     @Override
-    @AopLog("查询月度账单")
+    @LogMethod("查询月度账单")
     public List<IncomeBillVO> listMonth(String userId, String startMonth, String endMonth) {
         List<IncomeBillVO> list = new ArrayList<>();
         if (startMonth.compareTo(endMonth) >= 0) {
@@ -124,20 +124,20 @@ public class IncomeServiceImpl implements IncomeService {
     }
 
     @Override
-    @AopLog("更新收益记录")
-    public Income updateIncome(String userId, String incomeId, IncomeDTO incomeDTO) {
+    @LogMethod("更新收益记录")
+    public Income updateIncome(String userId, String incomeId, IncomeVO incomeVO) {
         Income income = incomeDAO.getById(incomeId);
         if (ObjectUtil.isNull(income)) {
             return null;
         }
         // 计算改变的资产总值
-        Long changeValue = incomeDTO.getMoney() * incomeDTO.getType() - income.getMoney() * income.getType();
+        Long changeValue = incomeVO.getMoney() * incomeVO.getType() - income.getMoney() * income.getType();
         updateAssetBalance(userId, changeValue);
-        return incomeDAO.save(parseIncomeDTO(incomeDTO, income));
+        return incomeDAO.save(parseIncomeVO(incomeVO, income));
     }
 
     @Override
-    @AopLog("删除收益记录")
+    @LogMethod("删除收益记录")
     public void remove(String userId, String incomeId) {
         Income income = incomeDAO.getById(incomeId);
         if (ObjectUtil.isNotNull(income)) {
@@ -147,9 +147,9 @@ public class IncomeServiceImpl implements IncomeService {
     }
 
     @Override
-    @AopLog("添加收益记录")
-    public Income saveIncome(String userId, IncomeDTO incomeDTO) {
-        Income income = parseIncomeDTO(incomeDTO, null);
+    @LogMethod("添加收益记录")
+    public Income saveIncome(String userId, IncomeVO incomeVO) {
+        Income income = parseIncomeVO(incomeVO, null);
         income.setCreateTime(System.currentTimeMillis());
         income.setId(IdUtil.simpleUUID());
         income.setAssetId(updateAssetBalance(userId, income.getMoney() * income.getType()));
@@ -202,12 +202,12 @@ public class IncomeServiceImpl implements IncomeService {
         assetRedisTemplate.opsForValue().set("asset." + userId, asset, 10, TimeUnit.MINUTES);
     }
 
-    private Income parseIncomeDTO(IncomeDTO incomeDTO, Income income) {
+    private Income parseIncomeVO(IncomeVO incomeVO, Income income) {
         if (Objects.isNull(income)) {
             income = new Income();
         }
-        BeanUtils.copyProperties(incomeDTO, income);
-        income.setDate(DateUtil.formatDate(incomeDTO.getDate()));
+        BeanUtils.copyProperties(incomeVO, income);
+        income.setDate(DateUtil.formatDate(incomeVO.getDate()));
         return income;
     }
 }

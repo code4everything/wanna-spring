@@ -1,10 +1,10 @@
 package org.code4everything.springbee.web;
 
 import io.swagger.annotations.*;
-import org.code4everything.boot.bean.Response;
+import org.code4everything.boot.base.bean.Response;
 import org.code4everything.springbee.domain.Income;
 import org.code4everything.springbee.model.IncomeBillVO;
-import org.code4everything.springbee.model.IncomeDTO;
+import org.code4everything.springbee.model.IncomeVO;
 import org.code4everything.springbee.service.IncomeService;
 import org.code4everything.springbee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class IncomeController extends BeeBaseController {
 
     @PostMapping("/append")
     @ApiOperation("添加一条收益记录")
-    public Response<Income> saveIncome(@RequestBody @ApiParam @Valid IncomeDTO income) {
+    public Response<Income> saveIncome(@RequestBody @ApiParam @Valid IncomeVO income) {
         return parseResult("添加失败", incomeService.saveIncome(getUserId(), income), true);
     }
 
@@ -47,8 +47,7 @@ public class IncomeController extends BeeBaseController {
 
     @PutMapping("/{incomeId}/update")
     @ApiOperation("更新记录")
-    public Response<Income> updateIncome(@PathVariable String incomeId,
-                                         @RequestBody @ApiParam @Valid IncomeDTO income) {
+    public Response<Income> updateIncome(@PathVariable String incomeId, @RequestBody @ApiParam @Valid IncomeVO income) {
         return parseResult("更新失败", incomeService.updateIncome(getUserId(), incomeId, income), true);
     }
 

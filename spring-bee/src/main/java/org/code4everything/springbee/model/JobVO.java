@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.code4everything.boot.bean.BaseBean;
+import org.code4everything.boot.base.bean.BaseBean;
 import org.code4everything.springbee.domain.Job;
 import org.springframework.beans.BeanUtils;
 
@@ -19,8 +19,8 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "jobDTO", description = "工作日志")
-public class JobDTO implements Serializable, BaseBean {
+@ApiModel(description = "工作日志")
+public class JobVO implements Serializable, BaseBean {
 
     @ApiModelProperty("编号")
     private String id;

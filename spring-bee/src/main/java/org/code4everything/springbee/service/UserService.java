@@ -2,8 +2,8 @@ package org.code4everything.springbee.service;
 
 import org.code4everything.boot.service.BootUserService;
 import org.code4everything.springbee.domain.User;
-import org.code4everything.springbee.model.RegisterDTO;
-import org.code4everything.springbee.model.UserInfoDTO;
+import org.code4everything.springbee.model.RegisterVO;
+import org.code4everything.springbee.model.UserInfoVO;
 import org.springframework.scheduling.annotation.Async;
 
 /**
@@ -16,19 +16,19 @@ public interface UserService extends BootUserService<User> {
      * 更新用户信息
      *
      * @param user 用户
-     * @param userInfoDTO 用户信息
+     * @param userInfoVO 用户信息
      *
      * @return 是否更新成功
      */
-    boolean updateInfo(User user, UserInfoDTO userInfoDTO);
+    boolean updateInfo(User user, UserInfoVO userInfoVO);
 
     /**
      * 注册用户
      *
-     * @param registerDTO 注册信息
+     * @param registerVO 注册信息
      */
     @Async
-    void register(RegisterDTO registerDTO);
+    void register(RegisterVO registerVO);
 
     /**
      * 重置密码

@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.code4everything.boot.base.bean.BaseBean;
 
 import java.io.Serializable;
 
@@ -15,8 +16,8 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "incomeBillVO", description = "月账单")
-public class IncomeBillVO implements Serializable {
+@ApiModel(description = "月账单")
+public class IncomeBillVO implements BaseBean, Serializable {
 
     @ApiModelProperty("日期")
     private String date;

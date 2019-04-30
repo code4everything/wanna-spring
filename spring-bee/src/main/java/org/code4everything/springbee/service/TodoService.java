@@ -2,7 +2,7 @@ package org.code4everything.springbee.service;
 
 import org.code4everything.springbee.domain.Todo;
 import org.code4everything.springbee.model.TodoCountVO;
-import org.code4everything.springbee.model.TodoDTO;
+import org.code4everything.springbee.model.TodoVO;
 import org.springframework.scheduling.annotation.Async;
 
 import java.util.Date;
@@ -86,8 +86,9 @@ public interface TodoService {
      * 保存代办事项
      *
      * @param userId 用户编号
-     * @param todoDTO
+     * @param todoVO 代办事项
+     *
      * @return 待办事项
      */
-    Todo saveTodo(String userId, TodoDTO todoDTO);
+    Todo saveTodo(String userId, TodoVO todoVO);
 }

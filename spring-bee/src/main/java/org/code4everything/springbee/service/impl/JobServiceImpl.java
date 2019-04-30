@@ -6,11 +6,12 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import org.code4everything.boot.base.DateUtils;
+import org.code4everything.boot.log.LogMethod;
 import org.code4everything.springbee.dao.JobDAO;
 import org.code4everything.springbee.domain.Job;
 import org.code4everything.springbee.exception.JobExistsException;
 import org.code4everything.springbee.exception.JobNotFoundException;
-import org.code4everything.springbee.model.JobDTO;
+import org.code4everything.springbee.model.JobVO;
 import org.code4everything.springbee.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -46,6 +47,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    @LogMethod("更新状态")
     public Job updateStatus(String id, String status) {
         Optional<Job> jobOptional = jobDAO.findById(id);
         if (jobOptional.isPresent()) {
@@ -57,6 +59,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    @LogMethod("列出公司名称")
     public Set<String> listCompany(String userId) {
         final String key = COMPANY_KEY_PREFIX + userId;
         Set<String> companies;
@@ -75,21 +78,25 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    @LogMethod("列出加班的工作记录")
     public Page<Job> listByWorkOverTime(String userId, String status, Integer offset, Integer size) {
         return jobDAO.getByUserIdAndWorkWayAndStatus(userId, "2", status, getPageable(offset, size));
     }
 
     @Override
+    @LogMethod("列出所有工作记录")
     public Page<Job> listAllWorked(String userId, Integer offset, Integer size) {
         return jobDAO.getByUserIdAndWorkWay(userId, "1", getPageable(offset, size));
     }
 
     @Override
+    @LogMethod("列出公司的所有工作记录")
     public Page<Job> listWorkedByCompanies(String userId, String company, Integer offset, Integer size) {
         return jobDAO.getByUserIdAndCompanyAndWorkWay(userId, company, "1", getPageable(offset, size));
     }
 
     @Override
+    @LogMethod("保存工作日志")
     public Job writeWorkDiary(String id, String workDiary) {
         Optional<Job> jobOptional = jobDAO.findById(id);
         if (jobOptional.isPresent()) {
@@ -101,6 +108,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    @LogMethod("下班打卡")
     public Job finishedWork(String id, String workWay, String company) {
         Optional<Job> jobOptional = jobDAO.findById(id);
         if (jobOptional.isPresent()) {
@@ -116,6 +124,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
+    @LogMethod("上班打卡")
     public Job startWorking(String userId, String workWay, String company) {
         if (ObjectUtil.isNotNull(getJobOfToday(userId))) {
             throw new JobExistsException();
@@ -130,13 +139,15 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    public Job save(String userId, JobDTO jobDTO) {
-        Optional<Job> job = jobDAO.findById(jobDTO.getId());
-        pushCompany(userId, jobDTO.getCompany());
-        return jobDAO.save(jobDTO.copyInto(job.orElseGet(() -> getNewJob(userId))));
+    @LogMethod("新增工作记录")
+    public Job save(String userId, JobVO jobVO) {
+        Optional<Job> job = jobDAO.findById(jobVO.getId());
+        pushCompany(userId, jobVO.getCompany());
+        return jobDAO.save(jobVO.copyInto(job.orElseGet(() -> getNewJob(userId))));
     }
 
     @Override
+    @LogMethod("获取今天的工作记录")
     public Job getJobOfToday(String userId) {
         return jobDAO.getByUserIdAndWorkTimeStartAfter(userId, DateUtils.getStartOfToday().getTime());
     }

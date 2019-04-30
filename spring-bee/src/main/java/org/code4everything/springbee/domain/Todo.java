@@ -5,8 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.code4everything.boot.annotation.Sealed;
-import org.code4everything.boot.bean.BaseBean;
+import org.code4everything.boot.base.bean.BaseBean;
+import org.code4everything.boot.encoder.Sealed;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -20,7 +20,7 @@ import java.io.Serializable;
 @Document
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "todo", description = "待办事项")
+@ApiModel(description = "待办事项")
 public class Todo implements BaseBean, Serializable {
 
     @Id

@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.code4everything.boot.base.bean.BaseBean;
 
 import java.io.Serializable;
 
@@ -15,8 +16,8 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "userInfoDTO", description = "用户信息")
-public class UserInfoDTO implements Serializable {
+@ApiModel(description = "用户信息")
+public class UserInfoVO implements BaseBean, Serializable {
 
     @ApiModelProperty("昵称")
     private String nickname;

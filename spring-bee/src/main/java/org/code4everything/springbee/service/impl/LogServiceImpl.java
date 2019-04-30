@@ -2,7 +2,7 @@ package org.code4everything.springbee.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
-import org.code4everything.boot.bean.LogBean;
+import org.code4everything.boot.log.MethodLog;
 import org.code4everything.boot.service.BootLogService;
 import org.code4everything.springbee.dao.LogDAO;
 import org.code4everything.springbee.domain.Log;
@@ -50,9 +50,9 @@ public class LogServiceImpl implements BootLogService<Log> {
     }
 
     @Override
-    public Log getLog(LogBean logBean) {
+    public Log getLog(MethodLog methodLog) {
         Log log = new Log();
-        BeanUtils.copyProperties(logBean, log);
+        BeanUtils.copyProperties(methodLog, log);
         log.setId(IdUtil.simpleUUID());
         log.setCreateTime(System.currentTimeMillis());
         log.setIp(request.getRemoteAddr());

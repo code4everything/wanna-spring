@@ -5,7 +5,7 @@ import org.code4everything.springbee.BaseTest;
 import org.code4everything.springbee.constant.TestConsts;
 import org.code4everything.springbee.dao.IncomeDAO;
 import org.code4everything.springbee.domain.Income;
-import org.code4everything.springbee.model.IncomeDTO;
+import org.code4everything.springbee.model.IncomeVO;
 import org.code4everything.springbee.model.IncomeBillVO;
 import org.code4everything.springbee.service.IncomeService;
 import org.junit.Assert;
@@ -45,15 +45,15 @@ public class IncomeServiceImplTest extends BaseTest {
 
     @Test
     public void updateIncome() {
-        IncomeDTO incomeDTO = new IncomeDTO();
-        incomeDTO.setCategory(RandomUtil.randomString(4));
-        incomeDTO.setDate(new Date(System.currentTimeMillis()));
-        incomeDTO.setMoney(RandomUtil.randomLong(Integer.MAX_VALUE));
-        incomeDTO.setRemark(RandomUtil.randomString(6));
-        incomeDTO.setType(TestConsts.TYPE);
-        incomeDTO.setWay(TestConsts.WAY);
+        IncomeVO incomeVO = new IncomeVO();
+        incomeVO.setCategory(RandomUtil.randomString(4));
+        incomeVO.setDate(new Date(System.currentTimeMillis()));
+        incomeVO.setMoney(RandomUtil.randomLong(Integer.MAX_VALUE));
+        incomeVO.setRemark(RandomUtil.randomString(6));
+        incomeVO.setType(TestConsts.TYPE);
+        incomeVO.setWay(TestConsts.WAY);
         Assert.assertNotNull(incomeService.updateIncome(getUser().getId(), incomeDAO.findAll().get(0).getId(),
-                incomeDTO));
+                incomeVO));
     }
 
     @Test
@@ -63,14 +63,14 @@ public class IncomeServiceImplTest extends BaseTest {
 
     @Test
     public void saveIncome() {
-        IncomeDTO incomeDTO = new IncomeDTO();
-        incomeDTO.setCategory(RandomUtil.randomString(4));
-        incomeDTO.setDate(new Date(System.currentTimeMillis()));
-        incomeDTO.setMoney(RandomUtil.randomLong(Integer.MAX_VALUE));
-        incomeDTO.setRemark(RandomUtil.randomString(6));
-        incomeDTO.setType(TestConsts.TYPE);
-        incomeDTO.setWay(TestConsts.WAY);
-        Assert.assertNotNull(incomeService.saveIncome(getUser().getId(), incomeDTO));
+        IncomeVO incomeVO = new IncomeVO();
+        incomeVO.setCategory(RandomUtil.randomString(4));
+        incomeVO.setDate(new Date(System.currentTimeMillis()));
+        incomeVO.setMoney(RandomUtil.randomLong(Integer.MAX_VALUE));
+        incomeVO.setRemark(RandomUtil.randomString(6));
+        incomeVO.setType(TestConsts.TYPE);
+        incomeVO.setWay(TestConsts.WAY);
+        Assert.assertNotNull(incomeService.saveIncome(getUser().getId(), incomeVO));
     }
 
     @Test

@@ -2,10 +2,10 @@ package org.code4everything.springbee.config;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.google.common.base.Strings;
-import org.code4everything.boot.web.HttpUtils;
+import org.code4everything.boot.web.http.HttpUtils;
 import org.code4everything.boot.web.mvc.DefaultExceptionHandler;
 import org.code4everything.boot.web.mvc.DefaultWebInterceptor;
-import org.code4everything.boot.web.mvc.InterceptHandler;
+import org.code4everything.boot.web.mvc.PathFilterHandler;
 import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.service.UserService;
 import org.slf4j.Logger;
@@ -46,7 +46,7 @@ public class BeeWebMvcConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new DefaultWebInterceptor(new InterceptHandler() {
+        registry.addInterceptor(new DefaultWebInterceptor(new PathFilterHandler() {
 
             @Override
             public String buildCacheKey(HttpServletRequest request) {

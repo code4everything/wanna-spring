@@ -2,7 +2,7 @@ package org.code4everything.springbee.service;
 
 import org.code4everything.springbee.domain.Income;
 import org.code4everything.springbee.model.IncomeBillVO;
-import org.code4everything.springbee.model.IncomeDTO;
+import org.code4everything.springbee.model.IncomeVO;
 import org.springframework.scheduling.annotation.Async;
 
 import java.util.Date;
@@ -62,11 +62,11 @@ public interface IncomeService {
      *
      * @param userId 用户编号
      * @param incomeId 收益记录编号
-     * @param incomeDTO 收益信息
+     * @param incomeVO 收益信息
      *
      * @return 收益信息
      */
-    Income updateIncome(String userId, String incomeId, IncomeDTO incomeDTO);
+    Income updateIncome(String userId, String incomeId, IncomeVO incomeVO);
 
     /**
      * 删除收益记录
@@ -81,9 +81,9 @@ public interface IncomeService {
      * 保存收益记录
      *
      * @param userId 用户编号
-     * @param incomeDTO 收益信息
+     * @param incomeVO 收益信息
      *
      * @return 收益信息
      */
-    Income saveIncome(String userId, IncomeDTO incomeDTO);
+    Income saveIncome(String userId, IncomeVO incomeVO);
 }

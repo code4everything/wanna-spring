@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.code4everything.boot.bean.BaseBean;
+import org.code4everything.boot.base.bean.BaseBean;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -20,8 +20,8 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-@ApiModel(value = "todoDTO", description = "待办事项")
-public class TodoDTO implements BaseBean, Serializable {
+@ApiModel(description = "待办事项")
+public class TodoVO implements BaseBean, Serializable {
 
     @NotBlank
     @ApiModelProperty(value = "计划完成日期", required = true)

@@ -1,9 +1,9 @@
 package org.code4everything.springbee.web;
 
 import io.swagger.annotations.*;
-import org.code4everything.boot.bean.Response;
+import org.code4everything.boot.base.bean.Response;
 import org.code4everything.springbee.domain.Daily;
-import org.code4everything.springbee.model.DailyDTO;
+import org.code4everything.springbee.model.DailyVO;
 import org.code4everything.springbee.service.DailyService;
 import org.code4everything.springbee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class DailyController extends BeeBaseController {
 
     @PostMapping("/create")
     @ApiOperation("添加记录")
-    public Response<Daily> saveDaily(@RequestBody @ApiParam @Valid DailyDTO daily) {
+    public Response<Daily> saveDaily(@RequestBody @ApiParam @Valid DailyVO daily) {
         ifReturn(daily.getDate().after(new Date(System.currentTimeMillis())), errorResult("添加失败，无法添加未来的日程记录"));
         ifReturn(() -> dailyService.exists(getUserId(), "", daily), errorResult("添加失败，该日期记录已经存在"));
         if (hasResult()) {
@@ -57,7 +57,7 @@ public class DailyController extends BeeBaseController {
 
     @PutMapping("/{dailyId}/update")
     @ApiOperation("更新记录")
-    public Response<Daily> updateDaily(@PathVariable String dailyId, @RequestBody @ApiParam @Valid DailyDTO daily) {
+    public Response<Daily> updateDaily(@PathVariable String dailyId, @RequestBody @ApiParam @Valid DailyVO daily) {
         if (dailyService.exists(getUserId(), dailyId, daily)) {
             return errorResult("更新失败，该日期记录已经存在");
         }

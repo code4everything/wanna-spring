@@ -1,7 +1,7 @@
 package org.code4everything.springbee.service;
 
 import org.code4everything.springbee.domain.Dailies;
-import org.code4everything.springbee.model.DailiesDTO;
+import org.code4everything.springbee.model.DailiesVO;
 import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
@@ -25,11 +25,11 @@ public interface DailiesService {
      * 更新日程详细记录
      *
      * @param dailiesId 详细记录编号
-     * @param dailiesDTO 详细记录内容
+     * @param dailiesVO 详细记录内容
      *
      * @return 详细记录
      */
-    Dailies updateDailies(String dailiesId, DailiesDTO dailiesDTO);
+    Dailies updateDailies(String dailiesId, DailiesVO dailiesVO);
 
     /**
      * 删除详细记录
@@ -43,9 +43,9 @@ public interface DailiesService {
      * 保存详细记录信息
      *
      * @param dailyId 日程编号
-     * @param dailiesDTO 详细记录内容
+     * @param dailiesVO 详细记录内容
      *
      * @return 详细记录
      */
-    Dailies saveDailies(String dailyId, DailiesDTO dailiesDTO);
+    Dailies saveDailies(String dailyId, DailiesVO dailiesVO);
 }

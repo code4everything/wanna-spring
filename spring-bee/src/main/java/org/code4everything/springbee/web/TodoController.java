@@ -4,10 +4,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.code4everything.boot.bean.Response;
+import org.code4everything.boot.base.bean.Response;
 import org.code4everything.springbee.domain.Todo;
 import org.code4everything.springbee.model.TodoCountVO;
-import org.code4everything.springbee.model.TodoDTO;
+import org.code4everything.springbee.model.TodoVO;
 import org.code4everything.springbee.service.TodoService;
 import org.code4everything.springbee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class TodoController extends BeeBaseController {
 
     @PostMapping("/create")
     @ApiOperation("添加代办事项")
-    public Response<Todo> saveTodo(@RequestBody TodoDTO todo) {
+    public Response<Todo> saveTodo(@RequestBody TodoVO todo) {
         return parseResult("添加失败", todoService.saveTodo(getUserId(), todo), true);
     }
 

@@ -1,6 +1,6 @@
 package org.code4everything.springbee.service.impl;
 
-import org.code4everything.boot.annotation.AopLog;
+import org.code4everything.boot.log.LogMethod;
 import org.code4everything.springbee.dao.UserDAO;
 import org.code4everything.springbee.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +21,13 @@ public class CommonServiceImpl implements CommonService {
     }
 
     @Override
-    @AopLog("查看用户名是否存在")
+    @LogMethod("查看用户名是否存在")
     public boolean existsUsername(String username) {
         return userDAO.existsByUsername(username);
     }
 
     @Override
-    @AopLog("查看邮箱是否存在")
+    @LogMethod("查看邮箱是否存在")
     public boolean existsEmail(String email) {
         return userDAO.existsByEmail(email);
     }

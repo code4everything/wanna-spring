@@ -1,12 +1,12 @@
 package org.code4everything.springbee.web;
 
 import io.swagger.annotations.*;
-import org.code4everything.boot.bean.Response;
+import org.code4everything.boot.base.bean.Response;
 import org.code4everything.boot.message.VerifyCodeUtils;
 import org.code4everything.springbee.domain.User;
-import org.code4everything.springbee.model.PasswordDTO;
-import org.code4everything.springbee.model.RegisterDTO;
-import org.code4everything.springbee.model.UserInfoDTO;
+import org.code4everything.springbee.model.PasswordVO;
+import org.code4everything.springbee.model.RegisterVO;
+import org.code4everything.springbee.model.UserInfoVO;
 import org.code4everything.springbee.service.CommonService;
 import org.code4everything.springbee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +44,9 @@ public class UserController extends BeeBaseController {
 
     @PutMapping("/password/reset")
     @ApiOperation("重置密码")
-    public Response<String> resetPassword(@RequestBody @ApiParam @Valid PasswordDTO password) {
-        if (VerifyCodeUtils.validateAndRemove(password.getEmail(), password.getVcode())) {
-            userService.resetPassword(password.getEmail(), password.getNewPassword());
+    public Response<String> resetPassword(@RequestBody @ApiParam @Valid PasswordVO passwordVO) {
+        if (VerifyCodeUtils.validateAndRemove(passwordVO.getEmail(), passwordVO.getVcode())) {
+            userService.resetPassword(passwordVO.getEmail(), passwordVO.getNewPassword());
             return successResult("重置密码成功");
         }
         return errorResult("验证码不正确");
@@ -54,7 +54,7 @@ public class UserController extends BeeBaseController {
 
     @PostMapping("/register")
     @ApiOperation("注册")
-    public Response<String> register(@RequestBody @ApiParam @Valid RegisterDTO register) {
+    public Response<String> register(@RequestBody @ApiParam @Valid RegisterVO register) {
         ifReturn(commonService.existsUsername(register.getUsername()), errorResult("该用户名已经被注册啦"));
         ifReturn(() -> commonService.existsEmail(register.getEmail()), errorResult("该邮箱已经注册啦"));
         if (hasResult()) {
@@ -77,7 +77,7 @@ public class UserController extends BeeBaseController {
 
     @PutMapping("/info")
     @ApiOperation("更新信息")
-    public Response<Boolean> updateInfo(@RequestBody @ApiParam @Valid UserInfoDTO userInfo) {
+    public Response<Boolean> updateInfo(@RequestBody @ApiParam @Valid UserInfoVO userInfo) {
         return parseResult("更新", userService.updateInfo(getUser(), userInfo));
     }
 

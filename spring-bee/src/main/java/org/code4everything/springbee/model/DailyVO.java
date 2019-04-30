@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.code4everything.boot.base.bean.BaseBean;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -18,8 +19,8 @@ import java.sql.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "dailyDTO", description = "日程记录")
-public class DailyDTO implements Serializable {
+@ApiModel(description = "日程记录")
+public class DailyVO implements BaseBean, Serializable {
 
     @ApiModelProperty("记录日期（默认为当前日期）")
     private Date date;

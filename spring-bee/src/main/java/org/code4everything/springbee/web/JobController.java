@@ -5,9 +5,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.code4everything.boot.bean.Response;
+import org.code4everything.boot.base.bean.Response;
 import org.code4everything.springbee.domain.Job;
-import org.code4everything.springbee.model.JobDTO;
+import org.code4everything.springbee.model.JobVO;
 import org.code4everything.springbee.service.JobService;
 import org.code4everything.springbee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,8 +71,8 @@ public class JobController extends BeeBaseController {
 
     @PutMapping("")
     @ApiOperation("保存工作日志")
-    public Response<Job> save(@RequestBody JobDTO jobDTO) {
-        return successResult(jobService.save(getUserId(), jobDTO));
+    public Response<Job> save(@RequestBody JobVO jobVO) {
+        return successResult(jobService.save(getUserId(), jobVO));
     }
 
     @GetMapping("/today")

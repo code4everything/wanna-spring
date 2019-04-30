@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.code4everything.boot.bean.InterceptorBean;
+import org.code4everything.boot.web.mvc.FilterPath;
 
 /**
  * @author pantao
@@ -14,7 +14,7 @@ import org.code4everything.boot.bean.InterceptorBean;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BeeConfigBean extends InterceptorBean {
+public class BeeConfigBean extends FilterPath {
 
     private Integer tokenExpired;
 

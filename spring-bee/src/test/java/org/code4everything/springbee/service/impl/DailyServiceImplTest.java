@@ -5,7 +5,7 @@ import cn.hutool.core.util.RandomUtil;
 import org.code4everything.springbee.BaseTest;
 import org.code4everything.springbee.dao.DailyDAO;
 import org.code4everything.springbee.domain.Daily;
-import org.code4everything.springbee.model.DailyDTO;
+import org.code4everything.springbee.model.DailyVO;
 import org.code4everything.springbee.service.DailyService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -49,28 +49,28 @@ public class DailyServiceImplTest extends BaseTest {
 
     @Test
     public void saveDaily() {
-        DailyDTO dailyDTO = new DailyDTO();
-        dailyDTO.setContent(RandomUtil.randomString(9));
-        dailyDTO.setDate(new Date(System.currentTimeMillis()));
-        dailyDTO.setScore(RandomUtil.randomInt(10));
-        dailyDTO.setWeather(RandomUtil.randomString(3));
-        Assert.assertNotNull(dailyService.saveDaily(getUser().getId(), dailyDTO));
+        DailyVO dailyVO = new DailyVO();
+        dailyVO.setContent(RandomUtil.randomString(9));
+        dailyVO.setDate(new Date(System.currentTimeMillis()));
+        dailyVO.setScore(RandomUtil.randomInt(10));
+        dailyVO.setWeather(RandomUtil.randomString(3));
+        Assert.assertNotNull(dailyService.saveDaily(getUser().getId(), dailyVO));
     }
 
     @Test
     public void exists1() {
-        DailyDTO dailyDTO = new DailyDTO();
-        dailyDTO.setDate(new Date(System.currentTimeMillis()));
-        dailyService.exists(getUser().getId(), "", dailyDTO);
+        DailyVO dailyVO = new DailyVO();
+        dailyVO.setDate(new Date(System.currentTimeMillis()));
+        dailyService.exists(getUser().getId(), "", dailyVO);
     }
 
     @Test
     public void updateDaily() {
-        DailyDTO dailyDTO = new DailyDTO();
-        dailyDTO.setContent(RandomUtil.randomString(9));
-        dailyDTO.setDate(new Date(System.currentTimeMillis()));
-        dailyDTO.setScore(RandomUtil.randomInt(10));
-        dailyDTO.setWeather(RandomUtil.randomString(3));
-        dailyService.updateDaily(dailyDAO.findAll().get(0).getId(), dailyDTO);
+        DailyVO dailyVO = new DailyVO();
+        dailyVO.setContent(RandomUtil.randomString(9));
+        dailyVO.setDate(new Date(System.currentTimeMillis()));
+        dailyVO.setScore(RandomUtil.randomInt(10));
+        dailyVO.setWeather(RandomUtil.randomString(3));
+        dailyService.updateDaily(dailyDAO.findAll().get(0).getId(), dailyVO);
     }
 }

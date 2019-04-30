@@ -2,8 +2,8 @@ package org.code4everything.springbee.service.impl;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.IdUtil;
-import org.code4everything.boot.annotation.AopLog;
-import org.code4everything.boot.bean.MultipartFileBean;
+import org.code4everything.boot.log.LogMethod;
+import org.code4everything.boot.web.http.DustFile;
 import org.code4everything.springbee.SpringBeeApplication;
 import org.code4everything.springbee.constant.BeeConfigConsts;
 import org.code4everything.springbee.dao.DocumentDAO;
@@ -27,33 +27,33 @@ public class DocumentServiceImpl implements DocumentService {
     public DocumentServiceImpl(DocumentDAO documentDAO) {this.documentDAO = documentDAO;}
 
     @Override
-    @AopLog("通过访问链接获取本地路径")
+    @LogMethod("通过访问链接获取本地路径")
     public String getLocalPathByAccessUrl(String accessUrl) {
         Document document = documentDAO.getByAccessUrl(accessUrl);
         return Objects.isNull(document) ? "" : document.getAccessUrl();
     }
 
     @Override
-    @AopLog("通过访问链接或本地路径获取文件")
-    public Document getBy(MultipartFileBean fileBean) {
-        String localPath = SpringBeeApplication.getBeeConfigBean().getStoragePath() + fileBean.getFilename();
-        String accessUrl = BeeConfigConsts.DOCUMENT_MAPPING + fileBean.getFilename();
+    @LogMethod("通过访问链接或本地路径获取文件")
+    public Document getBy(DustFile dustFile) {
+        String localPath = SpringBeeApplication.getBeeConfigBean().getStoragePath() + dustFile.getFilename();
+        String accessUrl = BeeConfigConsts.DOCUMENT_MAPPING + dustFile.getFilename();
         return documentDAO.getByLocalPathOrAccessUrl(localPath, accessUrl);
     }
 
     @Override
-    @AopLog("保存文件")
-    public Document save(MultipartFileBean fileBean) {
-        Document document = getBy(fileBean);
+    @LogMethod("保存文件")
+    public Document save(DustFile dustFile) {
+        Document document = getBy(dustFile);
         if (Objects.isNull(document)) {
             document = new Document();
             document.setId(IdUtil.randomUUID());
             document.setCreateTime(System.currentTimeMillis());
-            document.setAccessUrl(BeeConfigConsts.DOCUMENT_MAPPING + fileBean.getFilename());
-            document.setLocalPath(SpringBeeApplication.getBeeConfigBean().getStoragePath() + fileBean.getFilename());
-            document.setSuffix(FileUtil.extName(fileBean.getOriginalFilename()));
+            document.setAccessUrl(BeeConfigConsts.DOCUMENT_MAPPING + dustFile.getFilename());
+            document.setLocalPath(SpringBeeApplication.getBeeConfigBean().getStoragePath() + dustFile.getFilename());
+            document.setSuffix(FileUtil.extName(dustFile.getOriginalFilename()));
         }
-        document.setSize(fileBean.getSize());
+        document.setSize(dustFile.getSize());
         return documentDAO.save(document);
     }
 }

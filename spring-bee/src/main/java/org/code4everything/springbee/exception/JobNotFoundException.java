@@ -1,7 +1,7 @@
 package org.code4everything.springbee.exception;
 
-import cn.hutool.http.HttpStatus;
 import org.code4everything.boot.exception.BootException;
+import org.springframework.http.HttpStatus;
 
 /**
  * @author pantao
@@ -10,6 +10,6 @@ import org.code4everything.boot.exception.BootException;
 public class JobNotFoundException extends BootException {
 
     public JobNotFoundException() {
-        super(HttpStatus.HTTP_NOT_FOUND, "指定的工作日志不存在", true);
+        super(HttpStatus.NOT_FOUND.value(), "指定的工作日志不存在", true);
     }
 }

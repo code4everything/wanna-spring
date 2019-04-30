@@ -1,7 +1,7 @@
 package org.code4everything.springbee.service;
 
 import org.code4everything.springbee.domain.Daily;
-import org.code4everything.springbee.model.DailyDTO;
+import org.code4everything.springbee.model.DailyVO;
 import org.springframework.scheduling.annotation.Async;
 
 import java.sql.Date;
@@ -55,30 +55,30 @@ public interface DailyService {
      * 保存日程
      *
      * @param userId 用户编号
-     * @param dailyDTO 日程记录内容
+     * @param dailyVO 日程记录内容
      *
      * @return 日程记录
      */
-    Daily saveDaily(String userId, DailyDTO dailyDTO);
+    Daily saveDaily(String userId, DailyVO dailyVO);
 
     /**
      * 检测日程是否存在
      *
      * @param userId 用户编号
      * @param dailyId 日程编号
-     * @param dailyDTO 日程内容
+     * @param dailyVO 日程内容
      *
      * @return 是否存在
      */
-    boolean exists(String userId, String dailyId, DailyDTO dailyDTO);
+    boolean exists(String userId, String dailyId, DailyVO dailyVO);
 
     /**
      * 更新日程记录
      *
      * @param dailyId 日程编号
-     * @param dailyDTO 日程内容
+     * @param dailyVO 日程内容
      *
      * @return 日程记录
      */
-    Daily updateDaily(String dailyId, DailyDTO dailyDTO);
+    Daily updateDaily(String dailyId, DailyVO dailyVO);
 }

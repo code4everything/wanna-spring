@@ -5,7 +5,7 @@ import org.code4everything.springbee.constant.TestConsts;
 import org.code4everything.springbee.dao.DailiesDAO;
 import org.code4everything.springbee.dao.DailyDAO;
 import org.code4everything.springbee.domain.Dailies;
-import org.code4everything.springbee.model.DailiesDTO;
+import org.code4everything.springbee.model.DailiesVO;
 import org.code4everything.springbee.service.DailiesService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -38,11 +38,11 @@ public class DailiesServiceImplTest {
 
     @Test
     public void updateDailies() {
-        DailiesDTO dailiesDTO = new DailiesDTO();
-        dailiesDTO.setContent(RandomUtil.randomString(12));
-        dailiesDTO.setEndTime(TestConsts.START_TIME);
-        dailiesDTO.setStartTime(TestConsts.END_TIME);
-        Assert.assertNotNull(dailiesService.updateDailies(dailiesDAO.findAll().get(0).getId(), dailiesDTO));
+        DailiesVO dailiesVO = new DailiesVO();
+        dailiesVO.setContent(RandomUtil.randomString(12));
+        dailiesVO.setEndTime(TestConsts.START_TIME);
+        dailiesVO.setStartTime(TestConsts.END_TIME);
+        Assert.assertNotNull(dailiesService.updateDailies(dailiesDAO.findAll().get(0).getId(), dailiesVO));
     }
 
     @Test
@@ -52,10 +52,10 @@ public class DailiesServiceImplTest {
 
     @Test
     public void saveDailies() {
-        DailiesDTO dailiesDTO = new DailiesDTO();
-        dailiesDTO.setContent(RandomUtil.randomString(12));
-        dailiesDTO.setEndTime(TestConsts.START_TIME);
-        dailiesDTO.setStartTime(TestConsts.END_TIME);
-        Assert.assertNotNull(dailiesService.saveDailies(dailyDAO.findAll().get(0).getId(), dailiesDTO));
+        DailiesVO dailiesVO = new DailiesVO();
+        dailiesVO.setContent(RandomUtil.randomString(12));
+        dailiesVO.setEndTime(TestConsts.START_TIME);
+        dailiesVO.setStartTime(TestConsts.END_TIME);
+        Assert.assertNotNull(dailiesService.saveDailies(dailyDAO.findAll().get(0).getId(), dailiesVO));
     }
 }
