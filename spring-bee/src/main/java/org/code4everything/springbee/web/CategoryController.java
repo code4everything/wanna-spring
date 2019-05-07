@@ -3,7 +3,7 @@ package org.code4everything.springbee.web;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import org.code4everything.boot.base.bean.Response;
+import org.code4everything.boot.web.mvc.Response;
 import org.code4everything.springbee.domain.Category;
 import org.code4everything.springbee.service.CategoryService;
 import org.code4everything.springbee.service.UserService;

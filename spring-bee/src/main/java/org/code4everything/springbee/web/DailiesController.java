@@ -4,7 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.code4everything.boot.base.bean.Response;
+import org.code4everything.boot.web.mvc.Response;
 import org.code4everything.springbee.domain.Dailies;
 import org.code4everything.springbee.model.DailiesVO;
 import org.code4everything.springbee.service.DailiesService;

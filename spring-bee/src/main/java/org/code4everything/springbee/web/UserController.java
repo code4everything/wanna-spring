@@ -1,8 +1,8 @@
 package org.code4everything.springbee.web;
 
 import io.swagger.annotations.*;
-import org.code4everything.boot.base.bean.Response;
 import org.code4everything.boot.message.VerifyCodeUtils;
+import org.code4everything.boot.web.mvc.Response;
 import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.PasswordVO;
 import org.code4everything.springbee.model.RegisterVO;

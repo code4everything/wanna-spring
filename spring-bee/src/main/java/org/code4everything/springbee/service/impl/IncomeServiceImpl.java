@@ -5,7 +5,7 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.base.Strings;
-import org.code4everything.boot.constant.StringConsts;
+import org.code4everything.boot.base.constant.StringConsts;
 import org.code4everything.boot.log.LogMethod;
 import org.code4everything.springbee.dao.AssetDAO;
 import org.code4everything.springbee.dao.IncomeDAO;
