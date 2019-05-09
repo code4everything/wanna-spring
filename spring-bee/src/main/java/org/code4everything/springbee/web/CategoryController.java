@@ -49,7 +49,7 @@ public class CategoryController extends BeeBaseController {
         return successResult("删除成功");
     }
 
-    @PutMapping("/{categoryId}/update")
+    @PatchMapping("/{categoryId}/update")
     @ApiOperation("更新分类名称")
     @ApiImplicitParam(name = "name", value = "分类名", required = true)
     public Response updateCategory(@PathVariable String categoryId, @RequestParam String name) {

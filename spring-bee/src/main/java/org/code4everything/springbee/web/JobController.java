@@ -33,7 +33,7 @@ public class JobController extends BeeBaseController {
         this.jobService = jobService;
     }
 
-    @PutMapping("/{jobId}/status")
+    @PatchMapping("/{jobId}/status")
     @ApiOperation("更新加班状态")
     @ApiImplicitParam(name = "status", value = "状态:0未处理，1已处理", defaultValue = "1")
     public Response<Job> updateStatus(@PathVariable String jobId, @RequestParam(defaultValue = "1") String status) {
@@ -46,13 +46,13 @@ public class JobController extends BeeBaseController {
         return successResult(jobService.listCompany(getUserId()));
     }
 
-    @PutMapping("/{jobId}/diary")
+    @PatchMapping("/{jobId}/diary")
     @ApiOperation("更新工作日记")
     public Response<Job> saveWorkDiary(@PathVariable String jobId, @RequestBody String workDiary) {
         return successResult(jobService.writeWorkDiary(jobId, workDiary));
     }
 
-    @PutMapping("/{jobId}/finish")
+    @PatchMapping("/{jobId}/finish")
     @ApiOperation("下班打卡")
     @ApiImplicitParams({@ApiImplicitParam(name = "workWay", value = "方式：1正常，2加班", defaultValue = "1"),
             @ApiImplicitParam(name = "company", value = "公司名称", required = true)})

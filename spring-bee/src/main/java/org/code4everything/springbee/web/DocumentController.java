@@ -1,7 +1,6 @@
 package org.code4everything.springbee.web;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.code4everything.boot.web.http.HttpUtils;
 import org.code4everything.boot.web.mvc.Response;
@@ -35,7 +34,6 @@ public class DocumentController extends BeeBaseController {
 
     @PostMapping("/upload")
     @ApiOperation("上传文件")
-    @ApiImplicitParam(name = "file", value = "文件", required = true, dataTypeClass = MultipartFile.class)
     public Response<Document> upload(@RequestBody MultipartFile file) {
         String storagePath = SpringBeeApplication.getBeeConfigBean().getStoragePath();
         return HttpUtils.upload(documentService, file, storagePath, true).encode();

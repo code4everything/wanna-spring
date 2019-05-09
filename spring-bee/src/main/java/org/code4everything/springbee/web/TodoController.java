@@ -47,7 +47,7 @@ public class TodoController extends BeeBaseController {
         return successResult("删除成功");
     }
 
-    @PutMapping("/update")
+    @PatchMapping("/update")
     @ApiOperation("更新代办事项内容")
     @ApiImplicitParams({@ApiImplicitParam(name = "todoId", value = "事项编号", required = true), @ApiImplicitParam(name =
             "content", value = "事项内容", required = true)})
@@ -55,7 +55,7 @@ public class TodoController extends BeeBaseController {
         return successResult(todoService.updateTodo(todoId, content), true);
     }
 
-    @PutMapping("/status/toggle")
+    @PatchMapping("/status/toggle")
     @ApiOperation("更新事项状态")
     @ApiImplicitParams({@ApiImplicitParam(name = "todoId", value = "事项编号", required = true), @ApiImplicitParam(name =
             "status", value = "状态", required = true, allowableValues = "0, 1")})

@@ -9,7 +9,6 @@ import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.PasswordVO;
 import org.code4everything.springbee.model.RegisterVO;
 import org.code4everything.springbee.model.UserInfoVO;
-import org.code4everything.springbee.service.CommonService;
 import org.code4everything.springbee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,16 +26,13 @@ public class UserController extends BeeBaseController {
 
     private final UserService userService;
 
-    private final CommonService commonService;
-
     @Autowired
-    public UserController(UserService userService, CommonService commonService) {
+    public UserController(UserService userService) {
         super(userService);
         this.userService = userService;
-        this.commonService = commonService;
     }
 
-    @PutMapping("/password/update")
+    @PatchMapping("/password/update")
     @ApiOperation("更新密码")
     @ApiImplicitParams({@ApiImplicitParam(name = "oldPassword", required = true, value = "原密码"),
             @ApiImplicitParam(name = "newPassword", required = true, value = "新密码")})
@@ -44,7 +40,7 @@ public class UserController extends BeeBaseController {
         return parseBoolean("更新成功", "原密码不正确", userService.updatePassword(getUser(), oldPassword, newPassword));
     }
 
-    @PutMapping("/password/reset")
+    @PatchMapping("/password/reset")
     @ApiOperation("重置密码")
     public Response<String> resetPassword(@RequestBody @ApiParam @Valid PasswordVO passwordVO) {
         boolean correct = VerifyCodeUtils.validateAndRemove(passwordVO.getEmail(), passwordVO.getVcode());
@@ -62,7 +58,7 @@ public class UserController extends BeeBaseController {
         return successResult("注册成功");
     }
 
-    @PutMapping("/login")
+    @PostMapping("/login")
     @ApiOperation("登录")
     @ApiImplicitParams({@ApiImplicitParam(name = "loginName", value = "用户名或邮箱", required = true),
             @ApiImplicitParam(name = "password", value = "密码", required = true)})
@@ -70,7 +66,7 @@ public class UserController extends BeeBaseController {
         return successResult("登录成功", userService.login(loginName, password));
     }
 
-    @PutMapping("/info")
+    @PatchMapping("/info")
     @ApiOperation("更新信息")
     public Response<Boolean> updateInfo(@RequestBody @ApiParam @Valid UserInfoVO userInfo) {
         return successResult(userService.updateInfo(getUser(), userInfo));
