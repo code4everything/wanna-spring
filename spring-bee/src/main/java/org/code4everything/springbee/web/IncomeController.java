@@ -33,8 +33,8 @@ public class IncomeController extends BeeBaseController {
 
     @PostMapping("/append")
     @ApiOperation("添加一条收益记录")
-    public Response<Income> saveIncome(@RequestBody @ApiParam @Valid IncomeVO income) {
-        return successResult(incomeService.saveIncome(getUserId(), income), true);
+    public Response<Income> saveIncome(@RequestBody @ApiParam @Valid IncomeVO incomeVO) {
+        return successResult(incomeService.saveIncome(getUserId(), incomeVO), true);
     }
 
     @DeleteMapping("/remove")
@@ -47,8 +47,8 @@ public class IncomeController extends BeeBaseController {
 
     @PutMapping("/{incomeId}/update")
     @ApiOperation("更新记录")
-    public Response<Income> updateIncome(@PathVariable String incomeId, @RequestBody @ApiParam @Valid IncomeVO income) {
-        return successResult(incomeService.updateIncome(getUserId(), incomeId, income), true);
+    public Response<Income> updateIncome(@PathVariable String incomeId, @RequestBody @ApiParam @Valid IncomeVO incomeVO) {
+        return successResult(incomeService.updateIncome(getUserId(), incomeId, incomeVO), true);
     }
 
     @GetMapping("/list")

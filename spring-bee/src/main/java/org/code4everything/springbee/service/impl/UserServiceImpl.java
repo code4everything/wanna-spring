@@ -43,12 +43,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @LogMethod("更新用户信息")
-    public boolean updateInfo(User user, UserInfoVO userInfoVO) {
-        user.setNickname(userInfoVO.getNickname());
-        user.setBio(userInfoVO.getBio());
-        user.setGender(userInfoVO.getGender());
-        userDAO.save(user);
-        return true;
+    public void updateInfo(User user, UserInfoVO userInfoVO) {
+        userDAO.save(userInfoVO.copyInto(user));
     }
 
     @Override

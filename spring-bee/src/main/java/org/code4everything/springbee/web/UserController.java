@@ -42,7 +42,7 @@ public class UserController extends BeeBaseController {
 
     @PatchMapping("/password/reset")
     @ApiOperation("重置密码")
-    public Response<String> resetPassword(@RequestBody @ApiParam @Valid PasswordVO passwordVO) {
+    public Response resetPassword(@RequestBody @ApiParam @Valid PasswordVO passwordVO) {
         boolean correct = VerifyCodeUtils.validateAndRemove(passwordVO.getEmail(), passwordVO.getVcode());
         AssertUtils.throwIf(!correct, BeeErrorConsts.CODE_INCORRECT);
         userService.resetPassword(passwordVO.getEmail(), passwordVO.getNewPassword());
@@ -51,15 +51,15 @@ public class UserController extends BeeBaseController {
 
     @PostMapping("/register")
     @ApiOperation("注册")
-    public Response<String> register(@RequestBody @ApiParam @Valid RegisterVO register) {
-        boolean correct = VerifyCodeUtils.validateAndRemove(register.getEmail(), register.getVcode());
+    public Response register(@RequestBody @ApiParam @Valid RegisterVO registerVO) {
+        boolean correct = VerifyCodeUtils.validateAndRemove(registerVO.getEmail(), registerVO.getVcode());
         AssertUtils.throwIf(!correct, BeeErrorConsts.CODE_INCORRECT);
-        userService.register(register);
+        userService.register(registerVO);
         return successResult("注册成功");
     }
 
     @PostMapping("/login")
-    @ApiOperation("登录")
+    @ApiOperation("登录，返回Token")
     @ApiImplicitParams({@ApiImplicitParam(name = "loginName", value = "用户名或邮箱", required = true),
             @ApiImplicitParam(name = "password", value = "密码", required = true)})
     public Response<String> login(@RequestParam String loginName, @RequestParam String password) {
@@ -68,8 +68,9 @@ public class UserController extends BeeBaseController {
 
     @PatchMapping("/info")
     @ApiOperation("更新信息")
-    public Response<Boolean> updateInfo(@RequestBody @ApiParam @Valid UserInfoVO userInfo) {
-        return successResult(userService.updateInfo(getUser(), userInfo));
+    public Response updateInfo(@RequestBody @ApiParam @Valid UserInfoVO userInfoVO) {
+        userService.updateInfo(getUser(), userInfoVO);
+        return successResult("更新成功");
     }
 
     @GetMapping("/info")

@@ -32,8 +32,8 @@ public class DailiesController extends BeeBaseController {
 
     @PostMapping("/append/{dailyId}")
     @ApiOperation("添加一条详情记录")
-    public Response<Dailies> append(@PathVariable String dailyId, @RequestBody @ApiParam @Valid DailiesVO dailies) {
-        return successResult(dailiesService.saveDailies(dailyId, dailies));
+    public Response<Dailies> append(@PathVariable String dailyId, @RequestBody @ApiParam @Valid DailiesVO dailiesVO) {
+        return successResult(dailiesService.saveDailies(dailyId, dailiesVO));
     }
 
     @DeleteMapping("/remove")
@@ -47,8 +47,8 @@ public class DailiesController extends BeeBaseController {
     @PutMapping("/{dailiesId}/update")
     @ApiOperation("更新详情")
     public Response<Dailies> updateDailies(@PathVariable String dailiesId,
-                                           @RequestBody @ApiParam @Valid DailiesVO dailies) {
-        return successResult(dailiesService.updateDailies(dailiesId, dailies));
+                                           @RequestBody @ApiParam @Valid DailiesVO dailiesVO) {
+        return successResult(dailiesService.updateDailies(dailiesId, dailiesVO));
     }
 
     @GetMapping("/list")

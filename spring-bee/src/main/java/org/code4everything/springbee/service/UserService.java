@@ -18,9 +18,8 @@ public interface UserService extends BootUserService<User> {
      * @param user 用户
      * @param userInfoVO 用户信息
      *
-     * @return 是否更新成功
      */
-    boolean updateInfo(User user, UserInfoVO userInfoVO);
+    void updateInfo(User user, UserInfoVO userInfoVO);
 
     /**
      * 注册用户

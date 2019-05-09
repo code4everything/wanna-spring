@@ -35,8 +35,8 @@ public class TodoController extends BeeBaseController {
 
     @PostMapping("/create")
     @ApiOperation("添加代办事项")
-    public Response<Todo> saveTodo(@RequestBody TodoVO todo) {
-        return successResult(todoService.saveTodo(getUserId(), todo), true);
+    public Response<Todo> saveTodo(@RequestBody TodoVO todoVO) {
+        return successResult(todoService.saveTodo(getUserId(), todoVO), true);
     }
 
     @DeleteMapping("/remove")

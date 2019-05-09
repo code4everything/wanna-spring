@@ -32,8 +32,8 @@ public class DailyController extends BeeBaseController {
 
     @PostMapping("/create")
     @ApiOperation("添加记录")
-    public Response<Daily> saveDaily(@RequestBody @ApiParam @Valid DailyVO daily) {
-        return successResult(dailyService.saveDaily(getUserId(), daily), true);
+    public Response<Daily> saveDaily(@RequestBody @ApiParam @Valid DailyVO dailyVO) {
+        return successResult(dailyService.saveDaily(getUserId(), dailyVO), true);
     }
 
     @GetMapping("/get")
@@ -52,8 +52,8 @@ public class DailyController extends BeeBaseController {
 
     @PutMapping("/{dailyId}/update")
     @ApiOperation("更新记录")
-    public Response<Daily> updateDaily(@PathVariable String dailyId, @RequestBody @ApiParam @Valid DailyVO daily) {
-        return successResult(dailyService.updateDaily(getUserId(), dailyId, daily), true);
+    public Response<Daily> updateDaily(@PathVariable String dailyId, @RequestBody @ApiParam @Valid DailyVO dailyVO) {
+        return successResult(dailyService.updateDaily(getUserId(), dailyId, dailyVO), true);
     }
 
     @GetMapping("/list")
