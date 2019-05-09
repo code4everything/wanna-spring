@@ -5,11 +5,14 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.google.common.base.Strings;
 import org.code4everything.boot.log.LogMethod;
+import org.code4everything.boot.web.mvc.AssertUtils;
 import org.code4everything.springbee.SpringBeeApplication;
+import org.code4everything.springbee.constant.BeeErrorConsts;
 import org.code4everything.springbee.dao.UserDAO;
 import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.RegisterVO;
 import org.code4everything.springbee.model.UserInfoVO;
+import org.code4everything.springbee.service.CommonService;
 import org.code4everything.springbee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -28,10 +31,14 @@ public class UserServiceImpl implements UserService {
 
     private final RedisTemplate<String, User> userRedisTemplate;
 
+    private final CommonService commonService;
+
     @Autowired
-    public UserServiceImpl(UserDAO userDAO, RedisTemplate<String, User> userRedisTemplate) {
+    public UserServiceImpl(UserDAO userDAO, RedisTemplate<String, User> userRedisTemplate,
+                           CommonService commonService) {
         this.userDAO = userDAO;
         this.userRedisTemplate = userRedisTemplate;
+        this.commonService = commonService;
     }
 
     @Override
@@ -47,6 +54,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @LogMethod("注册用户")
     public void register(RegisterVO registerVO) {
+        AssertUtils.throwIf(commonService.existsUsername(registerVO.getUsername()), BeeErrorConsts.USERNAME_EXISTS);
+        AssertUtils.throwIf(commonService.existsEmail(registerVO.getEmail()), BeeErrorConsts.EMAIL_EXISTS);
         User user = new User();
         user.setUsername(registerVO.getUsername());
         user.setEmail(registerVO.getEmail());
@@ -90,7 +99,7 @@ public class UserServiceImpl implements UserService {
             userRedisTemplate.opsForValue().set(token, user, tokenExpired, TimeUnit.SECONDS);
             return token;
         }
-        return null;
+        throw BeeErrorConsts.USERNAME_PASSWORD_INCORRECT;
     }
 
     @Override

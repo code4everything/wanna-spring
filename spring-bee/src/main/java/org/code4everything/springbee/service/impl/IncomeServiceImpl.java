@@ -7,6 +7,8 @@ import cn.hutool.core.util.StrUtil;
 import com.google.common.base.Strings;
 import org.code4everything.boot.base.constant.StringConsts;
 import org.code4everything.boot.log.LogMethod;
+import org.code4everything.boot.web.mvc.AssertUtils;
+import org.code4everything.springbee.constant.BeeErrorConsts;
 import org.code4everything.springbee.dao.AssetDAO;
 import org.code4everything.springbee.dao.IncomeDAO;
 import org.code4everything.springbee.domain.Asset;
@@ -15,7 +17,6 @@ import org.code4everything.springbee.model.IncomeBillVO;
 import org.code4everything.springbee.model.IncomeVO;
 import org.code4everything.springbee.service.IncomeService;
 import org.code4everything.springbee.util.BeeUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -97,7 +98,7 @@ public class IncomeServiceImpl implements IncomeService {
     @LogMethod("查询月度账单")
     public List<IncomeBillVO> listMonth(String userId, String startMonth, String endMonth) {
         List<IncomeBillVO> list = new ArrayList<>();
-        if (startMonth.compareTo(endMonth) >= 0) {
+        if (startMonth.compareTo(endMonth) > 0) {
             return list;
         }
         // 解析开始日期的年和月
@@ -127,13 +128,11 @@ public class IncomeServiceImpl implements IncomeService {
     @LogMethod("更新收益记录")
     public Income updateIncome(String userId, String incomeId, IncomeVO incomeVO) {
         Income income = incomeDAO.getById(incomeId);
-        if (ObjectUtil.isNull(income)) {
-            return null;
-        }
+        AssertUtils.throwIfNull(income, BeeErrorConsts.INCOME_NOT_FOUND);
         // 计算改变的资产总值
         Long changeValue = incomeVO.getMoney() * incomeVO.getType() - income.getMoney() * income.getType();
         updateAssetBalance(userId, changeValue);
-        return incomeDAO.save(parseIncomeVO(incomeVO, income));
+        return incomeDAO.save(income.copyFrom(incomeVO));
     }
 
     @Override
@@ -149,7 +148,7 @@ public class IncomeServiceImpl implements IncomeService {
     @Override
     @LogMethod("添加收益记录")
     public Income saveIncome(String userId, IncomeVO incomeVO) {
-        Income income = parseIncomeVO(incomeVO, null);
+        Income income = new Income().copyFrom(incomeVO);
         income.setCreateTime(System.currentTimeMillis());
         income.setId(IdUtil.simpleUUID());
         income.setAssetId(updateAssetBalance(userId, income.getMoney() * income.getType()));
@@ -200,14 +199,5 @@ public class IncomeServiceImpl implements IncomeService {
 
     private void putAssetForRedis(String userId, Asset asset) {
         assetRedisTemplate.opsForValue().set("asset." + userId, asset, 10, TimeUnit.MINUTES);
-    }
-
-    private Income parseIncomeVO(IncomeVO incomeVO, Income income) {
-        if (Objects.isNull(income)) {
-            income = new Income();
-        }
-        BeanUtils.copyProperties(incomeVO, income);
-        income.setDate(DateUtil.formatDate(incomeVO.getDate()));
-        return income;
     }
 }

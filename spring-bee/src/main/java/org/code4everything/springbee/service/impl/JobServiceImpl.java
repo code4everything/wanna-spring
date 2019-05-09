@@ -3,14 +3,13 @@ package org.code4everything.springbee.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import org.code4everything.boot.base.DateUtils;
 import org.code4everything.boot.log.LogMethod;
+import org.code4everything.boot.web.mvc.AssertUtils;
+import org.code4everything.springbee.constant.BeeErrorConsts;
 import org.code4everything.springbee.dao.JobDAO;
 import org.code4everything.springbee.domain.Job;
-import org.code4everything.springbee.exception.JobExistsException;
-import org.code4everything.springbee.exception.JobNotFoundException;
 import org.code4everything.springbee.model.JobVO;
 import org.code4everything.springbee.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,12 +49,10 @@ public class JobServiceImpl implements JobService {
     @LogMethod("更新状态")
     public Job updateStatus(String id, String status) {
         Optional<Job> jobOptional = jobDAO.findById(id);
-        if (jobOptional.isPresent()) {
-            Job job = jobOptional.get();
-            job.setStatus(status);
-            return jobDAO.save(job);
-        }
-        throw new JobNotFoundException();
+        AssertUtils.throwIf(jobOptional, BeeErrorConsts.JOB_NOT_FOUND);
+        Job job = jobOptional.get();
+        job.setStatus(status);
+        return jobDAO.save(job);
     }
 
     @Override
@@ -99,36 +96,30 @@ public class JobServiceImpl implements JobService {
     @LogMethod("保存工作日志")
     public Job writeWorkDiary(String id, String workDiary) {
         Optional<Job> jobOptional = jobDAO.findById(id);
-        if (jobOptional.isPresent()) {
-            Job job = jobOptional.get();
-            job.setWorkDiary(workDiary);
-            return jobDAO.save(job);
-        }
-        throw new JobNotFoundException();
+        AssertUtils.throwIf(jobOptional, BeeErrorConsts.JOB_NOT_FOUND);
+        Job job = jobOptional.get();
+        job.setWorkDiary(workDiary);
+        return jobDAO.save(job);
     }
 
     @Override
     @LogMethod("下班打卡")
     public Job finishedWork(String id, String workWay, String company) {
         Optional<Job> jobOptional = jobDAO.findById(id);
-        if (jobOptional.isPresent()) {
-            Job job = jobOptional.get();
-            job.setWorkWay(workWay);
-            job.setWorkTimeEnd(System.currentTimeMillis());
-            job.setCompany(company);
-            job.setStatus("0");
-            pushCompany(job.getUserId(), company);
-            return jobDAO.save(job);
-        }
-        throw new JobNotFoundException();
+        AssertUtils.throwIf(jobOptional, BeeErrorConsts.JOB_NOT_FOUND);
+        Job job = jobOptional.get();
+        job.setWorkWay(workWay);
+        job.setWorkTimeEnd(System.currentTimeMillis());
+        job.setCompany(company);
+        job.setStatus("0");
+        pushCompany(job.getUserId(), company);
+        return jobDAO.save(job);
     }
 
     @Override
     @LogMethod("上班打卡")
     public Job startWorking(String userId, String workWay, String company) {
-        if (ObjectUtil.isNotNull(getJobOfToday(userId))) {
-            throw new JobExistsException();
-        }
+        AssertUtils.throwIfNotNull(getJobOfToday(userId), BeeErrorConsts.JOB_EXISTS);
         Job job = getNewJob(userId);
         job.setWorkTimeStart(System.currentTimeMillis());
         job.setWorkWay(workWay);

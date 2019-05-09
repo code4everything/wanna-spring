@@ -30,6 +30,6 @@ public class AssetController extends BeeBaseController {
     @GetMapping("/balance")
     @ApiOperation("获取流动资产")
     public Response<Long> getBalance() {
-        return parseResult("未知错误", incomeService.getAssetBalance(getUserId()));
+        return successResult(incomeService.getAssetBalance(getUserId()));
     }
 }

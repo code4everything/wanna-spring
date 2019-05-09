@@ -33,30 +33,27 @@ public class CategoryController extends BeeBaseController {
     @ApiOperation("添加分类")
     @ApiImplicitParam(name = "name", value = "分类名", required = true)
     public Response<Category> saveCategory(@RequestParam String name) {
-        if (categoryService.exists(getUserId(), name)) {
-            return errorResult("该分类已存在，无需添加");
-        }
-        return parseResult("添加分类失败", categoryService.appendCategory(getUserId(), name), true);
+        return successResult(categoryService.appendCategory(getUserId(), name), true);
     }
 
     @GetMapping("/list")
     @ApiOperation("列出我的分类")
     public Response<List<Category>> list() {
-        return parseCollection("您还没有任何添加分类信息", categoryService.listCategory(getUserId()), true);
+        return parseCollection("您还没有任何添加分类信息哦", categoryService.listCategory(getUserId()), true);
     }
 
     @DeleteMapping("/{categoryId}/remove")
     @ApiOperation("删除分类")
-    public Response<Boolean> removeCategory(@PathVariable String categoryId) {
+    public Response removeCategory(@PathVariable String categoryId) {
         categoryService.removeCategory(categoryId);
-        return successResult("删除成功", true);
+        return successResult("删除成功");
     }
 
     @PutMapping("/{categoryId}/update")
     @ApiOperation("更新分类名称")
     @ApiImplicitParam(name = "name", value = "分类名", required = true)
-    public Response<Boolean> updateCategory(@PathVariable String categoryId, @RequestParam String name) {
+    public Response updateCategory(@PathVariable String categoryId, @RequestParam String name) {
         categoryService.updateCategory(getUserId(), categoryId, name);
-        return successResult("更新成功", true);
+        return successResult("更新成功");
     }
 }

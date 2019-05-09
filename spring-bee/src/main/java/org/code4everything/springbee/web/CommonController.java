@@ -5,7 +5,9 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.code4everything.boot.message.VerifyCodeUtils;
+import org.code4everything.boot.web.mvc.AssertUtils;
 import org.code4everything.boot.web.mvc.Response;
+import org.code4everything.springbee.constant.BeeErrorConsts;
 import org.code4everything.springbee.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,14 +30,14 @@ public class CommonController extends BeeBaseController {
     @ApiOperation("用户名是否存在")
     @ApiImplicitParam(name = "username", required = true, value = "用户名")
     public Response<Boolean> existsUsername(@RequestParam String username) {
-        return parseBoolean("用户名存在", "用户名不存在", commonService.existsUsername(username));
+        return parseBoolean("用户名已被注册啦", "用户名未被注册", commonService.existsUsername(username));
     }
 
     @GetMapping("/email/exists")
     @ApiOperation("邮箱是否存在")
     @ApiImplicitParam(name = "email", value = "邮箱", required = true)
     public Response<Boolean> existsEmail(@RequestParam String email) {
-        return parseBoolean("邮箱存在", "邮箱不存在", commonService.existsEmail(email));
+        return parseBoolean("邮箱已被注册啦", "邮箱未被注册", commonService.existsEmail(email));
     }
 
     @GetMapping("/vcode/verify")
@@ -50,16 +52,14 @@ public class CommonController extends BeeBaseController {
     @ApiOperation("发送验证码")
     @ApiImplicitParam(name = "email", value = "邮箱", required = true)
     public Response<String> sendVcode(@RequestParam String email) {
-        if (VerifyCodeUtils.isFrequently(email)) {
-            return errorResult("请勿频繁发送");
-        }
+        AssertUtils.throwIf(VerifyCodeUtils.isFrequently(email), BeeErrorConsts.CODE_EXCEPTION);
         VerifyCodeUtils.sendByMailAsync(email, "验证码", "您的验证码：{}，请勿泄漏给他人");
         return successResult("发送成功");
     }
 
     @GetMapping("/current-time")
     @ApiOperation("获取服务器当前时间")
-    public Response<String> getCurrentTimestamp() {
+    public Response getCurrentTimestamp() {
         return successResult();
     }
 }

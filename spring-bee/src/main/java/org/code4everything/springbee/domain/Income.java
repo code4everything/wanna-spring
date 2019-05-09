@@ -1,11 +1,15 @@
 package org.code4everything.springbee.domain;
 
+import cn.hutool.core.date.DateUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.code4everything.boot.base.bean.BaseBean;
 import org.code4everything.boot.base.encoder.Sealed;
+import org.code4everything.springbee.model.IncomeVO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -20,7 +24,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "income", description = "收益明细，包括支出")
-public class Income implements Serializable {
+public class Income implements BaseBean, Serializable {
 
     @Id
     @ApiModelProperty("收益编号")
@@ -50,4 +54,10 @@ public class Income implements Serializable {
 
     @ApiModelProperty("创建时间")
     private Long createTime;
+
+    public Income copyFrom(IncomeVO incomeVO) {
+        BeanUtils.copyProperties(incomeVO, this);
+        this.setDate(DateUtil.formatDate(incomeVO.getDate()));
+        return this;
+    }
 }

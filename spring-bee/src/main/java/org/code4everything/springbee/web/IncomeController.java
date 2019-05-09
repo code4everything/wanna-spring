@@ -34,7 +34,7 @@ public class IncomeController extends BeeBaseController {
     @PostMapping("/append")
     @ApiOperation("添加一条收益记录")
     public Response<Income> saveIncome(@RequestBody @ApiParam @Valid IncomeVO income) {
-        return parseResult("添加失败", incomeService.saveIncome(getUserId(), income), true);
+        return successResult(incomeService.saveIncome(getUserId(), income), true);
     }
 
     @DeleteMapping("/remove")
@@ -48,7 +48,7 @@ public class IncomeController extends BeeBaseController {
     @PutMapping("/{incomeId}/update")
     @ApiOperation("更新记录")
     public Response<Income> updateIncome(@PathVariable String incomeId, @RequestBody @ApiParam @Valid IncomeVO income) {
-        return parseResult("更新失败", incomeService.updateIncome(getUserId(), incomeId, income), true);
+        return successResult(incomeService.updateIncome(getUserId(), incomeId, income), true);
     }
 
     @GetMapping("/list")
@@ -56,7 +56,7 @@ public class IncomeController extends BeeBaseController {
     @ApiImplicitParams({@ApiImplicitParam(name = "category", value = "分类"), @ApiImplicitParam(name = "start", value =
             "开始日期"), @ApiImplicitParam(name = "end", value = "截止日期")})
     public Response<List<Income>> list(String category, Date start, Date end) {
-        return parseCollection("没有找到数据", incomeService.listIncome(getUserId(), category, start, end), true);
+        return parseCollection("没有找到相关数据哦", incomeService.listIncome(getUserId(), category, start, end), true);
     }
 
     @GetMapping("/month/list")
@@ -64,7 +64,7 @@ public class IncomeController extends BeeBaseController {
     @ApiImplicitParams({@ApiImplicitParam(name = "startMonth", value = "开始月份", required = true, example = "2018-01"),
             @ApiImplicitParam(name = "endMonth", value = "结束月份", required = true, example = "2018-12")})
     public Response<List<IncomeBillVO>> listMonth(@RequestParam String startMonth, @RequestParam String endMonth) {
-        return parseCollection("糟糕，没有数据", incomeService.listMonth(getUserId(), startMonth, endMonth));
+        return parseCollection("该时间段还没有账单哦", incomeService.listMonth(getUserId(), startMonth, endMonth));
     }
 
     @GetMapping("/year/list")
@@ -73,6 +73,6 @@ public class IncomeController extends BeeBaseController {
             dataType = "int"), @ApiImplicitParam(name = "endYear", value = "结束年份", required = true, example = "2018",
             dataType = "int")})
     public Response<List<IncomeBillVO>> listYear(@RequestParam Integer startYear, @RequestParam Integer endYear) {
-        return parseCollection("糟糕，没有数据", incomeService.listYear(getUserId(), startYear, endYear));
+        return parseCollection("该时间段还没有账单哦", incomeService.listYear(getUserId(), startYear, endYear));
     }
 }

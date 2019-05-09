@@ -36,7 +36,7 @@ public class TodoController extends BeeBaseController {
     @PostMapping("/create")
     @ApiOperation("添加代办事项")
     public Response<Todo> saveTodo(@RequestBody TodoVO todo) {
-        return parseResult("添加失败", todoService.saveTodo(getUserId(), todo), true);
+        return successResult(todoService.saveTodo(getUserId(), todo), true);
     }
 
     @DeleteMapping("/remove")
@@ -52,7 +52,7 @@ public class TodoController extends BeeBaseController {
     @ApiImplicitParams({@ApiImplicitParam(name = "todoId", value = "事项编号", required = true), @ApiImplicitParam(name =
             "content", value = "事项内容", required = true)})
     public Response<Todo> updateContent(@RequestParam String todoId, @RequestParam String content) {
-        return parseResult("更新失败", todoService.updateTodo(todoId, content), true);
+        return successResult(todoService.updateTodo(todoId, content), true);
     }
 
     @PutMapping("/status/toggle")
@@ -66,7 +66,7 @@ public class TodoController extends BeeBaseController {
     @GetMapping("/date/list")
     @ApiOperation("列出所有日期")
     public Response<List<String>> listDate() {
-        return parseCollection("没有找到数据", todoService.listDate(getUserId()));
+        return parseCollection("您还没有待办事项哦", todoService.listDate(getUserId()));
     }
 
     @GetMapping("/undo/list")
@@ -80,15 +80,15 @@ public class TodoController extends BeeBaseController {
     @ApiOperation("列出事项")
     @ApiImplicitParam(name = "date", value = "日期", required = true, dataTypeClass = Date.class)
     public Response<List<Todo>> listTodo(@RequestParam Date date) {
-        return parseCollection("该日期没有数据", todoService.listTodo(getUserId(), date), true);
+        return parseCollection("该日期没有待办事项哦", todoService.listTodo(getUserId(), date), true);
     }
 
     @GetMapping("/count/list")
-    @ApiOperation("列出日程记录")
+    @ApiOperation("列出待办事项统计")
     @ApiImplicitParams({@ApiImplicitParam(name = "start", value = "开始时间", required = true,
             dataTypeClass = Date.class), @ApiImplicitParam(name = "end", value = "结束时间", required = true,
             dataTypeClass = Date.class)})
     public Response<List<TodoCountVO>> listByDate(@RequestParam Date start, @RequestParam Date end) {
-        return parseCollection("糟糕，没有数据", todoService.listTodoCount(getUserId(), start, end), true);
+        return parseCollection("您还没有待办事项哦", todoService.listTodoCount(getUserId(), start, end), true);
     }
 }

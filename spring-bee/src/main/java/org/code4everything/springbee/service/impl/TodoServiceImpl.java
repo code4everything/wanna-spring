@@ -3,7 +3,6 @@ package org.code4everything.springbee.service.impl;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.ObjectUtil;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.MongoCollection;
@@ -11,6 +10,8 @@ import org.bson.Document;
 import org.code4everything.boot.base.constant.IntegerConsts;
 import org.code4everything.boot.base.constant.StringConsts;
 import org.code4everything.boot.log.LogMethod;
+import org.code4everything.boot.web.mvc.AssertUtils;
+import org.code4everything.springbee.constant.BeeErrorConsts;
 import org.code4everything.springbee.dao.TodoDAO;
 import org.code4everything.springbee.domain.Todo;
 import org.code4everything.springbee.model.TodoCountVO;
@@ -85,9 +86,7 @@ public class TodoServiceImpl implements TodoService {
     @LogMethod("更新待办事项状态")
     public Todo updateTodoStatus(String todoId, String status) {
         Todo todo = todoDAO.getById(todoId);
-        if (ObjectUtil.isNull(todo)) {
-            return null;
-        }
+        AssertUtils.throwIfNull(todo, BeeErrorConsts.TODO_NOT_FOUND);
         if (StringConsts.Sign.ONE.equals(status)) {
             todo.setStatus("1");
             todo.setDoneTime(System.currentTimeMillis());
@@ -101,9 +100,7 @@ public class TodoServiceImpl implements TodoService {
     @LogMethod("更新待办事项内容")
     public Todo updateTodo(String todoId, String content) {
         Todo todo = todoDAO.getById(todoId);
-        if (ObjectUtil.isNull(todo)) {
-            return null;
-        }
+        AssertUtils.throwIfNull(todo, BeeErrorConsts.TODO_NOT_FOUND);
         // 状态已完成时不能修改内容
         if (StringConsts.Sign.ONE.equals(todo.getStatus())) {
             return todo;

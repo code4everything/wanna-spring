@@ -38,7 +38,7 @@ public class DocumentController extends BeeBaseController {
     @ApiImplicitParam(name = "file", value = "文件", required = true, dataTypeClass = MultipartFile.class)
     public Response<Document> upload(@RequestBody MultipartFile file) {
         String storagePath = SpringBeeApplication.getBeeConfigBean().getStoragePath();
-        return HttpUtils.upload(documentService, file, storagePath, true, true).encode();
+        return HttpUtils.upload(documentService, file, storagePath, true).encode();
     }
 
     @GetMapping("/**")

@@ -61,7 +61,7 @@ public class DailyServiceImplTest extends BaseTest {
     public void exists1() {
         DailyVO dailyVO = new DailyVO();
         dailyVO.setDate(new Date(System.currentTimeMillis()));
-        dailyService.exists(getUser().getId(), "", dailyVO);
+        dailyService.exists(getUser().getId(), "", dailyVO.getDate());
     }
 
     @Test
@@ -71,6 +71,6 @@ public class DailyServiceImplTest extends BaseTest {
         dailyVO.setDate(new Date(System.currentTimeMillis()));
         dailyVO.setScore(RandomUtil.randomInt(10));
         dailyVO.setWeather(RandomUtil.randomString(3));
-        dailyService.updateDaily(dailyDAO.findAll().get(0).getId(), dailyVO);
+        dailyService.updateDaily(getUser().getId(), dailyDAO.findAll().get(0).getId(), dailyVO);
     }
 }

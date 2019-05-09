@@ -66,19 +66,21 @@ public interface DailyService {
      *
      * @param userId 用户编号
      * @param dailyId 日程编号
-     * @param dailyVO 日程内容
+     * @param date 日程内容
      *
      * @return 是否存在
      */
-    boolean exists(String userId, String dailyId, DailyVO dailyVO);
+    boolean exists(String userId, String dailyId, Date date);
 
     /**
      * 更新日程记录
      *
+     *
+     * @param userId
      * @param dailyId 日程编号
      * @param dailyVO 日程内容
      *
      * @return 日程记录
      */
-    Daily updateDaily(String dailyId, DailyVO dailyVO);
+    Daily updateDaily(String userId, String dailyId, DailyVO dailyVO);
 }

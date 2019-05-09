@@ -2,6 +2,8 @@ package org.code4everything.springbee.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import org.code4everything.boot.log.LogMethod;
+import org.code4everything.boot.web.mvc.AssertUtils;
+import org.code4everything.springbee.constant.BeeErrorConsts;
 import org.code4everything.springbee.dao.CategoryDAO;
 import org.code4everything.springbee.domain.Category;
 import org.code4everything.springbee.service.CategoryService;
@@ -56,6 +58,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @LogMethod("添加收益分类")
     public Category appendCategory(String userId, String name) {
+        AssertUtils.throwIf(exists(userId, name), BeeErrorConsts.CATEGORY_EXISTS);
         Category category = new Category();
         category.setCreateTime(System.currentTimeMillis());
         category.setId(IdUtil.simpleUUID());

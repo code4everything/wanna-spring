@@ -3,9 +3,11 @@ package org.code4everything.springbee.config;
 import cn.hutool.core.util.ObjectUtil;
 import com.google.common.base.Strings;
 import org.code4everything.boot.web.http.HttpUtils;
+import org.code4everything.boot.web.mvc.AssertUtils;
 import org.code4everything.boot.web.mvc.DefaultExceptionHandler;
 import org.code4everything.boot.web.mvc.DefaultWebInterceptor;
 import org.code4everything.boot.web.mvc.PathFilterHandler;
+import org.code4everything.boot.web.mvc.exception.ExceptionFactory;
 import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.service.UserService;
 import org.slf4j.Logger;
@@ -54,20 +56,20 @@ public class BeeWebMvcConfiguration implements WebMvcConfigurer {
             }
 
             @Override
-            public void handleBlackList(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-                request.getRequestDispatcher("/error/banned").forward(request, response);
+            public void handleBlackList(HttpServletRequest request, HttpServletResponse response, Object handler) {
+                throw ExceptionFactory.urlForbade();
             }
 
             @Override
             public boolean handleInterceptList(HttpServletRequest request, HttpServletResponse response,
-                                               Object handler) throws Exception {
+                                               Object handler) {
                 String token = HttpUtils.getToken(request);
+                AssertUtils.throwIfNull(token, ExceptionFactory.tokenBlank());
                 User user = userUserService.getUserByToken(token);
                 if (ObjectUtil.isNull(user)) {
                     // 非法用户，禁止访问
                     LOGGER.error("auth error, token: {}, ip: {}", token, request.getRemoteAddr());
-                    request.getRequestDispatcher("/error/auth").forward(request, response);
-                    return false;
+                    throw ExceptionFactory.userNotLoggedIn();
                 }
                 return true;
             }

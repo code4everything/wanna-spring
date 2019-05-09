@@ -7,7 +7,6 @@ import org.code4everything.boot.service.BootLogService;
 import org.code4everything.springbee.dao.LogDAO;
 import org.code4everything.springbee.domain.Log;
 import org.code4everything.springbee.domain.User;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -51,8 +50,7 @@ public class LogServiceImpl implements BootLogService<Log> {
 
     @Override
     public Log getLog(MethodLog methodLog) {
-        Log log = new Log();
-        BeanUtils.copyProperties(methodLog, log);
+        Log log = methodLog.copyInto(new Log());
         log.setId(IdUtil.simpleUUID());
         log.setCreateTime(System.currentTimeMillis());
         log.setIp(request.getRemoteAddr());
