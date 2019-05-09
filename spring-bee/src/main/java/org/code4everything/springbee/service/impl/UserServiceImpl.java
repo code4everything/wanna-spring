@@ -2,10 +2,10 @@ package org.code4everything.springbee.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.google.common.base.Strings;
 import org.code4everything.boot.log.LogMethod;
-import org.code4everything.boot.web.mvc.AssertUtils;
 import org.code4everything.springbee.SpringBeeApplication;
 import org.code4everything.springbee.constant.BeeErrorConsts;
 import org.code4everything.springbee.dao.UserDAO;
@@ -14,6 +14,7 @@ import org.code4everything.springbee.model.RegisterVO;
 import org.code4everything.springbee.model.UserInfoVO;
 import org.code4everything.springbee.service.CommonService;
 import org.code4everything.springbee.service.UserService;
+import org.code4everything.springbee.util.Checker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,8 @@ public class UserServiceImpl implements UserService {
 
     private final CommonService commonService;
 
+    private ThreadLocal<String> tokenLocal = new ThreadLocal<>();
+
     @Autowired
     public UserServiceImpl(UserDAO userDAO, RedisTemplate<String, User> userRedisTemplate,
                            CommonService commonService) {
@@ -42,16 +45,45 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @LogMethod("更新邮箱")
+    public void updateEmail(User user, String email) {
+        if (email.equals(user.getEmail())) {
+            return;
+        }
+        Checker.checkEmail(commonService, email);
+        user.setEmail(email);
+        save(user, true);
+    }
+
+    @Override
+    @LogMethod("更新用户名")
+    public void updateUsername(User user, String username) {
+        if (StrUtil.isBlank(username) || user.getUsername().equals(username)) {
+            return;
+        }
+        Checker.checkUsername(commonService, username);
+        user.setUsername(username);
+        save(user, true);
+    }
+
+    @Override
+    @LogMethod("更新用户头像")
+    public void updateAvatar(User user, String avatar) {
+        user.setAvatar(avatar);
+        save(user, true);
+    }
+
+    @Override
     @LogMethod("更新用户信息")
     public void updateInfo(User user, UserInfoVO userInfoVO) {
-        userDAO.save(userInfoVO.copyInto(user));
+        save(userInfoVO.copyInto(user), true);
     }
 
     @Override
     @LogMethod("注册用户")
     public void register(RegisterVO registerVO) {
-        AssertUtils.throwIf(commonService.existsUsername(registerVO.getUsername()), BeeErrorConsts.USERNAME_EXISTS);
-        AssertUtils.throwIf(commonService.existsEmail(registerVO.getEmail()), BeeErrorConsts.EMAIL_EXISTS);
+        Checker.checkUsername(commonService, registerVO.getUsername());
+        Checker.checkEmail(commonService, registerVO.getEmail());
         User user = new User();
         user.setUsername(registerVO.getUsername());
         user.setEmail(registerVO.getEmail());
@@ -59,7 +91,7 @@ public class UserServiceImpl implements UserService {
         user.setCreateTime(System.currentTimeMillis());
         user.setId(IdUtil.simpleUUID());
         user.setStatus("7");
-        userDAO.save(user);
+        save(user, false);
     }
 
     @Override
@@ -68,7 +100,7 @@ public class UserServiceImpl implements UserService {
         User user = userDAO.getByEmail(email);
         if (ObjectUtil.isNotNull(user)) {
             user.setPassword(DigestUtil.md5Hex(newPassword));
-            userDAO.save(user);
+            save(user, false);
         }
     }
 
@@ -77,7 +109,7 @@ public class UserServiceImpl implements UserService {
     public boolean updatePassword(User user, String oldPassword, String newPassword) {
         if (user.getPassword().equals(DigestUtil.md5Hex(oldPassword))) {
             user.setPassword(DigestUtil.md5Hex(newPassword));
-            userDAO.save(user);
+            save(user, false);
             return true;
         }
         return false;
@@ -91,7 +123,7 @@ public class UserServiceImpl implements UserService {
             String token = IdUtil.simpleUUID();
             Integer tokenExpired = SpringBeeApplication.getBeeConfigBean().getTokenExpired();
             user.setLoginTime(System.currentTimeMillis());
-            userDAO.save(user);
+            save(user, false);
             userRedisTemplate.opsForValue().set(token, user, tokenExpired, TimeUnit.SECONDS);
             return token;
         }
@@ -105,7 +137,16 @@ public class UserServiceImpl implements UserService {
             // 更新过期时长
             Integer tokenExpired = SpringBeeApplication.getBeeConfigBean().getTokenExpired();
             userRedisTemplate.expire(token, tokenExpired, TimeUnit.SECONDS);
+            tokenLocal.set(token);
         }
         return user;
+    }
+
+    private void save(User user, boolean update) {
+        userDAO.save(user);
+        if (update) {
+            userRedisTemplate.opsForValue().set(tokenLocal.get(), user);
+            tokenLocal.remove();
+        }
     }
 }

@@ -12,6 +12,12 @@ import org.springframework.scheduling.annotation.Async;
  */
 public interface UserService extends BootUserService<User> {
 
+    void updateEmail(User user, String email);
+
+    void updateUsername(User user, String username);
+
+    void updateAvatar(User user, String avatar);
+
     /**
      * 更新用户信息
      *

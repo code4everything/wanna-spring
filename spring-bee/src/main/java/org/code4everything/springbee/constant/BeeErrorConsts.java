@@ -37,5 +37,7 @@ public class BeeErrorConsts {
 
     public static final HttpException USERNAME_PASSWORD_INCORRECT = new UsernamePasswordIncorrectException(1013);
 
+    public static final HttpException FILE_UPLOAD_ERROR = new HttpException(1014, "文件上传失败", true);
+
     private BeeErrorConsts() {}
 }
