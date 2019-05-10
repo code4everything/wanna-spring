@@ -37,7 +37,7 @@ export const requestSaveJob = (id, workTimeStart, workTimeEnd, company, workWay,
 }
 
 export const requestUpdateJobStatus = (jobId, status) => {
-  return axios.put(`/user/job/${jobId}/status?status=${status}`)
+  return axios.patch(`/user/job/${jobId}/status?status=${status}`)
 }
 
 export const requestListOvertime = (status, offset, size) => {
@@ -49,7 +49,7 @@ export const requestListWorked = (company, offset, size) => {
 }
 
 export const requestWriteDiary = (jobId, wordDiary) => {
-  return axios.put(`/user/job/${jobId}/diary`, wordDiary)
+  return axios.patch(`/user/job/${jobId}/diary`, wordDiary)
 }
 
 export const requestCompanies = () => {
@@ -57,7 +57,7 @@ export const requestCompanies = () => {
 }
 
 export const requestFinishWork = (jobId, workWay, company) => {
-  return axios.put(`/user/job/${jobId}/finish?workWay=${workWay}&company=${company}`)
+  return axios.patch(`/user/job/${jobId}/finish?workWay=${workWay}&company=${company}`)
 }
 
 export const requestStartWorking = (workWay, company) => {
@@ -93,11 +93,11 @@ export const requestRemoveTodo = id => {
 }
 
 export const requestUpdateTodo = (id, content) => {
-  return axios.put(`/user/todo/update?todoId=${id}&content=${content}`)
+  return axios.patch(`/user/todo/update?todoId=${id}&content=${content}`)
 }
 
 export const requestToggleTodoStatus = (id, status) => {
-  return axios.put(`/user/todo/status/toggle?todoId=${id}&status=${status}`)
+  return axios.patch(`/user/todo/status/toggle?todoId=${id}&status=${status}`)
 }
 
 export const requestListTodo = date => {
@@ -165,7 +165,7 @@ export const requestSaveCategory = name => {
 }
 
 export const requestLogin = (loginName, password) => {
-  return axios.put(`/user/login?loginName=${loginName}&password=${password}`)
+  return axios.post(`/user/login?loginName=${loginName}&password=${password}`)
 }
 
 export const requestRegister = params => {
@@ -181,5 +181,5 @@ export const requestValidateVerifyCode = (email, vcode) => {
 }
 
 export const requestResetPassword = params => {
-  return axios.put('/user/password/reset', params)
+  return axios.patch('/user/password/reset', params)
 }

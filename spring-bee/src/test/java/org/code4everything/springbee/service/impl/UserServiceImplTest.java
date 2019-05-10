@@ -29,7 +29,7 @@ public class UserServiceImplTest extends BaseTest {
         userInfoVO.setBio(TestConsts.BIO);
         userInfoVO.setGender(TestConsts.GENDER);
         userInfoVO.setNickname(TestConsts.NICKNAME);
-        assert userService.updateInfo(getUser(), userInfoVO);
+        userService.updateInfo(getUser(), userInfoVO);
     }
 
     /**
