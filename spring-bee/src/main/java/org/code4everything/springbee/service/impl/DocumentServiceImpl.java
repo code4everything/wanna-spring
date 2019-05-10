@@ -30,7 +30,7 @@ public class DocumentServiceImpl implements DocumentService {
     @LogMethod("通过访问链接获取本地路径")
     public String getLocalPathByAccessUrl(String accessUrl) {
         Document document = documentDAO.getByAccessUrl(accessUrl);
-        return Objects.isNull(document) ? "" : document.getAccessUrl();
+        return Objects.isNull(document) ? "" : document.getLocalPath();
     }
 
     @Override

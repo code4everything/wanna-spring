@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.code4everything.boot.web.mvc.Response;
 import org.code4everything.springbee.service.SettingService;
+import org.code4everything.springbee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,10 @@ public class SettingController extends BeeBaseController {
     private final SettingService settingService;
 
     @Autowired
-    public SettingController(SettingService settingService) {this.settingService = settingService;}
+    public SettingController(SettingService settingService, UserService userService) {
+        super(userService);
+        this.settingService = settingService;
+    }
 
     @GetMapping("/daily/rule/evaluate")
     @ApiOperation("获取用户自定义日程评分规则")
