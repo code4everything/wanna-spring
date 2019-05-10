@@ -56,7 +56,6 @@ public class UserController extends BeeBaseController {
     @PostMapping("/register")
     @ApiOperation("注册")
     public Response register(@RequestBody @ApiParam @Valid RegisterVO registerVO) {
-        Checker.checkVerifyCode(registerVO.getEmail(), registerVO.getVcode());
         userService.register(registerVO);
         return successResult("注册成功");
     }

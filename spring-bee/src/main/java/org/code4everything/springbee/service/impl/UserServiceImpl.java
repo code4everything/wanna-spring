@@ -84,6 +84,7 @@ public class UserServiceImpl implements UserService {
     public void register(RegisterVO registerVO) {
         Checker.checkUsername(commonService, registerVO.getUsername());
         Checker.checkEmail(commonService, registerVO.getEmail());
+        Checker.checkVerifyCode(registerVO.getEmail(), registerVO.getVcode());
         User user = new User();
         user.setUsername(registerVO.getUsername());
         user.setEmail(registerVO.getEmail());

@@ -411,9 +411,9 @@ export default {
     this.endDate = dayjs().format('YYYY-MM-DD')
     this.listIncome()
     requestListCategory().then(data => {
-      if (data.ok && data.data.length > 0) {
+      if (data.ok) {
         data.data.forEach(category => this.categories.push(category.name))
-      } else if (data.code === 401) {
+      } else {
         utils.showError(this, data.msg)
       }
       if (!this.categories.includes('未分类')) {

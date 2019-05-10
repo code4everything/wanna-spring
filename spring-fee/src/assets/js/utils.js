@@ -3,7 +3,6 @@ export default {
     self.$message({showClose: true, message: msg, type: 'warning'})
   },
   showError: function (self, msg) {
-    console.error(msg)
     self.$message({showClose: true, message: msg, type: 'error'})
   },
   showSuccess: function (self, msg) {

@@ -28,6 +28,7 @@ axios.interceptors.response.use(response => {
   loading.close()
   if (error.response !== undefined) {
     console.error(error.response.data)
+    return Promise.resolve(error.response.data)
   }
   return Promise.resolve(error.response)
 })

@@ -4,11 +4,12 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import org.code4everything.boot.log.MethodLog;
 import org.code4everything.boot.service.BootLogService;
+import org.code4everything.boot.web.http.HttpUtils;
 import org.code4everything.springbee.dao.LogDAO;
 import org.code4everything.springbee.domain.Log;
 import org.code4everything.springbee.domain.User;
+import org.code4everything.springbee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,13 +25,13 @@ public class LogServiceImpl implements BootLogService<Log> {
 
     private final HttpServletRequest request;
 
-    private final RedisTemplate<String, User> userRedisTemplate;
+    private final UserService userService;
 
     @Autowired
-    public LogServiceImpl(LogDAO logDAO, HttpServletRequest request, RedisTemplate<String, User> userRedisTemplate) {
+    public LogServiceImpl(LogDAO logDAO, HttpServletRequest request, UserService userService) {
         this.logDAO = logDAO;
         this.request = request;
-        this.userRedisTemplate = userRedisTemplate;
+        this.userService = userService;
     }
 
     @Override
@@ -54,7 +55,7 @@ public class LogServiceImpl implements BootLogService<Log> {
         log.setId(IdUtil.simpleUUID());
         log.setCreateTime(System.currentTimeMillis());
         log.setIp(request.getRemoteAddr());
-        User user = userRedisTemplate.opsForValue().get(String.valueOf(request.getAttribute("token")));
+        User user = userService.getUserByToken(HttpUtils.getToken(request));
         log.setUserId(ObjectUtil.isNull(user) ? "anonymous" : user.getId());
         return log;
     }

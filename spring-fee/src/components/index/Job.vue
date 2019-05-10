@@ -199,7 +199,7 @@ export default {
         workWay: 1,
         workDiary: ''
       },
-      currentTab: 'overtime',
+      currentTab: 'all',
       status: '',
       companyFilter: '',
       statusList: ['未处理', '已处理'],

@@ -68,7 +68,7 @@ export default {
     },
     updateStatus: function (job) {
       requestUpdateJobStatus(job.id, job.status).then(data => {
-        if (data.code !== 200) {
+        if (data.error) {
           utils.showError(this, data.msg)
         }
       })

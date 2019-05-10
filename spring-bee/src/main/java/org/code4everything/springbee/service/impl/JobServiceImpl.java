@@ -59,19 +59,19 @@ public class JobServiceImpl implements JobService {
     @LogMethod("列出公司名称")
     public Set<String> listCompany(String userId) {
         final String key = COMPANY_KEY_PREFIX + userId;
-        Set<String> companies;
         List<String> companiesFormRedis = stringRedisTemplate.opsForList().range(key, 0, 128);
         if (CollUtil.isEmpty(companiesFormRedis)) {
             List<Job> jobs = jobDAO.getByUserId(userId);
-            final Set<String> temp = new HashSet<>(jobs.size());
-            jobs.forEach(job -> temp.add(job.getCompany()));
-            companies = temp;
-            stringRedisTemplate.opsForList().leftPushAll(key, companies);
-        } else {
-            companies = new HashSet<>(companiesFormRedis);
+            final Set<String> companies = new HashSet<>(jobs.size());
+            jobs.forEach(job -> companies.add(job.getCompany()));
+
+            if (CollUtil.isNotEmpty(companies)) {
+                stringRedisTemplate.opsForList().leftPushAll(key, companies);
+                expireCompanyAfterThreeDays(key);
+            }
+            return companies;
         }
-        expireCompanyAfterThreeDays(key);
-        return companies;
+        return new HashSet<>(companiesFormRedis);
     }
 
     @Override
