@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.code4everything.boot.base.encoder.Sealed;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,11 +17,14 @@ import java.io.Serializable;
  * @since 2019/3/1
  **/
 @Data
+@ToString
 @Document
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "job", description = "工作日志")
 public class Job implements Serializable {
+
+    private static final long serialVersionUID = 604254191203691374L;
 
     @Id
     @ApiModelProperty("编号")

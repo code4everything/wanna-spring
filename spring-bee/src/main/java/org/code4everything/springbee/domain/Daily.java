@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.code4everything.boot.base.DateUtils;
 import org.code4everything.boot.base.bean.BaseBean;
 import org.code4everything.boot.base.encoder.Sealed;
@@ -25,11 +26,14 @@ import java.util.Objects;
  * @since 2018/9/9
  */
 @Data
+@ToString
 @Document
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(description = "日常记录")
 public class Daily implements BaseBean, Serializable {
+
+    private static final long serialVersionUID = 1469674945908223445L;
 
     @Id
     @ApiModelProperty("记录编号")

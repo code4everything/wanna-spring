@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.code4everything.boot.base.bean.BaseBean;
 import org.code4everything.boot.base.encoder.Sealed;
 import org.springframework.data.annotation.Id;
@@ -17,11 +18,14 @@ import java.io.Serializable;
  * @since 2018/9/12
  */
 @Data
+@ToString
 @Document
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(description = "分类")
 public class Category implements BaseBean, Serializable {
+
+    private static final long serialVersionUID = 8409185108165215228L;
 
     @Id
     @ApiModelProperty("编号")

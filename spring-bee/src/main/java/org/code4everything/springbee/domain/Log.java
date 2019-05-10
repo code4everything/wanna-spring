@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.code4everything.boot.base.bean.BaseBean;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -16,11 +17,14 @@ import java.io.Serializable;
  * @since 2018/9/10
  */
 @Data
+@ToString
 @Document
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(description = "日志")
 public class Log implements BaseBean, Serializable {
+
+    private static final long serialVersionUID = -9056492805237354620L;
 
     @Id
     @ApiModelProperty("日志编号")

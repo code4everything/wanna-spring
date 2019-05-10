@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.code4everything.boot.base.bean.BaseBean;
 import org.code4everything.boot.base.encoder.Sealed;
 import org.code4everything.springbee.model.IncomeVO;
@@ -20,6 +21,7 @@ import java.io.Serializable;
  * @since 2018/9/9
  */
 @Data
+@ToString
 @Document
 @NoArgsConstructor
 @AllArgsConstructor

@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.code4everything.boot.base.bean.BaseBean;
 import org.code4everything.boot.base.encoder.Sealed;
 import org.springframework.data.annotation.Id;
@@ -17,11 +18,14 @@ import java.io.Serializable;
  * @since 2018/9/9
  */
 @Data
+@ToString
 @Document
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(description = "资产（可流动资金）")
 public class Asset implements BaseBean, Serializable {
+
+    private static final long serialVersionUID = 5328542047062705414L;
 
     @Id
     @ApiModelProperty("资产编号")
