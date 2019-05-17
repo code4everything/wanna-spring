@@ -34,6 +34,20 @@
         </contributor>
     </contributors>
 
+    <repositories>
+        <!--临时快照创库-->
+        <repository>
+            <id>code4everything</id>
+            <url>http://nexus.code4everything.org/repository/maven-public/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
