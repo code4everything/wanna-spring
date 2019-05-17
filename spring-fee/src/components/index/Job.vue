@@ -23,9 +23,11 @@
           <div class="col-sm-4">
             <div class="row">
               <div class="col-sm-4">
-                <el-button :type="hasJob?'danger':'success'" @click="punchJob" class="w-100"><i
-                  class="glyphicon glyphicon-time"></i>{{hasJob?' 下班':' 上班'}}
-                </el-button>
+                <el-tooltip :content="workedTimeTip" class="item" effect="dark" placement="top">
+                  <el-button :type="hasJob?'danger':'success'" @click="punchJob" class="w-100"><i
+                    class="glyphicon glyphicon-time"></i>{{hasJob?' 下班':' 上班'}}
+                  </el-button>
+                </el-tooltip>
               </div>
               <div class="col-sm-4">
                 <el-button :disabled="!hasJob" @click="dialogVisible=true" class="w-100" type="primary"><i
@@ -211,7 +213,8 @@ export default {
       jobs2: [],
       totals1: 0,
       totals2: 0,
-      saveTip: '添  加'
+      saveTip: '添  加',
+      workedTimeTip: ''
     }
   },
   methods: {
@@ -336,6 +339,16 @@ export default {
         // 刷新打卡记录
         this.lastDayOfWeek = idx
         this.refreshJob()
+      }
+      // 更新已上班时长
+      if (this.hasJob) {
+        let workedSeconds = Number.parseInt((now.getTime() - this.todayJob.workTimeStart) / 1000)
+        let hours = Number.parseInt(workedSeconds / 60 / 60)
+        let minutes = Number.parseInt(workedSeconds / 60 % 60)
+        let seconds = workedSeconds % 60
+        this.workedTimeTip = `已上班 ${hours} 小时 ${minutes} 分 ${seconds} 秒`
+      } else {
+        this.workedTimeTip = ''
       }
     }, 1000)
     // 列出公司
