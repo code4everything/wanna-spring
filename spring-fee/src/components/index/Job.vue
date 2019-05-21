@@ -348,7 +348,7 @@ export default {
         let seconds = workedSeconds % 60
         this.workedTimeTip = `已上班 ${hours} 小时 ${minutes} 分 ${seconds} 秒`
       } else {
-        this.workedTimeTip = ''
+        this.workedTimeTip = '你还没上班哟'
       }
     }, 1000)
     // 列出公司

@@ -1,6 +1,6 @@
-*/target/*
-target/*
-**/target/**/*.class
+# Custom
+**/document/
+**/target/
 !.mvn/wrapper/maven-wrapper.jar
 .mvn/
 */logs/*
