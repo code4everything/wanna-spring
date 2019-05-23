@@ -28,7 +28,7 @@ import validator from '../../../../static/js/validator.min'
 
 export default {
   name: 'TodoItem',
-  data () {
+  data() {
     return {
       removeIcon: '<i class="glyphicon glyphicon-trash"></i>',
       removeTip: '删除',
@@ -55,7 +55,7 @@ export default {
     remove: function () {
       let self = this
       let index = $(window.event.srcElement).parents('div.todo').attr('data-index')
-      this.$confirm(`是否确定删除索引位置位于 '${parseInt(index) + 1}' 的待办事项`, '提示', {
+      this.$confirm(`是否确定删除待办事项 【${this.todos[Number.parseInt(index)].content}】`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
