@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.code4everything.boot.base.bean.BaseBean;
+import org.code4everything.boot.base.bean.BaseDomain;
 import org.code4everything.boot.base.encoder.Sealed;
 import org.springframework.data.annotation.Id;
 
@@ -22,7 +22,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @ApiModel(description = "文件")
 @org.springframework.data.mongodb.core.mapping.Document
-public class Document implements BaseBean, Serializable {
+public class Document implements BaseDomain {
 
     private static final long serialVersionUID = 6805524282169955828L;
 
@@ -45,4 +45,9 @@ public class Document implements BaseBean, Serializable {
 
     @ApiModelProperty("文件大小")
     private Long size;
+
+    @Override
+    public Serializable primaryKey() {
+        return id;
+    }
 }

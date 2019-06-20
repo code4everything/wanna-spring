@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.code4everything.boot.base.bean.BaseBean;
+import org.code4everything.boot.base.bean.BaseDomain;
 import org.code4everything.boot.base.encoder.Sealed;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -23,7 +23,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(description = "待办事项")
-public class Todo implements BaseBean, Serializable {
+public class Todo implements BaseDomain {
 
     private static final long serialVersionUID = -7735706142745311409L;
 
@@ -49,4 +49,9 @@ public class Todo implements BaseBean, Serializable {
 
     @ApiModelProperty("实际完成时间")
     private Long doneTime;
+
+    @Override
+    public Serializable primaryKey() {
+        return id;
+    }
 }

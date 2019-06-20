@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.code4everything.boot.base.DateUtils;
-import org.code4everything.boot.base.bean.BaseBean;
+import org.code4everything.boot.base.bean.BaseDomain;
 import org.code4everything.boot.base.encoder.Sealed;
 import org.code4everything.boot.web.mvc.AssertUtils;
 import org.code4everything.springbee.constant.BeeErrorConsts;
@@ -31,7 +31,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(description = "日常记录")
-public class Daily implements BaseBean, Serializable {
+public class Daily implements BaseDomain {
 
     private static final long serialVersionUID = 1469674945908223445L;
 
@@ -67,5 +67,10 @@ public class Daily implements BaseBean, Serializable {
         }
         this.setDate(DateUtil.formatDate(dailyVO.getDate()));
         return this;
+    }
+
+    @Override
+    public Serializable primaryKey() {
+        return id;
     }
 }

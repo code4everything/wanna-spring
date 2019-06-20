@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.code4everything.boot.base.bean.BaseBean;
+import org.code4everything.boot.base.bean.BaseDomain;
 import org.code4everything.boot.base.encoder.Sealed;
 import org.springframework.data.annotation.Id;
 
@@ -21,7 +21,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(description = "用户配置")
-public class Setting implements BaseBean, Serializable {
+public class Setting implements BaseDomain {
 
     private static final long serialVersionUID = -4891805531653159414L;
 
@@ -54,4 +54,9 @@ public class Setting implements BaseBean, Serializable {
 
     @ApiModelProperty(value = "默认查询时长（天）", allowableValues = "0, 7, 30")
     private Integer dailyDayLength;
+
+    @Override
+    public Serializable primaryKey() {
+        return id;
+    }
 }

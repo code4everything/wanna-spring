@@ -3,7 +3,6 @@ package org.code4everything.springbee.config;
 import cn.hutool.core.util.ObjectUtil;
 import com.google.common.base.Strings;
 import org.code4everything.boot.web.http.HttpUtils;
-import org.code4everything.boot.web.mvc.AssertUtils;
 import org.code4everything.boot.web.mvc.DefaultExceptionHandler;
 import org.code4everything.boot.web.mvc.DefaultWebInterceptor;
 import org.code4everything.boot.web.mvc.PathFilterHandler;
@@ -63,11 +62,9 @@ public class BeeWebMvcConfiguration implements WebMvcConfigurer {
             @Override
             public boolean handleInterceptList(HttpServletRequest request, HttpServletResponse response,
                                                Object handler) {
-                String token = HttpUtils.getToken(request);
-                AssertUtils.throwIfNull(token, ExceptionFactory.tokenBlank());
+                String token = HttpUtils.requireToken(request);
                 User user = userUserService.getUserByToken(token);
                 if (ObjectUtil.isNull(user)) {
-                    // 非法用户，禁止访问
                     LOGGER.error("auth error, token: {}, ip: {}", token, request.getRemoteAddr());
                     throw ExceptionFactory.userNotLoggedIn();
                 }

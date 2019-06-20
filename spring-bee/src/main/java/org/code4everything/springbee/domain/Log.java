@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.code4everything.boot.base.bean.BaseBean;
+import org.code4everything.boot.base.bean.BaseDomain;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -22,7 +22,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(description = "日志")
-public class Log implements BaseBean, Serializable {
+public class Log implements BaseDomain {
 
     private static final long serialVersionUID = -9056492805237354620L;
 
@@ -59,4 +59,9 @@ public class Log implements BaseBean, Serializable {
 
     @ApiModelProperty("执行时长")
     private Long executedTime;
+
+    @Override
+    public Serializable primaryKey() {
+        return id;
+    }
 }

@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.code4everything.boot.base.bean.BaseBean;
+import org.code4everything.boot.base.bean.BaseDomain;
 import org.code4everything.boot.base.encoder.Sealed;
 import org.code4everything.springbee.model.IncomeVO;
 import org.springframework.beans.BeanUtils;
@@ -26,7 +26,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(value = "income", description = "收益明细，包括支出")
-public class Income implements BaseBean, Serializable {
+public class Income implements BaseDomain {
 
     @Id
     @ApiModelProperty("收益编号")
@@ -61,5 +61,10 @@ public class Income implements BaseBean, Serializable {
         BeanUtils.copyProperties(incomeVO, this);
         this.setDate(DateUtil.formatDate(incomeVO.getDate()));
         return this;
+    }
+
+    @Override
+    public Serializable primaryKey() {
+        return id;
     }
 }
