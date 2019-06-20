@@ -1,11 +1,12 @@
 package org.code4everything.springbee.web;
 
 import io.swagger.annotations.*;
+import org.code4everything.boot.web.mvc.BaseSignController;
 import org.code4everything.boot.web.mvc.Response;
 import org.code4everything.springbee.domain.Daily;
+import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.DailyVO;
 import org.code4everything.springbee.service.DailyService;
-import org.code4everything.springbee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,26 +21,25 @@ import java.util.List;
 @RestController
 @RequestMapping("/user/daily")
 @Api(tags = "日程接口")
-public class DailyController extends BeeBaseController {
+public class DailyController extends BaseSignController<User> {
 
     private final DailyService dailyService;
 
     @Autowired
-    public DailyController(DailyService dailyService, UserService userService) {
-        super(userService);
+    public DailyController(DailyService dailyService) {
         this.dailyService = dailyService;
     }
 
     @PostMapping("/create")
     @ApiOperation("添加记录")
     public Response<Daily> saveDaily(@RequestBody @ApiParam @Valid DailyVO dailyVO) {
-        return successResult(dailyService.saveDaily(getUserId(), dailyVO), true);
+        return successResult(dailyService.saveDaily(getUser().getId(), dailyVO), true);
     }
 
     @GetMapping("/get")
     @ApiImplicitParam(name = "date", value = "日期", required = true, dataTypeClass = Date.class)
     public Response<Daily> getDaily(@RequestParam Date date) {
-        return parseResult("该日期还没有记录哦", dailyService.getDaily(getUserId(), date), true);
+        return parseResult("该日期还没有记录哦", dailyService.getDaily(getUser().getId(), date), true);
     }
 
     @DeleteMapping("/remove")
@@ -53,7 +53,7 @@ public class DailyController extends BeeBaseController {
     @PutMapping("/{dailyId}/update")
     @ApiOperation("更新记录")
     public Response<Daily> updateDaily(@PathVariable String dailyId, @RequestBody @ApiParam @Valid DailyVO dailyVO) {
-        return successResult(dailyService.updateDaily(getUserId(), dailyId, dailyVO), true);
+        return successResult(dailyService.updateDaily(getUser().getId(), dailyId, dailyVO), true);
     }
 
     @GetMapping("/list")
@@ -62,6 +62,6 @@ public class DailyController extends BeeBaseController {
             dataTypeClass = Date.class), @ApiImplicitParam(name = "end", value = "结束时间", required = true,
             dataTypeClass = Date.class)})
     public Response<List<Daily>> listByDate(@RequestParam Date start, @RequestParam Date end) {
-        return parseCollection("该时间段还没有日程记录哦", dailyService.listDaily(getUserId(), start, end), true);
+        return parseCollection("该时间段还没有日程记录哦", dailyService.listDaily(getUser().getId(), start, end), true);
     }
 }

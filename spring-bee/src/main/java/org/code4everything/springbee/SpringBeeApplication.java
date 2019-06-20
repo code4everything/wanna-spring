@@ -3,10 +3,8 @@ package org.code4everything.springbee;
 import com.spring4all.swagger.EnableSwagger2Doc;
 import org.code4everything.boot.base.FileUtils;
 import org.code4everything.boot.base.FileWatcher;
-import org.code4everything.boot.config.EnableSurfaceConfiguration;
 import org.code4everything.boot.config.EnableSurfaceLog;
 import org.code4everything.boot.config.EnableSurfaceMail;
-import org.code4everything.boot.config.EnableSurfaceRedis;
 import org.code4everything.springbee.config.BeeConfigBean;
 import org.code4everything.springbee.util.BeeUtils;
 import org.springframework.boot.SpringApplication;
@@ -20,8 +18,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @EnableSwagger2Doc
 @EnableSurfaceLog
 @EnableSurfaceMail
-@EnableSurfaceRedis
-@EnableSurfaceConfiguration
 public class SpringBeeApplication {
 
     private static BeeConfigBean beeConfigBean = new BeeConfigBean();

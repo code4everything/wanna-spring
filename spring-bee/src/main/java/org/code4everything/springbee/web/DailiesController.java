@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.code4everything.boot.web.mvc.BaseController;
 import org.code4everything.boot.web.mvc.Response;
 import org.code4everything.springbee.domain.Dailies;
 import org.code4everything.springbee.model.DailiesVO;
@@ -21,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user/daily/detail")
 @Api(tags = "日程详细记录接口")
-public class DailiesController extends BeeBaseController {
+public class DailiesController extends BaseController {
 
     private final DailiesService dailiesService;
 

@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.code4everything.boot.message.VerifyCodeUtils;
 import org.code4everything.boot.web.mvc.AssertUtils;
+import org.code4everything.boot.web.mvc.BaseController;
 import org.code4everything.boot.web.mvc.Response;
 import org.code4everything.springbee.constant.BeeErrorConsts;
 import org.code4everything.springbee.service.CommonService;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/common")
 @Api(tags = "公共接口")
-public class CommonController extends BeeBaseController {
+public class CommonController extends BaseController {
 
     private final CommonService commonService;
 

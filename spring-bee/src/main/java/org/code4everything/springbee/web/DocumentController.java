@@ -3,6 +3,7 @@ package org.code4everything.springbee.web;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.code4everything.boot.web.http.HttpUtils;
+import org.code4everything.boot.web.mvc.BaseController;
 import org.code4everything.boot.web.mvc.Response;
 import org.code4everything.springbee.SpringBeeApplication;
 import org.code4everything.springbee.domain.Document;
@@ -23,7 +24,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/user/document")
 @Api(tags = "文件资源接口")
-public class DocumentController extends BeeBaseController {
+public class DocumentController extends BaseController {
 
     private final DocumentService documentService;
 

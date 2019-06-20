@@ -1,14 +1,21 @@
 {
-  "tokenExpired": 604800,
-  "whitePrefixes": [
-    "/common",
-    "/user/password/reset",
-    "/user/register",
-    "/user/login"
-  ],
-  "interceptPrefixes": [
-    "/user"
-  ],
-  "blackPrefixes": [],
-  "storagePath": ""
+    "boot": {
+        "debug": true,
+        "redis": {
+            "host": "192.168.1.210"
+        },
+        "masUploadSize": 1048576
+    },
+    "tokenExpired": 604800,
+    "whitePrefixes": [
+        "/common",
+        "/user/password/reset",
+        "/user/register",
+        "/user/login"
+    ],
+    "interceptPrefixes": [
+        "/user"
+    ],
+    "blackPrefixes": [],
+    "storagePath": ""
 }

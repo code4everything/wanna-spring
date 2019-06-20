@@ -21,7 +21,7 @@
     <developers>
         <developer>
             <name>pantao</name>
-            <email>tao@zhazhapan.com</email>
+            <email>easepan@qq.com</email>
             <url>https://blog.csdn.net/qq_26954773</url>
         </developer>
     </developers>
@@ -29,24 +29,10 @@
     <contributors>
         <contributor>
             <name>pantao</name>
-            <email>tao@zhazhapan.com</email>
+            <email>easepan@qq.com</email>
             <url>https://blog.csdn.net/qq_26954773</url>
         </contributor>
     </contributors>
-
-    <repositories>
-        <!--临时快照创库-->
-        <repository>
-            <id>code4everything</id>
-            <url>http://nexus.code4everything.org/repository/maven-public/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-    </repositories>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -57,7 +43,7 @@
         <util.version>1.1.1</util.version>
         <redis.version>2.9.0</redis.version>
         <swagger.version>1.7.1.RELEASE</swagger.version>
-        <boot.surface.version>1.1.2</boot.surface.version>
+        <boot.surface.version>1.1.4</boot.surface.version>
     </properties>
 
     <dependencies>
@@ -110,10 +96,10 @@
         <!--<groupId>org.springframework.boot</groupId>-->
         <!--<artifactId>spring-boot-starter-websocket</artifactId>-->
         <!--</dependency>-->
-        <dependency>
-            <groupId>org.springframework.session</groupId>
-            <artifactId>spring-session-data-redis</artifactId>
-        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>org.springframework.session</groupId>-->
+        <!--<artifactId>spring-session-data-redis</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>

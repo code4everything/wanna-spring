@@ -4,12 +4,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.code4everything.boot.web.mvc.BaseSignController;
 import org.code4everything.boot.web.mvc.Response;
 import org.code4everything.springbee.domain.Todo;
+import org.code4everything.springbee.domain.User;
 import org.code4everything.springbee.model.TodoCountVO;
 import org.code4everything.springbee.model.TodoVO;
 import org.code4everything.springbee.service.TodoService;
-import org.code4everything.springbee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,20 +24,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/user/todo")
 @Api(tags = "代办事项接口")
-public class TodoController extends BeeBaseController {
+public class TodoController extends BaseSignController<User> {
 
     private final TodoService todoService;
 
     @Autowired
-    public TodoController(TodoService todoService, UserService userService) {
-        super(userService);
+    public TodoController(TodoService todoService) {
         this.todoService = todoService;
     }
 
     @PostMapping("/create")
     @ApiOperation("添加代办事项")
     public Response<Todo> saveTodo(@RequestBody TodoVO todoVO) {
-        return successResult(todoService.saveTodo(getUserId(), todoVO), true);
+        return successResult(todoService.saveTodo(getUser().getId(), todoVO), true);
     }
 
     @DeleteMapping("/remove")
@@ -66,21 +66,21 @@ public class TodoController extends BeeBaseController {
     @GetMapping("/date/list")
     @ApiOperation("列出所有日期")
     public Response<List<String>> listDate() {
-        return parseCollection("您还没有待办事项哦", todoService.listDate(getUserId()));
+        return parseCollection("您还没有待办事项哦", todoService.listDate(getUser().getId()));
     }
 
     @GetMapping("/undo/list")
     @ApiOperation("列出某个日期之前未完成的待办事项")
     @ApiImplicitParam(name = "date", value = "日期", required = true, dataTypeClass = Date.class)
     public Response<List<Todo>> listUndo(@RequestParam Date date) {
-        return parseCollection("没有未完成的待办事项哦", todoService.listUndoBeforeDate(getUserId(), date), true);
+        return parseCollection("没有未完成的待办事项哦", todoService.listUndoBeforeDate(getUser().getId(), date), true);
     }
 
     @GetMapping("/list")
     @ApiOperation("列出事项")
     @ApiImplicitParam(name = "date", value = "日期", required = true, dataTypeClass = Date.class)
     public Response<List<Todo>> listTodo(@RequestParam Date date) {
-        return parseCollection("该日期没有待办事项哦", todoService.listTodo(getUserId(), date), true);
+        return parseCollection("该日期没有待办事项哦", todoService.listTodo(getUser().getId(), date), true);
     }
 
     @GetMapping("/count/list")
@@ -89,6 +89,6 @@ public class TodoController extends BeeBaseController {
             dataTypeClass = Date.class), @ApiImplicitParam(name = "end", value = "结束时间", required = true,
             dataTypeClass = Date.class)})
     public Response<List<TodoCountVO>> listByDate(@RequestParam Date start, @RequestParam Date end) {
-        return parseCollection("您还没有待办事项哦", todoService.listTodoCount(getUserId(), start, end), true);
+        return parseCollection("您还没有待办事项哦", todoService.listTodoCount(getUser().getId(), start, end), true);
     }
 }

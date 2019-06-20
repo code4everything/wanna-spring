@@ -2,6 +2,7 @@ package org.code4everything.springbee.web;
 
 import io.swagger.annotations.*;
 import org.code4everything.boot.web.mvc.AssertUtils;
+import org.code4everything.boot.web.mvc.BaseSignController;
 import org.code4everything.boot.web.mvc.Response;
 import org.code4everything.springbee.constant.BeeErrorConsts;
 import org.code4everything.springbee.domain.Document;
@@ -24,7 +25,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/user")
 @Api(tags = "用户接口")
-public class UserController extends BeeBaseController {
+public class UserController extends BaseSignController<User> {
 
     private final UserService userService;
 
@@ -32,7 +33,6 @@ public class UserController extends BeeBaseController {
 
     @Autowired
     public UserController(UserService userService, DocumentController documentController) {
-        super(userService);
         this.userService = userService;
         this.documentController = documentController;
     }
