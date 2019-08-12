@@ -13,11 +13,12 @@ import org.code4everything.springbee.domain.Job;
 import org.code4everything.springbee.model.JobVO;
 import org.code4everything.springbee.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -37,10 +38,10 @@ public class JobServiceImpl implements JobService {
 
     private final JobDAO jobDAO;
 
-    private final StringRedisTemplate stringRedisTemplate;
+    private final RedisTemplate<String, String> stringRedisTemplate;
 
     @Autowired
-    public JobServiceImpl(JobDAO jobDAO, StringRedisTemplate stringRedisTemplate) {
+    public JobServiceImpl(JobDAO jobDAO, @Qualifier("stringRedis") RedisTemplate<String, String> stringRedisTemplate) {
         this.jobDAO = jobDAO;
         this.stringRedisTemplate = stringRedisTemplate;
     }
