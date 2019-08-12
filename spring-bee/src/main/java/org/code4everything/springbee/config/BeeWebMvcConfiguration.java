@@ -16,8 +16,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.servlet.HandlerExceptionResolver;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,6 +43,29 @@ public class BeeWebMvcConfiguration implements WebMvcConfigurer {
         // 添加异常信息
         handler.addException(400, "参数校验失败", HttpStatus.BAD_REQUEST, MethodArgumentNotValidException.class);
         resolvers.add(handler);
+    }
+
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+        viewResolver.setPrefix("/");
+        viewResolver.setSuffix(".html");
+        registry.viewResolver(viewResolver);
+    }
+
+    @Override
+    public void configurePathMatch(PathMatchConfigurer configurer) {
+        configurer.setUseSuffixPatternMatch(false);
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/index").setViewName("/index");
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/static/");
     }
 
     @Override

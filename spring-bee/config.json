@@ -2,9 +2,9 @@
   "boot": {
     "debug": true,
     "redis": {
-      "host": "192.168.1.210"
+      "host": "192.168.1.234"
     },
-    "masUploadSize": 1048576
+    "maxUploadSize": 1048576
   },
   "tokenExpired": 604800,
   "whitePrefixes": [
