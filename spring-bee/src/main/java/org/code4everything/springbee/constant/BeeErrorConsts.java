@@ -6,7 +6,7 @@ import org.code4everything.boot.web.mvc.exception.template.UsernamePasswordIncor
 /**
  * @author pantao
  * @since 2019/5/9
- **/
+ */
 public class BeeErrorConsts {
 
     public static final HttpException CATEGORY_EXISTS = new HttpException(1001, "该分类已存在，无需添加", true);

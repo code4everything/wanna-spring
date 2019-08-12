@@ -13,7 +13,7 @@ import java.util.Objects;
 /**
  * @author pantao
  * @since 2019/5/10
- **/
+ */
 @Service
 public class SettingServiceImpl implements SettingService {
 

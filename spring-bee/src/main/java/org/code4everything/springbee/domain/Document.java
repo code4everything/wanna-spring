@@ -15,7 +15,7 @@ import java.io.Serializable;
 /**
  * @author pantao
  * @since 2018/9/13
- **/
+ */
 @Data
 @ToString
 @NoArgsConstructor

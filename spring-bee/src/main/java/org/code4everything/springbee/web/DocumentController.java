@@ -20,7 +20,7 @@ import java.io.IOException;
 /**
  * @author pantao
  * @since 2018/9/13
- **/
+ */
 @RestController
 @RequestMapping("/user/document")
 @Api(tags = "文件资源接口")

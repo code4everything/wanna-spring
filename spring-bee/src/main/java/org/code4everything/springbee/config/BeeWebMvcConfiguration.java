@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * @author pantao
  * @since 2018/9/20
- **/
+ */
 @Configuration
 public class BeeWebMvcConfiguration implements WebMvcConfigurer {
 

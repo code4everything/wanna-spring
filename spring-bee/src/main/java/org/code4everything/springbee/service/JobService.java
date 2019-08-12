@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * @author pantao
  * @since 2019/3/1
- **/
+ */
 public interface JobService {
 
     Job updateStatus(String id, String status);

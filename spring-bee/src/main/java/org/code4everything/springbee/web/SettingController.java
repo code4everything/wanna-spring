@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * @author pantao
  * @since 2019/5/10
- **/
+ */
 @RestController
 @RequestMapping("/user/setting")
 @Api(tags = "用户配置")

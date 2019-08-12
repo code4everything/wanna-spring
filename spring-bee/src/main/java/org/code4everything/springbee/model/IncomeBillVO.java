@@ -12,7 +12,7 @@ import java.io.Serializable;
 /**
  * @author pantao
  * @since 2018/11/18
- **/
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

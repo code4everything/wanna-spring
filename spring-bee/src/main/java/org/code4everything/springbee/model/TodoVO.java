@@ -15,7 +15,7 @@ import java.util.Objects;
 /**
  * @author pantao
  * @since 2019/2/12
- **/
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author pantao
  * @since 2018/10/14
- **/
+ */
 @Service
 public class LogServiceImpl implements BootLogService<Log> {
 
