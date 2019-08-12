@@ -2,7 +2,7 @@
   "name": "spring-fee",
   "version": "1.0.0",
   "description": "wanna spring front end",
-  "author": "pantao <tao@zhazhapan.com>",
+  "author": "pantao <easepan@qq.com>",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
