@@ -37,7 +37,7 @@ public class JobController extends BaseSignController<User> {
     @ApiOperation("更新加班状态")
     @ApiImplicitParam(name = "status", value = "状态:0未处理，1已处理", defaultValue = "1")
     public Response<Job> updateStatus(@PathVariable String jobId, @RequestParam(defaultValue = "1") String status) {
-        return successResult(jobService.updateStatus(jobId, status));
+        return successResult(jobService.updateStatus(jobId, status), true);
     }
 
     @GetMapping("/companies")
@@ -49,7 +49,7 @@ public class JobController extends BaseSignController<User> {
     @PatchMapping("/{jobId}/diary")
     @ApiOperation("更新工作日记")
     public Response<Job> saveWorkDiary(@PathVariable String jobId, @RequestBody String workDiary) {
-        return successResult(jobService.writeWorkDiary(jobId, workDiary));
+        return successResult(jobService.writeWorkDiary(jobId, workDiary), true);
     }
 
     @PatchMapping("/{jobId}/finish")
@@ -58,7 +58,7 @@ public class JobController extends BaseSignController<User> {
             @ApiImplicitParam(name = "company", value = "公司名称", required = true)})
     public Response<Job> finishWork(@PathVariable String jobId, @RequestParam(defaultValue = "1") String workWay,
                                     @RequestParam String company) {
-        return successResult(jobService.finishedWork(jobId, workWay, company));
+        return successResult(jobService.finishedWork(jobId, workWay, company), true);
     }
 
     @PostMapping("/start")
@@ -66,19 +66,19 @@ public class JobController extends BaseSignController<User> {
     @ApiImplicitParams({@ApiImplicitParam(name = "workWay", value = "方式：1正常，2加班", defaultValue = "1"),
             @ApiImplicitParam(name = "company", value = "公司名称", required = true)})
     public Response<Job> startWork(@RequestParam(defaultValue = "1") String workWay, @RequestParam String company) {
-        return successResult(jobService.startWorking(getUser().getId(), workWay, company));
+        return successResult(jobService.startWorking(getUser().getId(), workWay, company), true);
     }
 
     @PutMapping("")
     @ApiOperation("保存工作日志")
     public Response<Job> save(@RequestBody JobVO jobVO) {
-        return successResult(jobService.save(getUser().getId(), jobVO));
+        return successResult(jobService.save(getUser().getId(), jobVO), true);
     }
 
     @GetMapping("/today")
     @ApiOperation("获取今日的工作日志")
     public Response<Job> getJobOfToday() {
-        return parseResult("今日还没有工作日志哦", jobService.getJobOfToday(getUser().getId()));
+        return parseResult("今日还没有工作日志哦", jobService.getJobOfToday(getUser().getId()), true);
     }
 
     @GetMapping("/overtime")
@@ -88,7 +88,7 @@ public class JobController extends BaseSignController<User> {
     public Response<Page<Job>> listWorkOvertime(@RequestParam(defaultValue = "0") String status,
                                                 @RequestParam(defaultValue = "0") Integer offset,
                                                 @RequestParam(defaultValue = "30") Integer size) {
-        return successResult(jobService.listByWorkOverTime(getUser().getId(), status, offset, size));
+        return successResult(jobService.listByWorkOverTime(getUser().getId(), status, offset, size), true);
     }
 
     @GetMapping("")
@@ -98,9 +98,9 @@ public class JobController extends BaseSignController<User> {
     public Response<Page<Job>> listByCompany(String company, @RequestParam(defaultValue = "0") Integer offset,
                                              @RequestParam(defaultValue = "30") Integer size) {
         if (StrUtil.isEmpty(company)) {
-            return successResult(jobService.listAllWorked(getUser().getId(), offset, size));
+            return successResult(jobService.listAllWorked(getUser().getId(), offset, size), true);
         } else {
-            return successResult(jobService.listWorkedByCompanies(getUser().getId(), company, offset, size));
+            return successResult(jobService.listWorkedByCompanies(getUser().getId(), company, offset, size), true);
         }
     }
 }
