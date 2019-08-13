@@ -82,6 +82,7 @@ public class JobController extends BaseSignController<User> {
     }
 
     @GetMapping("/overtime")
+    @ApiOperation("列出加班记录")
     @ApiImplicitParams({@ApiImplicitParam(name = "status", value = "状态:0未处理，1已处理", defaultValue = "0"),
             @ApiImplicitParam(name = "offset", value = "页偏移", defaultValue = "0"), @ApiImplicitParam(name = "size",
             value = "页大小", defaultValue = "30")})

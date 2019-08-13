@@ -21,7 +21,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -61,18 +61,30 @@ public class JobServiceImpl implements JobService {
     public Set<String> listCompany(String userId) {
         final String key = COMPANY_KEY_PREFIX + userId;
         List<String> companiesFormRedis = stringRedisTemplate.opsForList().range(key, 0, 128);
+        final Set<String> companies = new LinkedHashSet<>(8);
         if (CollUtil.isEmpty(companiesFormRedis)) {
+            // 从数据库中获取数据
             List<Job> jobs = jobDAO.getByUserId(userId);
-            final Set<String> companies = new HashSet<>(jobs.size());
-            jobs.forEach(job -> companies.add(job.getCompany()));
+            jobs.forEach(job -> {
+                if (StrUtil.isNotEmpty(job.getCompany())) {
+                    companies.add(job.getCompany());
+                }
+            });
 
             if (CollUtil.isNotEmpty(companies)) {
+                // 放入缓存
                 stringRedisTemplate.opsForList().leftPushAll(key, companies);
                 expireCompanyAfterThreeDays(key);
             }
             return companies;
         }
-        return new HashSet<>(companiesFormRedis);
+        // 去重，去空
+        companiesFormRedis.forEach(company -> {
+            if (StrUtil.isNotEmpty(company)) {
+                companies.add(company);
+            }
+        });
+        return companies;
     }
 
     @Override
