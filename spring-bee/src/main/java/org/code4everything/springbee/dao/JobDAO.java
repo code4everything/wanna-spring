@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author pantao
  * @since 2019/3/1
- **/
+ */
 @Repository
 public interface JobDAO extends MongoRepository<Job, String> {
 

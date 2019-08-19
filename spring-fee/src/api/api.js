@@ -2,7 +2,7 @@ import axios from 'axios'
 import cookie from 'js-cookie'
 import {Loading} from 'element-ui'
 
-const host = 'http://localhost:8099'
+const host = 'http://192.168.1.9:8099'
 
 let loading
 

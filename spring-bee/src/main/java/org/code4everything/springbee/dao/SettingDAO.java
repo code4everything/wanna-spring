@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 /**
  * @author pantao
  * @since 2019/5/10
- **/
+ */
 @Repository
 public interface SettingDAO extends MongoRepository<Setting, String> {
 

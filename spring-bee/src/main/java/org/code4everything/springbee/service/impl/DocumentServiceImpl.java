@@ -17,7 +17,7 @@ import java.util.Objects;
 /**
  * @author pantao
  * @since 2018/9/13
- **/
+ */
 @Service
 public class DocumentServiceImpl implements DocumentService {
 

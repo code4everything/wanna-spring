@@ -56,12 +56,13 @@
             <el-tabs v-model="currentTab">
               <el-tab-pane label="工作记录" name="all">
                 <div class="row">
-                  <div class="col-sm-12 text-left">
-                    <el-select default-first-option v-model="companyFilter">
+                  <div class="col-sm-5 text-left">
+                    <el-select default-first-option v-model="companyFilter" class="w-100">
                       <el-option :key="index" :label="company" :value="company"
                                  v-for="(company,index) in companies"></el-option>
                     </el-select>
-                    &emsp;
+                  </div>
+                  <div class="col-sm-2 text-left">
                     <el-button @click="listLog" round type="primary"><i class="glyphicon glyphicon-refresh"></i> 刷新
                     </el-button>
                   </div>
@@ -75,12 +76,13 @@
               </el-tab-pane>
               <el-tab-pane label="加班记录" name="overtime">
                 <div class="row">
-                  <div class="col-sm-12 text-left">
-                    <el-select default-first-option v-model="status">
+                  <div class="col-sm-3 text-left">
+                    <el-select default-first-option v-model="status" class="w-100">
                       <el-option :key="index" :label="state" :value="index"
                                  v-for="(state,index) in statusList"></el-option>
                     </el-select>
-                    &emsp;
+                  </div>
+                  <div class="col-sm-2 text-left">
                     <el-button @click="listLog" round type="primary"><i class="glyphicon glyphicon-refresh"></i> 刷新
                     </el-button>
                   </div>
@@ -202,7 +204,7 @@ export default {
         workDiary: ''
       },
       currentTab: 'all',
-      status: '',
+      status: '未处理',
       companyFilter: '',
       statusList: ['未处理', '已处理'],
       currPage1: 1,
@@ -355,7 +357,7 @@ export default {
     requestCompanies().then(data => {
       if (data.ok) {
         this.companies = data.data
-        this.myCompany = this.companies[this.companies.length - 1]
+        this.companyFilter = this.myCompany = this.companies[this.companies.length - 1]
       } else {
         utils.showError(this, data.msg)
       }

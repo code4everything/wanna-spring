@@ -7,7 +7,7 @@ import java.io.File;
 /**
  * @author pantao
  * @since 2018/9/13
- **/
+ */
 public class BeeConfigConsts {
 
     /**

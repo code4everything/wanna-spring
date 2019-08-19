@@ -16,7 +16,7 @@ import java.io.Serializable;
 /**
  * @author pantao
  * @since 2019/3/1
- **/
+ */
 @Data
 @ToString
 @Document

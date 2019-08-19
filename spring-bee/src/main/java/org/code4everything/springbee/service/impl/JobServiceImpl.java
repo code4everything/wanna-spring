@@ -13,14 +13,15 @@ import org.code4everything.springbee.domain.Job;
 import org.code4everything.springbee.model.JobVO;
 import org.code4everything.springbee.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -29,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author pantao
  * @since 2019/3/1
- **/
+ */
 @Service
 public class JobServiceImpl implements JobService {
 
@@ -37,10 +38,10 @@ public class JobServiceImpl implements JobService {
 
     private final JobDAO jobDAO;
 
-    private final StringRedisTemplate stringRedisTemplate;
+    private final RedisTemplate<String, String> stringRedisTemplate;
 
     @Autowired
-    public JobServiceImpl(JobDAO jobDAO, StringRedisTemplate stringRedisTemplate) {
+    public JobServiceImpl(JobDAO jobDAO, @Qualifier("stringRedis") RedisTemplate<String, String> stringRedisTemplate) {
         this.jobDAO = jobDAO;
         this.stringRedisTemplate = stringRedisTemplate;
     }
@@ -60,18 +61,30 @@ public class JobServiceImpl implements JobService {
     public Set<String> listCompany(String userId) {
         final String key = COMPANY_KEY_PREFIX + userId;
         List<String> companiesFormRedis = stringRedisTemplate.opsForList().range(key, 0, 128);
+        final Set<String> companies = new LinkedHashSet<>(8);
         if (CollUtil.isEmpty(companiesFormRedis)) {
+            // 从数据库中获取数据
             List<Job> jobs = jobDAO.getByUserId(userId);
-            final Set<String> companies = new HashSet<>(jobs.size());
-            jobs.forEach(job -> companies.add(job.getCompany()));
+            jobs.forEach(job -> {
+                if (StrUtil.isNotEmpty(job.getCompany())) {
+                    companies.add(job.getCompany());
+                }
+            });
 
             if (CollUtil.isNotEmpty(companies)) {
+                // 放入缓存
                 stringRedisTemplate.opsForList().leftPushAll(key, companies);
                 expireCompanyAfterThreeDays(key);
             }
             return companies;
         }
-        return new HashSet<>(companiesFormRedis);
+        // 去重，去空
+        companiesFormRedis.forEach(company -> {
+            if (StrUtil.isNotEmpty(company)) {
+                companies.add(company);
+            }
+        });
+        return companies;
     }
 
     @Override

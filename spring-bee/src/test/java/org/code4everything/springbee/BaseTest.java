@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 /**
  * @author pantao
  * @since 2018/10/25
- **/
+ */
 @SpringBootTest
 public class BaseTest {
 

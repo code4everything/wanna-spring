@@ -25,7 +25,7 @@ public class BeeBeanConfiguration {
         return CorsUtils.newCorsFilter();
     }
 
-    @Bean
+    @Bean("stringRedis")
     public RedisTemplate<String, String> stringRedisTemplate() {
         return RedisTemplateUtils.newTemplate(String.class);
     }
