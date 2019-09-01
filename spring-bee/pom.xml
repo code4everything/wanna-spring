@@ -18,6 +18,14 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
+    <!--私有仓库-->
+    <repositories>
+        <repository>
+            <id>ease-maven</id>
+            <url>http://maven.code4everything.org/repository</url>
+        </repository>
+    </repositories>
+
     <developers>
         <developer>
             <name>pantao</name>

@@ -73,7 +73,7 @@ public class JobServiceImpl implements JobService {
 
             if (CollUtil.isNotEmpty(companies)) {
                 // 放入缓存
-                stringRedisTemplate.opsForList().leftPushAll(key, companies);
+                stringRedisTemplate.opsForList().rightPushAll(key, companies);
                 expireCompanyAfterThreeDays(key);
             }
             return companies;
