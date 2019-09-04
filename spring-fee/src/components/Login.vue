@@ -28,7 +28,6 @@
 import app from '../App'
 import validator from '../../static/js/validator.min'
 import {requestLogin} from '../api/api'
-import cookie from 'js-cookie'
 import utils from '../assets/js/utils'
 
 export default {
@@ -54,7 +53,7 @@ export default {
       } else {
         requestLogin(this.loginName, this.password).then(data => {
           if (data.ok) {
-            cookie.set('token', data.data)
+            window.localStorage.setItem('token', data.data)
             window.location.href = app.data().path.income
           } else {
             utils.showError(this, data.msg)

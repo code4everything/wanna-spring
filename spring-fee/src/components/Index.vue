@@ -30,7 +30,6 @@
 <script>/* eslint-disable indent */
 import app from '../App'
 import $ from 'jquery'
-import cookie from 'js-cookie'
 import DaysLeft from './DaysLeft'
 
 const activeStr = 'active'
@@ -88,7 +87,7 @@ export default {
     navigateTo: function () {
       let href = $(window.event.srcElement).attr('href')
       if (href === app.data().path.login) {
-        cookie.remove('token')
+        window.localStorage.removeItem('token')
       }
       if (href === app.data().path.passwordReset) {
         window.open(href)

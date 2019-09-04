@@ -1,5 +1,4 @@
 import axios from 'axios'
-import cookie from 'js-cookie'
 import {Loading} from 'element-ui'
 
 const host = 'http://192.168.1.9:8099'
@@ -14,7 +13,7 @@ axios.interceptors.request.use(config => {
   config.url = host + config.url + (config.url.includes('?') ? '&' : '?') + 'timestamp=' + new Date().getTime()
   config.headers = {
     'Content-Type': 'application/json',
-    token: cookie.get('token')
+    token: window.localStorage.getItem('token')
   }
   return config
 }, error => {

@@ -21,7 +21,6 @@
     "element-ui": "^2.4.10",
     "jquery": "^3.3.1",
     "js-base64": "^2.4.9",
-    "js-cookie": "^2.2.0",
     "jsencrypt": "^3.0.0-rc.1",
     "lodash": "^4.17.11",
     "v-charts": "^1.19.0",
