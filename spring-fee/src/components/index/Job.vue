@@ -357,7 +357,7 @@ export default {
     requestCompanies().then(data => {
       if (data.ok) {
         this.companies = data.data
-        this.companyFilter = this.myCompany = this.companies[this.companies.length - 1]
+        this.companyFilter = this.myCompany = this.companies[0]
       } else {
         utils.showError(this, data.msg)
       }
