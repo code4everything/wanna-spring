@@ -26,7 +26,7 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryServiceImpl(CategoryDAO categoryDAO) {this.categoryDAO = categoryDAO;}
 
     @Override
-    public void updateCategory(String categoryId, String userId, String name) {
+    public void updateCategory(String userId, String categoryId, String name) {
         // 如果分类名称不存在时，才更新分类名称
         if (!exists(userId, name)) {
             Optional<Category> categoryOptional = categoryDAO.findById(categoryId);
